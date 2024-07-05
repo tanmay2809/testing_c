@@ -181,7 +181,7 @@ const NewPassword = () => {
                             
                         )}
 
-                        {formData.confirmPassword !== formData.password && (
+                        {formData.confirmPassword.length>0 && formData.confirmPassword !== formData.password && (
                             <p className={`text-sm flex flex-row items-center gap-1 text-red-500`}>
 
                                 <RxCross2 />
