@@ -56,7 +56,7 @@ const Register = () => {
                 loop
             ></video>
             <div className="relative flex items-center justify-center lg:justify-end px-[1rem] md:px-[10rem] w-full h-[100vh]">
-                <div className="w-[450px]  h-fit flex flex-col px-[2rem] py-[2.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
+                <div className="w-[450px] h-fit flex flex-col px-[2rem] py-[2.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
                     <form
                         onSubmit={submitHandler}
                         className="w-full flex flex-col gap-y-5"
