@@ -181,7 +181,7 @@ const NewPassword = () => {
                             
                         )}
 
-                        {formData.confirmPassword.length>0 && formData.confirmPassword !== formData.password && (
+                        {formData.confirmPassword.length > 0 && formData.confirmPassword !== formData.password && (
                             <p className={`text-sm flex flex-row items-center gap-1 text-red-500`}>
 
                                 <RxCross2 />
@@ -189,7 +189,6 @@ const NewPassword = () => {
                             </p>
 
                         )}
-
 
                         <button className="bg-[#004AAD] h-16 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
                             {loading ? (

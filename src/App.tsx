@@ -7,6 +7,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import Verify from './pages/Verify';
 import NewPassword from './pages/NewPassword';
+import Plans from './pages/Plans';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
       <Route path='/register' element={<Register />} />
       <Route path='/verify' element={<Verify />} />
       <Route path='/newpassword' element={<NewPassword />} />
+      <Route path='/plans' element={<Plans />} />
     </Routes>
     </>
   )
