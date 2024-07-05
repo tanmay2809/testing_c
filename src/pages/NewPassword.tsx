@@ -1,9 +1,11 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
 // icons
 import { MdLockOutline } from "react-icons/md";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
+import { FaCheck } from "react-icons/fa6";
 
 // assets
 import bgVideo from "../assets/bg-video.mp4";
@@ -23,15 +25,34 @@ const NewPassword = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
+    const [isMinLength, setIsMinLength] = useState<boolean>(false);
+    const [hasUpperCase, setHasUpperCase] = useState<boolean>(false);
+    const [hasNumber, setHasNumber] = useState<boolean>(false);
+    const [hasSymbol, setHasSymbol] = useState<boolean>(false);
+
     function changeHandler(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target;
         setFormData((prevData) => ({
             ...prevData,
-            [event.target.name]: event.target.value,
+            [name]: value,
         }));
+        validatePassword(value);
     }
 
+    function validatePassword(password: string) {
+        setIsMinLength(password.length >= 6);
+        setHasUpperCase(/[A-Z]/.test(password));
+        setHasNumber(/\d/.test(password));
+        setHasSymbol(/[!@#$%^&*]/.test(password));
+    }
+    
     function submitHandler(event: FormEvent) {
         event.preventDefault();
+
+        if (!isMinLength || !hasUpperCase || !hasNumber || !hasSymbol) {
+            return;
+        }
+        
         setFormData({
             password: "",
             confirmPassword: ""
@@ -122,13 +143,53 @@ const NewPassword = () => {
                             </div>
                         </div>
 
-                        <div className="mt-3">
-                            {/* {resendOTP ? (
-                                <p className="text-[#5C5C5C] text-[18px]">Didn't receive OTP? <span onClick={handleResend} className="text-[#004AAD] font-bold hover:cursor-pointer">Resend OTP</span></p>
-                            ) : (
-                                <p className="text-[#5C5C5C] text-[18px]">Didn't receive OTP? <span className="font-bold">Resend in 00:{timer < 10 ? `0${timer}` : timer}</span></p>
-                            )} */}
-                        </div>
+                        {formData.password.length > 0 && (
+                            <div className="flex flex-col gap-2">
+                                <p className={`text-sm flex flex-row items-center gap-1 ${isMinLength ? 'text-green-500' : 'text-red-500'}`}>
+                                    {isMinLength ? (
+                                        <FaCheck />
+                                    ) : (
+                                        <RxCross2 />
+                                    )}
+                                    Minimum 6 characters
+                                </p>
+                                <p className={`text-sm flex flex-row items-center gap-1 ${hasUpperCase ? 'text-green-500' : 'text-red-500'}`}>
+                                    {hasUpperCase ? (
+                                        <FaCheck />
+                                    ) : (
+                                        <RxCross2 />
+                                    )}
+                                    At least 1 capital letter
+                                </p>
+                                <p className={`text-sm flex flex-row items-center gap-1 ${hasNumber ? 'text-green-500' : 'text-red-500'}`}>
+                                    {hasNumber ? (
+                                        <FaCheck />
+                                    ) : (
+                                        <RxCross2 />
+                                    )}
+                                    At least 1 number
+                                </p>
+                                <p className={`text-sm flex flex-row items-center gap-1 ${hasSymbol ? 'text-green-500' : 'text-red-500'}`}>
+                                    {hasSymbol ? (
+                                        <FaCheck />
+                                    ) : (
+                                        <RxCross2 />
+                                    )}
+                                    At least 1 symbol
+                                </p>
+                            </div>
+                            
+                        )}
+
+                        {formData.confirmPassword !== formData.password && (
+                            <p className={`text-sm flex flex-row items-center gap-1 text-red-500`}>
+
+                                <RxCross2 />
+                                Password does not match
+                            </p>
+
+                        )}
+
 
                         <button className="bg-[#004AAD] h-16 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
                             {loading ? (
