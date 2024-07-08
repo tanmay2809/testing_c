@@ -319,7 +319,7 @@ const Plans = () => {
         <div className="flex flex-row w-full items-center justify-center flex-wrap px-[1rem] gap-x-[1.2rem] gap-y-[1.2rem] mt-20">
           {switchTab === "quarterly" &&
             PlansData.quarterly.map((plan) => (
-              <div className="w-[300px] sm:w-[438px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem]">
+              <div className="w-[300px] sm:w-[400px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem]">
                 <h1 className="text-[35px] text-[#1B223C] font-[500] flex flex-row items-center gap-2">
                   {plan.name}
                   {plan.name === "Starter Plan" && (
@@ -335,7 +335,7 @@ const Plans = () => {
                   </span>{" "}
                   {plan.validity}
                 </p>
-                <div className="w-[280px] sm:h-[250px] flex flex-col gap-2 mt-2">
+                <div className="w-full sm:h-[280px] flex flex-col gap-2 mt-2">
                   {plan.features.map((feature) => (
                     <p className="flex flex-row items-center text-[18px]">
                       <GrFormCheckmark className="text-3xl" />

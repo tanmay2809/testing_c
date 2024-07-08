@@ -18,33 +18,39 @@ interface FormData {
 
 const Register = () => {
     const [formData, setFormData] = useState<FormData>({
-      name:"",
-    email: "",
-    password: "",
-  });
-
-  const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  function changeHandler(event:ChangeEvent<HTMLInputElement>) {
-    setFormData((prevData) => ({
-      ...prevData,
-      [event.target.name]: event.target.value,
-    }));
-  }
-
-  function submitHandler(event:FormEvent) {
-    event.preventDefault();
-      setFormData({
-        name:"",
-      email: "",
-      password: "",
+        name: "",
+        email: "",
+        password: "",
     });
-    setLoading(true);
-    console.log(formData);
-    console.log(rememberMe);
-  }
+
+    const [isAgree, setIsAgree] = useState<boolean>(false);
+    const [agreeError, setAgreeError] = useState<string>("");
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    function changeHandler(event: ChangeEvent<HTMLInputElement>) {
+        setFormData((prevData) => ({
+            ...prevData,
+            [event.target.name]: event.target.value,
+        }));
+    }
+
+    function submitHandler(event: FormEvent) {
+        event.preventDefault();
+        if (!isAgree) {
+            setAgreeError("Please Agree to privacy policy!");
+            return;
+        } else {
+            setAgreeError("");
+        }
+        setFormData({
+            name: "",
+            email: "",
+            password: "",
+        });
+        setLoading(true);
+        console.log(formData);
+    }
 
     return (
         <>
@@ -65,7 +71,8 @@ const Register = () => {
                             Create Business Account
                         </div>
                         <p className="text-[#64748B] text-left text-[16px]">
-                            Enhance your customer retention & marketing with <span className="font-bold">snackBAE</span>
+                            Enhance your customer retention & marketing with{" "}
+                            <span className="font-bold">snackBAE</span>
                         </p>
 
                         <div className="flex flex-col gap-4 mt-2">
@@ -123,17 +130,26 @@ const Register = () => {
                             <label className="text-[0.95rem] text-[#64748B] font-semibold text-center flex items-center text-nowrap">
                                 <input
                                     type="checkbox"
-                                    checked={rememberMe}
-                                    onChange={() => setRememberMe(!rememberMe)}
+                                    checked={isAgree}
+                                    onChange={() => setIsAgree(!isAgree)}
                                     className="size-[24px] mr-2"
                                 />
-                                Agree to our<span className="font-bold text-black mx-1">Privacy policy</span> & <span className="font-bold text-black mx-1">terms of condition</span>
+                                Agree to our
+                                <span className="font-bold text-black mx-1">
+                                    Privacy policy
+                                </span>{" "}
+                                &{" "}
+                                <span className="font-bold text-black mx-1">
+                                    terms of condition
+                                </span>
                             </label>
                         </div>
 
-                        <button className="bg-[#004AAD] h-16 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
+                        {agreeError.length > 0 && <span className="text-red-500">{agreeError}</span>}
+
+                        <button className="bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
                             {loading ? (
-                                <div className="inline-block h-7 w-7 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+                                <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
                             ) : (
                                 <span>Continue</span>
                             )}
