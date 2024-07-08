@@ -7,6 +7,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 
 // assets
 import bgVideo from "../assets/bg-video.mp4";
+import logo from "../assets/logo.png";
 
 interface FormData {
   email: string;
@@ -45,8 +46,15 @@ const ForgotPassword = () => {
         loop
       ></video>
       <div className="flex items-center justify-center lg:justify-end px-[1rem] md:px-[10rem] w-full h-[100vh] bg-main bg-no-repeat bg-cover bg-center">
+        <img
+          src={logo}
+          className="absolute right-[70%] md:right-[75%] lg:right-[85%] bottom-[85%] w-[150px] h-auto"
+        />
         <div className="w-[400px] h-fit flex flex-col px-[2rem] py-[1.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
-          <form onSubmit={submitHandler} className="w-full flex flex-col gap-y-5">
+          <form
+            onSubmit={submitHandler}
+            className="w-full flex flex-col gap-y-5"
+          >
             <div className="w-full flex flex-col gap-3">
               <Link className="w-fit h-fit" to="/login">
                 <IoMdArrowRoundBack className="text-[1.8rem]" />

@@ -9,6 +9,7 @@ import { PiEyeLight } from "react-icons/pi";
 
 // assets
 import bgVideo from "../assets/bg-video.mp4";
+import logo from "../assets/logo.png";
 
 interface FormData {
   email: string;
@@ -25,14 +26,14 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  function changeHandler(event:ChangeEvent<HTMLInputElement>) {
+  function changeHandler(event: ChangeEvent<HTMLInputElement>) {
     setFormData((prevData) => ({
       ...prevData,
       [event.target.name]: event.target.value,
     }));
   }
 
-  function submitHandler(event:FormEvent) {
+  function submitHandler(event: FormEvent) {
     event.preventDefault();
     setFormData({
       email: "",
@@ -53,6 +54,7 @@ const Login = () => {
         loop
       ></video>
       <div className="relative flex items-center justify-center lg:justify-end px-[1rem] md:px-[10rem] w-full h-[100vh]">
+        <img src={logo} className="absolute right-[70%] md:right-[75%] lg:right-[85%] bottom-[85%] w-[150px] h-auto" />
         <div className="w-[400px] h-fit flex flex-col px-[2rem] py-[1.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
           <form
             onSubmit={submitHandler}

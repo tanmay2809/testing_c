@@ -8,6 +8,9 @@ import { Link } from "react-router-dom";
 import { MdVerified } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
+// assets
+import logo from "../assets/logo2.png";
+
 const PlansData = {
   quarterly: [
     {
@@ -279,36 +282,38 @@ const Plans = () => {
   return (
     <>
       <div className="w-full h-[100vh] flex flex-col items-center">
-        <img src="" />
-        <div className="px-[1rem] md:px-[5rem] w-full mt-20 flex flex-row flex-wrap">
+        <div className="w-full h-fit py-[1rem] px-[1rem] md:px-[5rem] flex flex-row justify-start">
+          <img src={logo} className="w-[130px] h-auto" />
+        </div>
+        <div className="px-[1rem] md:px-[5rem] w-full mt-5 flex flex-row flex-wrap">
           <div className="w-full flex flex-row justify-between items-center">
             <div className="flex flex-col">
               <Link className="w-fit h-fit" to="/login">
                 <IoMdArrowRoundBack className="text-[1.8rem]" />
               </Link>
 
-              <h1 className="text-[28px] font-bold">Select Plan</h1>
-              <p className="text-[1rem] font-bold text-[#64748B]">
+              <h1 className="text-[28px] mt-2 font-bold">Select Plan</h1>
+              <p className="text-[1rem] mt-2 font-bold text-[#64748B]">
                 Plans that are carefully crafted to suit your business.
               </p>
             </div>
             <div className="w-fit h-fit flex flex-row rounded-[40px] border border-1 border-[#000000CC]">
               <button
-                className={`w-fit px-[2.5rem] py-4 rounded-[40px] transition-colors duration-500 ${
+                className={`w-fit px-[2rem] py-3 font-[500] rounded-[40px] transition-colors duration-500 ${
                   switchTab === "quarterly"
                     ? "bg-[#004AAD] text-white"
                     : "bg-white text-black"
-                } text-[24px]`}
+                } text-[22px]`}
                 onClick={() => setSwitchTab("quarterly")}
               >
                 Quarterly
               </button>
               <button
-                className={`w-fit px-[1.5rem] rounded-[40px] transition-colors duration-500 ${
+                className={`w-fit px-[1rem] font-[500] rounded-[40px] transition-colors duration-500 ${
                   switchTab === "annual"
                     ? "bg-[#004AAD] text-white"
                     : "bg-white text-black"
-                } text-[24px]`}
+                } text-[22px]`}
                 onClick={() => setSwitchTab("annual")}
               >
                 Annually (save 44%)
@@ -319,18 +324,20 @@ const Plans = () => {
         <div className="flex flex-row w-full items-center justify-center flex-wrap px-[1rem] gap-x-[1.2rem] gap-y-[1.2rem] mt-20">
           {switchTab === "quarterly" &&
             PlansData.quarterly.map((plan) => (
-              <div className="w-[300px] sm:w-[400px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem]">
-                <h1 className="text-[35px] text-[#1B223C] font-[500] flex flex-row items-center gap-2">
+              <div className="group w-[300px] sm:w-[400px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all">
+                <h1 className="text-[35px] text-[#1B223C] font-[500] flex flex-row items-center gap-2 group-hover:text-white">
                   {plan.name}
                   {plan.name === "Starter Plan" && (
-                    <span className="w-fit h-fit text-[18px] rounded-[8px] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] ">
+                    <span className="w-fit h-fit text-[15px] rounded-[8px] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] group-hover:text-black">
                       Recommended
                     </span>
                   )}
                 </h1>
-                <p className="text-[21px] text-[#797878]">{plan.desc}</p>
-                <p className="text-[24px] text-[#797878] border-b border-b-[#E7EBFF] pb-2">
-                  <span className="text-[40px] text-[#1B223C] font-[700]">
+                <p className="text-[21px] text-[#797878] group-hover:text-white">
+                  {plan.desc}
+                </p>
+                <p className="text-[24px] text-[#797878] flex flex-row items-center gap-2 border-b border-b-[#E7EBFF] pb-2 group-hover:text-white">
+                  <span className="text-[40px] text-[#1B223C] font-[700] group-hover:text-white">
                     ₹{plan.price}
                   </span>{" "}
                   {plan.validity}
@@ -344,11 +351,11 @@ const Plans = () => {
                   ))}
                 </div>
                 {plan.button.start ? (
-                  <button className="bg-[#004AAD] h-16 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
+                  <button className="bg-[#004AAD] border-2 h-15 text-[1.1rem] rounded-[8px] text-white border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[1rem] mt-6 group-hover:border-white">
                     {plan.button.btn}
                   </button>
                 ) : (
-                  <button className="h-16 text-[1.1rem] rounded-[8px] text-black border-2 font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
+                  <button className="h-15 text-[1.1rem] bg-white rounded-[8px] text-black border-2 font-bold text-richblack-900 px-[12px] py-[1rem] mt-6 group-hover:text-[#004AAD]">
                     {plan.button.btn}
                   </button>
                 )}
@@ -356,23 +363,25 @@ const Plans = () => {
             ))}
           {switchTab === "annual" &&
             PlansData.annually.map((plan) => (
-              <div className="w-[438px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem]">
-                <h1 className="text-[35px] text-[#1B223C] font-[500] flex flex-row items-center gap-2">
+              <div className="group w-[300px] sm:w-[400px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all">
+                <h1 className="text-[35px] text-[#1B223C] font-[500] flex flex-row items-center gap-2 group-hover:text-white">
                   {plan.name}
                   {plan.name === "Starter Plan" && (
-                    <span className="w-fit h-fit text-[18px] rounded-[8px] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] ">
+                    <span className="w-fit h-fit text-[15px] rounded-[8px] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] group-hover:text-black">
                       Recommended
                     </span>
                   )}
                 </h1>
-                <p className="text-[21px] text-[#797878]">{plan.desc}</p>
-                <p className="text-[24px] text-[#797878] border-b border-b-[#E7EBFF] pb-2">
-                  <span className="text-[40px] text-[#1B223C] font-[700]">
+                <p className="text-[21px] text-[#797878] group-hover:text-white">
+                  {plan.desc}
+                </p>
+                <p className="text-[24px] text-[#797878] flex flex-row items-center gap-2 border-b border-b-[#E7EBFF] pb-2 group-hover:text-white">
+                  <span className="text-[40px] text-[#1B223C] font-[700] group-hover:text-white">
                     ₹{plan.price}
                   </span>{" "}
                   {plan.validity}
                 </p>
-                <div className="w-[280px] sm:h-[250px] flex flex-col gap-2 mt-2">
+                <div className="w-full sm:h-[250px] flex flex-col gap-2 mt-2">
                   {plan.features.map((feature) => (
                     <p className="flex flex-row items-center text-[18px]">
                       <GrFormCheckmark className="text-3xl" />
@@ -381,18 +390,18 @@ const Plans = () => {
                   ))}
                 </div>
                 {plan.button.start ? (
-                  <button className="bg-[#004AAD] h-16 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
+                  <button className="bg-[#004AAD] border-2 h-15 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6 group-hover:border-white">
                     {plan.button.btn}
                   </button>
                 ) : (
-                  <button className="h-16 text-[1.1rem] rounded-[8px] text-black border-2 font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
+                  <button className="h-15 text-[1.1rem] bg-white rounded-[8px] text-black border-2 font-bold text-richblack-900 px-[12px] py-[1rem] mt-6 group-hover:text-[#004AAD]">
                     {plan.button.btn}
                   </button>
                 )}
               </div>
             ))}
         </div>
-        <div className="w-full h-fit px-[5rem] py-4 mt-10">
+        <div className="w-full h-fit px-[5rem] py-4 mt-12">
           <table className="w-full overflow-x-scroll">
             <thead>
               <tr>
@@ -407,13 +416,13 @@ const Plans = () => {
                     </th>
                     <th className="border-2 p-4">
                       <p className="text-[14px] text-[#797878]">
-                        <span className="text-[40px] text-[#1B223C] font-[700]">
+                        <span className="text-[38px] text-[#1B223C] font-[700]">
                           Free
                         </span>{" "}
                         (15 days)
                       </p>
                       <button
-                        className="w-[250px] h-fit text-[1.1rem] rounded-[8px] border-2 border-black font-bold text-richblack-900 px-[12px] py-[0.8rem]"
+                        className="w-[200px] h-fit text-[1.1rem] mt-2 rounded-[8px] border-2 border-black font-bold text-richblack-900 px-[12px] py-[0.7rem]"
                         onClick={() => toggleModal()}
                       >
                         Current Plan
@@ -421,23 +430,23 @@ const Plans = () => {
                     </th>
                     <th className="border-2 p-4">
                       <p className="text-[14px] text-[#797878]">
-                        <span className="text-[40px] text-[#1B223C] font-[700]">
+                        <span className="text-[38px] text-[#1B223C] font-[700]">
                           ₹765
                         </span>{" "}
                         /Month
                       </p>
-                      <button className="w-[250px] bg-[#004AAD] h-fit text-[1.1rem] text-white rounded-[8px] border-2 border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[0.8rem]">
+                      <button className="w-[200px] bg-[#004AAD] h-fit text-[1.1rem] mt-2 text-white rounded-[8px] border-2 border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[0.7rem]">
                         Upgrade to this Plan
                       </button>
                     </th>
                     <th className="border-2 p-4">
                       <p className="text-[14px] text-[#797878]">
-                        <span className="text-[40px] text-[#1B223C] font-[700]">
+                        <span className="text-[38px] text-[#1B223C] font-[700]">
                           ₹1215
                         </span>{" "}
                         /Month
                       </p>
-                      <button className="w-[250px] bg-[#004AAD] h-fit text-[1.1rem] text-white rounded-[8px] border-2 border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[0.8rem]">
+                      <button className="w-[200px] bg-[#004AAD] h-fit text-[1.1rem] mt-2 text-white rounded-[8px] border-2 border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[0.7rem]">
                         Upgrade to this Plan
                       </button>
                     </th>
@@ -460,7 +469,7 @@ const Plans = () => {
                         (15 days)
                       </p>
                       <button
-                        className="w-[250px] h-fit text-[1.1rem] rounded-[8px] border-2 border-black font-bold text-richblack-900 px-[12px] py-[0.8rem]"
+                        className="w-[200px] h-fit text-[1.1rem] rounded-[8px] border-2 border-black font-bold text-richblack-900 px-[12px] py-[0.8rem]"
                         onClick={() => toggleModal()}
                       >
                         Current Plan
@@ -473,7 +482,7 @@ const Plans = () => {
                         </span>{" "}
                         /Month
                       </p>
-                      <button className="w-[250px] bg-[#004AAD] h-fit text-[1.1rem] text-white rounded-[8px] border-2 border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[0.8rem]">
+                      <button className="w-[200px] bg-[#004AAD] h-fit text-[1.1rem] text-white rounded-[8px] border-2 border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[0.8rem]">
                         Upgrade to this Plan
                       </button>
                     </th>
@@ -484,7 +493,7 @@ const Plans = () => {
                         </span>{" "}
                         /Month
                       </p>
-                      <button className="w-[250px] bg-[#004AAD] h-fit text-[1.1rem] text-white rounded-[8px] border-2 border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[0.8rem]">
+                      <button className="w-[200px] bg-[#004AAD] h-fit text-[1.1rem] text-white rounded-[8px] border-2 border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[0.8rem]">
                         Upgrade to this Plan
                       </button>
                     </th>
