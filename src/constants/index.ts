@@ -257,3 +257,15 @@ export const PlansTable = [
         },
     },
 ];
+
+export const Invoices = [
+    {
+        number: "#12345",
+        name: "Foodoos Private Limited",
+        date: "12-05-2022",
+        amount: 5500,
+        charges: 550,
+        mode: "UPI",
+        period: "12 Months"
+    }
+];

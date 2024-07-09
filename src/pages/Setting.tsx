@@ -2,20 +2,18 @@ import { useState } from "react";
 import Navbar from "../component/Navbar";
 
 // icons
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaAnglesRight } from "react-icons/fa6";
 import { TbChessQueenFilled } from "react-icons/tb";
 import { BiEditAlt } from "react-icons/bi";
 import { GrFormCheckmark } from "react-icons/gr";
-import { IoMdArrowRoundBack, IoMdCloseCircle } from "react-icons/io";
+import { IoMdCloseCircle } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
-import { Link } from "react-router-dom";
 import { MdVerified } from "react-icons/md";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
 // assets
 import image from "../assets/Ellipse 2862.png";
-import logo from "../assets/logo2.png";
-import { PlansData, PlansTable } from "../constants";
+import { Invoices, PlansData, PlansTable } from "../constants";
 
 const Setting = () => {
   const [activeButton, setActiveButton] = useState<string>("Store");
@@ -61,6 +59,7 @@ const Setting = () => {
   const [switchTab, setSwitchTab] = useState<string>("quarterly");
   const [storeModal, setStoreModal] = useState<boolean>(false);
   const [billingModal, setBillingModal] = useState<boolean>(false);
+  const [plansModel, setPlansModel] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
   const toggleStoreModel = () => {
@@ -69,6 +68,10 @@ const Setting = () => {
 
   const toggleBillingModel = () => {
     setBillingModal(!billingModal);
+  };
+  
+  const togglePlansModel = () => {
+    setPlansModel(!plansModel);
   };
 
   const handleCloseStoreModal = () => {
@@ -158,6 +161,7 @@ const Setting = () => {
                 <p className="text-[16x]">
                   You have
                   <span className="text-[#004AAD] font-bold">
+                    {" "}
                     {MyStores.length} active store
                   </span>
                 </p>
@@ -459,7 +463,7 @@ const Setting = () => {
                             </p>
                             <button
                               className="w-[200px] h-fit text-[1.1rem] mt-2 rounded-[8px] border-2 border-black font-bold text-richblack-900 px-[12px] py-[0.7rem]"
-                              onClick={() => toggleStoreModel()}
+                              onClick={() => togglePlansModel()}
                             >
                               Current Plan
                             </button>
@@ -506,7 +510,7 @@ const Setting = () => {
                             </p>
                             <button
                               className="w-[200px] h-fit text-[1.1rem] rounded-[8px] border-2 border-black font-bold text-richblack-900 px-[12px] py-[0.8rem]"
-                              // onClick={() => toggleModal()}
+                              onClick={() => togglePlansModel()}
                             >
                               Current Plan
                             </button>
@@ -694,7 +698,91 @@ const Setting = () => {
             </div>
           </div>
         )}
+
+        {activeButton === "Invoice" && (
+          <div className="w-full flex flex-col gap-4">
+            <div className="flex flex-col">
+              <h1 className="text-[24px] text-[#4D4D4D] font-[500]">
+                My Invoices
+              </h1>
+              <p className="text-[16x]">
+                You have
+                <span className="text-[#004AAD] font-bold">
+                  {" "}
+                  {MyStores.length} invoice
+                </span>
+              </p>
+            </div>
+            <div className="flex flex-col">
+              {Invoices.map((invoice) => (
+                <div className="p-5 flex flex-row justify-between border-2 rounded-xl">
+                  <div className="flex flex-col">
+                    <p className="text-[14px] text-[#616161] font-[700]">
+                      Invoice Number
+                    </p>
+                    <p className="text-[18px] text-[#616161] font-[400]">
+                      {invoice.number}
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-[14px] text-[#616161] font-[700]">
+                      Company invoice name
+                    </p>
+                    <p className="text-[18px] text-[#616161] font-[400]">
+                      {invoice.name}
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-[14px] text-[#616161] font-[700]">
+                      Invoice Date
+                    </p>
+                    <p className="text-[18px] text-[#616161] font-[400]">
+                      {invoice.date}
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-[14px] text-[#616161] font-[700]">
+                      Invoice Amount
+                    </p>
+                    <p className="text-[18px] text-[#616161] font-[400]">
+                      ₹{invoice.amount}
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-[14px] text-[#616161] font-[700]">
+                      GST Charges
+                    </p>
+                    <p className="text-[18px] text-[#616161] font-[400]">
+                      ₹{invoice.charges}
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-[14px] text-[#616161] font-[700]">
+                      Payment Mode
+                    </p>
+                    <p className="text-[18px] text-[#616161] font-[400]">
+                      {invoice.mode}
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-[14px] text-[#616161] font-[700]">
+                      Billing period
+                    </p>
+                    <p className="text-[18px] text-[#616161] font-[400]">
+                      {invoice.period}
+                    </p>
+                  </div>
+                  <button className="flex flex-row items-center gap-2 text-[18px] font-[700]">
+                    View Details{" "}
+                    <FaAnglesRight className="text-[#64748B] text-xl" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+
       {storeModal && (
         <div
           id="default-modal"
@@ -778,7 +866,10 @@ const Setting = () => {
                     />
                   </div>
                   <div className="flex flex-row gap-5">
-                    <button className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]" onClick={()=>handleCloseStoreModal()}>
+                    <button
+                      className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
+                      onClick={() => handleCloseStoreModal()}
+                    >
                       Cancel
                     </button>
                     <button className="w-[50%] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
@@ -909,12 +1000,160 @@ const Setting = () => {
                     </select>
                   </div>
                   <div className="flex flex-row gap-5">
-                    <button className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]" onClick={()=>handleCloseBillingModal()}>
+                    <button
+                      className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
+                      onClick={() => handleCloseBillingModal()}
+                    >
                       Cancel
                     </button>
                     <button className="w-[50%] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
                       Save
                     </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {plansModel && (
+        <div
+          id="default-modal"
+          // tabIndex="-1"
+          aria-hidden="true"
+          className="fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50"
+        >
+          <div className="relative p-4 w-[320px] sm:w-fit h-fit">
+            <div className="w-[800px] relative p-8 bg-white rounded-lg shadow">
+              <div className="flex flex-row justify-between">
+                <div className="flex flex-col">
+                  <h1 className="text-[28px] font-bold">
+                    You've chosen our most popular plan
+                  </h1>
+                  <p className="text-[18px] font-bold">
+                    Please add your billing details to proceed
+                  </p>
+                </div>
+                <IoMdCloseCircle
+                  onClick={() => togglePlansModel()}
+                  className="text-4xl hover:cursor-pointer"
+                />
+              </div>
+              <div className="flex flex-col mt-5">
+                <h1 className="text-[24px] text-[#444444] font-bold">
+                  Billing Details
+                </h1>
+                <form className="flex flex-row flex-wrap justify-center gap-x-7 gap-y-5">
+                  <div className="flex flex-col gap-2">
+                    <label className="flex flex-row items-center text-[14px] font-[500]">
+                      Company Name
+                      <LuAsterisk className="text-sm text-[#C62828]" />
+                    </label>
+                    <input
+                      type="text"
+                      className="w-[350px] p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                      placeholder="Enter Name"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="flex flex-row items-center text-[14px] font-[500]">
+                      Address
+                      <LuAsterisk className="text-sm text-[#C62828]" />
+                    </label>
+                    <input
+                      type="text"
+                      className="w-[350px] p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                      placeholder="Enter Address"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="country"
+                      className="flex flex-row items-center text-[14px] font-[500]"
+                    >
+                      Country
+                      <LuAsterisk className="text-sm text-[#C62828]" />
+                    </label>
+                    <select
+                      className="w-[350px] p-4 border-2 border-[#00000033] rounded-[8px]"
+                      id="country"
+                      name="country"
+                      value="dw"
+                      // onChange={handleInputChange}
+                    >
+                      <option value="">Select Country</option>
+                      <option value="India">India</option>
+                      <option value="USA">USA</option>
+                    </select>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="state"
+                      className="flex flex-row items-center text-[14px] font-[500]"
+                    >
+                      State
+                      <LuAsterisk className="text-sm text-[#C62828]" />
+                    </label>
+                    <select
+                      className="w-[350px] p-4 border-2 border-[#00000033] rounded-[8px]"
+                      id="state"
+                      name="state"
+                      value="dw"
+                      // onChange={handleInputChange}
+                    >
+                      <option value="">Select State</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                    </select>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="flex flex-row items-center text-[14px] font-[500]">
+                      City
+                      <LuAsterisk className="text-sm text-[#C62828]" />
+                    </label>
+                    <input
+                      type="text"
+                      className="w-[350px] p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                      placeholder="Enter City"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="flex flex-row items-center text-[14px] font-[500]">
+                      Pin-Code
+                      <LuAsterisk className="text-sm text-[#C62828]" />
+                    </label>
+                    <input
+                      type="text"
+                      className="w-[350px] p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                      placeholder="Enter Pincode"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label className="flex flex-row items-center text-[14px] font-[500]">
+                      GST Number
+                      <LuAsterisk className="text-sm text-[#C62828]" />
+                    </label>
+                    <input
+                      type="text"
+                      className="w-[350px] p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                      placeholder="Enter Number"
+                    />
+                  </div>
+                  <button className="w-[350px] bg-[#004AAD] h-16 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-7">
+                    Proceed
+                  </button>
+
+                  <div className="flex justify-between mt-3 items-center justify-center">
+                    <label className="text-[1rem] font-semibold text-center flex items-center">
+                      <input
+                        type="checkbox"
+                        //   checked={rememberMe}
+                        //   onChange={() => setRememberMe(!rememberMe)}
+                        className="size-[24px] mr-2"
+                      />
+                      I am not registered with GST
+                    </label>
                   </div>
                 </form>
               </div>
