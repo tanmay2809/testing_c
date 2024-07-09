@@ -14,6 +14,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 // assets
 import image from "../assets/Ellipse 2862.png";
 import { Invoices, PlansData, PlansTable } from "../constants";
+import invoice from "../assets/Invoice Template.png";
 
 const Setting = () => {
   const [activeButton, setActiveButton] = useState<string>("Store");
@@ -60,6 +61,7 @@ const Setting = () => {
   const [storeModal, setStoreModal] = useState<boolean>(false);
   const [billingModal, setBillingModal] = useState<boolean>(false);
   const [plansModel, setPlansModel] = useState<boolean>(false);
+  const [invoiceModel, setInvoiceModel] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
   const toggleStoreModel = () => {
@@ -72,6 +74,10 @@ const Setting = () => {
   
   const togglePlansModel = () => {
     setPlansModel(!plansModel);
+  };
+
+  const toggleInvoiceModel = () => {
+    setInvoiceModel(!invoiceModel);
   };
 
   const handleCloseStoreModal = () => {
@@ -87,6 +93,14 @@ const Setting = () => {
     setTimeout(() => {
       setIsClosing(false);
       toggleBillingModel();
+    }, 500);
+  };
+
+  const handleCloseInvoiceModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      toggleInvoiceModel();
     }, 500);
   };
 
@@ -772,7 +786,10 @@ const Setting = () => {
                       {invoice.period}
                     </p>
                   </div>
-                  <button className="flex flex-row items-center gap-2 text-[18px] font-[700]">
+                  <button
+                    className="flex flex-row items-center gap-2 text-[18px] font-[700]"
+                    onClick={() => toggleInvoiceModel()}
+                  >
                     View Details{" "}
                     <FaAnglesRight className="text-[#64748B] text-xl" />
                   </button>
@@ -1156,6 +1173,52 @@ const Setting = () => {
                     </label>
                   </div>
                 </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {invoiceModel && (
+        <div
+          id="default-modal"
+          // tabIndex="-1"
+          aria-hidden="true"
+          className={`fixed inset-0 z-50 flex items-center justify-end w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50`}
+        >
+          <div
+            className={`relative p-4 w-[650px] h-fit ${
+              isClosing ? "slide-out-right" : "slide-in-right"
+            }`}
+          >
+            <div className="w-full relative px-8 py-5 bg-white rounded-lg shadow">
+              <div className="flex flex-row justify-between">
+                <div className="flex flex-col">
+                  <h1 className="text-[28px] font-bold">Billing Invoice</h1>
+                  <p className="text-[18px] font-bold">
+                    Edit your billing details at convenience
+                  </p>
+                </div>
+                <IoMdCloseCircle
+                  onClick={() => {
+                    handleCloseInvoiceModal();
+                  }}
+                  className="text-4xl hover:cursor-pointer"
+                />
+              </div>
+              <div className="flex flex-col items-center justify-center mt-5">
+                <img src={invoice} className="w-[80%] h-auto" />
+                  <div className="flex flex-row gap-5 mt-4">
+                    <button
+                      className="w-[180px] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
+                      onClick={() => handleCloseInvoiceModal()}
+                    >
+                      Cancel
+                    </button>
+                    <button className="w-[180px] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
+                      Download
+                    </button>
+                  </div>
               </div>
             </div>
           </div>
