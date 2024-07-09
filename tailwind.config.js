@@ -8,6 +8,7 @@ export default {
         'inter' : ['Inter'],
         'Roboto': ['Roboto'],
         'Sen': ['Sen'],
+        'Poppins':['Poppins'],
       },
     },
     
