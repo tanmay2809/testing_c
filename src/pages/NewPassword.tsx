@@ -76,16 +76,16 @@ const NewPassword = () => {
             src={logo}
             className="absolute right-[70%] md:right-[75%] lg:right-[85%] bottom-[85%] w-[150px] h-auto"
           />
-          <div className="w-[400px] h-fit flex flex-col px-[2rem] py-[1.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
+          <div className="w-[430px] h-fit flex flex-col px-[2rem] py-[1.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
             <form
               onSubmit={submitHandler}
-              className="w-full flex flex-col gap-y-4"
+              className="w-full flex flex-col gap-y-3.5"
             >
               <div className="w-full flex flex-col gap-3">
-                <Link className="w-fit h-fit" to="/register">
+                {/* <Link className="w-fit h-fit" to="/register">
                   <IoMdArrowRoundBack className="text-[1.8rem]" />
-                </Link>
-                <div className="font-bold text-left text-[28px]">
+                </Link> */}
+                <div className="font-bold text-left text-[30px]">
                   Create New Password
                 </div>
               </div>
@@ -191,14 +191,15 @@ const NewPassword = () => {
                     Password does not match
                   </p>
                 )}
-
-              <button className="bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
+            <Link to="/plans">
+              <button className="bg-[#004AAD] w-full tracking-wider h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-4">
                 {loading ? (
                   <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
                 ) : (
                   <span>Continue</span>
                 )}
               </button>
+              </Link>
             </form>
           </div>
         </div>

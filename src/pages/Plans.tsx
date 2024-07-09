@@ -29,9 +29,9 @@ const Plans = () => {
         <div className="px-[1rem] md:px-[5rem] w-full mt-5 flex flex-row flex-wrap">
           <div className="w-full flex flex-row justify-between items-center">
             <div className="flex flex-col">
-              <Link className="w-fit h-fit" to="/login">
+              {/* <Link className="w-fit h-fit" to="/login">
                 <IoMdArrowRoundBack className="text-[1.8rem]" />
-              </Link>
+              </Link> */}
 
               <h1 className="text-[28px] mt-2 font-bold">Select Plan</h1>
               <p className="text-[1rem] mt-2 font-bold text-[#64748B]">
@@ -40,7 +40,7 @@ const Plans = () => {
             </div>
             <div className="w-fit h-fit flex flex-row rounded-[40px] border border-1 border-[#000000CC]">
               <button
-                className={`w-fit px-[2rem] py-3 font-[500] rounded-[40px] transition-colors duration-500 ${
+                className={`w-fit px-[2rem] py-2 font-[500] rounded-[40px] transition-colors duration-500 ${
                   switchTab === "quarterly"
                     ? "bg-[#004AAD] text-white"
                     : "bg-white text-black"
@@ -62,62 +62,23 @@ const Plans = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-row w-full items-center justify-center flex-wrap px-[1rem] gap-x-[1.2rem] gap-y-[1.2rem] mt-20">
+        <div className="flex flex-row w-full items-center justify-center flex-wrap px-[1rem] gap-x-[1.2rem] gap-y-[1.2rem] mt-14">
           {switchTab === "quarterly" &&
             PlansData.quarterly.map((plan) => (
-              <div className="group w-[300px] sm:w-[400px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all">
-                <h1 className="text-[35px] text-[#1B223C] font-[500] flex flex-row items-center gap-2 group-hover:text-white">
+              <div className="group w-[300px] sm:w-[430px] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all">
+                <h1 className="text-[35px] text-[#1B223C] font-semibold flex flex-row items-center gap-2 group-hover:text-white">
                   {plan.name}
                   {plan.name === "Starter Plan" && (
-                    <span className="w-fit h-fit text-[15px] rounded-[8px] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] group-hover:text-black">
+                    <span className="w-fit h-fit text-[15px] rounded-[8px] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] ml-5 group-hover:text-black">
                       Recommended
                     </span>
                   )}
                 </h1>
-                <p className="text-[21px] text-[#797878] group-hover:text-white">
+                <p className="text-[18px] text-[#797878] group-hover:text-white">
                   {plan.desc}
                 </p>
                 <p className="text-[24px] text-[#797878] flex flex-row items-center gap-2 border-b border-b-[#E7EBFF] pb-2 group-hover:text-white">
-                  <span className="text-[40px] text-[#1B223C] font-[700] group-hover:text-white">
-                    ₹{plan.price}
-                  </span>{" "}
-                  {plan.validity}
-                </p>
-                <div className="w-full sm:h-[280px] flex flex-col gap-2 mt-2">
-                  {plan.features.map((feature) => (
-                    <p className="flex flex-row items-center text-[18px]">
-                      <GrFormCheckmark className="text-3xl" />
-                      {feature}
-                    </p>
-                  ))}
-                </div>
-                {plan.button.start ? (
-                  <button className="bg-[#004AAD] border-2 h-15 text-[1.1rem] rounded-[8px] text-white border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[1rem] mt-6 group-hover:border-white">
-                    {plan.button.btn}
-                  </button>
-                ) : (
-                  <button className="h-15 text-[1.1rem] bg-white rounded-[8px] text-black border-2 font-bold text-richblack-900 px-[12px] py-[1rem] mt-6 group-hover:text-[#004AAD]">
-                    {plan.button.btn}
-                  </button>
-                )}
-              </div>
-            ))}
-          {switchTab === "annual" &&
-            PlansData.annually.map((plan) => (
-              <div className="group w-[300px] sm:w-[400px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all">
-                <h1 className="text-[35px] text-[#1B223C] font-[500] flex flex-row items-center gap-2 group-hover:text-white">
-                  {plan.name}
-                  {plan.name === "Starter Plan" && (
-                    <span className="w-fit h-fit text-[15px] rounded-[8px] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] group-hover:text-black">
-                      Recommended
-                    </span>
-                  )}
-                </h1>
-                <p className="text-[21px] text-[#797878] group-hover:text-white">
-                  {plan.desc}
-                </p>
-                <p className="text-[24px] text-[#797878] flex flex-row items-center gap-2 border-b border-b-[#E7EBFF] pb-2 group-hover:text-white">
-                  <span className="text-[40px] text-[#1B223C] font-[700] group-hover:text-white">
+                  <span className="text-[38px] text-[#1B223C] font-bold group-hover:text-white">
                     ₹{plan.price}
                   </span>{" "}
                   {plan.validity}
@@ -131,19 +92,61 @@ const Plans = () => {
                   ))}
                 </div>
                 {plan.button.start ? (
-                  <button className="bg-[#004AAD] border-2 h-15 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6 group-hover:border-white">
+                  <button className="bg-[#004AAD] border-2 h-15 text-[1.1rem] rounded-[8px] text-white border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[1rem]  group-hover:border-white">
                     {plan.button.btn}
                   </button>
                 ) : (
-                  <button className="h-15 text-[1.1rem] bg-white rounded-[8px] text-black border-2 font-bold text-richblack-900 px-[12px] py-[1rem] mt-6 group-hover:text-[#004AAD]">
+                  <button className="h-15 text-[1.1rem] bg-white rounded-[8px] text-black border-2 font-bold text-richblack-900 px-[12px] py-[1rem]  group-hover:text-[#004AAD]">
+                    {plan.button.btn}
+                  </button>
+                )}
+              </div>
+            ))}
+          {switchTab === "annual" &&
+            PlansData.annually.map((plan) => (
+              <div className="group w-[300px] sm:w-[430px] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all">
+                <h1 className="text-[35px] text-[#1B223C] font-semibold flex flex-row items-center gap-2 group-hover:text-white">
+                  {plan.name}
+                  {plan.name === "Starter Plan" && (
+                    <span className="w-fit h-fit text-[15px] rounded-[8px] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] ml-5 group-hover:text-black">
+                      Recommended
+                    </span>
+                  )}
+                </h1>
+                <p className="text-[18px] text-[#797878] group-hover:text-white">
+                  {plan.desc}
+                </p>
+                <p className="text-[24px] text-[#797878] flex flex-row items-center gap-2 border-b border-b-[#E7EBFF] pb-2 group-hover:text-white">
+                  <span className="text-[38px] text-[#1B223C] font-bold group-hover:text-white">
+                    ₹{plan.price}
+                  </span>{" "}
+                  {plan.validity}
+                </p>
+                <div className="w-full sm:h-[250px] flex flex-col gap-2 mt-2">
+                  {plan.features.map((feature) => (
+                    <p className="flex flex-row items-center text-[18px]">
+                      <GrFormCheckmark className="text-3xl" />
+                      {feature}
+                    </p>
+                  ))}
+                </div>
+                {plan.button.start ? (
+                  <button className="bg-[#004AAD] border-2 h-15 text-[1.1rem] rounded-[8px] text-white border-[#004AAD] font-bold text-richblack-900 px-[12px] py-[1rem]  group-hover:border-white">
+                    {plan.button.btn}
+                  </button>
+                ) : (
+                  <button className="h-15 text-[1.1rem] bg-white rounded-[8px] text-black border-2 font-bold text-richblack-900 px-[12px] py-[1rem]  group-hover:text-[#004AAD]">
                     {plan.button.btn}
                   </button>
                 )}
               </div>
             ))}
         </div>
-        <div className="w-full h-fit px-[5rem] py-4 mt-12">
-          <table className="w-full overflow-x-scroll">
+
+
+
+        <div className="w-full h-fit px-[5rem] py-4 mt-12 rounded-xl">
+          <table className="w-full overflow-x-scroll ">
             <thead>
               <tr>
                 {switchTab === "quarterly" && (

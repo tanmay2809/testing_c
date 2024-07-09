@@ -72,10 +72,10 @@ const Register = () => {
             src={logo}
             className="absolute right-[70%] md:right-[75%] lg:right-[85%] bottom-[85%] w-[150px] h-auto"
           />
-          <div className="w-[450px] h-fit flex flex-col px-[2rem] py-[2.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
+          <div className="w-[460px] h-fit flex flex-col px-[2rem] py-[2.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
             <form
               onSubmit={submitHandler}
-              className="w-full flex flex-col gap-y-5"
+              className="w-full flex flex-col gap-y-3"
             >
               <div className="font-bold text-left text-[28px]">
                 Create Business Account
@@ -142,7 +142,7 @@ const Register = () => {
                     type="checkbox"
                     checked={isAgree}
                     onChange={() => setIsAgree(!isAgree)}
-                    className="size-[24px] mr-2"
+                    className="size-[18px] mr-2"
                   />
                   Agree to our
                   <span className="font-bold text-black mx-1">
@@ -159,11 +159,11 @@ const Register = () => {
                 <span className="text-red-500">{agreeError}</span>
               )}
 
-              <button className="bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
+              <button className="bg-[#004AAD] tracking-wider h-12 flex items-center justify-center text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-2">
                 {loading ? (
                   <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
                 ) : (
-                  <span>Continue</span>
+                  <span className="text-[1.2rem] font-Roboto">Continue</span>
                 )}
               </button>
 
