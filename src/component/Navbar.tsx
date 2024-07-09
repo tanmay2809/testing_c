@@ -4,13 +4,13 @@ import { FaPlus } from "react-icons/fa6";
 
 const Navbar = () => {
   return (
-    <div className=" bg-white  z-[900] w-full h-[70px] flex justify-between items-center px-[1.5rem] border-b shadow-xl shadow-[#00000026]">
+    <div className=" bg-white  z-50 w-full h-[70px] flex justify-between items-center px-[1.5rem] border-b shadow-xl shadow-[#00000026]">
         {/* logo */}
         <img
           
           src={icon}
           alt="logo"
-          className="h-[85%] w-[130px]  aspect-auto  cursor-pointer  "
+          className="h-[85%] w-[130px] z-50  aspect-auto  cursor-pointer  "
         />
 
         <div>

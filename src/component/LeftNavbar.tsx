@@ -23,11 +23,11 @@ const LeftNavbar = () => {
 
   return (
     <>
-    <nav className={` fixed bg-white z-50  mt-[70px]  h-[calc(100vh-70px)] border-r  shadow-xl shadow-[#00000026] ${isOpen ? "w-[15%] duration-100" : "w-[7%] duration-100"}`}>
-      <div className="relative w-full  flex flex-col justify-evenly items-center ">
-          <img onClick={handleToggle}  className={`absolute top-2 size-14 cursor-pointer -right-7 ${isOpen ?" rotate-180":" rotate-0"}`} src={right} alt="" />
+    <nav className={` fixed bg-white z-20  h-[100vh] border-r  shadow-xl shadow-[#00000026] ${isOpen ? "w-[15%] duration-100" : "w-[7%] duration-100"}`}>
+      <div className="relative w-full  flex flex-col justify-evenly items-center  ">
+          <img onClick={handleToggle}  className={`absolute top-[95px]  size-14 cursor-pointer -right-7 ${isOpen ?" rotate-180":" rotate-0"}`} src={right} alt="" />
           
-          <div className={`flex flex-col justify-between items-center    mt-32 text-[#64748B] text-[1.4rem] ${isOpen ? "gap-12":"gap-60"}`}>
+          <div className={`flex flex-col justify-between items-center    mt-[160px] text-[#64748B] text-[1.4rem] ${isOpen ? "gap-12":"gap-60"}`}>
             <div className="flex flex-col  gap-7 ">
             <div>
               <Link  className="flex gap-3 items-center hover:text-[#004AAD]" to="/dashboard"><RiDashboardFill/><span onClick={handleToggle} className={` ${isOpen ? "block text-[1rem]":" hidden"}`}>dashboard</span></Link>
