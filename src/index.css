@@ -7,4 +7,34 @@
 @tailwind components;
 @tailwind utilities;
 
+.slide-in-right {
+    animation: slideInFromRight 0.7s ease-out forwards;
+}
 
+.slide-out-right {
+    animation: slideOutToRight 0.5s ease-out forwards;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(200%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutToRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
