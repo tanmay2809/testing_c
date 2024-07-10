@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Navbar from "../component/Navbar";
-import { Link } from "react-router-dom";
 
 // icons
 import { LuAsterisk } from "react-icons/lu";
@@ -26,60 +24,7 @@ const Billing = () => {
   return (
     <>
       <div className="w-full h-fit relative ">
-        <Navbar />
         <div className=" w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 ml-[7%] mt-2 ">
-          <div className="w-full flex flex-row justify-between mt-[70px]">
-            <div className="flex flex-col">
-              <h1 className="text-[28px] font-semibold">Settings</h1>
-              <p className="text-[18px]">Manage your account settings here</p>
-            </div>
-            <div className="">
-              <button className="w-[180px] px-4 py-2 border-2 text-[21px] font-[500] rounded-[8px]">
-                Contact Us
-              </button>
-            </div>
-          </div>
-
-          {/* Buttons container */}
-          <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC]">
-            <Link
-              className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
-              to="/settings"
-            >
-              Store Details
-              <span
-                className={`hidden bg-[#004AAD] h-1 w-[80%] rounded-t-[6px]`}
-              ></span>
-            </Link>
-            <Link
-              className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
-              to="/settings/myplans"
-            >
-              My Plan
-              <span
-                className={`hidden bg-[#004AAD] h-1 w-[80%] rounded-t-[6px]`}
-              ></span>
-            </Link>
-            <Link
-              className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
-              to="/settings/billing"
-            >
-              Billing Details
-              <span
-                className={`bg-[#004AAD] h-1 w-[80%] rounded-t-[6px]`}
-              ></span>
-            </Link>
-            <Link
-              className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
-              to="/settings/invoice"
-            >
-              Invoice
-              <span
-                className={`hidden bg-[#004AAD] h-1 w-[80%] rounded-t-[6px]`}
-              ></span>
-            </Link>
-          </div>
-
           <div className="w-full flex flex-col gap-4 rounded-xl px-8 py-4 h-fit bg-[#F1F7FF]">
             <div className="w-full flex flex-row justify-between">
               <div className="flex flex-row gap-4">

@@ -1,21 +1,21 @@
-
-import { Routes, Route } from'react-router-dom'
+import { Routes, Route } from "react-router-dom";
 //import
-import Login from './pages/Login';
-import ForgotPassword from './pages/ForgotPassword';
-import Register from './pages/Register';
-import Verify from './pages/Verify';
-import NewPassword from './pages/NewPassword';
-import Plans from './pages/Plans';
-import LeftNavbar from './component/LeftNavbar';
-import Dashboard from './pages/Dashboard';
-import Menu from './pages/Menu';
-import Marketing from './pages/Marketing';
-import Customer from './pages/Customer';
-import Setting from './pages/Setting';
-import MyPlans from './pages/MyPlans';
-import Billing from './pages/Billing';
-import Invoice from './pages/Invoice';
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import Register from "./pages/Register";
+import Verify from "./pages/Verify";
+import NewPassword from "./pages/NewPassword";
+import Plans from "./pages/Plans";
+import LeftNavbar from "./component/LeftNavbar";
+import Dashboard from "./pages/Dashboard";
+import Menu from "./pages/Menu";
+import Marketing from "./pages/Marketing";
+import Customer from "./pages/Customer";
+import Setting from "./pages/Setting";
+import MyPlans from "./pages/MyPlans";
+import Billing from "./pages/Billing";
+import Invoice from "./pages/Invoice";
+import Stores from "./pages/Stores";
 
 const App = () => {
   return (
@@ -36,14 +36,17 @@ const App = () => {
           <Route path="/menu" element={<Menu />} />
           <Route path="/marketing" element={<Marketing />} />
           <Route path="/customer" element={<Customer />} />
-          <Route path="/settings" element={<Setting />} />
-          <Route path="/settings/myplans" element={<MyPlans />} />
-          <Route path="/settings/billing" element={<Billing />} />
-          <Route path="/settings/invoice" element={<Invoice />} />
+
+          <Route path="/settings" element={<Setting />}>
+            <Route path="myplans" element={<MyPlans />} />
+            <Route path="store" element={<Stores />} />
+            <Route path="billing" element={<Billing />} />
+            <Route path="invoice" element={<Invoice />} />
+          </Route>
         </Route>
       </Routes>
     </>
   );
-}
+};
 
-export default App
+export default App;
