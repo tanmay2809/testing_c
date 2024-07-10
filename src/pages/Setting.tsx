@@ -1,6 +1,9 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Navbar from "../component/Navbar";
 
+// assets
+import whatsapp from "../assets/whatsapp.png";
+
 const Setting = () => {
   const location = useLocation();
 
@@ -14,7 +17,8 @@ const Setting = () => {
             <p className="text-[18px]">Manage your account settings here</p>
           </div>
           <div className="">
-            <button className="w-[180px] px-4 py-2 border-2 text-[21px] font-[500] rounded-[8px]">
+            <button className="w-[180px] flex flex-row items-center gap-2 px-4 py-2 border-2 text-[21px] font-[500] rounded-[8px]">
+              <img className="w-7 h-7" src={whatsapp} />
               Contact Us
             </button>
           </div>
