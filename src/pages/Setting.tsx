@@ -33,7 +33,8 @@ const Setting = () => {
             Store Details
             <span
               className={`${
-                location.pathname === "/settings/store"
+                location.pathname === "/settings/store" ||
+                location.pathname === "/settings"
                   ? "bg-[#004AAD]"
                   : "hidden"
               } h-1 w-[80%] rounded-t-[6px]`}

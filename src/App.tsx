@@ -38,6 +38,7 @@ const App = () => {
           <Route path="/customer" element={<Customer />} />
 
           <Route path="/settings" element={<Setting />}>
+            <Route index element={<Stores />} />
             <Route path="myplans" element={<MyPlans />} />
             <Route path="store" element={<Stores />} />
             <Route path="billing" element={<Billing />} />
