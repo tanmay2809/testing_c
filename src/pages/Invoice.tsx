@@ -31,7 +31,7 @@ const Invoice = () => {
       <div className="w-full h-fit relative ">
         <Navbar />
         <div className=" w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 ml-[7%] mt-2 ">
-          <div className="w-full flex flex-row justify-between">
+          <div className="w-full flex flex-row justify-between mt-[70px]">
             <div className="flex flex-col">
               <h1 className="text-[28px] font-semibold">Settings</h1>
               <p className="text-[18px]">Manage your account settings here</p>
