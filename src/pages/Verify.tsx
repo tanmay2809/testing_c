@@ -74,15 +74,15 @@ const Verify = () => {
               className="w-full flex flex-col gap-y-4"
             >
               <div className="w-full flex flex-col gap-3">
-                <Link className="w-fit h-fit" to="/register">
+                {/* <Link className="w-fit h-fit" to="/register">
                   <IoMdArrowRoundBack className="text-[1.8rem]" />
-                </Link>
+                </Link> */}
                 <div className="font-bold text-left text-[28px]">
                   Verify Email
                 </div>
               </div>
-              <p className="text-[#64748B] text-left text-[14px]">
-                Verification mail has been sent{" "}
+              <p className="text-[#64748B]  text-left text-[14px]">
+                Verification mail has been sent to{" "}
                 <span className="font-bold">connect.foodoos@gmail.com</span>
               </p>
 
@@ -121,14 +121,15 @@ const Verify = () => {
                   </p>
                 )}
               </div>
-
-              <button className="bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
+              <Link to="/newpassword">
+              <button className="bg-[#004AAD] w-full h-13 flex items-center justify-center text-[1.1rem] rounded-[8px] text-white font-semibold text-richblack-900 px-[12px] tracking-wider py-[1rem] mt-6">
                 {loading ? (
                   <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
                 ) : (
-                  <span>Verify</span>
+                  <span className="text-[1.rem]">Verify</span>
                 )}
               </button>
+              </Link>
 
               <div className="flex gap-2 mt-2 justify-center items-center">
                 <Link to="/register">
