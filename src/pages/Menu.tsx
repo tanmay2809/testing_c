@@ -15,8 +15,8 @@ const Menu = () => {
   return (
     <div className="w-full h-fit relative ">
     <Navbar />
-    <div className=" w-[93%] h-fit flex items-center justify-center ml-[7%] mt-2 ">
-            <div className="w-full h-fit flex ">
+    <div className=" w-[93%]  h-fit flex items-center justify-center ml-[7%] mt-2 ">
+            <div className="w-full h-fit flex mt-[70px] ">
               {/* left div */}
               <div className={` flex flex-col h-fit ${isOpen ? "w-[100%] ":"w-[70%]"}`}>
                 {/* top */}
