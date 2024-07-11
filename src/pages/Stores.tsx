@@ -87,14 +87,14 @@ const Stores = () => {
                   </button>
                 </div>
               </div>
-              <div className="bg-white rounded-xl flex flex-row flex-wrap gap-x-[8rem] gap-y-[3rem] w-fit h-fit p-[3rem]">
-                <div className="flex flex-col">
+              <div className="bg-white rounded-xl flex flex-row flex-wrap gap-x-[1.2rem] gap-y-[3rem] w-fit h-fit p-[3rem]">
+                <div className="w-[220px] flex flex-col">
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Bussiness Type
                   </p>
                   <h1 className="text-[28px] font-semibold">{store.type}</h1>
                 </div>
-                <div className="flex flex-col">
+                <div className="w-[220px] flex flex-col">
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Bussiness Landmark
                   </p>
@@ -102,27 +102,27 @@ const Stores = () => {
                     {store.landmark}
                   </h1>
                 </div>
-                <div className="flex flex-col">
+                <div className="w-[220px] flex flex-col">
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Business City
                   </p>
                   <h1 className="text-[28px] font-semibold">{store.city}</h1>
                 </div>
-                <div className="flex flex-col">
+                <div className="w-[220px] flex flex-col">
                   <p className="text-[18px] text-[#616161] font-[400]">State</p>
                   <h1 className="text-[28px] font-semibold">{store.state}</h1>
                 </div>
-                <div className="flex flex-col">
+                <div className="w-[220px] flex flex-col">
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Pincode
                   </p>
                   <h1 className="text-[28px] font-semibold">{store.pincode}</h1>
                 </div>
-                <div className="flex flex-col">
+                <div className="w-[220px] flex flex-col">
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Social Handels
                   </p>
-                  <div className="w-full flex flex-row items-center justify-between mt-2">
+                  <div className="w-full flex flex-row items-center gap-4 mt-2">
                     {store.socials.map((social) => (
                       <>
                         {social.name === "youtube" && (
@@ -144,7 +144,7 @@ const Stores = () => {
                     ))}
                   </div>
                 </div>
-                <div className="flex flex-col grow">
+                <div className="w-[220px] flex flex-col">
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Feedback Channels
                   </p>
@@ -165,13 +165,13 @@ const Stores = () => {
                     ))}
                   </div>
                 </div>
-                <div className="flex flex-col grow">
+                <div className="w-[220px] flex flex-col">
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Manager Name
                   </p>
                   <h1 className="text-[28px] font-semibold">{store.manager}</h1>
                 </div>
-                <div className="flex flex-col grow">
+                <div className="w-[220px] flex flex-col">
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Manager Contact
                   </p>

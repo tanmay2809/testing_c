@@ -45,52 +45,52 @@ const Billing = () => {
                 </button>
               </div>
             </div>
-            <div className="bg-white rounded-xl flex flex-row flex-wrap gap-x-[8rem] gap-y-[3rem] w-fit h-fit p-[3rem]">
-              <div className="flex flex-col">
+            <div className="bg-white rounded-xl flex flex-row flex-wrap gap-x-[1rem] gap-y-[3rem] w-fit h-fit p-[3rem]">
+              <div className="w-[220px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">
                   Bussiness Type
                 </p>
                 <h1 className="text-[28px] font-semibold">854</h1>
               </div>
-              <div className="flex flex-col">
+              <div className="w-[220px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">
                   Bussiness Landmark
                 </p>
                 <h1 className="text-[28px] font-semibold">85</h1>
               </div>
-              <div className="flex flex-col">
+              <div className="w-[220px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">
                   Business City
                 </p>
                 <h1 className="text-[28px] font-semibold">52</h1>
               </div>
-              <div className="flex flex-col">
+              <div className="w-[220px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">State</p>
                 <h1 className="text-[28px] font-semibold">5</h1>
               </div>
-              <div className="flex flex-col">
+              <div className="w-[220px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">Pincode</p>
                 <h1 className="text-[28px] font-semibold">5412</h1>
               </div>
-              <div className="flex flex-col">
+              <div className="w-[220px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">
                   Social Handels
                 </p>
                 <h1 className="text-[28px] font-semibold">Head</h1>
               </div>
-              <div className="flex flex-col grow">
+              <div className="w-[220px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">
                   Feedback Channels
                 </p>
                 <h1 className="text-[28px] font-semibold">Head</h1>
               </div>
-              <div className="flex flex-col grow">
+              <div className="w-[220px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">
                   Manager Name
                 </p>
                 <h1 className="text-[28px] font-semibold">5412</h1>
               </div>
-              <div className="flex flex-col grow">
+              <div className="w-[220px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">
                   Manager Contact
                 </p>
