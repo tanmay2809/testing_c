@@ -1,4 +1,8 @@
+import { Store as StoreType } from "../redux/storeSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // icons
 import { FaPlus } from "react-icons/fa6";
@@ -6,49 +10,16 @@ import { TbChessQueenFilled } from "react-icons/tb";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
+import { FaYoutube, FaFacebook } from "react-icons/fa";
 
 // assets
 import image from "../assets/Ellipse 2862.png";
+import instagram from "../assets/instagram.svg";
+import zomato from "../assets/Zomato.svg";
+import google from "../assets/Google-Review.png";
 
 const Stores = () => {
-  const MyStores = [
-    {
-      username: "Foodoos",
-      email: "connect.foodoos@gmail.com",
-      type: "Cafeteria",
-      landmark: "Salt Lake",
-      city: "Kolkata",
-      state: "West Bengal",
-      pincode: 700059,
-      socials: [
-        {
-          name: "youtube",
-          link: "",
-        },
-        {
-          name: "facebook",
-          link: "",
-        },
-        {
-          name: "instagram",
-          link: "",
-        },
-      ],
-      channels: [
-        {
-          name: "zomato",
-          link: "",
-        },
-        {
-          name: "google",
-          link: "",
-        },
-      ],
-      manager: "Sam Sundar",
-      contact: "+91 7021457893",
-    },
-  ];
-
+  const { stores } = useSelector((state: RootState) => state.store);
   const [modal, setModal] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
@@ -73,8 +44,7 @@ const Stores = () => {
             <p className="text-[16x]">
               You have
               <span className="text-[#004AAD] font-bold">
-                {" "}
-                {MyStores.length} active store
+                {stores.length} active store
               </span>
             </p>
           </div>
@@ -90,8 +60,11 @@ const Stores = () => {
         </div>
 
         <div className="w-full flex flex-col">
-          {MyStores.map((store) => (
-            <div className="w-full flex flex-col gap-4 rounded-xl px-8 py-4 h-fit bg-[#F1F7FF]">
+          {stores.map((store: StoreType) => (
+            <div
+              key={store.username}
+              className="w-full flex flex-col gap-4 rounded-xl px-8 py-4 h-fit bg-[#F1F7FF]"
+            >
               <div className="w-full flex flex-row justify-between">
                 <div className="flex flex-row gap-4">
                   <img src={image} className="w-[70px] h-[70px] object-cover" />
@@ -149,13 +122,48 @@ const Stores = () => {
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Social Handels
                   </p>
-                  <h1 className="text-[28px] font-semibold">Head</h1>
+                  <div className="w-full flex flex-row items-center justify-between mt-2">
+                    {store.socials.map((social) => (
+                      <>
+                        {social.name === "youtube" && (
+                          <Link className="w-fit h-fit" to={social.link}>
+                            <FaYoutube className="text-3xl text-[#E90303]" />
+                          </Link>
+                        )}
+                        {social.name === "facebook" && (
+                          <Link className="w-fit h-fit" to={social.link}>
+                            <FaFacebook className="text-3xl text-[#004AAD]" />
+                          </Link>
+                        )}
+                        {social.name === "instagram" && (
+                          <Link className="w-fit h-fit" to={social.link}>
+                            <img src={instagram} className="w-7 h-auto" />
+                          </Link>
+                        )}
+                      </>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex flex-col grow">
                   <p className="text-[18px] text-[#616161] font-[400]">
                     Feedback Channels
                   </p>
-                  <h1 className="text-[28px] font-semibold">Head</h1>
+                  <div className="w-full flex flex-row items-center gap-4 mt-2">
+                    {store.channels.map((channel) => (
+                      <>
+                        {channel.name === "zomato" && (
+                          <Link className="w-fit h-fit" to={channel.link}>
+                            <img src={zomato} className="w-16 h-auto" />
+                          </Link>
+                        )}
+                        {channel.name === "google" && (
+                          <Link className="w-fit h-fit" to={channel.link}>
+                            <img src={google} className="w-16 h-auto" />
+                          </Link>
+                        )}
+                      </>
+                    ))}
+                  </div>
                 </div>
                 <div className="flex flex-col grow">
                   <p className="text-[18px] text-[#616161] font-[400]">

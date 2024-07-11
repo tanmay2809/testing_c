@@ -1,14 +1,17 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { Invoice as InvoiceType } from "../redux/invoiceSlice";
 
 // icons
-import { LuAsterisk } from "react-icons/lu";
 import { IoMdCloseCircle } from "react-icons/io";
 import { FaAnglesRight } from "react-icons/fa6";
 
-// constants
-import { Invoices } from "../constants";
+// assets
+import invoice from "../assets/Invoice Template.png";
 
 const Invoice = () => {
+  const { invoices } = useSelector((state: RootState) => state.invoice);
   const [model, setModel] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
@@ -36,14 +39,16 @@ const Invoice = () => {
               <p className="text-[16x]">
                 You have
                 <span className="text-[#004AAD] font-bold">
-                  {" "}
-                  {Invoices.length} invoice
+                  {invoices.length} invoice
                 </span>
               </p>
             </div>
             <div className="flex flex-col">
-              {Invoices.map((invoice) => (
-                <div className="p-5 flex flex-row justify-between border-2 rounded-xl">
+              {invoices.map((invoice: InvoiceType) => (
+                <div
+                  key={invoice.number}
+                  className="p-5 flex flex-row justify-between border-2 rounded-xl"
+                >
                   <div className="flex flex-col">
                     <p className="text-[14px] text-[#616161] font-[700]">
                       Invoice Number
@@ -122,18 +127,16 @@ const Invoice = () => {
             className={`fixed inset-0 z-50 flex items-center justify-end w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50`}
           >
             <div
-              className={`relative p-4 w-full sm:w-fit h-fit ${
+              className={`relative p-4 w-[650px] h-fit ${
                 isClosing ? "slide-out-right" : "slide-in-right"
               }`}
             >
               <div className="w-full relative px-8 py-5 bg-white rounded-lg shadow">
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-col">
-                    <h1 className="text-[28px] font-bold">
-                      Edit Billing Details
-                    </h1>
+                    <h1 className="text-[28px] font-bold">Billing Invoice</h1>
                     <p className="text-[18px] font-bold">
-                      Edit your billing details at convinience
+                      Edit your billing details at convenience
                     </p>
                   </div>
                   <IoMdCloseCircle
@@ -143,105 +146,19 @@ const Invoice = () => {
                     className="text-4xl hover:cursor-pointer"
                   />
                 </div>
-                <div className="flex flex-col mt-5">
-                  <form className="flex flex-col gap-2 justify-center">
-                    <div className="flex flex-col gap-1">
-                      <label className="flex flex-row items-center text-[14px] font-[500]">
-                        Company Name
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
-                        placeholder="Enter Name"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="flex flex-row items-center text-[14px] font-[500]">
-                        Address
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
-                        placeholder="Enter Name"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="flex flex-row items-center text-[14px] font-[500]">
-                        GST Number
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
-                        placeholder="Enter Name"
-                      />
-                    </div>
-                    <div className="flex justify-between mt-1 items-center justify-center">
-                      <label className="text-[1rem] font-semibold text-center flex items-center">
-                        <input
-                          type="checkbox"
-                          //   checked={rememberMe}
-                          //   onChange={() => setRememberMe(!rememberMe)}
-                          className="size-[24px] mr-2"
-                        />
-                        I am not registered with GST
-                      </label>
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <label
-                        htmlFor="country"
-                        className="flex flex-row items-center text-[14px] font-[500]"
-                      >
-                        Country
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <select
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px]"
-                        id="country"
-                        name="country"
-                        // value="dw"
-                        // onChange={handleInputChange}
-                      >
-                        <option value="">Select Country</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                      </select>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <label
-                        htmlFor="country"
-                        className="flex flex-row items-center text-[14px] font-[500]"
-                      >
-                        State
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <select
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px]"
-                        id="state"
-                        name="state"
-                        // value="dw"
-                        // onChange={handleInputChange}
-                      >
-                        <option value="">Select State</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                      </select>
-                    </div>
-                    <div className="flex flex-row gap-5">
-                      <button
-                        className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
-                        onClick={() => handleCloseModal()}
-                      >
-                        Cancel
-                      </button>
-                      <button className="w-[50%] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
-                        Save
-                      </button>
-                    </div>
-                  </form>
+                <div className="flex flex-col items-center justify-center mt-5">
+                  <img src={invoice} className="w-[80%] h-auto" />
+                  <div className="flex flex-row gap-5 mt-4">
+                    <button
+                      className="w-[180px] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
+                      onClick={() => handleCloseModal()}
+                    >
+                      Cancel
+                    </button>
+                    <button className="w-[180px] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
+                      Download
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

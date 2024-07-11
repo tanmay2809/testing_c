@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Social {
   name: string;
@@ -10,7 +10,7 @@ interface Channel {
   link: string;
 }
 
-interface Store {
+export interface Store {
   username: string;
   email: string;
   type: string;
@@ -26,8 +26,6 @@ interface Store {
 
 interface StoreState {
   stores: Store[];
-  modal: boolean;
-  isClosing: boolean;
 }
 
 const initialState: StoreState = {
@@ -53,26 +51,21 @@ const initialState: StoreState = {
       contact: "+91 7021457893",
     },
   ],
-  modal: false,
-  isClosing: false,
 };
 
 const storeSlice = createSlice({
-  name: 'stores',
+  name: "stores",
   initialState,
   reducers: {
-    toggleModal(state) {
-      state.modal = !state.modal;
-    },
-    setIsClosing(state, action: PayloadAction<boolean>) {
-      state.isClosing = action.payload;
-    },
-    updateStore(state, action: PayloadAction<{ index: number; updatedStore: Store }>) {
+    updateStore(
+      state,
+      action: PayloadAction<{ index: number; updatedStore: Store }>
+    ) {
       const { index, updatedStore } = action.payload;
       state.stores[index] = updatedStore;
     },
   },
 });
 
-export const { toggleModal, setIsClosing, updateStore } = storeSlice.actions;
+export const { updateStore } = storeSlice.actions;
 export default storeSlice.reducer;

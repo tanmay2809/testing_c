@@ -101,7 +101,10 @@ const MyPlans = () => {
             <div className="flex flex-row w-full items-center justify-center flex-wrap px-[1rem] gap-x-[1.2rem] gap-y-[1.2rem] mt-20">
               {switchTab === "quarterly" &&
                 PlansData.quarterly.map((plan) => (
-                  <div className="group w-[300px] sm:w-[400px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all">
+                  <div
+                    key={plan.name}
+                    className="group w-[300px] sm:w-[400px] flex flex-col gap-4 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all"
+                  >
                     <h1 className="text-[35px] text-[#1B223C] font-[500] flex flex-row items-center gap-2 group-hover:text-white">
                       {plan.name}
                       {plan.name === "Starter Plan" && (
@@ -121,7 +124,10 @@ const MyPlans = () => {
                     </p>
                     <div className="w-full sm:h-[280px] flex flex-col gap-2 mt-2">
                       {plan.features.map((feature) => (
-                        <p className="flex flex-row items-center text-[18px]">
+                        <p
+                          key={feature}
+                          className="flex flex-row items-center text-[18px]"
+                        >
                           <GrFormCheckmark className="text-3xl" />
                           {feature}
                         </p>
@@ -280,7 +286,10 @@ const MyPlans = () => {
                 </thead>
                 <tbody>
                   {PlansTable.map((plan) => (
-                    <tr className="text-center h-[80px] text-[14px]">
+                    <tr
+                      key={plan.head}
+                      className="text-center h-[80px] text-[14px]"
+                    >
                       <td className="text-[18px] border-2 p-2">{plan.head}</td>
                       {plan.plan1 === "check" ? (
                         <td className="border-2 p-2">
