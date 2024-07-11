@@ -28,13 +28,13 @@ const Setting = () => {
         <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC]">
           <Link
             className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
-            to="/settings/store"
+            to="/setting/store"
           >
             Store Details
             <span
               className={`${
-                location.pathname === "/settings/store" ||
-                location.pathname === "/settings"
+                location.pathname === "/setting/store" ||
+                location.pathname === "/setting"
                   ? "bg-[#004AAD]"
                   : "hidden"
               } h-1 w-[80%] rounded-t-[6px]`}
@@ -42,12 +42,12 @@ const Setting = () => {
           </Link>
           <Link
             className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
-            to="/settings/myplans"
+            to="/setting/myplans"
           >
             My Plan
             <span
               className={`${
-                location.pathname === "/settings/myplans"
+                location.pathname === "/setting/myplans"
                   ? "bg-[#004AAD]"
                   : "hidden"
               } h-1 w-[80%] rounded-t-[6px]`}
@@ -55,12 +55,12 @@ const Setting = () => {
           </Link>
           <Link
             className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
-            to="/settings/billing"
+            to="/setting/billing"
           >
             Billing Details
             <span
               className={`${
-                location.pathname === "/settings/billing"
+                location.pathname === "/setting/billing"
                   ? "bg-[#004AAD]"
                   : "hidden"
               } h-1 w-[80%] rounded-t-[6px]`}
@@ -68,12 +68,12 @@ const Setting = () => {
           </Link>
           <Link
             className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
-            to="/settings/invoice"
+            to="/setting/invoice"
           >
             Invoice
             <span
               className={`${
-                location.pathname === "/settings/invoice"
+                location.pathname === "/setting/invoice"
                   ? "bg-[#004AAD]"
                   : "hidden"
               } h-1 w-[80%] rounded-t-[6px]`}
