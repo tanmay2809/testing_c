@@ -1,3 +1,5 @@
+import { SegmentationPopupProps } from "../component/SegmentationPopup";
+
 export const PlansData = {
   quarterly: [
     {
@@ -257,3 +259,105 @@ export const PlansTable = [
     },
   },
 ];
+
+//segmentaion colors
+export const segmentationColors = {
+  New: "bg-green-200 text-green-800",
+  Regular: "bg-purple-200 text-purple-800",
+  Risk: "bg-red-200 text-red-800",
+  Loyal: "bg-yellow-200 text-yellow-800",
+};
+
+export interface Customer {
+  name: string;
+  phone: string;
+  visits: number;
+  lastVisit: string;
+  segmentation: "New" | "Regular" | "Risk" | "Loyal";
+}
+
+//dummy data for customersList
+export const customers: Customer[] = [
+  {
+    name: "Sam Sundar",
+    phone: "+91 7603037718",
+    visits: 1,
+    lastVisit: "Today",
+    segmentation: "New",
+  },
+  {
+    name: "Sam Sundar",
+    phone: "+91 7603037718",
+    visits: 1,
+    lastVisit: "Today",
+    segmentation: "New",
+  },
+  {
+    name: "Sam Sundar",
+    phone: "+91 7603037718",
+    visits: 1,
+    lastVisit: "Today",
+    segmentation: "New",
+  },
+  {
+    name: "Sam Sundar",
+    phone: "+91 7603037718",
+    visits: 1,
+    lastVisit: "Today",
+    segmentation: "New",
+  },
+  {
+    name: "Sam Sundar",
+    phone: "+91 7603037718",
+    visits: 1,
+    lastVisit: "Today",
+    segmentation: "New",
+  },
+  {
+    name: "Sam Sundar",
+    phone: "+91 7603037718",
+    visits: 1,
+    lastVisit: "Today",
+    segmentation: "Regular",
+  },
+];
+
+//hardcoded data for segmentation popups 
+export const segmentationDetails: {
+  [key in SegmentationPopupProps["segmentation"]]: {
+    title: string;
+    description: string;
+    proTip: string;
+    color: string;
+  };
+} = {
+  New: {
+    title: "New",
+    description:
+      "These customers have visited your business for the first time.",
+    proTip: "Send a welcome message and special first-visit offers.",
+    color: "bg-green-200 text-green-800",
+  },
+  Regular: {
+    title: "Regular",
+    description: "These customers visit your business regularly.",
+    proTip: "Offer loyalty rewards to encourage continued patronage.",
+    color: "bg-purple-200 text-purple-800",
+  },
+  Risk: {
+    title: "Risk",
+    description: "These customers have decreased their visit frequency.",
+    proTip: "Send a re-engagement campaign with special offers.",
+    color: "bg-red-200 text-red-800",
+  },
+  Loyal: {
+    title: "Loyal",
+    description:
+      "These customers have visited your business more than 5 times in the last 60 days.",
+    proTip:
+      "Send personalized offer campaigns on their next visit at your business.",
+    color: "bg-yellow-200 text-yellow-800",
+  },
+};
+
+
