@@ -35,6 +35,7 @@ interface MenuItem {
 
 const Menu = () => {
   const [pic, setPic] = useState<string>("");
+  const [editPic, setEditPic] = useState<string>("");
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
     image: [],
@@ -90,9 +91,9 @@ const Menu = () => {
     reader.readAsDataURL(file);
     reader.onload = () => {
       if (reader.result) {
-        setPic(reader.result as string);
-        setFormData({
-          ...formData,
+        setEditPic(reader.result as string);
+        setEditFormData({
+          ...editFormData,
           image: [reader.result as string],
         });
       }
@@ -103,6 +104,14 @@ const Menu = () => {
     setPic("");
     setFormData({
       ...formData,
+      image: [],
+    });
+  };
+
+  const removeEditImage = () => {
+    setEditPic("");
+    setEditFormData({
+      ...editFormData,
       image: [],
     });
   };
@@ -1067,7 +1076,7 @@ const Menu = () => {
                         </label>
                         <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
                           <div className="size-[120px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
-                            {pic == "" ? (
+                            {editPic == "" ? (
                               <div className="size-[120px] flex items-center justify-center w-full">
                                 <label
                                   htmlFor="dropzone-file"
@@ -1093,9 +1102,9 @@ const Menu = () => {
                               </div>
                             ) : (
                               <div>
-                                <img src={pic} alt="uploaded"></img>
+                                <img src={editPic} alt="uploaded"></img>
                                 <button
-                                  onClick={removeImage}
+                                  onClick={removeEditImage}
                                   className="absolute -top-2 -right-2 text-red-600"
                                 >
                                   <IoCloseCircle size={24} />
