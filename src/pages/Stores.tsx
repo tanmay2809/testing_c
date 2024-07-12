@@ -37,7 +37,7 @@ const Stores = () => {
 
   return (
     <div className="w-full h-fit relative ">
-      <div className=" w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 ml-[7%] mt-2 ">
+      <div className=" w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 ml-[7%]  ">
         <div className="w-full flex flex-row justify-between">
           <div className="flex flex-col">
             <h1 className="text-[24px] font-[500]">My stores</h1>

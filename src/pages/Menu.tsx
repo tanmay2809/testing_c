@@ -66,6 +66,8 @@ const Menu = () => {
     addone: [{ name: "", additionalPrice: "" }],
     type: "",
   });
+
+  
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
   const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
@@ -224,13 +226,13 @@ const Menu = () => {
   return (
     <div className="w-full h-fit relative ">
       <Navbar />
-      <div className=" w-[93%]  h-fit flex items-center justify-center ml-[7%] mt-2 ">
+      <div className=" w-[93%]  h-fit flex items-center justify-center ml-[7%]  ">
         <div className="w-full h-fit flex mt-[70px] ">
           {/* left div */}
           <div
             className={` flex flex-col h-fit ${
               isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen
-                ? "w-[70%]"
+                ? "w-[65%] pr-5"
                 : "w-[100%]"
             }`}
           >
@@ -273,7 +275,7 @@ const Menu = () => {
               <div className="flex flex-row items-center gap-4 px-5">
                 <button
                   onClick={() => setIsEditMenuOpen(!isEditMenuOpen)}
-                  className="bg-[#004AAD] text-white font-semibold text-[18px] px-5 py-2.5 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
+                  className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
                 >
                   Food Menu
                 </button>
@@ -290,7 +292,7 @@ const Menu = () => {
             <div
               className={`${
                 isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen
-                  ? "flex bg-[#EEF5FF] flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[30%] overflow-auto"
+                  ? "flex bg-[#EEF5FF] flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[35%] overflow-auto"
                   : "hidden"
               }`}
             >
@@ -299,19 +301,19 @@ const Menu = () => {
                 <div>
                   <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
                     {/* save and cancel buttons */}
-                    <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-2 py-8 px-5 items-center justify-between">
-                      <p className="w-[57%] text-[#0F172A] text-[24px] font-semibold">
+                    <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-5 py-4  px-5 items-center justify-between">
+                      <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold">
                         Add Menu Item
                       </p>
                       <div className="w-[43%] flex flex-row items-center justify-between">
-                        <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[2.5rem] py-[0.7rem]">
+                        <button className="rounded-lg text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
                           Save
                         </button>
                         <IoIosCloseCircleOutline
                           onClick={() => {
                             setIsAddMenuOpen(false);
                           }}
-                          className="text-3xl hover:cursor-pointer"
+                          className="text-2xl hover:cursor-pointer"
                         />
                       </div>
                     </div>
@@ -322,11 +324,12 @@ const Menu = () => {
                         <div className="w-1/2 mb-4">
                           <label
                             htmlFor="name"
-                            className="block text-gray-700 text-[21px] font-[400] mb-2"
+                            className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                           >
                             Item name <span className="text-[#ED4F4F]">*</span>
                           </label>
                           <input
+                          placeholder="Eg: Chicken Biryani"
                             type="text"
                             id="name"
                             name="name"
@@ -340,13 +343,13 @@ const Menu = () => {
                         <div className="w-1/2 mb-4">
                           <label
                             htmlFor="category"
-                            className="block text-gray-700 text-[21px] font-[400] mb-2"
+                            className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                           >
                             Add Category{" "}
                             <span className="text-[#ED4F4F]">*</span>
                           </label>
                           <select
-                            className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
+                            className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
                             id="category"
                             name="category"
                             value={formData.category}
@@ -363,14 +366,14 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="price"
-                          className="block text-gray-700 text-[21px] font-[400] mb-2"
+                         className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Pricing <span className="text-[#ED4F4F]">*</span>
                         </label>
-                        <div className="bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
+                        <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
                           <label
                             htmlFor="price"
-                            className="block text-gray-700 text-[18px] font-[400] mb-2"
+                            className="block text-gray-700 text-[1rem] font-semibold mb-2"
                           >
                             Base Price <span className="text-[#ED4F4F]">*</span>
                           </label>
@@ -392,7 +395,7 @@ const Menu = () => {
                               type="checkbox"
                               // checked={rememberMe}
                               // onChange={() => setRememberMe(!rememberMe)}
-                              className="size-[20px] mr-2"
+                              className="size-[1rem] mr-2"
                             />
                             Inclusive of all taxes
                           </label>
@@ -403,11 +406,11 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="type"
-                          className="block text-gray-700 text-[18px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Food Type <span className="text-[#ED4F4F]">*</span>
                         </label>
-                        <div className="bg-white px-5 py-5 rounded-lg border border-[#E2E8F0] flex flex-row justify-center gap-4">
+                        <div className="bg-white px-5 py-5 rounded-lg border border-[#E2E8F0] flex items-center justify-evenly gap-4">
                           <span
                             className={`flex flex-row items-center gap-2 text-[15px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                               formData.type === "veg"
@@ -448,15 +451,15 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="addone"
-                          className="block text-[21px] text-gray-700 font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Add-ons
                         </label>
-                        <div className="bg-white px-5 py-8 rounded-lg border border-[#E2E8F0]">
+                        <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
                           {formData.addone?.map((addon, index) => (
                             <div
                               key={index}
-                              className="mb-2 flex gap-2 items-end"
+                              className="mb-2 flex gap-2 items-end justify-between"
                             >
                               <div>
                                 <label
@@ -510,7 +513,7 @@ const Menu = () => {
                               </div>
                               <MdOutlineDeleteOutline
                                 onClick={() => removeAddOn(index)}
-                                className="text-red-500 text-[3rem] hover:cursor-pointer"
+                                className="text-red-500 text-[2.5rem] hover:cursor-pointer"
                               />
                             </div>
                           ))}
@@ -528,12 +531,12 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="description"
-                          className="block text-gray-700 text-[21px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Item Description
                         </label>
                         <textarea
-                          rows={4}
+                          rows={3}
                           id="description"
                           name="description"
                           value={formData.description}
@@ -547,20 +550,20 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="category"
-                          className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Images
                         </label>
                         <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
-                          <div className="size-[120px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
+                          <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
                             {pic == "" ? (
-                              <div className="size-[120px] flex items-center justify-center w-full">
+                              <div className="size-[90px] flex items-center justify-center w-full">
                                 <label
                                   htmlFor="dropzone-file"
                                   className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
                                 >
                                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <IoCloudUploadOutline className="text-[#004AAD] text-3xl" />
+                                    <IoCloudUploadOutline className="text-[#004AAD] text-2xl" />
                                   </div>
                                   <input
                                     id="dropzone-file"
@@ -582,7 +585,7 @@ const Menu = () => {
                                   onClick={removeImage}
                                   className="absolute -top-2 -right-2 text-red-600"
                                 >
-                                  <IoCloseCircle size={24} />
+                                  <IoCloseCircle size={25} />
                                 </button>
                               </div>
                             )}
@@ -604,17 +607,17 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="serving"
-                          className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
+                          className="block  text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Serving Info
-                          <span className="text-sm text-[#8497b3]">
+                          <p className="text-sm text-[#8497b3]">
                             Serving is the size/quantity of the dish
-                          </span>
+                          </p>
                         </label>
-                        <div className="bg-white px-5 py-5 mt-4 rounded-lg border border-[#E2E8F0]">
+                        <div className="bg-white px-5 py-4 mt-4 rounded-lg border border-[#E2E8F0]">
                           <label
                             htmlFor="serving"
-                            className="block text-gray-700 text-[21px] font-[400] mb-2"
+                            className="block text-gray-700 text-[1rem] font-[400] mb-2"
                           >
                             Serving info, select no. of people
                           </label>
@@ -637,17 +640,17 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="dish"
-                          className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
+                        className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Dish Tag (Optional)
-                          <span className="text-sm text-[#8497b3]">
+                          <p className="text-sm text-[#8497b3]">
                             Serving is the size/quantity of the dish
-                          </span>
+                          </p>
                         </label>
                         <div className="bg-white px-5 py-5 rounded-lg border flex flex-col border-[#E2E8F0] gap-2">
-                          <div className="flex flex-row flex-wrap justify-center gap-4">
+                          <div className="flex flex-row flex-wrap text-[#0F172A82]  gap-4">
                             <span
-                              className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center  text-[.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                                 formData.tag === "Chef's Special"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -659,7 +662,7 @@ const Menu = () => {
                               Chef's Special
                             </span>
                             <span
-                              className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center text-[.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                                 formData.tag === "New Launch"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -669,7 +672,7 @@ const Menu = () => {
                               New Launch
                             </span>
                             <span
-                              className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                                 formData.tag === "Dairy free"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -679,7 +682,7 @@ const Menu = () => {
                               Dairy free
                             </span>
                             <span
-                              className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                                 formData.tag === "Vegan"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -689,7 +692,7 @@ const Menu = () => {
                               Vegan
                             </span>
                             <span
-                              className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                                 formData.tag === "Extra Spicy"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -703,7 +706,7 @@ const Menu = () => {
                             className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
                             // onClick={addAddOn}
                           >
-                            <FaPlus className="text-xl" />
+                            <FaPlus className="text-lg" />
                             Request New
                           </p>
                         </div>
@@ -718,19 +721,19 @@ const Menu = () => {
                 <div>
                   <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
                     {/* save and cancel buttons */}
-                    <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-2 py-8 px-5 items-center justify-between">
-                      <p className="w-[57%] text-[#0F172A] text-[24px] font-semibold">
+                    <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-5 py-4  px-5 items-center justify-between">
+                      <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold">
                         Add Sub-Category
                       </p>
                       <div className="w-[43%] flex flex-row items-center justify-between">
-                        <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[2.5rem] py-[0.7rem]">
+                        <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
                           Save
                         </button>
                         <IoIosCloseCircleOutline
                           onClick={() => {
                             setIsSubCategoryOpen(false);
                           }}
-                          className="text-3xl hover:cursor-pointer"
+                          className="text-2xl hover:cursor-pointer"
                         />
                       </div>
                     </div>
@@ -740,12 +743,13 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="name"
-                          className="block text-gray-700 text-[21px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Sub Category name{" "}
                           <span className="text-[#ED4F4F]">*</span>
                         </label>
                         <input
+                         placeholder="Eg: Starter"
                           type="text"
                           id="subcategory"
                           name="subcategory"
@@ -760,20 +764,20 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="category"
-                          className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
-                          Sub-Category icon
+                          Sub-Category icon <p className=" font-Roboto text-[.8rem] m-1">one image at a time allowed</p>
                         </label>
-                        <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
-                          <div className="size-[120px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
+                        <div className="flex flex-row gap-8 bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
+                          <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
                             {pic == "" ? (
-                              <div className="size-[120px] flex items-center justify-center w-full">
+                              <div className="size-[90px] flex items-center justify-center w-full">
                                 <label
                                   htmlFor="dropzone-file"
                                   className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
                                 >
                                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <IoCloudUploadOutline className="text-[#004AAD] text-3xl" />
+                                    <IoCloudUploadOutline className="text-[#004AAD] text-2xl" />
                                   </div>
                                   <input
                                     id="dropzone-file"
@@ -823,18 +827,18 @@ const Menu = () => {
                   <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
                     {/* save and cancel buttons */}
                     <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-2 py-8 px-5 items-center justify-between">
-                      <p className="w-[57%] text-[#0F172A] text-[24px] font-semibold">
+                      <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold">
                         Edit Menu Item
                       </p>
                       <div className="w-[43%] flex flex-row items-center justify-between">
-                        <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[2.5rem] py-[0.7rem]">
+                        <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
                           Save
                         </button>
                         <IoIosCloseCircleOutline
                           onClick={() => {
                             setIsEditMenuOpen(false);
                           }}
-                          className="text-3xl hover:cursor-pointer"
+                          className="text-2xl hover:cursor-pointer"
                         />
                       </div>
                     </div>
@@ -845,7 +849,7 @@ const Menu = () => {
                         <div className="w-1/2 mb-4">
                           <label
                             htmlFor="name"
-                            className="block text-gray-700 text-[21px] font-[400] mb-2"
+                            className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                           >
                             Item name <span className="text-[#ED4F4F]">*</span>
                           </label>
@@ -863,7 +867,7 @@ const Menu = () => {
                         <div className="w-1/2 mb-4">
                           <label
                             htmlFor="category"
-                            className="block text-gray-700 text-[21px] font-[400] mb-2"
+                            className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                           >
                             Add Category{" "}
                             <span className="text-[#ED4F4F]">*</span>
@@ -886,14 +890,14 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="price"
-                          className="block text-gray-700 text-[21px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Pricing <span className="text-[#ED4F4F]">*</span>
                         </label>
-                        <div className="bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
+                        <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
                           <label
                             htmlFor="price"
-                            className="block text-gray-700 text-[18px] font-[400] mb-2"
+                            className="block text-gray-700 text-[16px] font-semibold mb-2"
                           >
                             Base Price <span className="text-[#ED4F4F]">*</span>
                           </label>
@@ -915,7 +919,7 @@ const Menu = () => {
                               type="checkbox"
                               // checked={rememberMe}
                               // onChange={() => setRememberMe(!rememberMe)}
-                              className="size-[20px] mr-2"
+                              className="size-[16px] mr-2"
                             />
                             Inclusive of all taxes
                           </label>
@@ -926,11 +930,11 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="type"
-                          className="block text-gray-700 text-[18px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Food Type <span className="text-[#ED4F4F]">*</span>
                         </label>
-                        <div className="bg-white px-5 py-5 rounded-lg border border-[#E2E8F0] flex flex-row justify-center gap-4">
+                        <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0] flex flex-row justify-evenly items-center gap-4">
                           <span
                             className={`flex flex-row items-center gap-2 text-[15px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                               editFormData.type === "veg"
@@ -971,11 +975,11 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="addone"
-                          className="block text-[21px] text-gray-700 font-[400] mb-2"
+                         className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Add-ons
                         </label>
-                        <div className="bg-white px-5 py-8 rounded-lg border border-[#E2E8F0]">
+                        <div className="bg-white px-5 py-4 rounded-lg border border-[#E2E8F0]">
                           {editFormData.addone?.map((addon, index) => (
                             <div
                               key={index}
@@ -990,6 +994,7 @@ const Menu = () => {
                                   <span className="text-[#ED4F4F]">*</span>
                                 </label>
                                 <input
+                                 placeholder="Eg: Mayonnaise"
                                   type="text"
                                   id={`addone-name-${index}`}
                                   name={`addone-name-${index}`}
@@ -1033,7 +1038,7 @@ const Menu = () => {
                               </div>
                               <MdOutlineDeleteOutline
                                 onClick={() => removeEditAddOn(index)}
-                                className="text-red-500 text-[3rem] hover:cursor-pointer"
+                                className="text-red-500 text-[2.5rem] hover:cursor-pointer"
                               />
                             </div>
                           ))}
@@ -1041,7 +1046,7 @@ const Menu = () => {
                             className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
                             onClick={addEditAddOn}
                           >
-                            <FaPlus className="text-xl" />
+                            <FaPlus className="text-lg" />
                             Add New
                           </p>
                         </div>
@@ -1051,12 +1056,12 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="description"
-                          className="block text-gray-700 text-[21px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Item Description
                         </label>
                         <textarea
-                          rows={4}
+                          rows={3}
                           id="description"
                           name="description"
                           value={editFormData.description}
@@ -1070,14 +1075,14 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="category"
-                          className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Images
                         </label>
                         <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
-                          <div className="size-[120px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
+                          <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
                             {editPic == "" ? (
-                              <div className="size-[120px] flex items-center justify-center w-full">
+                              <div className="size-[90px] flex items-center justify-center w-full">
                                 <label
                                   htmlFor="dropzone-file"
                                   className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
@@ -1129,17 +1134,17 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="serving"
-                          className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Serving Info
-                          <span className="text-sm text-[#8497b3]">
+                          <p className="text-sm text-[#8497b3]">
                             Serving is the size/quantity of the dish
-                          </span>
+                          </p>
                         </label>
-                        <div className="bg-white px-5 py-5 mt-4 rounded-lg border border-[#E2E8F0]">
+                        <div className="bg-white px-5 py-4 mt-4 rounded-lg border border-[#E2E8F0]">
                           <label
                             htmlFor="serving"
-                            className="block text-gray-700 text-[21px] font-[400] mb-2"
+                            className="block text-gray-700 text-[1.1rem] font-[400] mb-2"
                           >
                             Serving info, select no. of people
                           </label>
@@ -1162,17 +1167,17 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="dish"
-                          className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
+                         className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Dish Tag (Optional)
-                          <span className="text-sm text-[#8497b3]">
+                          <p className="text-sm text-[#8497b3]">
                             Serving is the size/quantity of the dish
-                          </span>
+                          </p>
                         </label>
-                        <div className="bg-white px-5 py-5 rounded-lg border flex flex-col border-[#E2E8F0] gap-2">
-                          <div className="flex flex-row flex-wrap justify-center gap-4">
+                        <div className="bg-white px-5 py-4 rounded-lg border flex flex-col border-[#E2E8F0] gap-2">
+                          <div className="flex flex-row flex-wrap  gap-3 text-slate-500">
                             <span
-                              className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center gap-2 text-[.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                                 editFormData.tag === "Chef's Special"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -1184,7 +1189,7 @@ const Menu = () => {
                               Chef's Special
                             </span>
                             <span
-                              className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center gap-2 text-[.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                                 editFormData.tag === "New Launch"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -1194,7 +1199,7 @@ const Menu = () => {
                               New Launch
                             </span>
                             <span
-                              className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                                 editFormData.tag === "Dairy free"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -1204,7 +1209,7 @@ const Menu = () => {
                               Dairy free
                             </span>
                             <span
-                              className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                                 editFormData.tag === "Vegan"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -1214,7 +1219,7 @@ const Menu = () => {
                               Vegan
                             </span>
                             <span
-                              className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                                 editFormData.tag === "Extra Spicy"
                                   ? "bg-[#004AAD] text-white"
                                   : ""
@@ -1228,7 +1233,7 @@ const Menu = () => {
                             className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
                             // onClick={addAddOn}
                           >
-                            <FaPlus className="text-xl" />
+                            <FaPlus className="text-lg" />
                             Request New
                           </p>
                         </div>
@@ -1252,47 +1257,47 @@ const Menu = () => {
         >
           <div className={`p-4 w-full sm:w-fit h-fit`}>
             <div className="w-full relative bg-white rounded-lg shadow">
-              <div className="flex flex-row gap-8 border-b-2 px-10 py-4">
+              <div className="flex flex-row items-center justify-between gap-8 border-b-2 px-10 py-4">
                 <div className="flex flex-col">
-                  <h1 className="text-[28px] font-[500]">Add Main Category</h1>
+                  <h1 className="text-[1.5rem] font-[500]">Add Main Category</h1>
                 </div>
                 <IoIosCloseCircleOutline
                   onClick={() => {
                     handleCloseCategoryModal();
                   }}
-                  className="text-4xl hover:cursor-pointer"
+                  className="text-[1.7rem] hover:cursor-pointer"
                 />
               </div>
               <div className="flex flex-col mt-2 px-8 pb-5">
                 <form className="flex flex-col gap-2 justify-center">
                   <div className="flex flex-col gap-1">
-                    <label className="flex flex-row items-center text-[#0F172A] text-[24px] font-[400]">
+                    <label className="flex flex-row mt-2 items-center text-[#0F172A] text-[1.2rem] font-Roboto">
                       Main Category name
                       <LuAsterisk className="text-sm text-[#C62828]" />
                     </label>
                     <input
                       type="text"
-                      className="w-full p-3 mt-2 focus:outline-none border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                      className="w-full py-2 px-4 mt-2 focus:outline-none border-2 border-[#00000033] rounded-[8px] text-[18px]"
                       placeholder="Ex: Food Menu"
                     />
-                    <label className="text-[18px] font-[400] mt-4 text-center flex items-center">
+                    <label className="text-[18px] font-[400] mt-2 gap-3 text-center flex justify-betwee items-center">
                       <input
                         type="checkbox"
                         // checked={rememberMe}
                         // onChange={() => setRememberMe(!rememberMe)}
-                        className="size-[20px] mr-2"
+                        className="size-[16px] "
                       />
                       Mark as Primary
                     </label>
                   </div>
-                  <div className="flex flex-row gap-5 mt-4">
+                  <div className="flex flex-row gap-5 mt-3">
                     <button
-                      className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
+                      className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-2"
                       onClick={() => handleCloseCategoryModal()}
                     >
                       Cancel
                     </button>
-                    <button className="w-[50%] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
+                    <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2">
                       Save
                     </button>
                   </div>
@@ -1322,12 +1327,12 @@ const Menu = () => {
               <div className="flex flex-col mt-2 px-8 pb-5">
                 <div className="flex flex-row gap-5 mt-4">
                   <button
-                    className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
+                    className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-2"
                     onClick={() => setDeleteModal(!deleteModal)}
                   >
                     Cancel
                   </button>
-                  <button className="w-[50%] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
+                  <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2">
                     Delete
                   </button>
                 </div>
