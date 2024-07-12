@@ -6,6 +6,9 @@ import { FiPlus } from "react-icons/fi";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
+import { BiFoodTag } from "react-icons/bi";
+import { IoCloseCircle } from "react-icons/io5";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 interface MenuItem {
   name: string;
@@ -23,13 +26,14 @@ interface MenuItem {
     name: string;
     additionalPrice: string;
   }[];
-  type?: "veg" | "nonveg" | "egg";
+  type?: "veg" | "nonveg" | "egg" | "";
 }
 
 const Menu = () => {
+  const [pic, setPic] = useState<string>("");
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
-    image: [""],
+    image: [],
     description: "",
     price: "",
     category: "",
@@ -40,12 +44,34 @@ const Menu = () => {
     categoryActive: true,
     clicks: 0,
     addone: [{ name: "", additionalPrice: "" }],
-    type: "veg",
+    type: "",
   });
   const [isOpen, setIsOpen] = useState(true);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleImageChange = (file: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      if (reader.result) {
+        setPic(reader.result as string);
+        setFormData({
+          ...formData,
+          image: [reader.result as string],
+        });
+      }
+    };
+  };
+
+  const removeImage = () => {
+    setPic("");
+    setFormData({
+      ...formData,
+      image: [],
+    });
   };
 
   const handleChange = (
@@ -100,6 +126,20 @@ const Menu = () => {
     console.log(formData);
   };
 
+  const handleFoodTypeClick = (type: "veg" | "nonveg" | "egg") => {
+    if (formData.type === type) {
+      setFormData({
+        ...formData,
+        type: "",
+      });
+    } else {
+      setFormData({
+        ...formData,
+        type: type,
+      });
+    }
+  };
+
   return (
     <div className="w-full h-fit relative ">
       <Navbar />
@@ -149,6 +189,7 @@ const Menu = () => {
           >
             {/* Add item form */}
             <div>
+              {/* save and cancel buttons */}
               <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-2 py-8 px-5 items-center justify-between">
                 <p className="w-[57%] text-[#0F172A] text-[24px] font-semibold">
                   Add Menu Item
@@ -163,24 +204,49 @@ const Menu = () => {
                   />
                 </div>
               </div>
+
               <form onSubmit={handleSubmit} className="p-5 bg-[#EEF5FF]">
-                <div className="mb-4">
-                  <label
-                    htmlFor="name"
-                    className="block text-gray-700 text-[21px] font-[400] mb-2"
-                  >
-                    Item name <span className="text-[#ED4F4F]">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
-                  />
+                {/* item name and category */}
+                <div className="flex flex-row gap-4">
+                  <div className="w-1/2 mb-4">
+                    <label
+                      htmlFor="name"
+                      className="block text-gray-700 text-[21px] font-[400] mb-2"
+                    >
+                      Item name <span className="text-[#ED4F4F]">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div className="w-1/2 mb-4">
+                    <label
+                      htmlFor="category"
+                      className="block text-gray-700 text-[21px] font-[400] mb-2"
+                    >
+                      Add Category <span className="text-[#ED4F4F]">*</span>
+                    </label>
+                    <select
+                      className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
+                      id="category"
+                      name="category"
+                      // value="dw"
+                      // onChange={handleInputChange}
+                    >
+                      <option value="">Select</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
+                  </div>
                 </div>
+
+                {/* pricing */}
                 <div className="mb-4">
                   <label
                     htmlFor="price"
@@ -219,167 +285,49 @@ const Menu = () => {
                     </label>
                   </div>
                 </div>
-                {formData.image.map((img, index) => (
-                  <div key={index} className="mb-4">
-                    <label
-                      htmlFor={`image-${index}`}
-                      className="block text-gray-700 font-bold mb-2"
+
+                {/* food type */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="price"
+                    className="block text-gray-700 text-[18px] font-[400] mb-2"
+                  >
+                    Food Type <span className="text-[#ED4F4F]">*</span>
+                  </label>
+                  <div className="bg-white px-5 py-5 rounded-lg border border-[#E2E8F0] flex flex-row justify-center gap-4">
+                    <button
+                      className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md ${
+                        formData.type === "veg" ? "bg-[#004AAD] text-white" : ""
+                      }`}
+                      onClick={() => handleFoodTypeClick("veg")}
                     >
-                      Image URL {index + 1}:
-                    </label>
-                    <input
-                      type="text"
-                      id={`image-${index}`}
-                      name={`image-${index}`}
-                      value={img}
-                      onChange={(e) => handleChange(e, index)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
-                    />
+                      <BiFoodTag className="text-2xl text-[#67CE67]" />
+                      Veg
+                    </button>
+                    <button
+                      className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md ${
+                        formData.type === "egg" ? "bg-[#004AAD] text-white" : ""
+                      }`}
+                      onClick={() => handleFoodTypeClick("egg")}
+                    >
+                      <BiFoodTag className="text-2xl text-[#F7C02B]" />
+                      Egg
+                    </button>
+                    <button
+                      className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md ${
+                        formData.type === "nonveg"
+                          ? "bg-[#004AAD] text-white"
+                          : ""
+                      }`}
+                      onClick={() => handleFoodTypeClick("nonveg")}
+                    >
+                      <BiFoodTag className="text-2xl text-[#ED4F4F]" />
+                      Non-Veg
+                    </button>
                   </div>
-                ))}
-                <div className="mb-4">
-                  <label
-                    htmlFor="description"
-                    className="block text-gray-700 font-bold mb-2"
-                  >
-                    Description:
-                  </label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="category"
-                    className="block text-gray-700 font-bold mb-2"
-                  >
-                    Category:
-                  </label>
-                  <input
-                    type="text"
-                    id="category"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="subcategory"
-                    className="block text-gray-700 font-bold mb-2"
-                  >
-                    Subcategory:
-                  </label>
-                  <input
-                    type="text"
-                    id="subcategory"
-                    name="subcategory"
-                    value={formData.subcategory}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="serves"
-                    className="block text-gray-700 font-bold mb-2"
-                  >
-                    Serves:
-                  </label>
-                  <input
-                    type="text"
-                    id="serves"
-                    name="serves"
-                    value={formData.serves}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="tag"
-                    className="block text-gray-700 font-bold mb-2"
-                  >
-                    Tag:
-                  </label>
-                  <input
-                    type="text"
-                    id="tag"
-                    name="tag"
-                    value={formData.tag}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="type"
-                    className="block text-gray-700 font-bold mb-2"
-                  >
-                    Type:
-                  </label>
-                  <select
-                    id="type"
-                    name="type"
-                    value={formData.type}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  >
-                    <option value="veg">Veg</option>
-                    <option value="nonveg">Non-Veg</option>
-                    <option value="egg">Egg</option>
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-bold mb-2">
-                    Active:
-                  </label>
-                  <input
-                    type="checkbox"
-                    id="active"
-                    name="active"
-                    checked={formData.active}
-                    onChange={handleCheckboxChange}
-                    className="mr-2 leading-tight"
-                  />
-                  <span className="text-sm">Is the menu item active?</span>
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-bold mb-2">
-                    Category Active:
-                  </label>
-                  <input
-                    type="checkbox"
-                    id="categoryActive"
-                    name="categoryActive"
-                    checked={formData.categoryActive}
-                    onChange={handleCheckboxChange}
-                    className="mr-2 leading-tight"
-                  />
-                  <span className="text-sm">Is the category active?</span>
-                </div>
-                <div className="mb-4">
-                  <label
-                    htmlFor="clicks"
-                    className="block text-gray-700 font-bold mb-2"
-                  >
-                    Clicks:
-                  </label>
-                  <input
-                    type="number"
-                    id="clicks"
-                    name="clicks"
-                    value={formData.clicks}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
                 </div>
 
+                {/* add-ons */}
                 <div className="mb-4">
                   <label
                     htmlFor="addone"
@@ -448,6 +396,158 @@ const Menu = () => {
                       Add New
                     </p>
                   </div>
+                </div>
+
+                {/* item description */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="name"
+                    className="block text-gray-700 text-[21px] font-[400] mb-2"
+                  >
+                    Item Description
+                  </label>
+                  <textarea
+                    rows={4}
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Write Description within 100 words to explain your dish better to customers"
+                    className="w-full resize-none focus:outline-none p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Images */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="category"
+                    className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
+                  >
+                    Images
+                  </label>
+                  <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
+                    <div className="size-[120px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
+                      {pic == "" ? (
+                        <div className="size-[120px] flex items-center justify-center w-full">
+                          <label
+                            htmlFor="dropzone-file"
+                            className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
+                          >
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                              <IoCloudUploadOutline className="text-[#004AAD] text-3xl" />
+                            </div>
+                            <input
+                              id="dropzone-file"
+                              name="image"
+                              type="file"
+                              className="hidden"
+                              accept="image/*"
+                              onChange={(e) => {
+                                if (e.target.files)
+                                  handleImageChange(e.target.files[0]);
+                              }}
+                            />
+                          </label>
+                        </div>
+                      ) : (
+                        <div>
+                          <img src={pic} alt="uploaded"></img>
+                          <button
+                            onClick={removeImage}
+                            className="absolute -top-2 -right-2 text-red-600"
+                          >
+                            <IoCloseCircle size={24} />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <div className="w-1/2 flex flex-col items-start justify-center">
+                      <p className="flex flex-row gap-2 text-[15px] font-bold">
+                        Item Image<span className="text-[#ED4F4F]">*</span>
+                      </p>
+                      <p className="flex flex-row text-[12px] gap-2">
+                        Image format .jpg, .jpeg, .png and minimum size 300x300
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* serving info */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="category"
+                    className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
+                  >
+                    Serving Info
+                    <span className="text-sm text-[#8497b3]">
+                      Serving is the size/quantity of the dish
+                    </span>
+                  </label>
+                  <div className="bg-white px-5 py-5 mt-4 rounded-lg border border-[#E2E8F0]">
+                    <label
+                      htmlFor="category"
+                      className="block text-gray-700 text-[21px] font-[400] mb-2"
+                    >
+                      Serving info, select no. of people
+                    </label>
+
+                    <select
+                      className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
+                      id="category"
+                      name="category"
+                      // value="dw"
+                      // onChange={handleInputChange}
+                    >
+                      <option value="">Serves</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2">
+                    Active:
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="active"
+                    name="active"
+                    checked={formData.active}
+                    onChange={handleCheckboxChange}
+                    className="mr-2 leading-tight"
+                  />
+                  <span className="text-sm">Is the menu item active?</span>
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2">
+                    Category Active:
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="categoryActive"
+                    name="categoryActive"
+                    checked={formData.categoryActive}
+                    onChange={handleCheckboxChange}
+                    className="mr-2 leading-tight"
+                  />
+                  <span className="text-sm">Is the category active?</span>
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="clicks"
+                    className="block text-gray-700 font-bold mb-2"
+                  >
+                    Clicks:
+                  </label>
+                  <input
+                    type="number"
+                    id="clicks"
+                    name="clicks"
+                    value={formData.clicks}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
                 </div>
 
                 <button
