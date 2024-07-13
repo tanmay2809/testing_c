@@ -70,8 +70,8 @@ const Overview: React.FC = () => {
           </div>
 
           {/* Bottom Section */}
-          <div className="lg:flex md:flex gap-4 font-inter">
-            <div className="lg:flex-1 bg-white p-4 shadow-md rounded-md text-left h-48 flex flex-col justify-evenly">
+          <div className="lg:flex md:flex gap-4 font-inter lg:justify-evenly">
+            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-48 flex flex-col justify-evenly">
               <div className="text-[2.5rem] font-bold mb-2 text-[#505050]">
                 30
               </div>
@@ -80,7 +80,7 @@ const Overview: React.FC = () => {
                 <p className="text-[#505050] text-[1.315rem]">Total Customer</p>
               </div>
             </div>
-            <div className="lg:flex-1 bg-white p-4 shadow-md rounded-md text-left h-48 flex flex-col justify-evenly">
+            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-48 flex flex-col justify-evenly">
               <div className="text-[2.5rem] font-bold mb-2 text-[#505050]">
                 30
               </div>
@@ -89,7 +89,7 @@ const Overview: React.FC = () => {
                 <p className="text-[#505050] text-[1.315rem]">New Customer</p>
               </div>
             </div>
-            <div className="lg:flex-1 bg-white p-4 shadow-md rounded-md text-left h-48 flex flex-col justify-evenly">
+            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-48 flex flex-col justify-evenly">
               <div className="text-[2.5rem] font-bold mb-2 text-[#505050]">
                 30
               </div>
@@ -150,11 +150,11 @@ const Overview: React.FC = () => {
             className="w-[143px] h-[123px]"
           />
           <div>
-            <p className=" text-2xl font-medium text-[#555555]">
+            <p className=" text-xl font-medium text-[#555555]">
               Help us to make snackBAE better by adding a feedback or request
               features that are best for your business
             </p>
-            <p className="text-[#004AAD] text-2xl font-bold">Give Feedback</p>
+            <p className="text-[#004AAD] text-xl font-bold">Give Feedback</p>
           </div>
         </div>
       </div>

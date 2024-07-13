@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 //icons
-import { FaFilter, FaFileExport, FaSearch } from "react-icons/fa";
+import { FaFilter, FaSearch } from "react-icons/fa";
 import { TbArrowsSort } from "react-icons/tb";
 
 //other components
@@ -112,8 +112,56 @@ const CustomerList: React.FC = () => {
               Filter Customer
             </button>
             <button className="bg-[#004AAD] text-white rounded-lg px-6 py-2 flex items-center text-[1.3125rem]">
-              <FaFileExport className="mr-2" />
+              <svg
+                className="mr-2"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.8327 17.3334H4.16602C3.76819 17.3334 3.38666 17.1754 3.10536 16.8941C2.82405 16.6128 2.66602 16.2312 2.66602 15.8334V14.0001C2.66602 13.8233 2.73625 13.6537 2.86128 13.5287C2.9863 13.4037 3.15587 13.3334 3.33268 13.3334C3.50949 13.3334 3.67906 13.4037 3.80409 13.5287C3.92911 13.6537 3.99935 13.8233 3.99935 14.0001V15.8334C3.99935 15.8776 4.01691 15.92 4.04816 15.9513C4.07942 15.9825 4.12181 16.0001 4.16602 16.0001H15.8327C15.8769 16.0001 15.9193 15.9825 15.9505 15.9513C15.9818 15.92 15.9993 15.8776 15.9993 15.8334V14.0001C15.9993 13.8233 16.0696 13.6537 16.1946 13.5287C16.3196 13.4037 16.4892 13.3334 16.666 13.3334C16.8428 13.3334 17.0124 13.4037 17.1374 13.5287C17.2624 13.6537 17.3327 13.8233 17.3327 14.0001V15.8334C17.3327 16.2312 17.1746 16.6128 16.8933 16.8941C16.612 17.1754 16.2305 17.3334 15.8327 17.3334ZM14.666 4.00008H5.33268C5.15587 4.00008 4.9863 3.92984 4.86128 3.80482C4.73625 3.67979 4.66602 3.51023 4.66602 3.33341C4.66602 3.1566 4.73625 2.98703 4.86128 2.86201C4.9863 2.73699 5.15587 2.66675 5.33268 2.66675H14.666C14.8428 2.66675 15.0124 2.73699 15.1374 2.86201C15.2624 2.98703 15.3327 3.1566 15.3327 3.33341C15.3327 3.51023 15.2624 3.67979 15.1374 3.80482C15.0124 3.92984 14.8428 4.00008 14.666 4.00008Z"
+                  fill="white"
+                />
+                <path
+                  d="M13.2801 9.58676C13.2301 9.70851 13.1451 9.81272 13.036 9.88628C12.9269 9.95984 12.7984 9.99944 12.6668 10.0001H10.6668V12.6668C10.6668 12.8436 10.5965 13.0131 10.4715 13.1382C10.3465 13.2632 10.1769 13.3334 10.0001 13.3334C9.82328 13.3334 9.65371 13.2632 9.52869 13.1382C9.40366 13.0131 9.33343 12.8436 9.33343 12.6668V10.0001H7.33343C7.20181 9.99944 7.07333 9.95984 6.96419 9.88628C6.85504 9.81272 6.77011 9.70851 6.72009 9.58676C6.66904 9.46535 6.65509 9.33154 6.68001 9.20222C6.70492 9.07289 6.76759 8.95384 6.86009 8.86009L9.52676 6.19343C9.59016 6.13273 9.66493 6.08516 9.74676 6.05343C9.90907 5.98675 10.0911 5.98675 10.2534 6.05343C10.3353 6.08516 10.41 6.13273 10.4734 6.19343L13.1401 8.86009C13.2326 8.95384 13.2953 9.07289 13.3202 9.20222C13.3451 9.33154 13.3311 9.46535 13.2801 9.58676Z"
+                  fill="white"
+                />
+              </svg>
               Export
+              <svg
+                className="relative -right-9 -top-5"
+                width="32"
+                height="34"
+                viewBox="0 0 32 34"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="4.5"
+                  y="4.5"
+                  width="22.38"
+                  height="24.54"
+                  rx="11.19"
+                  fill="white"
+                />
+                <rect
+                  x="4.5"
+                  y="4.5"
+                  width="22.38"
+                  height="24.54"
+                  rx="11.19"
+                  stroke="white"
+                  stroke-width="5"
+                />
+                <path
+                  d="M18.6236 14.7973L24.3745 13.2897L21.785 22.8177L21.7842 22.8206L21.7671 22.82H21.75H9.16H9.15184L9.14369 22.8201L7.41392 13.2914L7.41399 13.2914L7.41201 13.2811L7.42563 13.2861L7.44075 13.291L12.7608 15.021L13.6558 15.312L14.0005 14.4362L15.7095 10.0944L17.4486 14.2186L17.7853 15.0171L18.6236 14.7973ZM20.38 1H11C8.34783 1 5.8043 2.05357 3.92893 3.92893C2.05357 5.8043 1 8.34783 1 11V22.54C1 25.1922 2.05357 27.7357 3.92893 29.6111C5.8043 31.4864 8.34783 32.54 11 32.54H20.38C23.0322 32.54 25.5757 31.4864 27.4511 29.6111C29.3264 27.7357 30.38 25.1922 30.38 22.54V11C30.38 8.34783 29.3264 5.8043 27.4511 3.92893C25.5757 2.05357 23.0322 1 20.38 1Z"
+                  fill="black"
+                  stroke="white"
+                  stroke-width="2"
+                />
+              </svg>
             </button>
           </div>
         </div>
@@ -140,26 +188,43 @@ const CustomerList: React.FC = () => {
             {currentItems.map((customer, index) => (
               <tr key={index} className="border-t text-lg text-center">
                 <td className="py-3 px-6">{customer.name}</td>
-                <td className="py-3 px-6">{customer.phone}</td>
+                <td className="py-3 px-6">{customer.phone} </td>
                 <td className="py-3 px-6">{customer.visits}</td>
                 <td className="py-3 px-6">{customer.lastVisit}</td>
+
                 {/*Segmentation logic */}
-                <td className="py-3 px-6">
+                <td className="py-3 px-6 ">
+                  {/*segementation popup */}
+                  {hoveredSegmentation === index && (
+                    <>
+                      {/*background blur div */}
+                      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-30"></div>
+                      {/*div to align popup */}
+                      <div className="relative right-[16.5rem] -top-36 ">
+                        <SegmentationPopup
+                          segmentation={customer.segmentation}
+                        />
+                      </div>
+                    </>
+                  )}
+                  {/*segmentation column content */}
                   <span
-                    className={`py-1 px-2 rounded-lg text-sm ${
+                    className={`py-1 px-2 rounded-lg text-sm z-50 ${
                       segmentationColors[customer.segmentation]
                     }`}
-                    onMouseEnter={() => setHoveredSegmentation(index)}
-                    onMouseLeave={() => setHoveredSegmentation(null)}
+                    onMouseEnter={() => {
+                      console.log("hover");
+                      setHoveredSegmentation(index);
+                    }}
+                    onMouseLeave={() => {
+                      console.log("out");
+                      setHoveredSegmentation(null);
+                    }}
                   >
                     {customer.segmentation}
                   </span>
-                  {hoveredSegmentation === index && (
-                    <div className="relative -left-64 -top-44  ">
-                      <SegmentationPopup segmentation={customer.segmentation} />
-                    </div>
-                  )}
                 </td>
+
                 <td className="py-3 px-6 flex justify-center items-center gap-2">
                   <button
                     onClick={() => handleViewDetails(customer)}

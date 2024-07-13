@@ -5,7 +5,7 @@ export interface SegmentationPopupProps {
 }
 
 //data
-import {segmentationDetails} from "../constants/index"
+import { segmentationDetails } from "../constants/index";
 
 const SegmentationPopup: React.FC<SegmentationPopupProps> = ({
   segmentation,
@@ -13,8 +13,8 @@ const SegmentationPopup: React.FC<SegmentationPopupProps> = ({
   const details = segmentationDetails[segmentation];
 
   return (
-    <div >
-      <div className="absolute bg-white border rounded-lg p-4 shadow-lg w-80 h-72 text-left flex flex-col justify-between ">
+    <div>
+      <div className="absolute bg-white border rounded-lg p-4 shadow-lg w-80 h-72 text-left flex flex-col justify-between z-50">
         <span
           className={`py-1 px-3 w-1/3  text-center rounded-lg text-[0.94rem] font-semibold text-[#4B4B4B] ${[
             details.color,

@@ -107,7 +107,7 @@ const Analytics: React.FC = () => {
               </div>
             )}
             {hoveredSegmentation === "Loyal" && (
-              <div className="relative left-5">
+              <div>
                 <SegmentationPopup segmentation={"Loyal"} />
               </div>
             )}
@@ -128,7 +128,7 @@ const Analytics: React.FC = () => {
             )}
 
             {hoveredSegmentation === "Risk" && (
-              <div className="relative left-5">
+              <div >
                 <SegmentationPopup segmentation={"Risk"} />
               </div>
             )}
@@ -180,7 +180,7 @@ const Analytics: React.FC = () => {
                     fill="#231F20"
                   />
                 </svg>
-                <div className="relative ">
+                <div className="absolute left-[21rem]">
                   {visitBox === "weekend" ? <VisitPopup type="weekend" /> : ""}
                 </div>
               </h3>
@@ -216,7 +216,7 @@ const Analytics: React.FC = () => {
                     fill="#231F20"
                   />
                 </svg>
-                <div className="relative">
+                <div className="absolute right-0">
                   {visitBox === "monthly" ? <VisitPopup type="monthly" /> : ""}
                 </div>
               </h3>
@@ -291,7 +291,7 @@ const Analytics: React.FC = () => {
             </div>
             <div className="border-t border-gray-200 pt-8 flex flex-col justify-between gap-12">
               <div className="flex justify-between items-center mb-4 xsm:flex-col">
-                <div className="flex items-center justify-start gap-4">
+                <div className="flex items-center justify-start gap-4 lg:w-2/3">
                   <p className="text-[3.5rem] text-[#3A9E3E]">02</p>
                   <p className="text-sm">
                     <span className="text-[#004AAD] font-semibold ">
@@ -305,7 +305,7 @@ const Analytics: React.FC = () => {
                 </button>
               </div>
               <div className="flex justify-between items-center ">
-                <div className="flex items-center justify-start gap-4 ">
+                <div className="flex items-center justify-start gap-4 lg:w-2/3">
                   <p className="text-[3.5rem] text-[#F9AB35]">02</p>
                   <p className="text-sm">
                     <span className="text-[#004AAD] font-semibold text-sm">
@@ -388,11 +388,11 @@ const Analytics: React.FC = () => {
             className="w-[143px] h-[123px]"
           />
           <div>
-            <p className=" text-2xl font-medium text-[#555555]">
+            <p className=" text-xl font-medium text-[#555555]">
               Help us to make snackBAE better by adding a feedback or request
               features that are best for your business
             </p>
-            <p className="text-[#004AAD] text-2xl font-bold">Give Feedback</p>
+            <p className="text-[#004AAD] text-xl font-bold">Give Feedback</p>
           </div>
         </div>
       </div>
