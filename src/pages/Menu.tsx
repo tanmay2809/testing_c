@@ -33,8 +33,24 @@ interface MenuItem {
   type?: "veg" | "nonveg" | "egg" | "";
 }
 
+interface SubCategory {
+  name: string;
+  image: string[];
+}
+
+interface EditSubCategory {
+  name: string;
+  category: string;
+}
+
+interface MainCategory {
+  name: string;
+}
+
 const Menu = () => {
   const [pic, setPic] = useState<string>("");
+  const [editPic, setEditPic] = useState<string>("");
+  const [subCategoryPic, setSubCategoryPic] = useState<string>("");
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
     image: [],
@@ -50,13 +66,41 @@ const Menu = () => {
     addone: [{ name: "", additionalPrice: "" }],
     type: "",
   });
-  const [isAddMenuOpen, setIsAddMenuOpen] = useState(true);
-  const [categoryModal, setCategoryModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [editFormData, setEditFormData] = useState<MenuItem>({
+    name: "",
+    image: [],
+    description: "",
+    price: "",
+    category: "",
+    subcategory: "",
+    serving: "",
+    tag: "",
+    active: true,
+    categoryActive: true,
+    clicks: 0,
+    addone: [{ name: "", additionalPrice: "" }],
+    type: "",
+  });
+  const [subCategoryFormData, setSubCategoryFormData] = useState<SubCategory>({
+    name: "",
+    image: [],
+  });
+  const [editSubCategoryFormData, setEditSubCategoryFormData] =
+    useState<EditSubCategory>({
+      name: "",
+      category: "",
+    });
+  const [mainCategoryFormData, setMainCategoryFormData] =
+    useState<MainCategory>({
+      name: "",
+    });
 
-  const handleMenuToggle = () => {
-    setIsAddMenuOpen(!isAddMenuOpen);
-  };
+  const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
+  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
+  const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
+  const [categoryModal, setCategoryModal] = useState(false);
+  const [editSubCategoryModal, setEditSubCategoryModal] = useState(true);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const handleImageChange = (file: File) => {
     const reader = new FileReader();
@@ -72,10 +116,54 @@ const Menu = () => {
     };
   };
 
+  const handleEditImageChange = (file: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      if (reader.result) {
+        setEditPic(reader.result as string);
+        setEditFormData({
+          ...editFormData,
+          image: [reader.result as string],
+        });
+      }
+    };
+  };
+
+  const handleSubCategoryImageChange = (file: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      if (reader.result) {
+        setSubCategoryPic(reader.result as string);
+        setSubCategoryFormData({
+          ...subCategoryFormData,
+          image: [reader.result as string],
+        });
+      }
+    };
+  };
+
   const removeImage = () => {
     setPic("");
     setFormData({
       ...formData,
+      image: [],
+    });
+  };
+
+  const removeEditImage = () => {
+    setEditPic("");
+    setEditFormData({
+      ...editFormData,
+      image: [],
+    });
+  };
+
+  const removeSubCategoryPic = () => {
+    setSubCategoryPic("");
+    setSubCategoryFormData({
+      ...subCategoryFormData,
       image: [],
     });
   };
@@ -105,6 +193,97 @@ const Menu = () => {
     }
   };
 
+  const handleEditChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+    index?: number,
+    field?: string
+  ) => {
+    const { name, value } = e.target;
+
+    if (index !== undefined && field) {
+      setEditFormData({
+        ...editFormData,
+        image: editFormData.image.map((img, i) => (i === index ? value : img)),
+        addone: editFormData.addone?.map((addon, i) =>
+          i === index ? { ...addon, [field]: value } : addon
+        ),
+      });
+    } else {
+      setEditFormData({
+        ...editFormData,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleSubCategoryChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+    index?: number,
+    field?: string
+  ) => {
+    const { name, value } = e.target;
+
+    if (index !== undefined && field) {
+      setSubCategoryFormData({
+        ...subCategoryFormData,
+        image: subCategoryFormData.image.map((img, i) =>
+          i === index ? value : img
+        ),
+      });
+    } else {
+      setSubCategoryFormData({
+        ...subCategoryFormData,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleEditSubCategoryChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+    index?: number,
+    field?: string
+  ) => {
+    const { name, value } = e.target;
+
+    if (index !== undefined && field) {
+      setEditSubCategoryFormData({
+        ...editSubCategoryFormData,
+      });
+    } else {
+      setEditSubCategoryFormData({
+        ...editSubCategoryFormData,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleMainCategoryChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+    index?: number,
+    field?: string
+  ) => {
+    const { name, value } = e.target;
+
+    if (index !== undefined && field) {
+      setMainCategoryFormData({
+        ...mainCategoryFormData,
+      });
+    } else {
+      setMainCategoryFormData({
+        ...mainCategoryFormData,
+        [name]: value,
+      });
+    }
+  };
+
   const addAddOn = () => {
     setFormData({
       ...formData,
@@ -112,10 +291,27 @@ const Menu = () => {
     });
   };
 
+  const addEditAddOn = () => {
+    setEditFormData({
+      ...editFormData,
+      addone: [
+        ...(editFormData.addone || []),
+        { name: "", additionalPrice: "" },
+      ],
+    });
+  };
+
   const removeAddOn = (index: number) => {
     setFormData({
       ...formData,
       addone: formData.addone?.filter((_, i) => i !== index),
+    });
+  };
+
+  const removeEditAddOn = (index: number) => {
+    setEditFormData({
+      ...editFormData,
+      addone: editFormData.addone?.filter((_, i) => i !== index),
     });
   };
 
@@ -130,6 +326,10 @@ const Menu = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
+    console.log(subCategoryFormData);
+    console.log(editFormData);
+    console.log(editSubCategoryFormData);
+    console.log(mainCategoryFormData);
   };
 
   const handleFoodTypeClick = (type: "veg" | "nonveg" | "egg") => {
@@ -141,6 +341,20 @@ const Menu = () => {
     } else {
       setFormData({
         ...formData,
+        type: type,
+      });
+    }
+  };
+
+  const handleEditFoodTypeClick = (type: "veg" | "nonveg" | "egg") => {
+    if (editFormData.type === type) {
+      setEditFormData({
+        ...editFormData,
+        type: "",
+      });
+    } else {
+      setEditFormData({
+        ...editFormData,
         type: type,
       });
     }
@@ -167,6 +381,27 @@ const Menu = () => {
     }
   };
 
+  const handleEditDishTagClick = (
+    type:
+      | "Chef's Special"
+      | "New Launch"
+      | "Dairy free"
+      | "Vegan"
+      | "Extra Spicy"
+  ) => {
+    if (editFormData.tag === type) {
+      setEditFormData({
+        ...editFormData,
+        tag: "",
+      });
+    } else {
+      setEditFormData({
+        ...editFormData,
+        tag: type,
+      });
+    }
+  };
+
   const handleCloseCategoryModal = () => {
     setCategoryModal(!categoryModal);
   };
@@ -174,12 +409,14 @@ const Menu = () => {
   return (
     <div className="w-full h-fit relative ">
       <Navbar />
-      <div className=" w-[93%]  h-fit flex items-center justify-center ml-[7%] mt-2 ">
+      <div className=" w-[93%]  h-fit flex items-center justify-center ml-[7%]  ">
         <div className="w-full h-fit flex mt-[70px] ">
           {/* left div */}
           <div
             className={` flex flex-col h-fit ${
-              isAddMenuOpen ? "w-[100%] " : "w-[70%]"
+              isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen
+                ? "w-[65%] pr-5"
+                : "w-[100%]"
             }`}
           >
             {/* top */}
@@ -192,13 +429,24 @@ const Menu = () => {
                   </p>
                 </div>
                 <div className="flex w-[50%]  h-fit  items-center justify-end gap-5 font-semibold text-[#004AAD]">
-                  <button className="px-5 py-2.5 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap">
+                  <button
+                    className="px-5 py-2.5 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
+                    onClick={() => {
+                      setIsSubCategoryOpen(!isSubCategoryOpen);
+                      setIsAddMenuOpen(false);
+                      setIsEditMenuOpen(false);
+                    }}
+                  >
                     <FiPlus />
                     Sub-Category
                   </button>
                   <button
                     className="px-5 py-2.5 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
-                    onClick={() => handleMenuToggle()}
+                    onClick={() => {
+                      setIsAddMenuOpen(!isAddMenuOpen);
+                      setIsSubCategoryOpen(false);
+                      setIsEditMenuOpen(false);
+                    }}
                   >
                     <FiPlus />
                     Add item
@@ -210,7 +458,10 @@ const Menu = () => {
             {/* bottom */}
             <div>
               <div className="flex flex-row items-center gap-4 px-5">
-                <button className="bg-[#004AAD] text-white font-semibold text-[18px] px-5 py-2.5 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap">
+                <button
+                  onClick={() => setIsEditMenuOpen(!isEditMenuOpen)}
+                  className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
+                >
                   Food Menu
                 </button>
                 <FiPlus
@@ -222,515 +473,973 @@ const Menu = () => {
           </div>
 
           {/* right div */}
-          <div
-            className={`${
-              isAddMenuOpen
-                ? "hidden"
-                : "flex flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[30%] overflow-auto"
-            }`}
-          >
-            {/* add menu item form */}
-            <div>
-              <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
-                {/* save and cancel buttons */}
-                <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-2 py-8 px-5 items-center justify-between">
-                  <p className="w-[57%] text-[#0F172A] text-[24px] font-semibold">
-                    Add Menu Item
-                  </p>
-                  <div className="w-[43%] flex flex-row items-center justify-between">
-                    <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[3rem] py-[0.8rem]">
-                      Save
-                    </button>
-                    <IoIosCloseCircleOutline
-                      onClick={() => handleMenuToggle()}
-                      className="text-3xl hover:cursor-pointer"
-                    />
-                  </div>
-                </div>
-
-                <div className="p-5">
-                  {/* item name and category */}
-                  <div className="flex flex-row gap-4">
-                    <div className="w-1/2 mb-4">
-                      <label
-                        htmlFor="name"
-                        className="block text-gray-700 text-[21px] font-[400] mb-2"
-                      >
-                        Item name <span className="text-[#ED4F4F]">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
-                      />
-                    </div>
-
-                    <div className="w-1/2 mb-4">
-                      <label
-                        htmlFor="category"
-                        className="block text-gray-700 text-[21px] font-[400] mb-2"
-                      >
-                        Add Category <span className="text-[#ED4F4F]">*</span>
-                      </label>
-                      <select
-                        className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
-                        id="category"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                      >
-                        <option value="">Select</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* pricing */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="price"
-                      className="block text-gray-700 text-[21px] font-[400] mb-2"
-                    >
-                      Pricing <span className="text-[#ED4F4F]">*</span>
-                    </label>
-                    <div className="bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
-                      <label
-                        htmlFor="price"
-                        className="block text-gray-700 text-[18px] font-[400] mb-2"
-                      >
-                        Base Price <span className="text-[#ED4F4F]">*</span>
-                      </label>
-                      <div className="relative">
-                        <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
-                          ₹
-                        </span>
-                        <input
-                          type="text"
-                          id="price"
-                          name="price"
-                          value={formData.price}
-                          onChange={handleChange}
-                          className="w-full pl-6 focus:outline-none p-2 border border-gray-300 rounded-md"
+          {(isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen) && (
+            <div
+              className={`${
+                isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen
+                  ? "flex bg-[#EEF5FF] flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[35%] overflow-auto"
+                  : "hidden"
+              }`}
+            >
+              {/* add menu item form */}
+              {isAddMenuOpen && (
+                <div>
+                  <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
+                    {/* save and cancel buttons */}
+                    <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-5 py-4  px-5 items-center justify-between">
+                      <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold">
+                        Add Menu Item
+                      </p>
+                      <div className="w-[43%] flex flex-row items-center justify-between">
+                        <button className="rounded-lg text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
+                          Save
+                        </button>
+                        <IoIosCloseCircleOutline
+                          onClick={() => {
+                            setIsAddMenuOpen(false);
+                          }}
+                          className="text-2xl hover:cursor-pointer"
                         />
                       </div>
-                      <label className="text-[14px] font-[400] mt-4 text-center flex items-center">
-                        <input
-                          type="checkbox"
-                          // checked={rememberMe}
-                          // onChange={() => setRememberMe(!rememberMe)}
-                          className="size-[20px] mr-2"
-                        />
-                        Inclusive of all taxes
-                      </label>
                     </div>
-                  </div>
 
-                  {/* food type */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="type"
-                      className="block text-gray-700 text-[18px] font-[400] mb-2"
-                    >
-                      Food Type <span className="text-[#ED4F4F]">*</span>
-                    </label>
-                    <div className="bg-white px-5 py-5 rounded-lg border border-[#E2E8F0] flex flex-row justify-center gap-4">
-                      <span
-                        className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
-                          formData.type === "veg"
-                            ? "bg-[#004AAD] text-white"
-                            : ""
-                        }`}
-                        onClick={() => handleFoodTypeClick("veg")}
-                      >
-                        <BiFoodTag className="text-2xl text-[#67CE67]" />
-                        Veg
-                      </span>
-                      <span
-                        className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
-                          formData.type === "egg"
-                            ? "bg-[#004AAD] text-white"
-                            : ""
-                        }`}
-                        onClick={() => handleFoodTypeClick("egg")}
-                      >
-                        <BiFoodTag className="text-2xl text-[#F7C02B]" />
-                        Egg
-                      </span>
-                      <span
-                        className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
-                          formData.type === "nonveg"
-                            ? "bg-[#004AAD] text-white"
-                            : ""
-                        }`}
-                        onClick={() => handleFoodTypeClick("nonveg")}
-                      >
-                        <BiFoodTag className="text-2xl text-[#ED4F4F]" />
-                        Non-Veg
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* add-ons */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="addone"
-                      className="block text-[21px] text-gray-700 font-[400] mb-2"
-                    >
-                      Add-ons
-                    </label>
-                    <div className="bg-white px-5 py-8 rounded-lg border border-[#E2E8F0]">
-                      {formData.addone?.map((addon, index) => (
-                        <div key={index} className="mb-2 flex gap-2 items-end">
-                          <div>
-                            <label
-                              htmlFor="price"
-                              className="block text-gray-700 text-[18px] font-[400] mb-2"
-                            >
-                              Add-on Name{" "}
-                              <span className="text-[#ED4F4F]">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              id={`addone-name-${index}`}
-                              name={`addone-name-${index}`}
-                              value={addon.name}
-                              onChange={(e) => handleChange(e, index, "name")}
-                              className="w-full p-2 border border-gray-300 rounded-md"
-                            />
-                          </div>
-                          <div>
-                            <div>
-                              <label
-                                htmlFor="addone-price"
-                                className="block text-gray-700 text-[18px] font-[400] mb-2"
-                              >
-                                Additional Price
-                              </label>
-
-                              <div className="relative">
-                                <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
-                                  ₹
-                                </span>
-
-                                <input
-                                  type="text"
-                                  id={`addone-price-${index}`}
-                                  name={`addone-price-${index}`}
-                                  value={addon.additionalPrice}
-                                  onChange={(e) =>
-                                    handleChange(e, index, "additionalPrice")
-                                  }
-                                  className="w-full pl-6 p-2 border border-gray-300 rounded-md"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <MdOutlineDeleteOutline
-                            onClick={() => removeAddOn(index)}
-                            className="text-red-500 text-[3rem] hover:cursor-pointer"
+                    <div className="p-5">
+                      {/* item name and category */}
+                      <div className="flex flex-row gap-4">
+                        <div className="w-1/2 mb-4">
+                          <label
+                            htmlFor="name"
+                            className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                          >
+                            Item name <span className="text-[#ED4F4F]">*</span>
+                          </label>
+                          <input
+                            placeholder="Eg: Chicken Biryani"
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                            className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
                           />
                         </div>
-                      ))}
-                      <p
-                        className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
-                        onClick={addAddOn}
-                      >
-                        <FaPlus className="text-xl" />
-                        Add New
-                      </p>
-                    </div>
-                  </div>
 
-                  {/* item description */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="description"
-                      className="block text-gray-700 text-[21px] font-[400] mb-2"
-                    >
-                      Item Description
-                    </label>
-                    <textarea
-                      rows={4}
-                      id="description"
-                      name="description"
-                      value={formData.description}
-                      onChange={handleChange}
-                      placeholder="Write Description within 100 words to explain your dish better to customers"
-                      className="w-full resize-none focus:outline-none p-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
+                        <div className="w-1/2 mb-4">
+                          <label
+                            htmlFor="category"
+                            className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                          >
+                            Add Category{" "}
+                            <span className="text-[#ED4F4F]">*</span>
+                          </label>
+                          <select
+                            className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
+                            id="category"
+                            name="category"
+                            value={formData.category}
+                            onChange={handleChange}
+                          >
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                          </select>
+                        </div>
+                      </div>
 
-                  {/* Images */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="category"
-                      className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
-                    >
-                      Images
-                    </label>
-                    <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
-                      <div className="size-[120px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
-                        {pic == "" ? (
-                          <div className="size-[120px] flex items-center justify-center w-full">
-                            <label
-                              htmlFor="dropzone-file"
-                              className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
+                      {/* pricing */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="price"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Pricing <span className="text-[#ED4F4F]">*</span>
+                        </label>
+                        <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
+                          <label
+                            htmlFor="price"
+                            className="block text-gray-700 text-[1rem] font-semibold mb-2"
+                          >
+                            Base Price <span className="text-[#ED4F4F]">*</span>
+                          </label>
+                          <div className="relative">
+                            <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
+                              ₹
+                            </span>
+                            <input
+                              type="text"
+                              id="price"
+                              name="price"
+                              value={formData.price}
+                              onChange={handleChange}
+                              className="w-full pl-6 focus:outline-none p-2 border border-gray-300 rounded-md"
+                            />
+                          </div>
+                          <label className="text-[14px] font-[400] mt-4 text-center flex items-center">
+                            <input
+                              type="checkbox"
+                              // checked={rememberMe}
+                              // onChange={() => setRememberMe(!rememberMe)}
+                              className="size-[1rem] mr-2"
+                            />
+                            Inclusive of all taxes
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* food type */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="type"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Food Type <span className="text-[#ED4F4F]">*</span>
+                        </label>
+                        <div className="bg-white px-5 py-5 rounded-lg border border-[#E2E8F0] flex items-center justify-evenly gap-4">
+                          <span
+                            className={`flex flex-row items-center gap-2 text-[15px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                              formData.type === "veg"
+                                ? "bg-[#004AAD] text-white"
+                                : ""
+                            }`}
+                            onClick={() => handleFoodTypeClick("veg")}
+                          >
+                            <BiFoodTag className="text-2xl text-[#67CE67]" />
+                            Veg
+                          </span>
+                          <span
+                            className={`flex flex-row items-center gap-2 text-[15px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                              formData.type === "egg"
+                                ? "bg-[#004AAD] text-white"
+                                : ""
+                            }`}
+                            onClick={() => handleFoodTypeClick("egg")}
+                          >
+                            <BiFoodTag className="text-2xl text-[#F7C02B]" />
+                            Egg
+                          </span>
+                          <span
+                            className={`flex flex-row items-center gap-2 px-3 text-[15px] border-2 py-1 rounded-md hover:cursor-pointer ${
+                              formData.type === "nonveg"
+                                ? "bg-[#004AAD] text-white"
+                                : ""
+                            }`}
+                            onClick={() => handleFoodTypeClick("nonveg")}
+                          >
+                            <BiFoodTag className="text-2xl text-[#ED4F4F]" />
+                            Non-Veg
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* add-ons */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="addone"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Add-ons
+                        </label>
+                        <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
+                          {formData.addone?.map((addon, index) => (
+                            <div
+                              key={index}
+                              className="mb-2 flex gap-2 items-end justify-between"
                             >
-                              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                <IoCloudUploadOutline className="text-[#004AAD] text-3xl" />
+                              <div>
+                                <label
+                                  htmlFor="price"
+                                  className="block text-gray-700 text-[18px] font-[400] mb-2"
+                                >
+                                  Add-on Name{" "}
+                                  <span className="text-[#ED4F4F]">*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  id={`addone-name-${index}`}
+                                  name={`addone-name-${index}`}
+                                  value={addon.name}
+                                  onChange={(e) =>
+                                    handleChange(e, index, "name")
+                                  }
+                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                />
                               </div>
-                              <input
-                                id="dropzone-file"
-                                name="image"
-                                type="file"
-                                className="hidden"
-                                accept="image/*"
-                                onChange={(e) => {
-                                  if (e.target.files)
-                                    handleImageChange(e.target.files[0]);
-                                }}
-                              />
-                            </label>
-                          </div>
-                        ) : (
-                          <div>
-                            <img src={pic} alt="uploaded"></img>
-                            <button
-                              onClick={removeImage}
-                              className="absolute -top-2 -right-2 text-red-600"
-                            >
-                              <IoCloseCircle size={24} />
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                      <div className="w-1/2 flex flex-col items-start justify-center">
-                        <p className="flex flex-row gap-2 text-[15px] font-bold">
-                          Item Image<span className="text-[#ED4F4F]">*</span>
-                        </p>
-                        <p className="flex flex-row text-[12px] gap-2">
-                          Image format .jpg, .jpeg, .png and minimum size
-                          300x300
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                              <div>
+                                <div>
+                                  <label
+                                    htmlFor="addone-price"
+                                    className="block text-gray-700 text-[18px] font-[400] mb-2"
+                                  >
+                                    Additional Price
+                                  </label>
 
-                  {/* serving info */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="serving"
-                      className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
-                    >
-                      Serving Info
-                      <span className="text-sm text-[#8497b3]">
-                        Serving is the size/quantity of the dish
-                      </span>
-                    </label>
-                    <div className="bg-white px-5 py-5 mt-4 rounded-lg border border-[#E2E8F0]">
-                      <label
-                        htmlFor="serving"
-                        className="block text-gray-700 text-[21px] font-[400] mb-2"
-                      >
-                        Serving info, select no. of people
-                      </label>
+                                  <div className="relative">
+                                    <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
+                                      ₹
+                                    </span>
 
-                      <select
-                        className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
-                        id="serving"
-                        name="serving"
-                        value={formData.serving}
-                        onChange={handleChange}
-                      >
-                        <option value="">Serves</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* dish tag */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="dish"
-                      className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
-                    >
-                      Dish Tag (Optional)
-                      <span className="text-sm text-[#8497b3]">
-                        Serving is the size/quantity of the dish
-                      </span>
-                    </label>
-                    <div className="bg-white px-5 py-5 rounded-lg border flex flex-col border-[#E2E8F0] gap-2">
-                      <div className="flex flex-row flex-wrap justify-center gap-4">
-                        <span
-                          className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
-                            formData.tag === "Chef's Special"
-                              ? "bg-[#004AAD] text-white"
-                              : ""
-                          }`}
-                          onClick={() => handleDishTagClick("Chef's Special")}
-                        >
-                          Chef's Special
-                        </span>
-                        <span
-                          className={`flex flex-row items-center gap-2 text-[18px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
-                            formData.tag === "New Launch"
-                              ? "bg-[#004AAD] text-white"
-                              : ""
-                          }`}
-                          onClick={() => handleDishTagClick("New Launch")}
-                        >
-                          New Launch
-                        </span>
-                        <span
-                          className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
-                            formData.tag === "Dairy free"
-                              ? "bg-[#004AAD] text-white"
-                              : ""
-                          }`}
-                          onClick={() => handleDishTagClick("Dairy free")}
-                        >
-                          Dairy free
-                        </span>
-                        <span
-                          className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
-                            formData.tag === "Vegan"
-                              ? "bg-[#004AAD] text-white"
-                              : ""
-                          }`}
-                          onClick={() => handleDishTagClick("Vegan")}
-                        >
-                          Vegan
-                        </span>
-                        <span
-                          className={`flex flex-row items-center gap-2 px-4 text-[18px] border-2 py-1 rounded-md hover:cursor-pointer ${
-                            formData.tag === "Extra Spicy"
-                              ? "bg-[#004AAD] text-white"
-                              : ""
-                          }`}
-                          onClick={() => handleDishTagClick("Extra Spicy")}
-                        >
-                          Extra Spicy
-                        </span>
-                      </div>
-                      <p
-                        className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
-                        // onClick={addAddOn}
-                      >
-                        <FaPlus className="text-xl" />
-                        Request New
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-
-            {/* add sub category form */}
-            <div>
-              <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
-                {/* save and cancel buttons */}
-                <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-2 py-8 px-5 items-center justify-between">
-                  <p className="w-[57%] text-[#0F172A] text-[24px] font-semibold">
-                    Add Sub-Category
-                  </p>
-                  <div className="w-[43%] flex flex-row items-center justify-between">
-                    <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[3rem] py-[0.8rem]">
-                      Save
-                    </button>
-                    <IoIosCloseCircleOutline
-                      onClick={() => handleMenuToggle()}
-                      className="text-3xl hover:cursor-pointer"
-                    />
-                  </div>
-                </div>
-
-                {/* sub category name */}
-                <div className="p-5">
-                  <div className="mb-4">
-                    <label
-                      htmlFor="name"
-                      className="block text-gray-700 text-[21px] font-[400] mb-2"
-                    >
-                      Sub Category name{" "}
-                      <span className="text-[#ED4F4F]">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="subcategory"
-                      name="subcategory"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
-                    />
-                  </div>
-
-                  {/* Images */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="category"
-                      className="flex flex-col text-gray-700 text-[21px] font-[400] mb-2"
-                    >
-                      Sub-Category icon
-                    </label>
-                    <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
-                      <div className="size-[120px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
-                        {pic == "" ? (
-                          <div className="size-[120px] flex items-center justify-center w-full">
-                            <label
-                              htmlFor="dropzone-file"
-                              className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
-                            >
-                              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                <IoCloudUploadOutline className="text-[#004AAD] text-3xl" />
+                                    <input
+                                      type="text"
+                                      id={`addone-price-${index}`}
+                                      name={`addone-price-${index}`}
+                                      value={addon.additionalPrice}
+                                      onChange={(e) =>
+                                        handleChange(
+                                          e,
+                                          index,
+                                          "additionalPrice"
+                                        )
+                                      }
+                                      className="w-full pl-6 p-2 border border-gray-300 rounded-md"
+                                    />
+                                  </div>
+                                </div>
                               </div>
-                              <input
-                                id="dropzone-file"
-                                name="image"
-                                type="file"
-                                className="hidden"
-                                accept="image/*"
-                                onChange={(e) => {
-                                  if (e.target.files)
-                                    handleImageChange(e.target.files[0]);
-                                }}
+                              <MdOutlineDeleteOutline
+                                onClick={() => removeAddOn(index)}
+                                className="text-red-500 text-[2.5rem] hover:cursor-pointer"
                               />
-                            </label>
-                          </div>
-                        ) : (
-                          <div>
-                            <img src={pic} alt="uploaded"></img>
-                            <button
-                              onClick={removeImage}
-                              className="absolute -top-2 -right-2 text-red-600"
-                            >
-                              <IoCloseCircle size={24} />
-                            </button>
-                          </div>
-                        )}
+                            </div>
+                          ))}
+                          <p
+                            className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
+                            onClick={addAddOn}
+                          >
+                            <FaPlus className="text-xl" />
+                            Add New
+                          </p>
+                        </div>
                       </div>
-                      <div className="w-1/2 flex flex-col items-start justify-center">
-                        <p className="flex flex-row gap-2 text-[15px] font-bold">
-                          sub-category icon
+
+                      {/* item description */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="description"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Item Description
+                        </label>
+                        <textarea
+                          rows={3}
+                          id="description"
+                          name="description"
+                          value={formData.description}
+                          onChange={handleChange}
+                          placeholder="Write Description within 100 words to explain your dish better to customers"
+                          className="w-full resize-none focus:outline-none p-2 border border-gray-300 rounded-md"
+                        />
+                      </div>
+
+                      {/* Images */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="category"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Images
+                        </label>
+                        <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
+                          <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
+                            {pic == "" ? (
+                              <div className="size-[90px] flex items-center justify-center w-full">
+                                <label
+                                  htmlFor="dropzone-file"
+                                  className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
+                                >
+                                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <IoCloudUploadOutline className="text-[#004AAD] text-2xl" />
+                                  </div>
+                                  <input
+                                    id="dropzone-file"
+                                    name="image"
+                                    type="file"
+                                    className="hidden"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                      if (e.target.files)
+                                        handleImageChange(e.target.files[0]);
+                                    }}
+                                  />
+                                </label>
+                              </div>
+                            ) : (
+                              <div>
+                                <img src={pic} alt="uploaded"></img>
+                                <button
+                                  onClick={removeImage}
+                                  className="absolute -top-2 -right-2 text-red-600"
+                                >
+                                  <IoCloseCircle size={25} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                          <div className="w-1/2 flex flex-col items-start justify-center">
+                            <p className="flex flex-row gap-2 text-[15px] font-bold">
+                              Item Image
+                              <span className="text-[#ED4F4F]">*</span>
+                            </p>
+                            <p className="flex flex-row text-[12px] gap-2">
+                              Image format .jpg, .jpeg, .png and minimum size
+                              300x300
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* serving info */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="serving"
+                          className="block  text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Serving Info
+                          <p className="text-sm text-[#8497b3]">
+                            Serving is the size/quantity of the dish
+                          </p>
+                        </label>
+                        <div className="bg-white px-5 py-4 mt-4 rounded-lg border border-[#E2E8F0]">
+                          <label
+                            htmlFor="serving"
+                            className="block text-gray-700 text-[1rem] font-[400] mb-2"
+                          >
+                            Serving info, select no. of people
+                          </label>
+
+                          <select
+                            className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
+                            id="serving"
+                            name="serving"
+                            value={formData.serving}
+                            onChange={handleChange}
+                          >
+                            <option value="">Serves</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* dish tag */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="dish"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Dish Tag (Optional)
+                          <p className="text-sm text-[#8497b3]">
+                            Serving is the size/quantity of the dish
+                          </p>
+                        </label>
+                        <div className="bg-white px-5 py-5 rounded-lg border flex flex-col border-[#E2E8F0] gap-2">
+                          <div className="flex flex-row flex-wrap text-[#0F172A82]  gap-4">
+                            <span
+                              className={`flex flex-row items-center  text-[.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                                formData.tag === "Chef's Special"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                handleDishTagClick("Chef's Special")
+                              }
+                            >
+                              Chef's Special
+                            </span>
+                            <span
+                              className={`flex flex-row items-center text-[.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                                formData.tag === "New Launch"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() => handleDishTagClick("New Launch")}
+                            >
+                              New Launch
+                            </span>
+                            <span
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
+                                formData.tag === "Dairy free"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() => handleDishTagClick("Dairy free")}
+                            >
+                              Dairy free
+                            </span>
+                            <span
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
+                                formData.tag === "Vegan"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() => handleDishTagClick("Vegan")}
+                            >
+                              Vegan
+                            </span>
+                            <span
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
+                                formData.tag === "Extra Spicy"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() => handleDishTagClick("Extra Spicy")}
+                            >
+                              Extra Spicy
+                            </span>
+                          </div>
+                          <p
+                            className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
+                            // onClick={addAddOn}
+                          >
+                            <FaPlus className="text-lg" />
+                            Request New
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {/* add sub category form */}
+              {isSubCategoryOpen && (
+                <div>
+                  <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
+                    {/* save and cancel buttons */}
+                    <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-5 py-4  px-5 items-center justify-between">
+                      <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold">
+                        Add Sub-Category
+                      </p>
+                      <div className="w-[43%] flex flex-row items-center justify-between">
+                        <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
+                          Save
+                        </button>
+                        <IoIosCloseCircleOutline
+                          onClick={() => {
+                            setIsSubCategoryOpen(false);
+                          }}
+                          className="text-2xl hover:cursor-pointer"
+                        />
+                      </div>
+                    </div>
+
+                    {/* sub category name */}
+                    <div className="p-5">
+                      <div className="mb-4">
+                        <label
+                          htmlFor="name"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Sub Category name{" "}
                           <span className="text-[#ED4F4F]">*</span>
-                        </p>
-                        <p className="flex flex-row text-[12px] gap-2">
-                          Image format .jpg, .jpeg, .png and minimum size
-                          300x300
-                        </p>
+                        </label>
+                        <input
+                          placeholder="Eg: Starter"
+                          type="text"
+                          id="subcategory"
+                          name="name"
+                          value={subCategoryFormData.name}
+                          onChange={handleSubCategoryChange}
+                          // required
+                          className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
+                        />
+                      </div>
+
+                      {/* Images */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="category"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Sub-Category icon{" "}
+                          <p className=" font-Roboto text-[.8rem] m-1">
+                            one image at a time allowed
+                          </p>
+                        </label>
+                        <div className="flex flex-row gap-8 bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
+                          <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
+                            {subCategoryPic == "" ? (
+                              <div className="size-[90px] flex items-center justify-center w-full">
+                                <label
+                                  htmlFor="dropzone-file"
+                                  className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
+                                >
+                                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <IoCloudUploadOutline className="text-[#004AAD] text-2xl" />
+                                  </div>
+                                  <input
+                                    id="dropzone-file"
+                                    name="image"
+                                    type="file"
+                                    className="hidden"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                      if (e.target.files)
+                                        handleSubCategoryImageChange(
+                                          e.target.files[0]
+                                        );
+                                    }}
+                                  />
+                                </label>
+                              </div>
+                            ) : (
+                              <div>
+                                <img src={subCategoryPic} alt="uploaded"></img>
+                                <button
+                                  onClick={removeSubCategoryPic}
+                                  className="absolute -top-2 -right-2 text-red-600"
+                                >
+                                  <IoCloseCircle size={24} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                          <div className="w-1/2 flex flex-col items-start justify-center">
+                            <p className="flex flex-row gap-2 text-[15px] font-bold">
+                              sub-category icon
+                              <span className="text-[#ED4F4F]">*</span>
+                            </p>
+                            <p className="flex flex-row text-[12px] gap-2">
+                              Image format .jpg, .jpeg, .png and minimum size
+                              300x300
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
-              </form>
+              )}
+
+              {/* edit menu form */}
+              {isEditMenuOpen && (
+                <div>
+                  <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
+                    {/* save and cancel buttons */}
+                    <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-2 py-8 px-5 items-center justify-between">
+                      <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold">
+                        Edit Menu Item
+                      </p>
+                      <div className="w-[43%] flex flex-row items-center justify-between">
+                        <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
+                          Save
+                        </button>
+                        <IoIosCloseCircleOutline
+                          onClick={() => {
+                            setIsEditMenuOpen(false);
+                          }}
+                          className="text-2xl hover:cursor-pointer"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="p-5">
+                      {/* item name and category */}
+                      <div className="flex flex-row gap-4">
+                        <div className="w-1/2 mb-4">
+                          <label
+                            htmlFor="name"
+                            className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                          >
+                            Item name <span className="text-[#ED4F4F]">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={editFormData.name}
+                            onChange={handleEditChange}
+                            required
+                            className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
+                          />
+                        </div>
+
+                        <div className="w-1/2 mb-4">
+                          <label
+                            htmlFor="category"
+                            className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                          >
+                            Add Category{" "}
+                            <span className="text-[#ED4F4F]">*</span>
+                          </label>
+                          <select
+                            className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
+                            id="category"
+                            name="category"
+                            value={editFormData.category}
+                            onChange={handleEditChange}
+                          >
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* pricing */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="price"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Pricing <span className="text-[#ED4F4F]">*</span>
+                        </label>
+                        <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
+                          <label
+                            htmlFor="price"
+                            className="block text-gray-700 text-[16px] font-semibold mb-2"
+                          >
+                            Base Price <span className="text-[#ED4F4F]">*</span>
+                          </label>
+                          <div className="relative">
+                            <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
+                              ₹
+                            </span>
+                            <input
+                              type="text"
+                              id="price"
+                              name="price"
+                              value={editFormData.price}
+                              onChange={handleEditChange}
+                              className="w-full pl-6 focus:outline-none p-2 border border-gray-300 rounded-md"
+                            />
+                          </div>
+                          <label className="text-[14px] font-[400] mt-4 text-center flex items-center">
+                            <input
+                              type="checkbox"
+                              // checked={rememberMe}
+                              // onChange={() => setRememberMe(!rememberMe)}
+                              className="size-[16px] mr-2"
+                            />
+                            Inclusive of all taxes
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* food type */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="type"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Food Type <span className="text-[#ED4F4F]">*</span>
+                        </label>
+                        <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0] flex flex-row justify-evenly items-center gap-4">
+                          <span
+                            className={`flex flex-row items-center gap-2 text-[15px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                              editFormData.type === "veg"
+                                ? "bg-[#004AAD] text-white"
+                                : ""
+                            }`}
+                            onClick={() => handleEditFoodTypeClick("veg")}
+                          >
+                            <BiFoodTag className="text-2xl text-[#67CE67]" />
+                            Veg
+                          </span>
+                          <span
+                            className={`flex flex-row items-center gap-2 text-[15px] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                              editFormData.type === "egg"
+                                ? "bg-[#004AAD] text-white"
+                                : ""
+                            }`}
+                            onClick={() => handleEditFoodTypeClick("egg")}
+                          >
+                            <BiFoodTag className="text-2xl text-[#F7C02B]" />
+                            Egg
+                          </span>
+                          <span
+                            className={`flex flex-row items-center gap-2 px-3 text-[15px] border-2 py-1 rounded-md hover:cursor-pointer ${
+                              editFormData.type === "nonveg"
+                                ? "bg-[#004AAD] text-white"
+                                : ""
+                            }`}
+                            onClick={() => handleEditFoodTypeClick("nonveg")}
+                          >
+                            <BiFoodTag className="text-2xl text-[#ED4F4F]" />
+                            Non-Veg
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* add-ons */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="addone"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Add-ons
+                        </label>
+                        <div className="bg-white px-5 py-4 rounded-lg border border-[#E2E8F0]">
+                          {editFormData.addone?.map((addon, index) => (
+                            <div
+                              key={index}
+                              className="mb-2 flex gap-2 items-end"
+                            >
+                              <div>
+                                <label
+                                  htmlFor="price"
+                                  className="block text-gray-700 text-[18px] font-[400] mb-2"
+                                >
+                                  Add-on Name{" "}
+                                  <span className="text-[#ED4F4F]">*</span>
+                                </label>
+                                <input
+                                  placeholder="Eg: Mayonnaise"
+                                  type="text"
+                                  id={`addone-name-${index}`}
+                                  name={`addone-name-${index}`}
+                                  value={addon.name}
+                                  onChange={(e) =>
+                                    handleEditChange(e, index, "name")
+                                  }
+                                  className="w-full p-2 border border-gray-300 rounded-md"
+                                />
+                              </div>
+                              <div>
+                                <div>
+                                  <label
+                                    htmlFor="addone-price"
+                                    className="block text-gray-700 text-[18px] font-[400] mb-2"
+                                  >
+                                    Additional Price
+                                  </label>
+
+                                  <div className="relative">
+                                    <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
+                                      ₹
+                                    </span>
+
+                                    <input
+                                      type="text"
+                                      id={`addone-price-${index}`}
+                                      name={`addone-price-${index}`}
+                                      value={addon.additionalPrice}
+                                      onChange={(e) =>
+                                        handleEditChange(
+                                          e,
+                                          index,
+                                          "additionalPrice"
+                                        )
+                                      }
+                                      className="w-full pl-6 p-2 border border-gray-300 rounded-md"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <MdOutlineDeleteOutline
+                                onClick={() => removeEditAddOn(index)}
+                                className="text-red-500 text-[2.5rem] hover:cursor-pointer"
+                              />
+                            </div>
+                          ))}
+                          <p
+                            className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
+                            onClick={addEditAddOn}
+                          >
+                            <FaPlus className="text-lg" />
+                            Add New
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* item description */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="description"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Item Description
+                        </label>
+                        <textarea
+                          rows={3}
+                          id="description"
+                          name="description"
+                          value={editFormData.description}
+                          onChange={handleEditChange}
+                          placeholder="Write Description within 100 words to explain your dish better to customers"
+                          className="w-full resize-none focus:outline-none p-2 border border-gray-300 rounded-md"
+                        />
+                      </div>
+
+                      {/* Images */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="category"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Images
+                        </label>
+                        <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
+                          <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
+                            {editPic == "" ? (
+                              <div className="size-[90px] flex items-center justify-center w-full">
+                                <label
+                                  htmlFor="dropzone-file"
+                                  className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
+                                >
+                                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <IoCloudUploadOutline className="text-[#004AAD] text-3xl" />
+                                  </div>
+                                  <input
+                                    id="dropzone-file"
+                                    name="image"
+                                    type="file"
+                                    className="hidden"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                      if (e.target.files)
+                                        handleEditImageChange(
+                                          e.target.files[0]
+                                        );
+                                    }}
+                                  />
+                                </label>
+                              </div>
+                            ) : (
+                              <div>
+                                <img src={editPic} alt="uploaded"></img>
+                                <button
+                                  onClick={removeEditImage}
+                                  className="absolute -top-2 -right-2 text-red-600"
+                                >
+                                  <IoCloseCircle size={24} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                          <div className="w-1/2 flex flex-col items-start justify-center">
+                            <p className="flex flex-row gap-2 text-[15px] font-bold">
+                              Item Image
+                              <span className="text-[#ED4F4F]">*</span>
+                            </p>
+                            <p className="flex flex-row text-[12px] gap-2">
+                              Image format .jpg, .jpeg, .png and minimum size
+                              300x300
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* serving info */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="serving"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Serving Info
+                          <p className="text-sm text-[#8497b3]">
+                            Serving is the size/quantity of the dish
+                          </p>
+                        </label>
+                        <div className="bg-white px-5 py-4 mt-4 rounded-lg border border-[#E2E8F0]">
+                          <label
+                            htmlFor="serving"
+                            className="block text-gray-700 text-[1.1rem] font-[400] mb-2"
+                          >
+                            Serving info, select no. of people
+                          </label>
+
+                          <select
+                            className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
+                            id="serving"
+                            name="serving"
+                            value={editFormData.serving}
+                            onChange={handleEditChange}
+                          >
+                            <option value="">Serves</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* dish tag */}
+                      <div className="mb-4">
+                        <label
+                          htmlFor="dish"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                        >
+                          Dish Tag (Optional)
+                          <p className="text-sm text-[#8497b3]">
+                            Serving is the size/quantity of the dish
+                          </p>
+                        </label>
+                        <div className="bg-white px-5 py-4 rounded-lg border flex flex-col border-[#E2E8F0] gap-2">
+                          <div className="flex flex-row flex-wrap  gap-3 text-slate-500">
+                            <span
+                              className={`flex flex-row items-center gap-2 text-[.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                                editFormData.tag === "Chef's Special"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                handleEditDishTagClick("Chef's Special")
+                              }
+                            >
+                              Chef's Special
+                            </span>
+                            <span
+                              className={`flex flex-row items-center gap-2 text-[.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
+                                editFormData.tag === "New Launch"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                handleEditDishTagClick("New Launch")
+                              }
+                            >
+                              New Launch
+                            </span>
+                            <span
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
+                                editFormData.tag === "Dairy free"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                handleEditDishTagClick("Dairy free")
+                              }
+                            >
+                              Dairy free
+                            </span>
+                            <span
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
+                                editFormData.tag === "Vegan"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() => handleEditDishTagClick("Vegan")}
+                            >
+                              Vegan
+                            </span>
+                            <span
+                              className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
+                                editFormData.tag === "Extra Spicy"
+                                  ? "bg-[#004AAD] text-white"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                handleEditDishTagClick("Extra Spicy")
+                              }
+                            >
+                              Extra Spicy
+                            </span>
+                          </div>
+                          <p
+                            className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
+                            // onClick={addAddOn}
+                          >
+                            <FaPlus className="text-lg" />
+                            Request New
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -744,47 +1453,142 @@ const Menu = () => {
         >
           <div className={`p-4 w-full sm:w-fit h-fit`}>
             <div className="w-full relative bg-white rounded-lg shadow">
-              <div className="flex flex-row gap-8 border-b-2 px-10 py-4">
+              <div className="flex flex-row items-center justify-between gap-8 border-b-2 px-10 py-4">
                 <div className="flex flex-col">
-                  <h1 className="text-[28px] font-[500]">Add Main Category</h1>
+                  <h1 className="text-[1.5rem] font-[500]">
+                    Add Main Category
+                  </h1>
                 </div>
                 <IoIosCloseCircleOutline
                   onClick={() => {
                     handleCloseCategoryModal();
                   }}
-                  className="text-4xl hover:cursor-pointer"
+                  className="text-[1.7rem] hover:cursor-pointer"
                 />
               </div>
               <div className="flex flex-col mt-2 px-8 pb-5">
-                <form className="flex flex-col gap-2 justify-center">
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-2 justify-center"
+                >
                   <div className="flex flex-col gap-1">
-                    <label className="flex flex-row items-center text-[#0F172A] text-[24px] font-[400]">
+                    <label className="flex flex-row mt-2 items-center text-[#0F172A] text-[1.2rem] font-Roboto">
                       Main Category name
                       <LuAsterisk className="text-sm text-[#C62828]" />
                     </label>
                     <input
                       type="text"
-                      className="w-full p-3 mt-2 focus:outline-none border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                      className="w-full py-2 px-4 mt-2 focus:outline-none border-2 border-[#00000033] rounded-[8px] text-[18px]"
                       placeholder="Ex: Food Menu"
+                      name="name"
+                      value={mainCategoryFormData.name}
+                      onChange={handleMainCategoryChange}
                     />
-                    <label className="text-[18px] font-[400] mt-4 text-center flex items-center">
+                    <label className="text-[18px] font-[400] mt-2 gap-3 text-center flex justify-betwee items-center">
                       <input
                         type="checkbox"
                         // checked={rememberMe}
                         // onChange={() => setRememberMe(!rememberMe)}
-                        className="size-[20px] mr-2"
+                        className="size-[16px] "
                       />
                       Mark as Primary
                     </label>
                   </div>
-                  <div className="flex flex-row gap-5 mt-4">
+                  <div className="flex flex-row gap-5 mt-3">
                     <button
-                      className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
+                      className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-2"
                       onClick={() => handleCloseCategoryModal()}
                     >
                       Cancel
                     </button>
-                    <button className="w-[50%] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
+                    <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2">
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* edit subcategory modal */}
+      {editSubCategoryModal && (
+        <div
+          id="default-modal"
+          // tabIndex="-1"
+          aria-hidden="true"
+          className={`fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50`}
+        >
+          <div className={`p-4 w-full sm:w-fit h-fit`}>
+            <div className="w-[380px] relative bg-white rounded-lg shadow">
+              <div className="flex flex-row items-center justify-between gap-8 border-b-2 px-10 py-4">
+                <div className="flex flex-col">
+                  <h1 className="text-[1.5rem] font-[500]">Edit Category</h1>
+                </div>
+                <IoIosCloseCircleOutline
+                  onClick={() => {
+                    setEditSubCategoryModal(false);
+                  }}
+                  className="text-[1.7rem] hover:cursor-pointer"
+                />
+              </div>
+              <div className="flex flex-col mt-2 px-8 pb-5">
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-2 justify-center"
+                >
+                  <div className="flex flex-col gap-1">
+                    <label className="flex flex-row mt-2 items-center text-[#0F172A] text-[1.2rem] font-Roboto">
+                      Category name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      className="w-full py-2 px-4 mt-2 focus:outline-none border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                      placeholder="Sub-Category name"
+                      value={editSubCategoryFormData.name}
+                      onChange={handleEditSubCategoryChange}
+                    />
+                    <label className="text-[18px] font-[400] mt-2 gap-3 text-center flex justify-betwee items-center">
+                      <input
+                        type="checkbox"
+                        // checked={rememberMe}
+                        // onChange={() => setRememberMe(!rememberMe)}
+                        className="size-[16px] "
+                      />
+                      Mark as Main Primary
+                    </label>
+                  </div>
+
+                  <div className="mt-4">
+                    <label
+                      htmlFor="category"
+                      className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                    >
+                      Select Main Category
+                    </label>
+                    <select
+                      className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
+                      id="category"
+                      name="category"
+                      value={editSubCategoryFormData.category}
+                      onChange={handleEditSubCategoryChange}
+                    >
+                      <option value="">Select Main Category</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
+                  </div>
+
+                  <div className="flex flex-row gap-5 mt-3">
+                    <button
+                      className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-2"
+                      onClick={() => setEditSubCategoryModal(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2">
                       Save
                     </button>
                   </div>
@@ -814,12 +1618,12 @@ const Menu = () => {
               <div className="flex flex-col mt-2 px-8 pb-5">
                 <div className="flex flex-row gap-5 mt-4">
                   <button
-                    className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
+                    className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-2"
                     onClick={() => setDeleteModal(!deleteModal)}
                   >
                     Cancel
                   </button>
-                  <button className="w-[50%] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
+                  <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2">
                     Delete
                   </button>
                 </div>

@@ -21,7 +21,7 @@ const MyPlans = () => {
   return (
     <>
       <div className="w-full h-fit relative ">
-        <div className=" w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 ml-[7%] mt-2 ">
+        <div className=" w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 ml-[7%]  ">
           <div className="w-full px-10 py-8 bg-[#F1F7FF]">
             <div className="w-full flex flex-row justify-between">
               <div className="flex flex-col">
