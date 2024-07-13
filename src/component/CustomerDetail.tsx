@@ -31,7 +31,7 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5">
-      <div className="bg-white w-1/3 h-full p-7 shadow-lg overflow-y-auto rounded-xl">
+      <div className="bg-white lg:w-2/5 md:w-1/3 h-full p-7 shadow-lg overflow-y-auto rounded-xl">
         {/*top div*/}
         <div className="flex justify-between items-center pb-7 border-black border-b">
           <div>
@@ -67,8 +67,8 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
                   {customer.segmentation}
                 </span>
               </h3>
-              <div className="flex justify-center gap-[0.2rem] items-center">
-                <p className="text-sm text-gray-500">
+              <div className="flex justify-start gap-[0.2rem] items-center">
+                <p className="text-sm text-gray-500 w-1/2">
                   Customer Since 20 April 2023
                 </p>
                 <span className="text-xs text-gray-500 bg-[#D5E7FF] rounded-full px-2 py-1 ml-2">

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 //icons
 import { FaFilter, FaSearch } from "react-icons/fa";
 import { TbArrowsSort } from "react-icons/tb";
+import { IoCloseOutline } from "react-icons/io5";
 
 //other components
 import CustomerDetail from "../component/CustomerDetail";
@@ -22,6 +23,7 @@ const CustomerList: React.FC = () => {
     null
   );
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
+  const [filterData, setFilterData] = useState<string[]>([]);
   const [sort, setSort] = useState<boolean>(false);
 
   //calculate the indices of first and last customer
@@ -53,6 +55,14 @@ const CustomerList: React.FC = () => {
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
+  const filterElementsAdd = (data: string[]) => {
+    setFilterData(data);
+  };
+  const handleFilterDataRemove = (data: string) => {
+    let newData: string[] = filterData.filter((el: string) => el !== data);
+    setFilterData(newData);
+  };
+
   const handleSortChange = (criteria: string) => {
     setSort(false);
     console.log(criteria);
@@ -171,6 +181,27 @@ const CustomerList: React.FC = () => {
             <strong className="text-[#004AAD]">100 Record</strong>
           </span>
         </div>
+
+        {/*Filter elements */}
+        {filterData.length > 0 && (
+          <div className="font-inter flex items-center justify-start gap-2 mb-4">
+            <h2 className="font-bold text-base text-[#454545]">Filter</h2>
+            {filterData.map((data: string, index: number) => {
+              return (
+                <div
+                  key={index}
+                  className="flex items-center gap-1 bg-[#F1F7FF] text-xs font-semibold px-2 py-1 rounded-xl text-[#373737]"
+                >
+                  <p>{data}</p>
+                  <IoCloseOutline
+                    className="text-lg cursor-pointer"
+                    onClick={() => handleFilterDataRemove(data)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/*Customer info table */}
         <table className="min-w-full bg-white border font-inter">
@@ -321,7 +352,11 @@ const CustomerList: React.FC = () => {
         onClose={closeModal}
       />
 
-      <CustomerFilter isVisible={isFilterVisible} onClose={toggleFilter} />
+      <CustomerFilter
+        isVisible={isFilterVisible}
+        onClose={toggleFilter}
+        filterData={filterElementsAdd}
+      />
     </div>
   );
 };

@@ -3,11 +3,20 @@ import React, { useState } from "react";
 interface FilterProps {
   isVisible: boolean;
   onClose: () => void;
+  filterData: (data: string[]) => void;
 }
 
-const CustomerFilter: React.FC<FilterProps> = ({ isVisible, onClose }) => {
-  const [visitFilter, setVisitFilter] = useState<string>("30");
-  const [nonVisitFilter, setNonVisitFilter] = useState<string>("30");
+const CustomerFilter: React.FC<FilterProps> = ({
+  isVisible,
+  onClose,
+  filterData,
+}) => {
+  const [visitFilter, setVisitFilter] = useState<string>(
+    "Visited in Last 30 days"
+  );
+  const [nonVisitFilter, setNonVisitFilter] = useState<string>(
+    "Not visited in Last 30 days"
+  );
   const [segmentation, setSegmentation] = useState<string[]>([]);
   const [gender, setGender] = useState<string[]>([]);
 
@@ -29,13 +38,22 @@ const CustomerFilter: React.FC<FilterProps> = ({ isVisible, onClose }) => {
     setGender(updatedGender);
   };
 
+  //apply
+  const handleApply = () => {
+    const data: string[] = [];
+    data.push(...segmentation, ...gender, visitFilter, nonVisitFilter);
+    console.log(data);
+    filterData(data);
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5">
-      <div className="bg-white w-1/3 h-auto p-5 shadow-lg rounded-lg">
-        <div className="flex justify-between items-center pb-5 border-black border-b font-Roboto">
+      <div className="bg-white w-1/3 h-auto p-5 shadow-lg rounded-lg overflow-y-auto">
+        <div className="flex justify-between items-center pb-2 border-black border-b font-Roboto">
           <div>
-            <h2 className="text-[1.75rem] font-semibold">Filter Customer</h2>
-            <p className="text-lg">Filter your customer database easily</p>
+            <h2 className="text-[1.7rem] font-semibold">Filter Customer</h2>
+            <p className="text-base">Filter your customer database easily</p>
           </div>
 
           <button
@@ -46,25 +64,29 @@ const CustomerFilter: React.FC<FilterProps> = ({ isVisible, onClose }) => {
           </button>
         </div>
         {/*customer visted in */}
-        <div className="mt-4">
-          <div className="mb-4 font-Roboto">
+        <div className="mt-2">
+          <div className="mb-2 font-Roboto">
             <p className="text-[1.32rem] font-semibold mb-3">
               Customer visited in
             </p>
             <div className="flex space-x-2">
               <button
                 className={`px-3 py-1 border rounded-lg ${
-                  visitFilter === "30" ? "bg-[#004AAD] text-white" : ""
+                  visitFilter === "Visited in Last 30 days"
+                    ? "bg-[#004AAD] text-white"
+                    : ""
                 }`}
-                onClick={() => setVisitFilter("30")}
+                onClick={() => setVisitFilter("Visited in Last 30 days")}
               >
                 Last 30 days
               </button>
               <button
                 className={`px-3 py-1 border rounded-lg ${
-                  visitFilter === "60" ? "bg-[#004AAD] text-white" : ""
+                  visitFilter === "Visited in Last 60 days"
+                    ? "bg-[#004AAD] text-white"
+                    : ""
                 }`}
-                onClick={() => setVisitFilter("60")}
+                onClick={() => setVisitFilter("Visited in Last 60 days")}
               >
                 Last 60 days
               </button>
@@ -80,23 +102,27 @@ const CustomerFilter: React.FC<FilterProps> = ({ isVisible, onClose }) => {
           </div>
           {/*customer not visted in */}
           <div className="pb-4 border-b border-black font-Roboto">
-            <p className="text-[1.32rem] font-semibold mb-3">
+            <p className="text-[1.32rem] font-semibold mb-2">
               Customer not visited in
             </p>
             <div className="flex space-x-2">
               <button
                 className={`px-3 py-1 border rounded-lg ${
-                  nonVisitFilter === "30" ? "bg-[#004AAD] text-white" : ""
+                  nonVisitFilter === "Not visited in Last 30 days"
+                    ? "bg-[#004AAD] text-white"
+                    : ""
                 }`}
-                onClick={() => setNonVisitFilter("30")}
+                onClick={() => setNonVisitFilter("Not visited in Last 30 days")}
               >
                 Last 30 days
               </button>
               <button
                 className={`px-3 py-1 border rounded-lg ${
-                  nonVisitFilter === "60" ? "bg-[#004AAD] text-white" : ""
+                  nonVisitFilter === "Not visited in Last 60 days"
+                    ? "bg-[#004AAD] text-white"
+                    : ""
                 }`}
-                onClick={() => setNonVisitFilter("60")}
+                onClick={() => setNonVisitFilter("Not visited in Last 60 days")}
               >
                 Last 60 days
               </button>
@@ -125,7 +151,7 @@ const CustomerFilter: React.FC<FilterProps> = ({ isVisible, onClose }) => {
                     checked={segmentation.includes("New")}
                     onChange={() => toggleSegment("New")}
                   />
-                  <p className={"text-lg font-medium "}>New Customer</p>
+                  <p className={"text-base font-medium "}>New Customer</p>
                 </label>
                 <label
                   className={"flex items-center space-x-2 cursor-pointer "}
@@ -135,7 +161,7 @@ const CustomerFilter: React.FC<FilterProps> = ({ isVisible, onClose }) => {
                     checked={segmentation.includes("Regular")}
                     onChange={() => toggleSegment("Regular")}
                   />
-                  <p className={"text-lg font-medium "}>Regular Customer</p>
+                  <p className={"text-base font-medium "}>Regular Customer</p>
                 </label>
               </div>
               <div className="flex justify-start gap-12 items-center">
@@ -145,7 +171,7 @@ const CustomerFilter: React.FC<FilterProps> = ({ isVisible, onClose }) => {
                     checked={segmentation.includes("Loyal")}
                     onChange={() => toggleSegment("Loyal")}
                   />
-                  <p className={"text-lg font-medium "}>Loyal Customer</p>
+                  <p className={"text-base font-medium "}>Loyal Customer</p>
                 </label>
                 <label
                   className={"flex items-center space-x-2 cursor-pointer "}
@@ -155,7 +181,7 @@ const CustomerFilter: React.FC<FilterProps> = ({ isVisible, onClose }) => {
                     checked={segmentation.includes("Risk")}
                     onChange={() => toggleSegment("Risk")}
                   />
-                  <p className={"text-lg font-medium "}>Customer at risk</p>
+                  <p className={"text-base font-medium "}>Customer at risk</p>
                 </label>
               </div>
             </div>
@@ -192,12 +218,15 @@ const CustomerFilter: React.FC<FilterProps> = ({ isVisible, onClose }) => {
           </div>
           {/*buttons */}
           <div className="mt-6 flex justify-center gap-2">
-            <button className=" w-2/5 px-4 py-3 bg-[#E2E8F0] text-black rounded-lg">
+            <button
+              onClick={onClose}
+              className=" w-2/5 px-4 py-3 bg-[#E2E8F0] text-black rounded-lg"
+            >
               Cancel
             </button>
             <button
               className=" w-3/5 px-4 py-3 bg-[#004AAD] text-white rounded-lg"
-              onClick={onClose}
+              onClick={handleApply}
             >
               Apply
             </button>

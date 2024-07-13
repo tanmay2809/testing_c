@@ -92,7 +92,6 @@ const Analytics: React.FC = () => {
           </div>
           <div className="lg:flex md:flex lg:text-left text-[#505050]">
             <div
-              id="New"
               className="lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
               onMouseEnter={() => setHoveredSegmentation("New")}
               onMouseLeave={() => setHoveredSegmentation(null)}
@@ -102,7 +101,7 @@ const Analytics: React.FC = () => {
               <p className="font-bold">60 customers</p>
             </div>
             {hoveredSegmentation === "New" && (
-              <div className="  ">
+              <div className=" relative -left-4 ">
                 <SegmentationPopup segmentation={"New"} />
               </div>
             )}
@@ -112,7 +111,6 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              id="Regular"
               className="lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
               onMouseEnter={() => setHoveredSegmentation("Regular")}
               onMouseLeave={() => setHoveredSegmentation(null)}
@@ -122,7 +120,7 @@ const Analytics: React.FC = () => {
               <p className="font-bold">20 customers</p>
             </div>
             {hoveredSegmentation === "Regular" && (
-              <div className="  ">
+              <div className="relative -left-4  ">
                 <SegmentationPopup segmentation={"Regular"} />
               </div>
             )}
@@ -133,7 +131,6 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              id="Loyal"
               className="lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
               onMouseEnter={() => setHoveredSegmentation("Loyal")}
               onMouseLeave={() => setHoveredSegmentation(null)}
@@ -144,7 +141,6 @@ const Analytics: React.FC = () => {
             </div>
 
             <div
-              id="Risk"
               className="lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
               onMouseEnter={() => setHoveredSegmentation("Risk")}
               onMouseLeave={() => setHoveredSegmentation(null)}
