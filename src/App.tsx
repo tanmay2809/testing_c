@@ -17,10 +17,12 @@ import Billing from "./pages/Billing";
 import Invoice from "./pages/Invoice";
 import Stores from "./pages/Stores";
 import CustomerList from "./pages/CustomerList";
+import Overview from "./pages/Overview";
+import Analytics from "./pages/Analytics";
 
 const App: React.FC = () => {
   console.log("App Component Rendered");
-  
+
   return (
     <>
       <Routes>
@@ -38,6 +40,9 @@ const App: React.FC = () => {
           <Route path="/menu" element={<Menu />} />
           <Route path="/marketing" element={<Marketing />} />
           <Route path="/customer" element={<Customer />}>
+            <Route index element={<Overview />} />
+            <Route path="overview" element={<Overview />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="customerList" element={<CustomerList />} />
           </Route>
 

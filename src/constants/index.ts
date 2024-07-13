@@ -1,4 +1,5 @@
 import { SegmentationPopupProps } from "../component/SegmentationPopup";
+import { ChartOptions, ChartData } from "chart.js";
 
 export const PlansData = {
   quarterly: [
@@ -322,7 +323,7 @@ export const customers: Customer[] = [
   },
 ];
 
-//hardcoded data for segmentation popups 
+//hardcoded data for segmentation popups
 export const segmentationDetails: {
   [key in SegmentationPopupProps["segmentation"]]: {
     title: string;
@@ -360,4 +361,69 @@ export const segmentationDetails: {
   },
 };
 
+// Generate labels for each day of the month
+const daysInMonth = Array.from({ length: 30 }, (_, i) => `${i + 1} July`);
 
+export const data: ChartData<"bar"> = {
+  labels: daysInMonth,
+  datasets: [
+    {
+      label: "Regular Customer",
+      data: [
+        1, 42, 6, 1, 42, 6, 1, 42, 6, 1, 42, 6, 1, 42, 6, 1, 42, 6, 1, 42, 6, 1,
+        42, 6, 1, 42, 6, 1, 42, 21,
+      ],
+      backgroundColor: "#004AAD",
+    },
+    {
+      label: "New Customer",
+      data: [
+        18, 12, 6, 18, 12, 6, 18, 12, 6, 18, 12, 6, 18, 12, 6, 18, 12, 6, 18,
+        12, 6, 18, 12, 6, 18, 12, 6, 18, 12, 23,
+      ],
+      backgroundColor: "#C0DBFF",
+    },
+  ],
+};
+
+export const options: ChartOptions<"bar"> = {
+  scales: {
+    x: {
+      stacked: true,
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      stacked: true,
+    },
+  },
+  plugins: {
+    legend: {
+      display: false, // Hides the legend
+    },
+  },
+};
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+export const weekVisit = {
+  headline: "Weekend/weekdays Visit",
+  body: "This graph shows visit differentiation of customer on weekdays vs weekends in a month",
+};
+export const monthlyVisit = {
+  headline: "Monthly Visit",
+  body: "This graph shows visiting pattern of customers in a month",
+};
