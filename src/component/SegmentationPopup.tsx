@@ -2,6 +2,11 @@ import React from "react";
 
 export interface SegmentationPopupProps {
   segmentation: "New" | "Regular" | "Risk" | "Loyal";
+  setVisibility: React.Dispatch<React.SetStateAction<boolean>>;
+  hoveredSegmentation: React.Dispatch<
+    React.SetStateAction<number | string | null>
+  >;
+  segIndex: number;
 }
 
 //data
@@ -9,12 +14,25 @@ import { segmentationDetails } from "../constants/index";
 
 const SegmentationPopup: React.FC<SegmentationPopupProps> = ({
   segmentation,
+  setVisibility,
+  hoveredSegmentation,
+  segIndex,
 }) => {
   const details = segmentationDetails[segmentation];
 
   return (
     <div>
-      <div className="absolute bg-white border rounded-lg p-4 shadow-lg w-80 h-72 text-left flex flex-col justify-between z-50">
+      <div
+        className="absolute bg-white border rounded-lg p-4 shadow-lg w-80 h-72 text-left flex flex-col justify-between z-50"
+        onMouseOver={() => {
+          setVisibility(true);
+          hoveredSegmentation(segIndex);
+        }}
+        onMouseLeave={() => {
+          setVisibility(false);
+          hoveredSegmentation(null);
+        }}
+      >
         <span
           className={`py-1 px-3 w-1/3  text-center rounded-lg text-[0.94rem] font-semibold text-[#4B4B4B] ${[
             details.color,

@@ -76,7 +76,10 @@ const Analytics: React.FC = () => {
   const [hoveredSegmentation, setHoveredSegmentation] = useState<
     string | number | null
   >(null);
+  const [segmentationVisible, setSegmentationVisible] =
+    useState<boolean>(false);
   const [visitBox, setVisitBox] = useState<string | null>(null);
+
   return (
     <div className="w-full h-fit relative ">
       <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] mt-2 ">
@@ -93,46 +96,65 @@ const Analytics: React.FC = () => {
           <div className="lg:flex md:flex lg:text-left text-[#505050]">
             <div
               className="lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
-              onMouseEnter={() => setHoveredSegmentation("New")}
+              onMouseEnter={() => setHoveredSegmentation(1)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">New Customers</p>
               <h2 className="text-[2.5rem] font-bold">60%</h2>
               <p className="font-bold">60 customers</p>
             </div>
-            {hoveredSegmentation === "New" && (
+            {hoveredSegmentation === 1 && (
               <div className=" relative -left-4 ">
-                <SegmentationPopup segmentation={"New"} />
+                <SegmentationPopup
+                  segmentation={"New"}
+                  setVisibility={setSegmentationVisible}
+                  hoveredSegmentation={setHoveredSegmentation}
+                  segIndex={1}
+                />
               </div>
             )}
-            {hoveredSegmentation === "Loyal" && (
+            {hoveredSegmentation === 2 && (
               <div>
-                <SegmentationPopup segmentation={"Loyal"} />
+                <SegmentationPopup
+                  segmentation={"Loyal"}
+                  setVisibility={setSegmentationVisible}
+                  hoveredSegmentation={setHoveredSegmentation}
+                  segIndex={2}
+                />
               </div>
             )}
             <div
               className="lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
-              onMouseEnter={() => setHoveredSegmentation("Regular")}
+              onMouseEnter={() => setHoveredSegmentation(2)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Regular Customers</p>
               <h2 className="text-[2.5rem] font-bold">20%</h2>
               <p className="font-bold">20 customers</p>
             </div>
-            {hoveredSegmentation === "Regular" && (
+            {hoveredSegmentation === 3 && (
               <div className="relative -left-4  ">
-                <SegmentationPopup segmentation={"Regular"} />
+                <SegmentationPopup
+                  setVisibility={setSegmentationVisible}
+                  hoveredSegmentation={setHoveredSegmentation}
+                  segIndex={3}
+                  segmentation={"Regular"}
+                />
               </div>
             )}
-
-            {hoveredSegmentation === "Risk" && (
-              <div >
-                <SegmentationPopup segmentation={"Risk"} />
+            {hoveredSegmentation === 4 && (
+              <div>
+                <SegmentationPopup
+                  segmentation={"Risk"}
+                  setVisibility={setSegmentationVisible}
+                  hoveredSegmentation={setHoveredSegmentation}
+                  segIndex={4}
+                />
               </div>
             )}
             <div
               className="lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
-              onMouseEnter={() => setHoveredSegmentation("Loyal")}
+              onMouseEnter={() => setHoveredSegmentation(3)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Loyal Customers</p>
@@ -142,7 +164,7 @@ const Analytics: React.FC = () => {
 
             <div
               className="lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
-              onMouseEnter={() => setHoveredSegmentation("Risk")}
+              onMouseEnter={() => setHoveredSegmentation(4)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Customers at risk</p>
@@ -222,9 +244,7 @@ const Analytics: React.FC = () => {
               </p>
             </div>
             <div className="relative flex justify-center items-center mb-4">
-                <div className="w-full h-full">
-
-                </div>
+              <div className="w-full h-full"></div>
             </div>
           </div>
         </div>

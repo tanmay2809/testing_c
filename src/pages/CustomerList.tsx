@@ -19,9 +19,11 @@ const CustomerList: React.FC = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null
   );
-  const [hoveredSegmentation, setHoveredSegmentation] = useState<number | null>(
+  const [hoveredSegmentation, setHoveredSegmentation] = useState<number|string | null>(
     null
   );
+  const [segmentationVisible, setSegmentationVisible] =
+    useState<boolean>(false);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const [filterData, setFilterData] = useState<string[]>([]);
   const [sort, setSort] = useState<boolean>(false);
@@ -63,11 +65,13 @@ const CustomerList: React.FC = () => {
     setFilterData(newData);
   };
 
+  //sort
   const handleSortChange = (criteria: string) => {
     setSort(false);
     console.log(criteria);
     //the sorting logic goes here
   };
+
   return (
     <div className="w-full h-fit relative ">
       <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] mt-2 ">
@@ -229,11 +233,14 @@ const CustomerList: React.FC = () => {
                   {hoveredSegmentation === index && (
                     <>
                       {/*background blur div */}
-                      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-30"></div>
+                      {/* <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-30"></div> */}
                       {/*div to align popup */}
                       <div className="relative right-[16.5rem] -top-36 ">
                         <SegmentationPopup
+                          setVisibility={setSegmentationVisible}
+                          hoveredSegmentation={setHoveredSegmentation}
                           segmentation={customer.segmentation}
+                          segIndex={index}
                         />
                       </div>
                     </>
@@ -244,11 +251,9 @@ const CustomerList: React.FC = () => {
                       segmentationColors[customer.segmentation]
                     }`}
                     onMouseEnter={() => {
-                      console.log("hover");
                       setHoveredSegmentation(index);
                     }}
                     onMouseLeave={() => {
-                      console.log("out");
                       setHoveredSegmentation(null);
                     }}
                   >
