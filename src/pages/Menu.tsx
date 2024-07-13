@@ -33,9 +33,15 @@ interface MenuItem {
   type?: "veg" | "nonveg" | "egg" | "";
 }
 
+interface SubCategory {
+  name: string;
+  image: string[];
+}
+
 const Menu = () => {
   const [pic, setPic] = useState<string>("");
   const [editPic, setEditPic] = useState<string>("");
+  const [subCategoryPic, setSubCategoryPic] = useState<string>("");
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
     image: [],
@@ -66,8 +72,11 @@ const Menu = () => {
     addone: [{ name: "", additionalPrice: "" }],
     type: "",
   });
+  const [subCategoryFormData, setSubCategoryFormData] = useState<SubCategory>({
+    name: "",
+    image: [],
+  });
 
-  
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
   const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
@@ -102,6 +111,20 @@ const Menu = () => {
     };
   };
 
+  const handleSubCategoryImageChange = (file: File) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      if (reader.result) {
+        setSubCategoryPic(reader.result as string);
+        setSubCategoryFormData({
+          ...subCategoryFormData,
+          image: [reader.result as string],
+        });
+      }
+    };
+  };
+
   const removeImage = () => {
     setPic("");
     setFormData({
@@ -114,6 +137,14 @@ const Menu = () => {
     setEditPic("");
     setEditFormData({
       ...editFormData,
+      image: [],
+    });
+  };
+
+  const removeSubCategoryPic = () => {
+    setSubCategoryPic("");
+    setSubCategoryFormData({
+      ...subCategoryFormData,
       image: [],
     });
   };
@@ -143,6 +174,30 @@ const Menu = () => {
     }
   };
 
+  const handleSubCategoryChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+    index?: number,
+    field?: string
+  ) => {
+    const { name, value } = e.target;
+
+    if (index !== undefined && field) {
+      setSubCategoryFormData({
+        ...subCategoryFormData,
+        image: subCategoryFormData.image.map((img, i) =>
+          i === index ? value : img
+        ),
+      });
+    } else {
+      setSubCategoryFormData({
+        ...subCategoryFormData,
+        [name]: value,
+      });
+    }
+  };
+
   const addAddOn = () => {
     setFormData({
       ...formData,
@@ -151,9 +206,12 @@ const Menu = () => {
   };
 
   const addEditAddOn = () => {
-    setFormData({
-      ...formData,
-      addone: [...(formData.addone || []), { name: "", additionalPrice: "" }],
+    setEditFormData({
+      ...editFormData,
+      addone: [
+        ...(editFormData.addone || []),
+        { name: "", additionalPrice: "" },
+      ],
     });
   };
 
@@ -165,9 +223,9 @@ const Menu = () => {
   };
 
   const removeEditAddOn = (index: number) => {
-    setFormData({
-      ...formData,
-      addone: formData.addone?.filter((_, i) => i !== index),
+    setEditFormData({
+      ...editFormData,
+      addone: editFormData.addone?.filter((_, i) => i !== index),
     });
   };
 
@@ -182,6 +240,8 @@ const Menu = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formData);
+    console.log(subCategoryFormData);
+    console.log(editFormData);
   };
 
   const handleFoodTypeClick = (type: "veg" | "nonveg" | "egg") => {
@@ -193,6 +253,20 @@ const Menu = () => {
     } else {
       setFormData({
         ...formData,
+        type: type,
+      });
+    }
+  };
+
+  const handleEditFoodTypeClick = (type: "veg" | "nonveg" | "egg") => {
+    if (editFormData.type === type) {
+      setEditFormData({
+        ...editFormData,
+        type: "",
+      });
+    } else {
+      setEditFormData({
+        ...editFormData,
         type: type,
       });
     }
@@ -214,6 +288,27 @@ const Menu = () => {
     } else {
       setFormData({
         ...formData,
+        tag: type,
+      });
+    }
+  };
+
+  const handleEditDishTagClick = (
+    type:
+      | "Chef's Special"
+      | "New Launch"
+      | "Dairy free"
+      | "Vegan"
+      | "Extra Spicy"
+  ) => {
+    if (editFormData.tag === type) {
+      setEditFormData({
+        ...editFormData,
+        tag: "",
+      });
+    } else {
+      setEditFormData({
+        ...editFormData,
         tag: type,
       });
     }
@@ -251,6 +346,7 @@ const Menu = () => {
                     onClick={() => {
                       setIsSubCategoryOpen(!isSubCategoryOpen);
                       setIsAddMenuOpen(false);
+                      setIsEditMenuOpen(false);
                     }}
                   >
                     <FiPlus />
@@ -261,6 +357,7 @@ const Menu = () => {
                     onClick={() => {
                       setIsAddMenuOpen(!isAddMenuOpen);
                       setIsSubCategoryOpen(false);
+                      setIsEditMenuOpen(false);
                     }}
                   >
                     <FiPlus />
@@ -329,7 +426,7 @@ const Menu = () => {
                             Item name <span className="text-[#ED4F4F]">*</span>
                           </label>
                           <input
-                          placeholder="Eg: Chicken Biryani"
+                            placeholder="Eg: Chicken Biryani"
                             type="text"
                             id="name"
                             name="name"
@@ -366,7 +463,7 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="price"
-                         className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Pricing <span className="text-[#ED4F4F]">*</span>
                         </label>
@@ -640,7 +737,7 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="dish"
-                        className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Dish Tag (Optional)
                           <p className="text-sm text-[#8497b3]">
@@ -749,13 +846,13 @@ const Menu = () => {
                           <span className="text-[#ED4F4F]">*</span>
                         </label>
                         <input
-                         placeholder="Eg: Starter"
+                          placeholder="Eg: Starter"
                           type="text"
                           id="subcategory"
-                          name="subcategory"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
+                          name="name"
+                          value={subCategoryFormData.name}
+                          onChange={handleSubCategoryChange}
+                          // required
                           className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
                         />
                       </div>
@@ -766,11 +863,14 @@ const Menu = () => {
                           htmlFor="category"
                           className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
-                          Sub-Category icon <p className=" font-Roboto text-[.8rem] m-1">one image at a time allowed</p>
+                          Sub-Category icon{" "}
+                          <p className=" font-Roboto text-[.8rem] m-1">
+                            one image at a time allowed
+                          </p>
                         </label>
                         <div className="flex flex-row gap-8 bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
                           <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
-                            {pic == "" ? (
+                            {subCategoryPic == "" ? (
                               <div className="size-[90px] flex items-center justify-center w-full">
                                 <label
                                   htmlFor="dropzone-file"
@@ -787,16 +887,18 @@ const Menu = () => {
                                     accept="image/*"
                                     onChange={(e) => {
                                       if (e.target.files)
-                                        handleImageChange(e.target.files[0]);
+                                        handleSubCategoryImageChange(
+                                          e.target.files[0]
+                                        );
                                     }}
                                   />
                                 </label>
                               </div>
                             ) : (
                               <div>
-                                <img src={pic} alt="uploaded"></img>
+                                <img src={subCategoryPic} alt="uploaded"></img>
                                 <button
-                                  onClick={removeImage}
+                                  onClick={removeSubCategoryPic}
                                   className="absolute -top-2 -right-2 text-red-600"
                                 >
                                   <IoCloseCircle size={24} />
@@ -941,7 +1043,7 @@ const Menu = () => {
                                 ? "bg-[#004AAD] text-white"
                                 : ""
                             }`}
-                            onClick={() => handleFoodTypeClick("veg")}
+                            onClick={() => handleEditFoodTypeClick("veg")}
                           >
                             <BiFoodTag className="text-2xl text-[#67CE67]" />
                             Veg
@@ -952,7 +1054,7 @@ const Menu = () => {
                                 ? "bg-[#004AAD] text-white"
                                 : ""
                             }`}
-                            onClick={() => handleFoodTypeClick("egg")}
+                            onClick={() => handleEditFoodTypeClick("egg")}
                           >
                             <BiFoodTag className="text-2xl text-[#F7C02B]" />
                             Egg
@@ -963,7 +1065,7 @@ const Menu = () => {
                                 ? "bg-[#004AAD] text-white"
                                 : ""
                             }`}
-                            onClick={() => handleFoodTypeClick("nonveg")}
+                            onClick={() => handleEditFoodTypeClick("nonveg")}
                           >
                             <BiFoodTag className="text-2xl text-[#ED4F4F]" />
                             Non-Veg
@@ -975,7 +1077,7 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="addone"
-                         className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Add-ons
                         </label>
@@ -994,7 +1096,7 @@ const Menu = () => {
                                   <span className="text-[#ED4F4F]">*</span>
                                 </label>
                                 <input
-                                 placeholder="Eg: Mayonnaise"
+                                  placeholder="Eg: Mayonnaise"
                                   type="text"
                                   id={`addone-name-${index}`}
                                   name={`addone-name-${index}`}
@@ -1167,7 +1269,7 @@ const Menu = () => {
                       <div className="mb-4">
                         <label
                           htmlFor="dish"
-                         className="block text-gray-700 text-[1.2rem] font-inter mb-2"
+                          className="block text-gray-700 text-[1.2rem] font-inter mb-2"
                         >
                           Dish Tag (Optional)
                           <p className="text-sm text-[#8497b3]">
@@ -1183,7 +1285,7 @@ const Menu = () => {
                                   : ""
                               }`}
                               onClick={() =>
-                                handleDishTagClick("Chef's Special")
+                                handleEditDishTagClick("Chef's Special")
                               }
                             >
                               Chef's Special
@@ -1194,7 +1296,9 @@ const Menu = () => {
                                   ? "bg-[#004AAD] text-white"
                                   : ""
                               }`}
-                              onClick={() => handleDishTagClick("New Launch")}
+                              onClick={() =>
+                                handleEditDishTagClick("New Launch")
+                              }
                             >
                               New Launch
                             </span>
@@ -1204,7 +1308,9 @@ const Menu = () => {
                                   ? "bg-[#004AAD] text-white"
                                   : ""
                               }`}
-                              onClick={() => handleDishTagClick("Dairy free")}
+                              onClick={() =>
+                                handleEditDishTagClick("Dairy free")
+                              }
                             >
                               Dairy free
                             </span>
@@ -1214,7 +1320,7 @@ const Menu = () => {
                                   ? "bg-[#004AAD] text-white"
                                   : ""
                               }`}
-                              onClick={() => handleDishTagClick("Vegan")}
+                              onClick={() => handleEditDishTagClick("Vegan")}
                             >
                               Vegan
                             </span>
@@ -1224,7 +1330,9 @@ const Menu = () => {
                                   ? "bg-[#004AAD] text-white"
                                   : ""
                               }`}
-                              onClick={() => handleDishTagClick("Extra Spicy")}
+                              onClick={() =>
+                                handleEditDishTagClick("Extra Spicy")
+                              }
                             >
                               Extra Spicy
                             </span>
@@ -1259,7 +1367,9 @@ const Menu = () => {
             <div className="w-full relative bg-white rounded-lg shadow">
               <div className="flex flex-row items-center justify-between gap-8 border-b-2 px-10 py-4">
                 <div className="flex flex-col">
-                  <h1 className="text-[1.5rem] font-[500]">Add Main Category</h1>
+                  <h1 className="text-[1.5rem] font-[500]">
+                    Add Main Category
+                  </h1>
                 </div>
                 <IoIosCloseCircleOutline
                   onClick={() => {
