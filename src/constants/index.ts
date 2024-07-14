@@ -472,6 +472,7 @@ export const data: ChartData<"bar"> = {
         42, 6, 1, 42, 6, 1, 42, 21,
       ],
       backgroundColor: "#004AAD",
+      barThickness: 20,
     },
     {
       label: "New Customer",
@@ -480,6 +481,11 @@ export const data: ChartData<"bar"> = {
         12, 6, 18, 12, 6, 18, 12, 6, 18, 12, 23,
       ],
       backgroundColor: "#C0DBFF",
+      barThickness: 20,
+      borderRadius: {
+        topLeft: 5,
+        topRight: 5,
+      },
     },
   ],
 };

@@ -143,18 +143,18 @@ const Overview: React.FC = () => {
         </div>
 
         {/*Feedback div */}
-        <div className="py-4 px-8 flex items-center justify-start gap-10 border border-[#505050] font-inter mt-4">
+        <div className="py-4 px-8 flex items-center justify-evenly gap-10 border border-[#505050] font-inter mt-4">
           <img
             src={feedback}
             alt="Feedback image"
             className="w-[143px] h-[123px]"
           />
-          <div>
-            <p className=" text-xl font-medium text-[#555555]">
+          <div className="flex flex-col gap-4">
+            <p className=" text-lg font-medium text-[#555555]">
               Help us to make snackBAE better by adding a feedback or request
               features that are best for your business
             </p>
-            <p className="text-[#004AAD] text-xl font-bold">Give Feedback</p>
+            <p className="text-[#004AAD] text-lg font-bold">Give Feedback</p>
           </div>
         </div>
       </div>

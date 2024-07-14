@@ -19,6 +19,8 @@ const CustomerFilter: React.FC<FilterProps> = ({
   );
   const [segmentation, setSegmentation] = useState<string[]>([]);
   const [gender, setGender] = useState<string[]>([]);
+  const [customDateVisit, setCustomDateVisit] = useState<string>("");
+  const [customDateNotVisit, setCustomDateNotVisit] = useState<string>("");
 
   if (!isVisible) return null;
 
@@ -41,6 +43,18 @@ const CustomerFilter: React.FC<FilterProps> = ({
   //apply
   const handleApply = () => {
     const data: string[] = [];
+    if (visitFilter === "Custom") {
+      data.push(...segmentation, ...gender, customDateVisit, nonVisitFilter);
+      filterData(data)
+      onClose();
+      return
+    }
+    if (nonVisitFilter === "Custom") {
+      data.push(...segmentation, ...gender, visitFilter, customDateNotVisit);
+      filterData(data)
+      onClose();
+      return
+    }
     data.push(...segmentation, ...gender, visitFilter, nonVisitFilter);
     console.log(data);
     filterData(data);
@@ -90,14 +104,26 @@ const CustomerFilter: React.FC<FilterProps> = ({
               >
                 Last 60 days
               </button>
-              <button
-                className={`px-3 py-1 border rounded-lg ${
-                  visitFilter === "custom" ? "bg-[#004AAD] text-white" : ""
-                }`}
-                onClick={() => setVisitFilter("custom")}
-              >
-                Custom
-              </button>
+              <div>
+                <button
+                  className={`px-3 py-1 border rounded-lg ${
+                    visitFilter === "Custom" ? "bg-[#004AAD] text-white" : ""
+                  }`}
+                  onClick={() => setVisitFilter("Custom")}
+                >
+                  Custom
+                </button>
+                {visitFilter === "Custom" && (
+                  <input
+                    type="date"
+                    id="customDateInput"
+                    value={customDateVisit}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setCustomDateVisit(e.target.value)
+                    }
+                  />
+                )}
+              </div>
             </div>
           </div>
           {/*customer not visted in */}
@@ -126,14 +152,26 @@ const CustomerFilter: React.FC<FilterProps> = ({
               >
                 Last 60 days
               </button>
-              <button
-                className={`px-3 py-1 border rounded-lg ${
-                  nonVisitFilter === "custom" ? "bg-[#004AAD] text-white" : ""
-                }`}
-                onClick={() => setNonVisitFilter("custom")}
-              >
-                Custom
-              </button>
+              <div>
+                <button
+                  className={`px-3 py-1 border rounded-lg ${
+                    nonVisitFilter === "Custom" ? "bg-[#004AAD] text-white" : ""
+                  }`}
+                  onClick={() => setNonVisitFilter("Custom")}
+                >
+                  Custom
+                </button>
+                {nonVisitFilter === "Custom" && (
+                  <input
+                    type="date"
+                    id="customDateInput"
+                    value={customDateNotVisit}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setCustomDateNotVisit(e.target.value)
+                    }
+                  />
+                )}
+              </div>
             </div>
           </div>
           {/*customer segmentation */}

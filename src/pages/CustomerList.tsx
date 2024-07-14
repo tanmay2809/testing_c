@@ -19,9 +19,9 @@ const CustomerList: React.FC = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null
   );
-  const [hoveredSegmentation, setHoveredSegmentation] = useState<number|string | null>(
-    null
-  );
+  const [hoveredSegmentation, setHoveredSegmentation] = useState<
+    number | string | null
+  >(null);
   const [segmentationVisible, setSegmentationVisible] =
     useState<boolean>(false);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
@@ -231,11 +231,11 @@ const CustomerList: React.FC = () => {
                 <td className="py-3 px-6 ">
                   {/*segementation popup */}
                   {hoveredSegmentation === index && (
-                    <>
+                    <div>
                       {/*background blur div */}
-                      {/* <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-30"></div> */}
+                     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
                       {/*div to align popup */}
-                      <div className="relative right-[16.5rem] -top-36 ">
+                      <div className="relative right-[16.5rem] -top-36">
                         <SegmentationPopup
                           setVisibility={setSegmentationVisible}
                           hoveredSegmentation={setHoveredSegmentation}
@@ -243,13 +243,13 @@ const CustomerList: React.FC = () => {
                           segIndex={index}
                         />
                       </div>
-                    </>
+                    </div>
                   )}
                   {/*segmentation column content */}
                   <span
-                    className={`py-1 px-2 rounded-lg text-sm z-50 ${
+                    className={` relative py-1 px-2 rounded-lg text-sm   ${
                       segmentationColors[customer.segmentation]
-                    }`}
+                    } ${hoveredSegmentation===index && "z-40"}`}
                     onMouseEnter={() => {
                       setHoveredSegmentation(index);
                     }}

@@ -49,6 +49,11 @@ const dataForBar = {
       label: "Customer Visits",
       data: [12, 19],
       backgroundColor: ["#FB7311", "#FFC700"],
+      barThickness: 80,
+      borderRadius: {
+        topLeft: 10, 
+        topRight: 10, 
+      },
     },
   ],
 };
@@ -95,7 +100,9 @@ const Analytics: React.FC = () => {
           </div>
           <div className="lg:flex md:flex lg:text-left text-[#505050]">
             <div
-              className="lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
+              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4  ${
+                hoveredSegmentation === 1 && "z-40"
+              }`}
               onMouseEnter={() => setHoveredSegmentation(1)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
@@ -104,28 +111,36 @@ const Analytics: React.FC = () => {
               <p className="font-bold">60 customers</p>
             </div>
             {hoveredSegmentation === 1 && (
-              <div className=" relative -left-4 ">
-                <SegmentationPopup
-                  segmentation={"New"}
-                  setVisibility={setSegmentationVisible}
-                  hoveredSegmentation={setHoveredSegmentation}
-                  segIndex={1}
-                />
+              <div>
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
+                <div className=" relative -left-4 ">
+                  <SegmentationPopup
+                    segmentation={"New"}
+                    setVisibility={setSegmentationVisible}
+                    hoveredSegmentation={setHoveredSegmentation}
+                    segIndex={1}
+                  />
+                </div>
               </div>
             )}
             {hoveredSegmentation === 2 && (
               <div>
-                <SegmentationPopup
-                  segmentation={"Loyal"}
-                  setVisibility={setSegmentationVisible}
-                  hoveredSegmentation={setHoveredSegmentation}
-                  segIndex={2}
-                />
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
+                <div>
+                  <SegmentationPopup
+                    segmentation={"Loyal"}
+                    setVisibility={setSegmentationVisible}
+                    hoveredSegmentation={setHoveredSegmentation}
+                    segIndex={2}
+                  />
+                </div>
               </div>
             )}
             <div
-              className="lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
-              onMouseEnter={() => setHoveredSegmentation(2)}
+              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4 ${
+                hoveredSegmentation === 3 && "z-40"
+              }`}
+              onMouseEnter={() => setHoveredSegmentation(3)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Regular Customers</p>
@@ -133,28 +148,36 @@ const Analytics: React.FC = () => {
               <p className="font-bold">20 customers</p>
             </div>
             {hoveredSegmentation === 3 && (
-              <div className="relative -left-4  ">
-                <SegmentationPopup
-                  setVisibility={setSegmentationVisible}
-                  hoveredSegmentation={setHoveredSegmentation}
-                  segIndex={3}
-                  segmentation={"Regular"}
-                />
+              <div>
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
+                <div className="relative -left-4  ">
+                  <SegmentationPopup
+                    setVisibility={setSegmentationVisible}
+                    hoveredSegmentation={setHoveredSegmentation}
+                    segIndex={3}
+                    segmentation={"Regular"}
+                  />
+                </div>
               </div>
             )}
             {hoveredSegmentation === 4 && (
               <div>
-                <SegmentationPopup
-                  segmentation={"Risk"}
-                  setVisibility={setSegmentationVisible}
-                  hoveredSegmentation={setHoveredSegmentation}
-                  segIndex={4}
-                />
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
+                <div>
+                  <SegmentationPopup
+                    segmentation={"Risk"}
+                    setVisibility={setSegmentationVisible}
+                    hoveredSegmentation={setHoveredSegmentation}
+                    segIndex={4}
+                  />
+                </div>
               </div>
             )}
             <div
-              className="lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
-              onMouseEnter={() => setHoveredSegmentation(3)}
+              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4  ${
+                hoveredSegmentation === 2 && "z-40"
+              }`}
+              onMouseEnter={() => setHoveredSegmentation(2)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Loyal Customers</p>
@@ -163,7 +186,9 @@ const Analytics: React.FC = () => {
             </div>
 
             <div
-              className="lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4"
+              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4 ${
+                hoveredSegmentation === 4 && "z-40"
+              }`}
               onMouseEnter={() => setHoveredSegmentation(4)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
@@ -397,18 +422,18 @@ const Analytics: React.FC = () => {
         </div>
 
         {/*Feedback div */}
-        <div className="py-4 px-8 flex items-center justify-start gap-10 border border-[#505050] font-inter mt-4">
+        <div className="py-4 px-6 flex items-center justify-evenly gap-10 border border-[#505050] font-inter mt-4">
           <img
             src={feedback}
             alt="Feedback image"
-            className="w-[143px] h-[123px]"
+            className="w-[120px] h-[110px]"
           />
-          <div>
-            <p className=" text-xl font-medium text-[#555555]">
+          <div className="flex flex-col gap-4">
+            <p className=" text-lg font-medium text-[#555555]">
               Help us to make snackBAE better by adding a feedback or request
               features that are best for your business
             </p>
-            <p className="text-[#004AAD] text-xl font-bold">Give Feedback</p>
+            <p className="text-[#004AAD] text-lg font-bold">Give Feedback</p>
           </div>
         </div>
       </div>

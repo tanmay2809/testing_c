@@ -21,7 +21,7 @@ const SegmentationPopup: React.FC<SegmentationPopupProps> = ({
   const details = segmentationDetails[segmentation];
 
   return (
-    <div>
+    <div >
       <div
         className="absolute bg-white border rounded-lg p-4 shadow-lg w-80 h-72 text-left flex flex-col justify-between z-50"
         onMouseOver={() => {
