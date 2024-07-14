@@ -1,5 +1,10 @@
 import Navbar from "../component/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRestaurantDetails } from "../redux/menuslice";
+import type { RootState , AppDispatch} from '../redux/store';
+import Switch from "../component/switch";
+import axios from "axios";
 
 //icons
 import { FiPlus } from "react-icons/fi";
@@ -10,6 +15,7 @@ import { BiFoodTag } from "react-icons/bi";
 import { IoCloseCircle } from "react-icons/io5";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { LuAsterisk } from "react-icons/lu";
+import { CiSearch } from "react-icons/ci";
 
 // assets
 import deleted from "../assets/deleted.png";
@@ -48,6 +54,18 @@ interface MainCategory {
 }
 
 const Menu = () => {
+
+
+  const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
+  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
+  const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
+  const [categoryModal, setCategoryModal] = useState(false);
+  const [editSubCategoryModal, setEditSubCategoryModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+
+
+  const [search, setSearch] = useState('');
+
   const [pic, setPic] = useState<string>("");
   const [editPic, setEditPic] = useState<string>("");
   const [subCategoryPic, setSubCategoryPic] = useState<string>("");
@@ -94,13 +112,78 @@ const Menu = () => {
     useState<MainCategory>({
       name: "",
     });
+  
 
-  const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
-  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
-  const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
-  const [categoryModal, setCategoryModal] = useState(false);
-  const [editSubCategoryModal, setEditSubCategoryModal] = useState(true);
-  const [deleteModal, setDeleteModal] = useState(false);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(search);
+    const inputValue = e.target.value;
+    setSearch(inputValue);
+    if (!inputValue) {
+      // If input value is empty or length is less than or equal to 1, clear search menu items
+      //setSearchMenuItems([]);
+      return;
+    }
+  
+    setSearch(inputValue);
+    //searchMenu();
+  };
+
+
+
+  const { data, loading, error } = useSelector((state: RootState) => state.resturantdata);
+  const useAppDispatch = () => useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
+  
+  const id: string = '668857dc758bf97a4d1406ab';
+
+  const [category1, setCategory1] = useState<string[]>([]);
+  const [subcategory1, setSubCategory1] = useState<string[]>([]);
+  
+  useEffect(() => {
+    if(id){
+      dispatch(fetchRestaurantDetails({ id }) as any);
+    }
+  }, [dispatch, id]); 
+
+  useEffect(() => {
+    if (data) {
+      setCategory1(data.category || []);
+      setSubCategory1(data.category?.subcategory || []);
+    }
+  }, [data]);
+
+console.log(data);
+
+// setSubCategory(data?.subcategory);
+
+//console.log(data.category);
+
+console.log(category1);
+console.log(subcategory1);
+
+
+
+
+
+    // post sub category
+    const addCategory = async () => {
+      const data = mainCategoryFormData;
+    
+      try {
+        const response = await axios.post(
+          'http://localhost:4000/api/addCategory/668857dc758bf97a4d1406ab',
+          data,
+          {
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+        console.log(JSON.stringify(response.data));
+        // Handle successful response here
+      } catch (error) {
+        console.error('Error adding category:', error);
+        // Handle error here
+      }
+    };
 
   const handleImageChange = (file: File) => {
     const reader = new FileReader();
@@ -315,13 +398,13 @@ const Menu = () => {
     });
   };
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: checked,
-    });
-  };
+  // const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, checked } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: checked,
+  //   });
+  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -330,6 +413,8 @@ const Menu = () => {
     console.log(editFormData);
     console.log(editSubCategoryFormData);
     console.log(mainCategoryFormData);
+    addCategory();
+    window.location.reload();
   };
 
   const handleFoodTypeClick = (type: "veg" | "nonveg" | "egg") => {
@@ -406,6 +491,18 @@ const Menu = () => {
     setCategoryModal(!categoryModal);
   };
 
+
+  if(loading){
+    return <div className="w-full h-screen flex justify-center items-center">
+      {/* <Loader /> */}
+      loading.....
+    </div>
+  }
+  if(error){
+    return <div className="w-full h-fit flex justify-center items-center">
+      error.....
+    </div>
+  }
   return (
     <div className="w-full h-fit relative ">
       <Navbar />
@@ -420,7 +517,7 @@ const Menu = () => {
             }`}
           >
             {/* top */}
-            <div className="w-full h-fit flex flex-co px-10 py-5  ">
+            <div className="w-full h-fit flex flex-col px-10 py-5  border-b  ">
               <div className="w-full h-fit flex  items-center justify-between">
                 <div className="w-[50%]">
                   <p className="text-[1.7rem] font-bold text-[#000000]">Menu</p>
@@ -453,17 +550,57 @@ const Menu = () => {
                   </button>
                 </div>
               </div>
+
+              <div className="w-full h-fit flex items-center justify-between mt-5">
+                    {/* Search result */}
+                  <div className="relative w-[35%]  flex items-center rounded-md border border-[#407fd1]  ">
+                    <input
+                      className="w-full sm:py-2 py-3 px-8 rounded-lg"
+                      type="text"
+                      value={search}
+                      onChange={handleSearch}
+                      placeholder="Search menu ..."
+                    />
+                    <CiSearch className="absolute text-[1.3rem] font-semibold ml-2 " />
+                  </div>
+
+                <div className="flex items-center gap-5">
+                    <div>
+            
+                    </div>
+                    <div className="flex gap-5">
+                      <p>Action items </p>
+                      <Switch isActive={true} />
+                    </div>
+                </div>
+
+                
+              </div>
+
             </div>
 
             {/* bottom */}
             <div>
-              <div className="flex flex-row items-center gap-4 px-5">
-                <button
+              <div className="flex flex-row items-center gap-4 px-8 py-5">
+                {category1.map((item ,index) => (
+                  <button
+                    key={index}
+                    className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
+                    onClick={() => setIsEditMenuOpen(!isEditMenuOpen)}
+                  >
+                    {item?.name as string || ''}
+                  </button>
+
+                // setsubcategory1(item?.subcategory || '');
+                
+
+                ))}
+                {/* <button
                   onClick={() => setIsEditMenuOpen(!isEditMenuOpen)}
                   className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
                 >
                   Food Menu
-                </button>
+                </button> */}
                 <FiPlus
                   className="text-[2.4rem] rounded-full p-2 bg-[#F0F0F0] text-[#004AAD] hover:cursor-pointer"
                   onClick={() => handleCloseCategoryModal()}
