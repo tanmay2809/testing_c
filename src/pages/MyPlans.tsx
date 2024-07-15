@@ -184,6 +184,8 @@ const MyPlans = () => {
                   </div>
                 ))}
             </div>
+
+            
             <div className="w-full h-fit px-[5rem] py-4 mt-12">
               <table className="w-full overflow-x-scroll">
                 <thead>

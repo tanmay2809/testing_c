@@ -76,53 +76,53 @@ const LeftNavbar = () => {
 
           
 
-          <div className={`flex flex-col justify-between items-center     text-[#64748B] text-[1.1rem] ${isOpen ? "gap-8 mt-6":"gap-20 mt-28"}`}>
+          <div className={`flex flex-col justify-between    text-[#64748B] text-[1.1rem] ${isOpen ? "gap-8 mt-6":"gap-20 mt-28"}`}>
             <div className="flex flex-col  gap-1 ">
             <div>
               <Link  className={`${
                     location.pathname === "/dashboard"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5 ":" p-4 "} `} to="/dashboard"><RiDashboardFill/><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>dashboard</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-5 mx-3 py-2.5 ":" p-4 "} `} to="/dashboard"><RiDashboardFill/><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>dashboard </span></Link>
             </div>
             <div >
               <Link className={`${
                     location.pathname === "/menu"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5  ":" p-4 "} `}  to="/menu"><FaConciergeBell /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>menu</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-5 mx-3 py-2.5  ":" p-4 "} `}  to="/menu"><FaConciergeBell /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>menu <span className="text-slate-100">........</span></span></Link>
             </div>
             <div>
                 <Link className={`${
                     location.pathname === "/marketing"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5  ":" p-4 "} `}  to="/marketing"><HiOutlineSpeakerphone /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>marketing</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-5 mx-3 py-2.5  ":" p-4 "} `}  to="/marketing"><HiOutlineSpeakerphone /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>marketing   </span></Link>
             </div>
             <div>
                 <Link className={`${
                     location.pathname === "/customer"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5 ":" p-4 "} `}  to="/customer"><MdOutlinePerson3 /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>customer</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-5 mx-3 py-2.5 ":" p-4 "} `}  to="/customer"><MdOutlinePerson3 /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>customer   </span></Link>
             </div>
             </div>
-            <div className={`py-3 font-Poppins px-2 text-[.9rem] flex  items-center justify-center  flex-col gap-1 rounded-md bg-gradient-to-tl from-[#004AAD] to-[#EAABF0] mx-3  ${isOpen?"block ":"hidden " } `}>
-              <p className=" text-white  text-[.8rem] mx-4 ">Upgrade to Premium to get access all Features!</p>
+            <div className={`py-3 font-semibold Poppins px-2 text-[.9rem] flex  items-center justify-center  flex-col gap-1 rounded-md bg-gradient-to-tl from-[#004AAD] to-[#EAABF0] mx-3  ${isOpen?"block ":"hidden " } `}>
+              <p className=" text-white  text-[.7rem] mx-3 ">Upgrade to Premium to access all Features!</p>
               <Link to="/plans" className="px-6 py-[.1rem] rounded-2xl bg-white text-[#004AAD]">Get Pro Now!</Link>
 
             </div>
-            <div className="flex flex-col text-[1.4rem] justify-between items-center gap-1">
+            <div className="flex flex-col text-[1.4rem] justify-between  ">
 
             <div >
                 <Link className={`${
                     location.pathname === "/setting"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5  ":" p-4 "} `} to="/setting"><CiSettings /> <span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>setting</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-5 mx-3 py-2.5  ":" p-4 "} `} to="/setting"><CiSettings /> <span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>setting  </span></Link>
             </div>
             <div>
-                <Link className={`flex items-center justify-center gap-3 text-red-500 ${isOpen ?"px-8 mx-3 py-2.5  ":" p-4 "}`} to="/login"><IoLogOutOutline /> <span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem] text-red-500":" hidden"}`}>Log Out</span></Link>
+                <Link className={`flex items-center  gap-3 text-red-500 ${isOpen ?"px-5 mx-3 py-2.5  ":" p-4 "}`} to="/login"><IoLogOutOutline /> <span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem] text-red-500":" hidden"}`}>Log Out</span></Link>
             </div>
             </div>
 
