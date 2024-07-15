@@ -1,5 +1,6 @@
 import { Outlet, Link ,useLocation} from "react-router-dom";
 import { useState } from "react";
+import Frame from "../component/Frame";
 
 
 //icon
@@ -82,28 +83,28 @@ const LeftNavbar = () => {
                     location.pathname === "/dashboard"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5 ":" p-4 "} `} to="/dashboard"><RiDashboardFill/><span onClick={handleToggle} className={` ${isOpen ? "block text-[1rem]":" hidden"}`}>dashboard</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5 ":" p-4 "} `} to="/dashboard"><RiDashboardFill/><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>dashboard</span></Link>
             </div>
             <div >
               <Link className={`${
                     location.pathname === "/menu"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-12 py-2.5 ":" p-4 "} `}  to="/menu"><FaConciergeBell /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>menu</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5  ":" p-4 "} `}  to="/menu"><FaConciergeBell /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>menu</span></Link>
             </div>
             <div>
                 <Link className={`${
                     location.pathname === "/marketing"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-12 py-2.5 ":" p-4 "} `}  to="/marketing"><HiOutlineSpeakerphone /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>marketing</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5  ":" p-4 "} `}  to="/marketing"><HiOutlineSpeakerphone /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>marketing</span></Link>
             </div>
             <div>
                 <Link className={`${
                     location.pathname === "/customer"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-12 py-2.5 ":" p-4 "} `}  to="/customer"><MdOutlinePerson3 /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>customer</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5 ":" p-4 "} `}  to="/customer"><MdOutlinePerson3 /><span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>customer</span></Link>
             </div>
             </div>
             <div className={`py-3 font-Poppins px-2 text-[.9rem] flex  items-center justify-center  flex-col gap-1 rounded-md bg-gradient-to-tl from-[#004AAD] to-[#EAABF0] mx-3  ${isOpen?"block ":"hidden " } `}>
@@ -118,17 +119,18 @@ const LeftNavbar = () => {
                     location.pathname === "/setting"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-12 py-2.5 ":" p-4 "} `} to="/setting"><CiSettings /> <span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>setting</span></Link>
+                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${isOpen ?"px-8 mx-3 py-2.5  ":" p-4 "} `} to="/setting"><CiSettings /> <span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem]":" hidden"}`}>setting</span></Link>
             </div>
             <div>
-                <Link className={`flex items-center justify-center gap-3 text-red-500 ${isOpen ?"px-12 py-2.5 ":" p-4 "}`} to="/login"><IoLogOutOutline /> <span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem] text-red-500":" hidden"}`}>Log Out</span></Link>
+                <Link className={`flex items-center justify-center gap-3 text-red-500 ${isOpen ?"px-8 mx-3 py-2.5  ":" p-4 "}`} to="/login"><IoLogOutOutline /> <span onClick={handleToggle} className={` ${isOpen ? "block text-[.9rem] text-red-500":" hidden"}`}>Log Out</span></Link>
             </div>
             </div>
 
           </div>
       </div>
 
-    </nav>
+      </nav>
+      <Frame/>
 
       <Outlet />
     </>

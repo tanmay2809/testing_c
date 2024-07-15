@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchRestaurantDetails } from "../redux/menuslice";
 import type { RootState , AppDispatch} from '../redux/store';
 import Switch from "../component/switch";
-import Frame from "../component/Frame";
+
 import axios from "axios";
 
 //icons
@@ -507,7 +507,6 @@ console.log(subcategory1);
   return (
     <div className="w-full h-fit relative ">
       <Navbar />
-      <Frame/>
       <div className=" w-[93%]  h-fit flex items-center justify-center ml-[7%]  ">
         <div className="w-full h-fit flex mt-[70px] ">
           {/* left div */}
