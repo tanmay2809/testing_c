@@ -26,7 +26,7 @@ const Customer: React.FC = () => {
         </div>
 
         {/* Buttons Container */}
-        <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC]">
+        <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-6">
           <Link
             className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
             to="/customer/overview"

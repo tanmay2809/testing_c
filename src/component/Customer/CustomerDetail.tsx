@@ -1,7 +1,11 @@
 import React from "react";
 
 //icons
-import { FaPhone, FaWhatsapp } from "react-icons/fa";
+import { IoCloseCircle } from "react-icons/io5";
+
+//images
+import whatsapp from "../../assets/whatsapp.png"
+import call from "../../assets/Call.png"
 
 interface Customer {
   name: string;
@@ -41,12 +45,10 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
             </p>
           </div>
 
-          <button
+          <IoCloseCircle
             onClick={onClose}
-            className="text-white text-2xl bg-black rounded-full w-8 flex items-center justify-center font-extrabold"
-          >
-            &times;
-          </button>
+            className=" text-3xl cursor-pointer  font-extrabold"
+          />
         </div>
         {/*customer contact and site info */}
         <div className="mt-4">
@@ -77,11 +79,11 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
               </div>
             </div>
             <div className="ml-auto flex items-center space-x-2">
-              <button className="bg-blue-200 p-2 rounded-full">
-                <FaPhone className="text-blue-600" />
+              <button className="bg-[#F1F1F1] p-2 rounded-lg">
+                <img src={call}/>
               </button>
-              <button className="bg-green-200 p-2 rounded-full">
-                <FaWhatsapp className="text-green-600" />
+              <button className="bg-[#F1F1F1] p-2 rounded-lg">
+                <img src={whatsapp} className="w-6 h-auto"/>
               </button>
             </div>
           </div>

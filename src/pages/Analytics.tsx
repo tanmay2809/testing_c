@@ -8,8 +8,8 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { FaArrowUpLong, FaArrowDownLong } from "react-icons/fa6";
 
 //other components
-import BarChart from "../component/BarChart";
-import SegmentationPopup from "../component/SegmentationPopup";
+import BarChart from "../component/Customer/BarChart";
+import SegmentationPopup from "../component/Customer/SegmentationPopup";
 
 //data
 import { months } from "../constants/index";
@@ -51,8 +51,8 @@ const dataForBar = {
       backgroundColor: ["#FB7311", "#FFC700"],
       barThickness: 80,
       borderRadius: {
-        topLeft: 10, 
-        topRight: 10, 
+        topLeft: 10,
+        topRight: 10,
       },
     },
   ],
@@ -84,36 +84,35 @@ const Analytics: React.FC = () => {
   const [segmentationVisible, setSegmentationVisible] =
     useState<boolean>(false);
   const [visitBox, setVisitBox] = useState<string | null>(null);
+  console.log(segmentationVisible);
 
   return (
     <div className="w-full h-fit relative ">
-      <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] mt-2 ">
+      <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] ">
         <div className="container mx-auto font-inter">
-          <h1 className="text-[1.325rem] font-semibold">
-            Customer Segmentation
-          </h1>
-          <div className="mb-4">
-            <span className="text-md">
+          <h1 className="text-xl font-semibold">Customer Segmentation</h1>
+          <div className="mb-2">
+            <span className="text-sm">
               Total Customer Database:{" "}
               <strong className="text-[#004AAD]">100 Record</strong>
             </span>
           </div>
           <div className="lg:flex md:flex lg:text-left text-[#505050]">
             <div
-              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4  ${
-                hoveredSegmentation === 1 && "z-40"
+              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  ${
+                hoveredSegmentation === 1 && "z-[90]"
               }`}
               onMouseEnter={() => setHoveredSegmentation(1)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">New Customers</p>
-              <h2 className="text-[2.5rem] font-bold">60%</h2>
+              <h2 className="text-3xl font-bold">60%</h2>
               <p className="font-bold">60 customers</p>
             </div>
             {hoveredSegmentation === 1 && (
               <div>
-                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
-                <div className=" relative -left-4 ">
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[80] p-5"></div>
+                <div className=" relative -left-1 ">
                   <SegmentationPopup
                     segmentation={"New"}
                     setVisibility={setSegmentationVisible}
@@ -125,8 +124,8 @@ const Analytics: React.FC = () => {
             )}
             {hoveredSegmentation === 2 && (
               <div>
-                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
-                <div>
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[80] p-5"></div>
+                <div className=" relative -left-2 ">
                   <SegmentationPopup
                     segmentation={"Loyal"}
                     setVisibility={setSegmentationVisible}
@@ -137,20 +136,20 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4 ${
-                hoveredSegmentation === 3 && "z-40"
+              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 ${
+                hoveredSegmentation === 3 && "z-[90]"
               }`}
               onMouseEnter={() => setHoveredSegmentation(3)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Regular Customers</p>
-              <h2 className="text-[2.5rem] font-bold">20%</h2>
+              <h2 className="text-3xl font-bold">20%</h2>
               <p className="font-bold">20 customers</p>
             </div>
             {hoveredSegmentation === 3 && (
               <div>
-                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
-                <div className="relative -left-4  ">
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[80] p-5"></div>
+                <div className="relative -left-1  ">
                   <SegmentationPopup
                     setVisibility={setSegmentationVisible}
                     hoveredSegmentation={setHoveredSegmentation}
@@ -162,8 +161,8 @@ const Analytics: React.FC = () => {
             )}
             {hoveredSegmentation === 4 && (
               <div>
-                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
-                <div>
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[80] p-5"></div>
+                <div className=" relative -left-2 ">
                   <SegmentationPopup
                     segmentation={"Risk"}
                     setVisibility={setSegmentationVisible}
@@ -174,36 +173,36 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4  ${
-                hoveredSegmentation === 2 && "z-40"
+              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  ${
+                hoveredSegmentation === 2 && "z-[90]"
               }`}
               onMouseEnter={() => setHoveredSegmentation(2)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Loyal Customers</p>
-              <h2 className="text-[2.5rem] font-bold">5%</h2>
+              <h2 className="text-3xl font-bold">5%</h2>
               <p className="font-bold">5 customers</p>
             </div>
 
             <div
-              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-44 flex flex-col justify-between px-6 mt-4 ${
-                hoveredSegmentation === 4 && "z-40"
+              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 ${
+                hoveredSegmentation === 4 && "z-[90]"
               }`}
               onMouseEnter={() => setHoveredSegmentation(4)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Customers at risk</p>
-              <h2 className="text-[2.5rem] font-bold">15%</h2>
+              <h2 className="text-3xl font-bold">15%</h2>
               <p className="font-bold">15 customers</p>
             </div>
           </div>
         </div>
 
         {/*Customer visit weekends vs weekdays */}
-        <div className="lg:flex gap-4 mt-4 font-inter">
-          <div className="bg-[#F1F7FF] rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-[31.5rem] mt-4">
+        <div className="lg:flex gap-4  font-inter">
+          <div className="bg-[#F1F7FF] rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4">
             <div>
-              <h3 className="text-[1.32rem] font-semibold flex items-center gap-2">
+              <h3 className="text-lg font-semibold flex items-center gap-2">
                 Customer Visit
                 <svg
                   width="23"
@@ -227,19 +226,19 @@ const Analytics: React.FC = () => {
                   {visitBox === "weekend" ? <VisitPopup type="weekend" /> : ""}
                 </div>
               </h3>
-              <p className="text-lg font-medium">Weekdays vs Weekends</p>
+              <p className="text-base font-medium">Weekdays vs Weekends</p>
             </div>
             <div className="relative flex justify-center items-center mb-4">
               <div className="w-full h-full">
-                <BarChart data={dataForBar} options={optionsForBar} />
+                <BarChart data={dataForBar} options={optionsForBar}  width={200} height={75}/>
               </div>
             </div>
           </div>
 
           {/*customer visit monthly pattern */}
-          <div className="bg-[#F1F7FF] rounded-lg p-6 mt-4 lg:w-1/2 flex flex-col justify-evenly h-[31.5rem]">
+          <div className="bg-[#F1F7FF] rounded-lg p-6 mt-4 lg:w-1/2 flex flex-col justify-evenly h-96">
             <div>
-              <h3 className="text-[1.32rem] font-semibold flex items-center gap-2">
+              <h3 className="text-xl font-semibold flex items-center gap-2">
                 Customer Visit
                 <svg
                   width="23"
@@ -264,7 +263,7 @@ const Analytics: React.FC = () => {
                 </div>
               </h3>
 
-              <p className="text-lg font-medium">
+              <p className="text-base font-medium">
                 Monthly customer visiting pattern
               </p>
             </div>
@@ -275,7 +274,7 @@ const Analytics: React.FC = () => {
         </div>
 
         {/*pie chart and customer related div */}
-        <div className="lg:flex  gap-4 mt-4 ">
+        <div className="lg:flex  gap-4 ">
           {/* Customer Gender Card */}
           <div className="bg-[#F1F7FF] rounded-lg p-6 lg:w-1/3 flex flex-col justify-between mt-4">
             <h3 className="text-base font-bold mb-4">Customer Gender</h3>
@@ -285,6 +284,8 @@ const Analytics: React.FC = () => {
                   <Doughnut
                     data={dataForDoughnut}
                     options={optionsForDoughnut}
+                    height={150}
+                    width={250}
                   />
                 </div>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -330,10 +331,10 @@ const Analytics: React.FC = () => {
                 ))}
               </select>
             </div>
-            <div className="border-t border-gray-200 pt-8 flex flex-col justify-between gap-12">
+            <div className="border-t border-gray-200 pt-10 flex flex-col  gap-12">
               <div className="flex justify-between items-center mb-4 xsm:flex-col">
-                <div className="flex items-center justify-start gap-4 lg:w-2/3">
-                  <p className="text-[3.5rem] text-[#3A9E3E]">02</p>
+                <div className="flex items-center justify-start gap-4 lg:w-3/5">
+                  <p className="text-[2.5rem] text-[#3A9E3E]">02</p>
                   <p className="text-sm">
                     <span className="text-[#004AAD] font-semibold ">
                       Birthdays
@@ -341,13 +342,13 @@ const Analytics: React.FC = () => {
                     <br />6 Customers have their birthdays
                   </p>
                 </div>
-                <button className="  px-2 py-2 bg-[#004AAD] text-white rounded-xl">
+                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.3rem] py-[0.3rem]">
                   Send Campaign
                 </button>
               </div>
               <div className="flex justify-between items-center ">
-                <div className="flex items-center justify-start gap-4 lg:w-2/3">
-                  <p className="text-[3.5rem] text-[#F9AB35]">02</p>
+                <div className="flex items-center justify-start gap-4 lg:w-3/5">
+                  <p className="text-[2.5rem] text-[#F9AB35]">02</p>
                   <p className="text-sm">
                     <span className="text-[#004AAD] font-semibold text-sm">
                       Anniversary
@@ -355,7 +356,7 @@ const Analytics: React.FC = () => {
                     <br />8 Customers have their Anniversary
                   </p>
                 </div>
-                <button className="  px-2 py-2 bg-[#004AAD] text-white rounded-xl">
+                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.3rem] py-[0.3rem]">
                   Send Campaign
                 </button>
               </div>
@@ -385,12 +386,12 @@ const Analytics: React.FC = () => {
                 ))}
               </select>
             </div>
-            <div className="border-t border-gray-200 pt-8 flex flex-col justify-between gap-12">
+            <div className="border-t border-gray-200 pt-10 flex flex-col justify-between gap-12">
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center justify-start gap-4">
                   <div className="flex items-center ">
-                    <p className="text-[3.5rem] text-[#3A9E3E]">12%</p>
-                    <FaArrowUpLong className="text-4xl text-[#3A9E3E]" />
+                    <p className="text-[2.5rem] text-[#3A9E3E]">12%</p>
+                    <FaArrowUpLong className="text-2xl text-[#3A9E3E]" />
                   </div>
                   <p className="text-sm">
                     <span className="text-[#004AAD] font-semibold ">
@@ -404,8 +405,8 @@ const Analytics: React.FC = () => {
               <div className="lg:flex justify-between items-center">
                 <div className="flex items-center justify-start gap-4">
                   <div className="flex items-center ">
-                    <p className="text-[3.5rem] text-[#F9AB35]">10%</p>
-                    <FaArrowDownLong className="text-4xl text-[#F9AB35]" />
+                    <p className="text-[2.5rem] text-[#F9AB35]">10%</p>
+                    <FaArrowDownLong className="text-2xl text-[#F9AB35]" />
                   </div>
                   <p className="text-sm">
                     <span className="text-[#004AAD] font-semibold text-sm">
@@ -422,18 +423,18 @@ const Analytics: React.FC = () => {
         </div>
 
         {/*Feedback div */}
-        <div className="py-4 px-6 flex items-center justify-evenly gap-10 border border-[#505050] font-inter mt-4">
+        <div className="py-4 px-8 flex items-center justify-evenly gap-10 border border-[#505050] font-inter mt-4">
           <img
             src={feedback}
             alt="Feedback image"
-            className="w-[120px] h-[110px]"
+            className="w-[70px] h-auto"
           />
           <div className="flex flex-col gap-4">
-            <p className=" text-lg font-medium text-[#555555]">
+            <p className=" text-base font-medium text-[#555555]">
               Help us to make snackBAE better by adding a feedback or request
               features that are best for your business
             </p>
-            <p className="text-[#004AAD] text-lg font-bold">Give Feedback</p>
+            <p className="text-[#004AAD] text-base font-bold">Give Feedback</p>
           </div>
         </div>
       </div>

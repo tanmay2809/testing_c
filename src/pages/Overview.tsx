@@ -7,7 +7,7 @@ import { FaUser } from "react-icons/fa6";
 import feedback from "../assets/undraw_feedback_re_urmj 1.png";
 
 //other components
-import BarChart from "../component/BarChart";
+import BarChart from "../component/Customer/BarChart";
 
 //data for chart
 import { data, options, months } from "../constants/index";
@@ -16,14 +16,14 @@ const Overview: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Today");
   return (
     <div className="w-full h-fit relative ">
-      <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] mt-2 ">
+      <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] ">
         {/*Customer Snapshot div */}
-        <div className="p-6 bg-[#F1F7FF] font-inter">
+        <div className="p-2 bg-[#F1F7FF] font-inter">
           {/* Top Section */}
-          <div className="flex justify-between items-center p-4 mb-6">
+          <div className="flex justify-between items-center p-2 ">
             {/* Left Section */}
             <div>
-              <h1 className="text-2xl font-semibold mb-2">Customer Snapshot</h1>
+              <h1 className="text-xl font-semibold mb-1">Customer Snapshot</h1>
               <p className="text-gray-600 text-base ">
                 Explore how recently, how often your customer visit your
                 business
@@ -70,33 +70,26 @@ const Overview: React.FC = () => {
           </div>
 
           {/* Bottom Section */}
-          <div className="lg:flex md:flex gap-4 font-inter lg:justify-evenly">
-            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-48 flex flex-col justify-evenly">
-              <div className="text-[2.5rem] font-bold mb-2 text-[#505050]">
-                30
-              </div>
+          <div className="lg:flex md:flex gap-4 font-inter lg:justify-evenly mb-1">
+            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-[9rem] flex flex-col justify-evenly">
+              <div className="text-3xl font-bold text-[#505050]">30</div>
               <div className="flex justify-start gap-3 items-center">
                 <FaUser />
-                <p className="text-[#505050] text-[1.315rem]">Total Customer</p>
+                <p className="text-[#505050] text-lg">Total Customer</p>
               </div>
             </div>
-            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-48 flex flex-col justify-evenly">
-              <div className="text-[2.5rem] font-bold mb-2 text-[#505050]">
-                30
-              </div>
+            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-[9rem] flex flex-col justify-evenly">
+              <div className="text-3xl font-bold  text-[#505050]">30</div>
               <div className="flex justify-start gap-3 items-center">
                 <FaUser />
-                <p className="text-[#505050] text-[1.315rem]">New Customer</p>
+                <p className="text-[#505050] text-lg">New Customer</p>
               </div>
             </div>
-            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-48 flex flex-col justify-evenly">
-              <div className="text-[2.5rem] font-bold mb-2 text-[#505050]">
-                30
-              </div>
+            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-[9rem] flex flex-col justify-evenly">
+              <div className="text-3xl font-bold  text-[#505050]">30</div>
               <div className="flex justify-start gap-3 items-center">
                 <FaUser />
-                <p className="text-[#505050] text-[1.315rem]">
-                  {" "}
+                <p className="text-[#505050] text-lg">
                   Regular Customer
                 </p>
               </div>
@@ -105,9 +98,9 @@ const Overview: React.FC = () => {
         </div>
 
         {/*Chart div */}
-        <div className="border border-[#B5CEF0] mt-4 px-6 py-4 font-inter shadow-md shadow-slate-300">
-          <div className="flex justify-between items-center pb-2 mb-2 ">
-            <div className="text-[1.38rem] font-semibold text-[#212B36]">
+        <div className="border border-[#B5CEF0] mt-2 px-6 py-2 font-inter ">
+          <div className="flex justify-between items-center ">
+            <div className="text-xl font-semibold text-[#212B36]">
               New Customer vs Old Customer
             </div>
             <div>
@@ -129,16 +122,16 @@ const Overview: React.FC = () => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#C0DBFF] rounded-full mr-2"></div>
-              <span className="text-base text-[#5E5E5E]">New Customer</span>
+              <span className="text-sm text-[#5E5E5E]">New Customer</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#004AAD] rounded-full mr-2"></div>
-              <span className="text-base text-[#5E5E5E]">Old Customer</span>
+              <span className="text-sm text-[#5E5E5E]">Old Customer</span>
             </div>
           </div>
           {/*chart */}
           <div>
-            <BarChart data={data} options={options} />
+            <BarChart data={data} options={options} width={500} height={150}/>
           </div>
         </div>
 
@@ -147,14 +140,14 @@ const Overview: React.FC = () => {
           <img
             src={feedback}
             alt="Feedback image"
-            className="w-[143px] h-[123px]"
+            className="w-[70px] h-auto"
           />
           <div className="flex flex-col gap-4">
-            <p className=" text-lg font-medium text-[#555555]">
+            <p className=" text-base font-medium text-[#555555]">
               Help us to make snackBAE better by adding a feedback or request
               features that are best for your business
             </p>
-            <p className="text-[#004AAD] text-lg font-bold">Give Feedback</p>
+            <p className="text-[#004AAD] text-base font-bold">Give Feedback</p>
           </div>
         </div>
       </div>

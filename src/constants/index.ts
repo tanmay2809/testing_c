@@ -1,4 +1,4 @@
-import { SegmentationPopupProps } from "../component/SegmentationPopup";
+import { SegmentationPopupProps } from "../component/Customer/SegmentationPopup";
 import { ChartOptions, ChartData } from "chart.js";
 
 export const PlansData = {

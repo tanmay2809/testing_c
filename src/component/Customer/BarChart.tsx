@@ -13,6 +13,8 @@ import {
 interface BarChartProps {
   data: ChartData<"bar">;
   options: ChartOptions<"bar">;
+  width?: number;
+  height?: number;
 }
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
@@ -20,7 +22,12 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 const BarChart: React.FC<BarChartProps> = (props) => {
   return (
     <div>
-      <Bar data={props.data} options={props.options}></Bar>
+      <Bar
+        data={props.data}
+        options={props.options}
+        width={props.width}
+        height={props.height}
+      ></Bar>
     </div>
   );
 };

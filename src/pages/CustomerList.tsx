@@ -6,9 +6,9 @@ import { TbArrowsSort } from "react-icons/tb";
 import { IoCloseOutline } from "react-icons/io5";
 
 //other components
-import CustomerDetail from "../component/CustomerDetail";
-import SegmentationPopup from "../component/SegmentationPopup";
-import CustomerFilter from "../component/CustomerFilter";
+import CustomerDetail from "../component/Customer/CustomerDetail";
+import SegmentationPopup from "../component/Customer/SegmentationPopup";
+import CustomerFilter from "../component/Customer/CustomerFilter";
 
 //data
 import { Customer, customers, segmentationColors } from "../constants/index";
@@ -33,6 +33,81 @@ const CustomerList: React.FC = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = customers.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(customers.length / itemsPerPage);
+
+  // Helper function to create pagination buttons
+  const getPaginationButtons = () => {
+    const buttons = [];
+    const maxVisibleButtons = 3;
+
+    // Add the first page
+    buttons.push(
+      <button
+        key={1}
+        className={`mx-1 px-3 py-2 border ${
+          currentPage === 1 ? "bg-[#004AAD] text-white" : "bg-white"
+        }`}
+        onClick={(event) => handleClick(event, 1)}
+      >
+        1
+      </button>
+    );
+
+    // If the total pages are more than the max visible buttons, add dots
+    if (totalPages > maxVisibleButtons + 2) {
+      // Show the dots after the first page
+      if (currentPage > maxVisibleButtons) {
+        buttons.push(
+          <span key="dots1" className="mx-1">
+            ...
+          </span>
+        );
+      }
+
+      // Show middle buttons around the current page
+      const startPage = Math.max(2, currentPage - 1);
+      const endPage = Math.min(totalPages - 1, currentPage + 1);
+
+      for (let i = startPage; i <= endPage; i++) {
+        buttons.push(
+          <button
+            key={i}
+            className={`mx-1 px-3 py-2 border ${
+              currentPage === i ? "bg-[#004AAD] text-white" : "bg-white"
+            }`}
+            onClick={(event) => handleClick(event, i)}
+          >
+            {i}
+          </button>
+        );
+      }
+
+      // Show the dots before the last page
+      if (currentPage < totalPages - maxVisibleButtons + 1) {
+        buttons.push(
+          <span key="dots2" className="mx-1">
+            ...
+          </span>
+        );
+      }
+    }
+
+    // Add the last page
+    if (totalPages > 1) {
+      buttons.push(
+        <button
+          key={totalPages}
+          className={`mx-1 px-3 py-2 border ${
+            currentPage === totalPages ? "bg-[#004AAD] text-white" : "bg-white"
+          }`}
+          onClick={(event) => handleClick(event, totalPages)}
+        >
+          {totalPages}
+        </button>
+      );
+    }
+
+    return buttons;
+  };
 
   //page number
   const handleClick = (
@@ -72,23 +147,24 @@ const CustomerList: React.FC = () => {
     //the sorting logic goes here
   };
 
+  console.log(segmentationVisible);
   return (
     <div className="w-full h-fit relative ">
-      <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] mt-2 ">
+      <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] ">
         {/*Top div */}
-        <div className="mb-4 flex justify-between items-center">
+        <div className="mb-4 flex justify-between items-center font-inter">
           <div className="relative flex items-center w-[410px]">
             <FaSearch className="relative left-7 text-gray-400" />
             <input
               type="search"
               placeholder="Search by customer name, phone number"
-              className="w-full h-[50px] bg-gray-100 pl-10 pr-3 py-2 rounded-md focus:outline-none focus:ring-indigo-500 focus:ring-1"
+              className="w-full h-[50px] bg-gray-100 pl-10 pr-3 py-2 rounded-md "
             />
           </div>
-          <div className="flex items-center text-[#004AAD] mt-4">
+          <div className="flex items-center text-[#004AAD] ">
             <div className="relative">
               <button
-                className="bg-white border rounded-lg px-4 py-3 mx-2 flex items-center text-md font-Roboto"
+                className="bg-white border rounded-lg px-4 py-3 mx-2 flex items-center text-sm font-Roboto"
                 onClick={() => setSort(!sort)}
               >
                 <TbArrowsSort className="mr-2" />
@@ -119,13 +195,13 @@ const CustomerList: React.FC = () => {
               )}
             </div>
             <button
-              className="bg-white border rounded-lg px-4 py-[0.69rem] mx-2 flex items-center text-md font-Roboto"
+              className="bg-white border rounded-lg px-4 py-[0.69rem] mx-2 flex items-center text-sm font-Roboto"
               onClick={toggleFilter}
             >
               <FaFilter className="mr-2" />
               Filter Customer
             </button>
-            <button className="bg-[#004AAD] text-white rounded-lg px-6 py-2 flex items-center text-[1.3125rem]">
+            <button className="bg-[#004AAD] text-white rounded-lg px-2 py-1 flex items-center text-base">
               <svg
                 className="mr-2"
                 width="20"
@@ -145,7 +221,7 @@ const CustomerList: React.FC = () => {
               </svg>
               Export
               <svg
-                className="relative -right-9 -top-5"
+                className="relative -right-5 -top-5"
                 width="32"
                 height="34"
                 viewBox="0 0 32 34"
@@ -180,7 +256,7 @@ const CustomerList: React.FC = () => {
           </div>
         </div>
         <div className="mb-4">
-          <span className="text-md">
+          <span className="text-base">
             Total Customer Database:{" "}
             <strong className="text-[#004AAD]">100 Record</strong>
           </span>
@@ -208,7 +284,7 @@ const CustomerList: React.FC = () => {
         )}
 
         {/*Customer info table */}
-        <table className="min-w-full bg-white border font-inter">
+        <table className="min-w-full bg-white border font-inter text-base">
           <thead>
             <tr className="w-full bg-gray-100 text-center text-[#858687] ">
               <th className="py-3 px-6">Customer Name</th>
@@ -221,7 +297,7 @@ const CustomerList: React.FC = () => {
           </thead>
           <tbody>
             {currentItems.map((customer, index) => (
-              <tr key={index} className="border-t text-lg text-center">
+              <tr key={index} className="border-t text-base text-center">
                 <td className="py-3 px-6">{customer.name}</td>
                 <td className="py-3 px-6">{customer.phone} </td>
                 <td className="py-3 px-6">{customer.visits}</td>
@@ -233,7 +309,7 @@ const CustomerList: React.FC = () => {
                   {hoveredSegmentation === index && (
                     <div>
                       {/*background blur div */}
-                     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-30 p-5"></div>
+                      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[80] p-5"></div>
                       {/*div to align popup */}
                       <div className="relative right-[16.5rem] -top-36">
                         <SegmentationPopup
@@ -249,7 +325,7 @@ const CustomerList: React.FC = () => {
                   <span
                     className={` relative py-1 px-2 rounded-lg text-sm   ${
                       segmentationColors[customer.segmentation]
-                    } ${hoveredSegmentation===index && "z-40"}`}
+                    } ${hoveredSegmentation === index && "z-[90]"}`}
                     onMouseEnter={() => {
                       setHoveredSegmentation(index);
                     }}
@@ -311,42 +387,24 @@ const CustomerList: React.FC = () => {
               <option value={30}>30 items</option>
             </select>
           </div>
-          <div className="mt-4 flex justify-center items-center">
-            <button
-              className={`mx-1 px-3 py-2 border ${
-                currentPage === 1
-                  ? "bg-gray-200 cursor-not-allowed"
-                  : "bg-white"
-              }`}
-              onClick={(event) => handleClick(event, currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Prev
-            </button>
-            {Array.from({ length: totalPages }, (_, index) => (
+          <div className="flex justify-center items-center mt-4">
+            {currentPage > 1 && (
               <button
-                key={index + 1}
-                className={`mx-1 px-3 py-2 border ${
-                  currentPage === index + 1
-                    ? "bg-blue-500 text-white"
-                    : "bg-white"
-                }`}
-                onClick={(event) => handleClick(event, index + 1)}
+                className="mx-1 px-3 py-2 border bg-white"
+                onClick={(event) => handleClick(event, currentPage - 1)}
               >
-                {index + 1}
+                &lt;
               </button>
-            ))}
-            <button
-              className={`mx-1 px-3 py-2 border ${
-                currentPage === totalPages
-                  ? "bg-gray-200 cursor-not-allowed"
-                  : "bg-white"
-              }`}
-              onClick={(event) => handleClick(event, currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
+            )}
+            {getPaginationButtons()}
+            {currentPage < totalPages && (
+              <button
+                className="mx-1 px-3 py-2 border bg-white"
+                onClick={(event) => handleClick(event, currentPage + 1)}
+              >
+                &gt;
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -356,12 +414,13 @@ const CustomerList: React.FC = () => {
         isVisible={!!selectedCustomer}
         onClose={closeModal}
       />
-
-      <CustomerFilter
-        isVisible={isFilterVisible}
-        onClose={toggleFilter}
-        filterData={filterElementsAdd}
-      />
+      <div className="transition-all ease-in-out duration-1000">
+        <CustomerFilter
+          isVisible={isFilterVisible}
+          onClose={toggleFilter}
+          filterData={filterElementsAdd}
+        />
+      </div>
     </div>
   );
 };

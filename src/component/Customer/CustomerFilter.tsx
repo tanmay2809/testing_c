@@ -62,11 +62,11 @@ const CustomerFilter: React.FC<FilterProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5">
-      <div className="bg-white w-1/3 h-auto p-5 shadow-lg rounded-lg overflow-y-auto">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5 ">
+      <div className="bg-white w-1/3 h-auto p-5 shadow-lg rounded-lg overflow-y-auto ">
         <div className="flex justify-between items-center pb-2 border-black border-b font-Roboto">
           <div>
-            <h2 className="text-[1.7rem] font-semibold">Filter Customer</h2>
+            <h2 className="text-2xl font-semibold">Filter Customer</h2>
             <p className="text-base">Filter your customer database easily</p>
           </div>
 
@@ -80,7 +80,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
         {/*customer visted in */}
         <div className="mt-2">
           <div className="mb-2 font-Roboto">
-            <p className="text-[1.32rem] font-semibold mb-3">
+            <p className="text-xl font-semibold mb-3">
               Customer visited in
             </p>
             <div className="flex space-x-2">
@@ -128,7 +128,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
           </div>
           {/*customer not visted in */}
           <div className="pb-4 border-b border-black font-Roboto">
-            <p className="text-[1.32rem] font-semibold mb-2">
+            <p className="text-xl font-semibold mb-2">
               Customer not visited in
             </p>
             <div className="flex space-x-2">
@@ -176,7 +176,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
           </div>
           {/*customer segmentation */}
           <div className="mt-4 pb-4 border-b border-black font-inter">
-            <p className="text-[1.32rem] font-semibold mb-3">
+            <p className="text-xl font-semibold mb-3">
               Customer Segmentation
             </p>
             <div>
@@ -226,7 +226,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
           </div>
           {/*gender*/}
           <div className="mt-4 font-inter">
-            <p className="text-[1.32rem] font-semibold mb-3">Gender</p>
+            <p className="text-xl font-semibold mb-3">Gender</p>
             <div className="flex space-x-2">
               <label className={"flex items-center space-x-2 cursor-pointer "}>
                 <input
