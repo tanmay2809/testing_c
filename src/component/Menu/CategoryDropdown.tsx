@@ -7,7 +7,7 @@ import { IoTrashOutline } from "react-icons/io5";
 
 // assets
 import pizza from "../../assets/pizza.png";
-import Switch from "../switch";
+import Switch from "./switch";
 import { BiFoodTag } from "react-icons/bi";
 import DeleteModal from "./DeleteModal";
 
