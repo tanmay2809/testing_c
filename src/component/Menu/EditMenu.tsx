@@ -6,6 +6,7 @@ import { FaPlus } from "react-icons/fa6";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import { MenuItem } from "./AddMenuItem";
 
 interface EditMenuItem {
   name: string;
@@ -28,9 +29,10 @@ interface EditMenuItem {
 
 interface EditMenuProps {
   setIsEditMenu: (isOpen: boolean) => void;
+  item: MenuItem;
 }
 
-const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu }) => {
+const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
   const [image, setImage] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<EditMenuItem>({

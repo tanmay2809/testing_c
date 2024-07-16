@@ -10,21 +10,42 @@ import EditMenuItem from "../component/Menu/EditMenu";
 import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
-import DeleteModal from "../component/Menu/DeleteModal";
+import ItemCard from "../component/Menu/ItemCard";
 
 //icons
 import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 
+const Item = [
+  {
+    id: 1,
+    name: "Hulk Beast Burger",
+    image: "",
+    description: "",
+    price: "500",
+    category: "",
+    subcategory: "",
+    serving: "",
+    tag: "",
+    active: true,
+    categoryActive: true,
+    clicks: 0,
+    addone: [{ name: "", additionalPrice: "" }],
+    type: "veg",
+  },
+];
+
 const Menu = () => {
-  const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
-  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
-  const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
-  const [categoryModal, setCategoryModal] = useState(false);
-  const [editSubCategoryModal, setEditSubCategoryModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
+  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
+  const [isEditMenuOpen, setIsEditMenuOpen] = useState<boolean>(false);
+  const [categoryModal, setCategoryModal] = useState<boolean>(false);
+  const [editSubCategoryModal, setEditSubCategoryModal] =
+    useState<boolean>(false);
+  const [selectedCard, setSelectedCard] = useState<number>();
 
   const [search, setSearch] = useState("");
+  console.log(selectedCard);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(search);
@@ -242,6 +263,15 @@ const Menu = () => {
                     onClick={() => setCategoryModal(true)}
                   />
                 </div>
+                <div>
+                  {Item.map((item) => (
+                    <ItemCard
+                      item={item}
+                      setEditMenuItem={setIsEditMenuOpen}
+                      setSelectedCard={setSelectedCard}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -265,8 +295,11 @@ const Menu = () => {
                 )}
 
                 {/* edit menu form */}
-                {isEditMenuOpen && (
-                  <EditMenuItem setIsEditMenu={setIsEditMenuOpen} />
+                {isEditMenuOpen && selectedCard && (
+                  <EditMenuItem
+                    setIsEditMenu={setIsEditMenuOpen}
+                    item={Item[selectedCard]}
+                  />
                 )}
               </div>
             )}
@@ -280,9 +313,6 @@ const Menu = () => {
         {editSubCategoryModal && (
           <EditSubcategory setModal={setEditSubCategoryModal} />
         )}
-
-        {/* delete modal */}
-        {deleteModal && <DeleteModal setModal={setDeleteModal} />}
       </div>
     </div>
   );

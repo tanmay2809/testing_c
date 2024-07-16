@@ -45,7 +45,7 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
               <h1 className="text-[1.5rem] font-[500]">Add Main Category</h1>
             </div>
             <IoIosCloseCircleOutline
-              onClick={() => {}}
+              onClick={() => isCategoryOpen(false)}
               className="text-[1.7rem] hover:cursor-pointer"
             />
           </div>

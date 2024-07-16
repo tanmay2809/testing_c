@@ -7,7 +7,8 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 
-interface MenuItem {
+export interface MenuItem {
+  id?: number;
   name: string;
   image: string;
   description?: string;
