@@ -10,17 +10,11 @@ import EditMenuItem from "../component/Menu/EditMenu";
 import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
-import ItemCard from "../component/Menu/ItemCard";
+import CategoryDropdown from "../component/Menu/CategoryDropdown";
 
 //icons
 import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
-import { MdDragIndicator, MdModeEditOutline } from "react-icons/md";
-import { IoMdArrowDropright } from "react-icons/io";
-
-// assets
-import pizza from "../assets/pizza.png";
-import { IoTrashOutline } from "react-icons/io5";
 
 const Item = [
   {
@@ -269,30 +263,12 @@ const Menu = () => {
                     onClick={() => setCategoryModal(true)}
                   />
                 </div>
-                <div>
-                  <div>
-                    <div className="w-full h-fit px-4 py-3 border-2 rounded-[0.5rem] flex flex-row justify-between font-Roboto">
-                      <div className="w-fit flex flex-row items-center text-[1.5rem] gap-4">
-                        <MdDragIndicator />
-                        <IoMdArrowDropright className="text-[#004AAD]" />
-                        <img src={pizza} className="w-10" />
-                        <p className="text-[1.2rem] font-semibold">Pizza (6)</p>
-                      </div>
-                      <div className="w-fit flex flex-row items-center text-[1.5rem] gap-4 text-[#004AAD]">
-                        <IoTrashOutline className="hover:cursor-pointer" />
-                        <MdModeEditOutline className="hover:cursor-pointer" />
-                        <Switch isActive={true} />
-                      </div>
-                    </div>
-                  </div>
-                  {Item.map((item) => (
-                    <ItemCard
-                      item={item}
-                      setEditMenuItem={setIsEditMenuOpen}
-                      setSelectedCard={setSelectedCard}
-                    />
-                  ))}
-                </div>
+                <CategoryDropdown
+                  setIsEditMenuOpen={setIsEditMenuOpen}
+                  setSelectedCard={setSelectedCard}
+                  categories={[{ name: "Pizza", count: 6 }]}
+                  items={Item}
+                />
               </div>
             </div>
 
