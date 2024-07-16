@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Item } from "./CategoryDropdown";
+import { Item } from "./SubCategoryDropdown";
 import { MenuItem } from "./AddMenuItem";
 
 // icons

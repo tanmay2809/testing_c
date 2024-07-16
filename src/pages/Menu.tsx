@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRestaurantDetails } from "../redux/menuslice";
@@ -10,7 +9,7 @@ import EditMenuItem from "../component/Menu/EditMenu";
 import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
-import CategoryDropdown from "../component/Menu/CategoryDropdown";
+import SubCategoryDropdown from "../component/Menu/SubCategoryDropdown";
 
 //icons
 import { FiPlus } from "react-icons/fi";
@@ -131,7 +130,6 @@ const Menu = () => {
   }
   return (
     <div className="w-full h-fit relative ">
-      
       <div className=" w-[93%]  h-fit flex items-center justify-center ml-[7%]  ">
         <div className="w-full h-fit flex mt-[70px] ">
           {/* left div */}
@@ -263,7 +261,7 @@ const Menu = () => {
                     onClick={() => setCategoryModal(true)}
                   />
                 </div>
-                <CategoryDropdown
+                <SubCategoryDropdown
                   setIsAddMenuOpen={setIsAddMenuOpen}
                   setIsEditMenuOpen={setIsEditMenuOpen}
                   setIsSubCategoryOpen={setIsSubCategoryOpen}
