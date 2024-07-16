@@ -136,7 +136,7 @@ const Overview: React.FC = () => {
         </div>
 
         {/*Feedback div */}
-        <div className="py-4 px-8 flex items-center justify-evenly gap-10 border border-[#505050] font-inter mt-4">
+        <div className="py-4 px-8 flex items-center justify-start gap-10 border border-[#505050] font-inter mt-4">
           <img
             src={feedback}
             alt="Feedback image"

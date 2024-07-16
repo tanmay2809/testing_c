@@ -2,7 +2,14 @@ import { useState } from "react";
 
 //chartjs
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  ChartOptions,
+  ChartData,
+} from "chart.js";
 
 //icons
 import { FaArrowUpLong, FaArrowDownLong } from "react-icons/fa6";
@@ -21,7 +28,7 @@ import VisitPopup from "../component/VisitPopup";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 //for gender graph
-const dataForDoughnut = {
+const dataForDoughnut: ChartData<"doughnut"> = {
   labels: ["Female", "Male", "Others"],
   datasets: [
     {
@@ -33,11 +40,24 @@ const dataForDoughnut = {
     },
   ],
 };
-const optionsForDoughnut = {
+
+const optionsForDoughnut: ChartOptions<"doughnut"> = {
+  responsive: true,
   plugins: {
     legend: {
       display: false, // Hides the legend
     },
+    // tooltip: {
+    //   callbacks: {
+    //     label: function (tooltipItem) {
+    //       const dataset = tooltipItem.dataset;
+    //       const total = dataset.data.reduce((acc: number, value: number) => acc + value, 0);
+    //       const currentValue = dataset.data[tooltipItem.dataIndex] as number;
+    //       const percentage = ((currentValue / total) * 100).toFixed(2);
+    //       return `Count: ${currentValue} (${percentage}%)`;
+    //     },
+    //   },
+    // },
   },
 };
 
@@ -230,7 +250,12 @@ const Analytics: React.FC = () => {
             </div>
             <div className="relative flex justify-center items-center mb-4">
               <div className="w-full h-full">
-                <BarChart data={dataForBar} options={optionsForBar}  width={200} height={75}/>
+                <BarChart
+                  data={dataForBar}
+                  options={optionsForBar}
+                  width={200}
+                  height={75}
+                />
               </div>
             </div>
           </div>
@@ -342,7 +367,7 @@ const Analytics: React.FC = () => {
                     <br />6 Customers have their birthdays
                   </p>
                 </div>
-                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.3rem] py-[0.3rem]">
+                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
                   Send Campaign
                 </button>
               </div>
@@ -356,7 +381,7 @@ const Analytics: React.FC = () => {
                     <br />8 Customers have their Anniversary
                   </p>
                 </div>
-                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.3rem] py-[0.3rem]">
+                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
                   Send Campaign
                 </button>
               </div>
@@ -423,7 +448,7 @@ const Analytics: React.FC = () => {
         </div>
 
         {/*Feedback div */}
-        <div className="py-4 px-8 flex items-center justify-evenly gap-10 border border-[#505050] font-inter mt-4">
+        <div className="py-4 px-8 flex items-center justify-start gap-10 border border-[#505050] font-inter mt-4">
           <img
             src={feedback}
             alt="Feedback image"
