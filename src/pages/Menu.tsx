@@ -42,7 +42,7 @@ const Menu = () => {
   const [categoryModal, setCategoryModal] = useState<boolean>(false);
   const [editSubCategoryModal, setEditSubCategoryModal] =
     useState<boolean>(false);
-  const [selectedCard, setSelectedCard] = useState<number>();
+  const [selectedCard, setSelectedCard] = useState<number | null>(null);
 
   const [search, setSearch] = useState("");
   console.log(selectedCard);
@@ -264,7 +264,9 @@ const Menu = () => {
                   />
                 </div>
                 <CategoryDropdown
+                  setIsAddMenuOpen={setIsAddMenuOpen}
                   setIsEditMenuOpen={setIsEditMenuOpen}
+                  setIsSubCategoryOpen={setIsSubCategoryOpen}
                   setSelectedCard={setSelectedCard}
                   categories={[{ name: "Pizza", count: 6 }]}
                   items={Item}
