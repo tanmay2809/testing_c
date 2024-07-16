@@ -15,15 +15,15 @@ import {
 import { FaArrowUpLong, FaArrowDownLong } from "react-icons/fa6";
 
 //other components
-import BarChart from "../component/Customer/BarChart";
-import SegmentationPopup from "../component/Customer/SegmentationPopup";
+import BarChart from "../../component/Customer/BarChart";
+import SegmentationPopup from "../../component/Customer/SegmentationPopup";
 
 //data
-import { months } from "../constants/index";
+import { months } from "../../constants/index";
 
 //images
 import feedback from "../assets/undraw_feedback_re_urmj 1.png";
-import VisitPopup from "../component/Customer/VisitPopup";
+import VisitPopup from "../../component/Customer/VisitPopup";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -117,9 +117,9 @@ const Analytics: React.FC = () => {
               <strong className="text-[#004AAD]">100 Record</strong>
             </span>
           </div>
-          <div className="lg:flex md:flex lg:text-left text-[#505050]">
+          <div className="lg:flex md:flex lg:text-left text-[#505050] sm:text-sm ">
             <div
-              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  ${
+              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  sm:h-40 sm:w-1/4 ${
                 hoveredSegmentation === 1 && "z-[90]"
               }`}
               onMouseEnter={() => setHoveredSegmentation(1)}
@@ -156,7 +156,7 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 ${
+              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
                 hoveredSegmentation === 3 && "z-[90]"
               }`}
               onMouseEnter={() => setHoveredSegmentation(3)}
@@ -193,7 +193,7 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  ${
+              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
                 hoveredSegmentation === 2 && "z-[90]"
               }`}
               onMouseEnter={() => setHoveredSegmentation(2)}
@@ -205,7 +205,7 @@ const Analytics: React.FC = () => {
             </div>
 
             <div
-              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 ${
+              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
                 hoveredSegmentation === 4 && "z-[90]"
               }`}
               onMouseEnter={() => setHoveredSegmentation(4)}

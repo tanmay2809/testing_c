@@ -13,7 +13,7 @@ const Plans = () => {
         <div className="w-full h-fit py-[1rem] px-[1rem] md:px-[5rem] flex flex-row justify-start">
           <img src={logo} className="w-[130px] h-auto" />
         </div>
-        <div className="px-[1rem] md:px-[5rem] w-full mt-5 flex flex-row flex-wrap">
+        <div className="md:px-[5rem] w-full mt-5 flex flex-row flex-wrap">
           <div className="w-full flex flex-row justify-between items-center">
             <div className="flex flex-col">
               {/* <Link className="w-fit h-fit" to="/login">
@@ -53,8 +53,9 @@ const Plans = () => {
             </div>
           </div>
         </div>
-        <div className="mt-6">
-          <PlansComp switch={switchTab}/></div>
+        <div className="mt-6 w-full">
+          <PlansComp switch={switchTab} />
+        </div>
       </div>
     </>
   );

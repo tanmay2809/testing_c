@@ -1,24 +1,24 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import ForgotPassword from "./pages/ForgotPassword";
-import Register from "./pages/Register";
-import Verify from "./pages/Verify";
-import NewPassword from "./pages/NewPassword";
+import Login from "./pages/Auth/Login";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import Register from "./pages/Auth/Register";
+import Verify from "./pages/Auth/Verify";
+import NewPassword from "./pages/Auth/NewPassword";
 import Plans from "./pages/Plans";
 import LeftNavbar from "./component/outlet/LeftNavbar";
 import Dashboard from "./pages/Dashboard";
 import Menu from "./pages/Menu";
 import Marketing from "./pages/Marketing";
-import Customer from "./pages/Customer";
-import Setting from "./pages/Setting";
-import MyPlans from "./pages/MyPlans";
-import Billing from "./pages/Billing";
-import Invoice from "./pages/Invoice";
-import Stores from "./pages/Stores";
-import CustomerList from "./pages/CustomerList";
-import Overview from "./pages/Overview";
-import Analytics from "./pages/Analytics";
+import Customer from "./pages/Customer/Customer";
+import Setting from "./pages/Settings/Setting";
+import MyPlans from "./pages/Settings/MyPlans";
+import Billing from "./pages/Settings/Billing";
+import Invoice from "./pages/Settings/Invoice";
+import Stores from "./pages/Settings/Stores";
+import CustomerList from "./pages/Customer/CustomerList";
+import Overview from "./pages/Customer/Overview";
+import Analytics from "./pages/Customer/Analytics";
 
 const App: React.FC = () => {
   console.log("App Component Rendered");

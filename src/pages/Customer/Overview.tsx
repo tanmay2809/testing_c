@@ -7,10 +7,10 @@ import { FaUser } from "react-icons/fa6";
 import feedback from "../assets/undraw_feedback_re_urmj 1.png";
 
 //other components
-import BarChart from "../component/Customer/BarChart";
+import BarChart from "../../component/Customer/BarChart";
 
 //data for chart
-import { data, options, months } from "../constants/index";
+import { data, options, months } from "../../constants/index";
 
 const Overview: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Today");

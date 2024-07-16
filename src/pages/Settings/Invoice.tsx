@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { Invoice as InvoiceType } from "../redux/invoiceSlice";
+import { RootState } from "../../redux/store";
+import { Invoice as InvoiceType } from "../../redux/invoiceSlice";
 
 // icons
 import { IoMdCloseCircle } from "react-icons/io";
