@@ -1,9 +1,9 @@
-import Navbar from "../component/Navbar";
+import Navbar from "../component/outlet/Navbar";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRestaurantDetails } from "../redux/menuslice";
 import type { RootState, AppDispatch } from "../redux/store";
-import Switch from "../component/switch";
+import Switch from "../component/Menu/switch";
 import axios from "axios";
 import AddMenuItem from "../component/Menu/AddMenuItem";
 import EditMenuItem from "../component/Menu/EditMenu";

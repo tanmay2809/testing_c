@@ -45,56 +45,42 @@ const Billing = () => {
                 </button>
               </div>
             </div>
-            <div className="bg-white rounded-xl flex flex-row flex-wrap gap-x-[1rem] gap-y-[3rem] w-fit h-fit p-[3rem]">
-              <div className="w-[220px] flex flex-col">
+            <div className="bg-white rounded-xl flex flex-row flex-wrap gap-x-[1.2rem] gap-y-[2.2rem] w-fit h-fit p-[1.5rem]">
+              <div className="w-[240px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">
-                  Bussiness Type
+                  Company Name
                 </p>
-                <h1 className="text-[28px] font-semibold">854</h1>
+                <h1 className=" text-xl font-semibold">
+                  Foodoos Private Limited
+                </h1>
               </div>
-              <div className="w-[220px] flex flex-col">
-                <p className="text-[18px] text-[#616161] font-[400]">
-                  Bussiness Landmark
-                </p>
-                <h1 className="text-[28px] font-semibold">85</h1>
+              <div className="w-[200px] flex flex-col">
+                <p className="text-[18px] text-[#616161] font-[400]">Country</p>
+                <h1 className=" text-xl font-semibold">India</h1>
               </div>
-              <div className="w-[220px] flex flex-col">
-                <p className="text-[18px] text-[#616161] font-[400]">
-                  Business City
-                </p>
-                <h1 className="text-[28px] font-semibold">52</h1>
-              </div>
-              <div className="w-[220px] flex flex-col">
+              <div className="w-[200px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">State</p>
-                <h1 className="text-[28px] font-semibold">5</h1>
+                <h1 className=" text-xl font-semibold">West Bengal</h1>
               </div>
-              <div className="w-[220px] flex flex-col">
+              <div className="w-[200px] flex flex-col">
+                <p className="text-[18px] text-[#616161] font-[400]">City</p>
+                <h1 className="text-xl font-semibold">Kolkata</h1>
+              </div>
+              <div className="w-[150px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">Pincode</p>
-                <h1 className="text-[28px] font-semibold">5412</h1>
+                <h1 className=" text-xl font-semibold">5412</h1>
               </div>
-              <div className="w-[220px] flex flex-col">
+              <div className="w-[240px] flex flex-col">
                 <p className="text-[18px] text-[#616161] font-[400]">
-                  Social Handels
+                  GST number
                 </p>
-                <h1 className="text-[28px] font-semibold">Head</h1>
+                <h1 className=" text-xl font-semibold">897564876778896</h1>
               </div>
-              <div className="w-[220px] flex flex-col">
-                <p className="text-[18px] text-[#616161] font-[400]">
-                  Feedback Channels
-                </p>
-                <h1 className="text-[28px] font-semibold">Head</h1>
-              </div>
-              <div className="w-[220px] flex flex-col">
-                <p className="text-[18px] text-[#616161] font-[400]">
-                  Manager Name
-                </p>
-                <h1 className="text-[28px] font-semibold">5412</h1>
-              </div>
-              <div className="w-[220px] flex flex-col">
-                <p className="text-[18px] text-[#616161] font-[400]">
-                  Manager Contact
-                </p>
-                <h1 className="text-[28px] font-semibold">5412</h1>
+              <div className="w-[270px] flex flex-col">
+                <p className="text-[18px] text-[#616161] font-[400]">Address</p>
+                <h1 className=" text-xl font-semibold">
+                  AG Block,Salt Lake sector 2 Kolkata-700091
+                </h1>
               </div>
             </div>
           </div>
@@ -106,20 +92,20 @@ const Billing = () => {
             id="default-modal"
             // tabIndex="-1"
             aria-hidden="true"
-            className={`fixed inset-0 z-50 flex items-center justify-end w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50`}
+            className={`fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end  z-50 p-2`}
           >
             <div
-              className={`relative p-4 w-full sm:w-fit h-fit ${
+              className={`bg-white w-[500px] shadow-lg rounded-lg  overflow-y-auto ${
                 isClosing ? "slide-out-right" : "slide-in-right"
               }`}
             >
-              <div className="w-full relative px-8 py-5 bg-white rounded-lg shadow">
+              <div className="w-full relative px-6 py-4 bg-white rounded-lg shadow h-full ">
                 <div className="flex flex-row justify-between">
                   <div className="flex flex-col">
-                    <h1 className="text-[28px] font-bold">
+                    <h1 className="text-[24px] font-bold">
                       Edit Billing Details
                     </h1>
-                    <p className="text-[18px] font-bold">
+                    <p className="text-[16px] font-medium">
                       Edit your billing details at convinience
                     </p>
                   </div>
@@ -139,7 +125,7 @@ const Billing = () => {
                       </label>
                       <input
                         type="text"
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                        className="w-full p-2 border-2 border-[#00000033] rounded-[8px] text-[18px]"
                         placeholder="Enter Name"
                       />
                     </div>
@@ -150,7 +136,7 @@ const Billing = () => {
                       </label>
                       <input
                         type="text"
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                        className="w-full p-2 border-2 border-[#00000033] rounded-[8px] text-[18px]"
                         placeholder="Enter Name"
                       />
                     </div>
@@ -161,17 +147,17 @@ const Billing = () => {
                       </label>
                       <input
                         type="text"
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px] text-[18px]"
+                        className="w-full p-2 border-2 border-[#00000033] rounded-[8px] text-[18px]"
                         placeholder="Enter Name"
                       />
                     </div>
-                    <div className="flex justify-between mt-1 items-center justify-center">
-                      <label className="text-[1rem] font-semibold text-center flex items-center">
+                    <div className="flex justify-between mt-1 items-center ">
+                      <label className="text-sm font-semibold text-center flex items-center">
                         <input
                           type="checkbox"
                           //   checked={rememberMe}
                           //   onChange={() => setRememberMe(!rememberMe)}
-                          className="size-[24px] mr-2"
+                          className="size-[20px] mr-2"
                         />
                         I am not registered with GST
                       </label>
@@ -186,7 +172,7 @@ const Billing = () => {
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <select
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px]"
+                        className="w-full p-2 border-2 border-[#00000033] rounded-[8px]"
                         id="country"
                         name="country"
                         // value="dw"
@@ -206,7 +192,7 @@ const Billing = () => {
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <select
-                        className="w-full p-4 border-2 border-[#00000033] rounded-[8px]"
+                        className="w-full p-2 border-2 border-[#00000033] rounded-[8px]"
                         id="state"
                         name="state"
                         // value="dw"
@@ -217,14 +203,14 @@ const Billing = () => {
                         <option value="2">2</option>
                       </select>
                     </div>
-                    <div className="flex flex-row gap-5">
+                    <div className="flex flex-row gap-5 mt-4">
                       <button
-                        className="w-[50%] h-14 text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-[1rem]"
+                        className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-2"
                         onClick={() => handleCloseModal()}
                       >
                         Cancel
                       </button>
-                      <button className="w-[50%] bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem]">
+                      <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2">
                         Save
                       </button>
                     </div>

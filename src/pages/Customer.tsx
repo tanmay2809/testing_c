@@ -4,8 +4,7 @@ import React from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 
 //other components
-import Navbar from "../component/Navbar";
-
+import Navbar from "../component/outlet/Navbar";
 
 const Customer: React.FC = () => {
   const location = useLocation();
@@ -15,7 +14,7 @@ const Customer: React.FC = () => {
   return (
     <div className="w-full h-fit relative">
       <Navbar />
-      
+
       <div className="w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px]">
           <div className="flex flex-col">
@@ -28,7 +27,7 @@ const Customer: React.FC = () => {
         </div>
 
         {/* Buttons Container */}
-        <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-6">
+        <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-3">
           <Link
             className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
             to="/customer/overview"

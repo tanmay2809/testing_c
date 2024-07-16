@@ -21,6 +21,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
   const [gender, setGender] = useState<string[]>([]);
   const [customDateVisit, setCustomDateVisit] = useState<string>("");
   const [customDateNotVisit, setCustomDateNotVisit] = useState<string>("");
+  const [isClosing, setIsClosing] = useState<boolean>(false);
 
   if (!isVisible) return null;
 
@@ -45,25 +46,41 @@ const CustomerFilter: React.FC<FilterProps> = ({
     const data: string[] = [];
     if (visitFilter === "Custom") {
       data.push(...segmentation, ...gender, customDateVisit, nonVisitFilter);
-      filterData(data)
+      filterData(data);
       onClose();
-      return
+      return;
     }
     if (nonVisitFilter === "Custom") {
       data.push(...segmentation, ...gender, visitFilter, customDateNotVisit);
-      filterData(data)
+      filterData(data);
       onClose();
-      return
+      return;
     }
     data.push(...segmentation, ...gender, visitFilter, nonVisitFilter);
-    console.log(data);
     filterData(data);
-    onClose();
+
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      onClose();
+    }, 500);
+  };
+
+  const handleCloseModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      onClose();
+    }, 500);
   };
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5 ">
-      <div className="bg-white w-1/3 h-auto p-5 shadow-lg rounded-lg overflow-y-auto ">
+      <div
+        className={`bg-white w-1/3 h-auto p-5 shadow-lg rounded-lg overflow-y-auto ${
+          isClosing ? "slide-out-right" : "slide-in-right"
+        }`}
+      >
         <div className="flex justify-between items-center pb-2 border-black border-b font-Roboto">
           <div>
             <h2 className="text-2xl font-semibold">Filter Customer</h2>
@@ -71,18 +88,16 @@ const CustomerFilter: React.FC<FilterProps> = ({
           </div>
 
           <button
-            onClick={onClose}
+            onClick={handleCloseModal}
             className="text-white text-2xl bg-black rounded-full w-8 flex items-center justify-center font-extrabold"
           >
             &times;
           </button>
         </div>
-        {/*customer visted in */}
         <div className="mt-2">
+          {/*customer visted in */}
           <div className="mb-2 font-Roboto">
-            <p className="text-xl font-semibold mb-3">
-              Customer visited in
-            </p>
+            <p className="text-xl font-medium mb-3">Customer visited in</p>
             <div className="flex space-x-2">
               <button
                 className={`px-3 py-1 border rounded-lg ${
@@ -128,9 +143,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
           </div>
           {/*customer not visted in */}
           <div className="pb-4 border-b border-black font-Roboto">
-            <p className="text-xl font-semibold mb-2">
-              Customer not visited in
-            </p>
+            <p className="text-xl font-medium mb-2">Customer not visited in</p>
             <div className="flex space-x-2">
               <button
                 className={`px-3 py-1 border rounded-lg ${
@@ -176,9 +189,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
           </div>
           {/*customer segmentation */}
           <div className="mt-4 pb-4 border-b border-black font-inter">
-            <p className="text-xl font-semibold mb-3">
-              Customer Segmentation
-            </p>
+            <p className="text-xl font-medium mb-3">Customer Segmentation</p>
             <div>
               <div className="flex justify-start gap-12 items-center">
                 <label
@@ -226,7 +237,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
           </div>
           {/*gender*/}
           <div className="mt-4 font-inter">
-            <p className="text-xl font-semibold mb-3">Gender</p>
+            <p className="text-xl font-medium mb-3">Gender</p>
             <div className="flex space-x-2">
               <label className={"flex items-center space-x-2 cursor-pointer "}>
                 <input

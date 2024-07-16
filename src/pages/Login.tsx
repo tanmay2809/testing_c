@@ -1,22 +1,24 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
 // icons
 import { CiMail } from "react-icons/ci";
 import { MdLockOutline } from "react-icons/md";
-import { PiEyeSlashLight } from "react-icons/pi";
-import { PiEyeLight } from "react-icons/pi";
+import { PiEyeSlashLight, PiEyeLight } from "react-icons/pi";
 
 // assets
 import bgVideo from "../assets/bg-video.mp4";
 import logo from "../assets/logo.png";
+
+// components
+import Loader from "../component/outlet/Loader";
 
 interface FormData {
   email: string;
   password: string;
 }
 
-const Login = () => {
+const Login: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -25,6 +27,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [videoLoading, setVideoLoading] = useState<boolean>(true);
 
   function changeHandler(event: ChangeEvent<HTMLInputElement>) {
     setFormData((prevData) => ({
@@ -35,26 +38,35 @@ const Login = () => {
 
   function submitHandler(event: FormEvent) {
     event.preventDefault();
-    setFormData({
-      email: "",
-      password: "",
-    });
     setLoading(true);
     console.log(formData);
     console.log(rememberMe);
+    // simulate a network request
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }
 
   return (
     <>
+      {videoLoading && <Loader />}
       <video
         className="fixed top-0 left-0 w-full h-full object-cover z-0"
         src={bgVideo}
         autoPlay
         muted
         loop
+        onLoadedData={() => setVideoLoading(false)}
       ></video>
-      <div className="relative flex items-center justify-center lg:justify-end px-[1rem] md:px-[10rem] w-full h-[100vh]">
-        <img src={logo} className="absolute right-[70%] md:right-[75%] lg:right-[85%] bottom-[85%] w-[150px] h-auto" />
+      <div
+        className={`relative flex items-center justify-center lg:justify-end px-[1rem] md:px-[10rem] w-full h-[100vh] ${
+          videoLoading ? "hidden" : "block"
+        }`}
+      >
+        <img
+          src={logo}
+          className="absolute right-[70%] md:right-[75%] lg:right-[85%] bottom-[85%] w-[150px] h-auto"
+        />
         <div className="w-[430px] h-fit flex flex-col px-[2rem] py-[1.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
           <form
             onSubmit={submitHandler}

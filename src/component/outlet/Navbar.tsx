@@ -1,7 +1,7 @@
-import icon from "../assets/icon.png";
+import icon from "../../assets/icon.png";
 import { IoMdWallet } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
-import logo1 from "../assets/Group 1171278064 (1).png"
+import logo1 from "../../assets/Group 1171278064 (1).png";
 import { useState } from "react";
 
 

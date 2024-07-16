@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
 //icons
 import { IoCloseCircle } from "react-icons/io5";
 
 //images
-import whatsapp from "../../assets/whatsapp.png"
-import call from "../../assets/Call.png"
+import whatsapp from "../../assets/whatsapp.png";
+import call from "../../assets/Call.png";
 
 interface Customer {
   name: string;
@@ -31,11 +31,24 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
   isVisible,
   onClose,
 }) => {
+  const [isClosing, setIsClosing] = useState<boolean>(false);
+
   if (!isVisible || !customer) return null;
 
+  const handleCloseModal = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      onClose();
+    }, 500);
+  };
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5">
-      <div className="bg-white lg:w-2/5 md:w-1/3 h-full p-7 shadow-lg overflow-y-auto rounded-xl">
+      <div
+        className={`bg-white lg:w-2/5 md:w-1/3 h-full p-7 shadow-lg overflow-y-auto rounded-xl ${
+          isClosing ? "slide-out-right" : "slide-in-right"
+        }`}
+      >
         {/*top div*/}
         <div className="flex justify-between items-center pb-7 border-black border-b">
           <div>
@@ -46,7 +59,7 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
           </div>
 
           <IoCloseCircle
-            onClick={onClose}
+            onClick={handleCloseModal}
             className=" text-3xl cursor-pointer  font-extrabold"
           />
         </div>
@@ -80,10 +93,10 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
             </div>
             <div className="ml-auto flex items-center space-x-2">
               <button className="bg-[#F1F1F1] p-2 rounded-lg">
-                <img src={call}/>
+                <img src={call} />
               </button>
               <button className="bg-[#F1F1F1] p-2 rounded-lg">
-                <img src={whatsapp} className="w-6 h-auto"/>
+                <img src={whatsapp} className="w-6 h-auto" />
               </button>
             </div>
           </div>
