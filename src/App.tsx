@@ -6,7 +6,7 @@ import Register from "./pages/Register";
 import Verify from "./pages/Verify";
 import NewPassword from "./pages/NewPassword";
 import Plans from "./pages/Plans";
-import LeftNavbar from "./component/LeftNavbar";
+import LeftNavbar from "./component/outlet/LeftNavbar";
 import Dashboard from "./pages/Dashboard";
 import Menu from "./pages/Menu";
 import Marketing from "./pages/Marketing";

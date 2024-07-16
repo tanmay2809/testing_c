@@ -21,6 +21,8 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
   useEffect(() => {
     setSwitchTab(initialSwitchTab);
   }, [initialSwitchTab]);
+
+  
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
