@@ -11,7 +11,7 @@ import bgVideo from "../assets/bg-video.mp4";
 import logo from "../assets/logo.png";
 
 // components
-import Loader from "../component/Loader";
+import Loader from "../component/outlet/Loader";
 
 interface FormData {
   email: string;
