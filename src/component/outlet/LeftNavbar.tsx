@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import Frame from "./Frame";
+import Navbar from "./Navbar";
 
 //icon
 import { RiDashboardFill } from "react-icons/ri";
@@ -42,6 +43,7 @@ const LeftNavbar = () => {
 
   return (
     <>
+      <Navbar />
       <nav
         className={` fixed bg-white z-50  mt-[70px]  h-[calc(100vh-70px)] border-r  shadow-xl shadow-[#00000026] ${
           isOpen ? "w-[15%] duration-100" : "w-[7%] duration-100"
