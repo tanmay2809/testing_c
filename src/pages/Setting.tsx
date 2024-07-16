@@ -1,5 +1,4 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import Navbar from "../component/Navbar";
 
 
 // assets
@@ -10,8 +9,8 @@ const Setting = () => {
 
   return (
     <div className="w-full h-fit relative  ">
-      <Navbar />
       
+
       <div className="w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px]">
           <div className="flex flex-col">

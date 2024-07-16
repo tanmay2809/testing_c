@@ -1,30 +1,51 @@
-import Navbar from "../component/Navbar";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRestaurantDetails } from "../redux/menuslice";
 import type { RootState, AppDispatch } from "../redux/store";
-import Switch from "../component/switch";
+import Switch from "../component/Menu/switch";
 import axios from "axios";
 import AddMenuItem from "../component/Menu/AddMenuItem";
 import EditMenuItem from "../component/Menu/EditMenu";
 import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
-import DeleteModal from "../component/Menu/DeleteModal";
+import CategoryDropdown from "../component/Menu/CategoryDropdown";
 
 //icons
 import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 
+const Item = [
+  {
+    id: 1,
+    name: "Hulk Beast Burger",
+    image: "",
+    description: "",
+    price: "500",
+    category: "",
+    subcategory: "",
+    serving: "",
+    tag: "",
+    active: true,
+    categoryActive: true,
+    clicks: 0,
+    addone: [{ name: "", additionalPrice: "" }],
+    type: "veg",
+  },
+];
+
 const Menu = () => {
-  const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
-  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
-  const [isEditMenuOpen, setIsEditMenuOpen] = useState(false);
-  const [categoryModal, setCategoryModal] = useState(false);
-  const [editSubCategoryModal, setEditSubCategoryModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
+  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
+  const [isEditMenuOpen, setIsEditMenuOpen] = useState<boolean>(false);
+  const [categoryModal, setCategoryModal] = useState<boolean>(false);
+  const [editSubCategoryModal, setEditSubCategoryModal] =
+    useState<boolean>(false);
+  const [selectedCard, setSelectedCard] = useState<number | null>(null);
 
   const [search, setSearch] = useState("");
+  console.log(selectedCard);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(search);
@@ -110,7 +131,7 @@ const Menu = () => {
   }
   return (
     <div className="w-full h-fit relative ">
-      <Navbar />
+      
       <div className=" w-[93%]  h-fit flex items-center justify-center ml-[7%]  ">
         <div className="w-full h-fit flex mt-[70px] ">
           {/* left div */}
@@ -242,6 +263,14 @@ const Menu = () => {
                     onClick={() => setCategoryModal(true)}
                   />
                 </div>
+                <CategoryDropdown
+                  setIsAddMenuOpen={setIsAddMenuOpen}
+                  setIsEditMenuOpen={setIsEditMenuOpen}
+                  setIsSubCategoryOpen={setIsSubCategoryOpen}
+                  setSelectedCard={setSelectedCard}
+                  categories={[{ name: "Pizza", count: 6 }]}
+                  items={Item}
+                />
               </div>
             </div>
 
@@ -265,8 +294,11 @@ const Menu = () => {
                 )}
 
                 {/* edit menu form */}
-                {isEditMenuOpen && (
-                  <EditMenuItem setIsEditMenu={setIsEditMenuOpen} />
+                {isEditMenuOpen && selectedCard && (
+                  <EditMenuItem
+                    setIsEditMenu={setIsEditMenuOpen}
+                    item={Item[selectedCard]}
+                  />
                 )}
               </div>
             )}
@@ -280,9 +312,6 @@ const Menu = () => {
         {editSubCategoryModal && (
           <EditSubcategory setModal={setEditSubCategoryModal} />
         )}
-
-        {/* delete modal */}
-        {deleteModal && <DeleteModal setModal={setDeleteModal} />}
       </div>
     </div>
   );

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Item } from "./CategoryDropdown";
+import { MenuItem } from "./AddMenuItem";
 
 // icons
 import { BiFoodTag } from "react-icons/bi";
@@ -7,35 +9,17 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 
-interface EditMenuItem {
-  name: string;
-  image: string[];
-  description?: string;
-  price?: string;
-  category?: string;
-  subcategory?: string;
-  serving?: string;
-  tag?: string;
-  active: boolean;
-  categoryActive: boolean;
-  clicks: number;
-  addone?: {
-    name: string;
-    additionalPrice: string;
-  }[];
-  type?: "veg" | "nonveg" | "egg" | "";
-}
-
 interface EditMenuProps {
   setIsEditMenu: (isOpen: boolean) => void;
+  item: Item;
 }
 
-const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu }) => {
+const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
   const [image, setImage] = useState<string | null>(null);
 
-  const [formData, setFormData] = useState<EditMenuItem>({
+  const [formData, setFormData] = useState<MenuItem>({
     name: "",
-    image: [],
+    image: "",
     description: "",
     price: "",
     category: "",
@@ -54,7 +38,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu }) => {
     setImage(null);
     setFormData({
       ...formData,
-      image: [],
+      image: "",
     });
   };
 

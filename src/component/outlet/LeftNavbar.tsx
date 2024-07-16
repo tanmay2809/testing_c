@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import Frame from "./Frame";
+import Navbar from "./Navbar";
 
 //icon
 import { RiDashboardFill } from "react-icons/ri";
@@ -42,6 +43,7 @@ const LeftNavbar = () => {
 
   return (
     <>
+      <Navbar />
       <nav
         className={` fixed bg-white z-50  mt-[70px]  h-[calc(100vh-70px)] border-r  shadow-xl shadow-[#00000026] ${
           isOpen ? "w-[15%] duration-100" : "w-[7%] duration-100"
@@ -102,7 +104,7 @@ const LeftNavbar = () => {
                     location.pathname === "/dashboard"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${
+                  } flex gap-2 text-nowrap  items-center hover:text-[#004AAD] rounded-xl ${
                     isOpen ? "px-5 mx-3 py-2.5 " : " p-4 "
                   } `}
                   to="/dashboard"
@@ -113,6 +115,7 @@ const LeftNavbar = () => {
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
                     dashboard{" "}
+                    <span className=" text-transparent ">..._______</span>
                   </span>
                 </Link>
               </div>
@@ -122,7 +125,7 @@ const LeftNavbar = () => {
                     location.pathname === "/menu"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${
+                  } flex gap-2 text-nowrap items-center hover:text-[#004AAD] rounded-xl ${
                     isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
                   } `}
                   to="/menu"
@@ -132,7 +135,10 @@ const LeftNavbar = () => {
                     onClick={handleToggle}
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
-                    menu <span className="text-slate-100">........</span>
+                    menu{" "}
+                    <span className=" text-transparent">
+                      ...__________........
+                    </span>
                   </span>
                 </Link>
               </div>
@@ -142,7 +148,7 @@ const LeftNavbar = () => {
                     location.pathname === "/marketing"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${
+                  } flex gap-2 text-nowrap items-center hover:text-[#004AAD] rounded-xl ${
                     isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
                   } `}
                   to="/marketing"
@@ -153,6 +159,7 @@ const LeftNavbar = () => {
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
                     marketing{" "}
+                    <span className=" text-transparent ">..._______</span>
                   </span>
                 </Link>
               </div>
@@ -162,7 +169,7 @@ const LeftNavbar = () => {
                     location.pathname === "/customer"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${
+                  } flex gap-2 text-nowrap items-center hover:text-[#004AAD] rounded-xl ${
                     isOpen ? "px-5 mx-3 py-2.5 " : " p-4 "
                   } `}
                   to="/customer"
@@ -173,6 +180,7 @@ const LeftNavbar = () => {
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
                     customer{" "}
+                    <span className=" text-transparent ">..._______</span>
                   </span>
                 </Link>
               </div>
@@ -199,7 +207,7 @@ const LeftNavbar = () => {
                     location.pathname === "/setting"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
-                  } flex gap-2  items-center hover:text-[#004AAD] rounded-xl ${
+                  } flex gap-2 text-nowrap  items-center hover:text-[#004AAD] rounded-xl ${
                     isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
                   } `}
                   to="/setting"
@@ -210,12 +218,13 @@ const LeftNavbar = () => {
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
                     setting{" "}
+                    <span className=" text-transparent ">..._______</span>
                   </span>
                 </Link>
               </div>
               <div>
                 <Link
-                  className={`flex items-center  gap-3 text-red-500 ${
+                  className={`flex items-center text-nowrap  gap-3 text-red-500 ${
                     isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
                   }`}
                   to="/login"

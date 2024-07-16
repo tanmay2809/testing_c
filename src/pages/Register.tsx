@@ -13,7 +13,7 @@ import bgVideo from "../assets/bg-video.mp4";
 import logo from "../assets/logo.png";
 
 // components
-import Loader from "../component/Loader";
+import Loader from "../component/outlet/Loader";
 
 interface FormData {
   name: string;
@@ -82,7 +82,10 @@ const Register: React.FC = () => {
           className="absolute right-[70%] md:right-[75%] lg:right-[85%] bottom-[85%] w-[150px] h-auto"
         />
         <div className="w-[460px] h-fit flex flex-col px-[2rem] py-[2.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
-          <form onSubmit={submitHandler} className="w-full flex flex-col gap-y-3">
+          <form
+            onSubmit={submitHandler}
+            className="w-full flex flex-col gap-y-3"
+          >
             <div className="font-bold text-left text-[28px]">
               Create Business Account
             </div>
@@ -151,7 +154,9 @@ const Register: React.FC = () => {
                   className="size-[18px] mr-2"
                 />
                 Agree to our
-                <span className="font-bold text-black mx-1">Privacy policy</span>{" "}
+                <span className="font-bold text-black mx-1">
+                  Privacy policy
+                </span>{" "}
                 &{" "}
                 <span className="font-bold text-black mx-1">
                   terms of condition
