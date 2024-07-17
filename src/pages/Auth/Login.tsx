@@ -71,7 +71,7 @@ const Login: React.FC = () => {
             onSubmit={submitHandler}
             className="w-full flex flex-col gap-y-3"
           >
-            <div className="font-bold text-left text-[28px]">
+            <div className="font-bold text-left text-[24px]">
               Log In to your Dashboard
             </div>
             <p className="text-[#64748B] text-left text-[16px]">
@@ -128,7 +128,7 @@ const Login: React.FC = () => {
               </label>
               <div>
                 <Link to="/forgot">
-                  <p className="text-[1rem] mt-1 text-[#004AAD] font-bold max-w-max ">
+                  <p className="text-[1rem] mt-1 text-[#004AAD] font-semibold max-w-max ">
                     Forgot Password?
                   </p>
                 </Link>
@@ -146,7 +146,7 @@ const Login: React.FC = () => {
             <div className="flex gap-2 mt-1 justify-center items-center">
               <p>Don't have an account?</p>
               <Link to="/register">
-                <span className="text-[#004AAD] text-[1.1rem] font-bold">
+                <span className="text-[#004AAD] text-[1rem] font-semibold">
                   Create Now
                 </span>
               </Link>
