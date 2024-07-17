@@ -10,7 +10,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 export interface MenuItem {
   id?: number;
   name: string;
-  image: string;
+  image: Image[];
   description?: string;
   price?: string;
   category?: string;
@@ -31,12 +31,17 @@ interface AddMenuProps {
   setIsAddMenuOpen: (isOpen: boolean) => void;
 }
 
+interface Image {
+  name: string;
+  url: string;
+}
+
 const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<Image[]>([]);
 
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
-    image: "",
+    image: [],
     description: "",
     price: "",
     category: "",
@@ -51,12 +56,12 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
   });
 
   // remove image function
-  const removeImage = () => {
-    setImage("");
-    setFormData({
-      ...formData,
-      image: "",
-    });
+  const removeImage = (index: number) => {
+    setImage((prevImages) => prevImages.filter((_, i) => i !== index));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      image: prevFormData.image.filter((_, i) => i !== index),
+    }));
   };
 
   // addon functions
@@ -139,13 +144,19 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      const image = URL.createObjectURL(file);
-      setImage(image);
-      setFormData({
-        ...formData,
-        image: image,
-      });
+      const files = Array.from(e.target.files);
+      const newImages = files.map((file) => ({
+        name: file.name,
+        url: URL.createObjectURL(file),
+      }));
+
+      console.log(newImages);
+
+      setImage((prevImages) => [...prevImages, ...newImages]);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: [...prevFormData.image, ...newImages],
+      }));
     }
   };
 
@@ -398,9 +409,9 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
             >
               Images
             </label>
-            <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
-              <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
-                {image === "" ? (
+            <div className="flex flex-col gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
+              <div className="flex flex-row gap-8">
+                <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
                   <div className="size-[90px] flex items-center justify-center w-full">
                     <label
                       htmlFor="dropzone-file"
@@ -415,30 +426,41 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                         type="file"
                         className="hidden"
                         accept="image/*"
+                        multiple
                         onChange={handleFileChange}
                       />
                     </label>
                   </div>
-                ) : (
-                  <div>
-                    <img src={image} alt="uploaded"></img>
+                </div>
+                <div className="w-1/2 flex flex-col items-start justify-center">
+                  <p className="flex flex-row gap-2 text-[0.9rem] font-bold">
+                    Item Image
+                    <span className="text-[#ED4F4F]">*</span>
+                  </p>
+                  <p className="flex flex-row text-[0.8rem] gap-2">
+                    Image format .jpg, .jpeg, .png and minimum size 300x300
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-row gap-4">
+                {image.map((image, index) => (
+                  <div
+                    key={index}
+                    className="size-[5.5rem] rounded-md bg-[#F8FAFC] relative"
+                  >
+                    <img
+                      src={image.url}
+                      alt="uploaded"
+                      className="w-full h-full rounded-md"
+                    />
                     <button
-                      onClick={removeImage}
+                      onClick={() => removeImage(index)}
                       className="absolute -top-2 -right-2 text-red-600"
                     >
                       <IoCloseCircle size={25} />
                     </button>
                   </div>
-                )}
-              </div>
-              <div className="w-1/2 flex flex-col items-start justify-center">
-                <p className="flex flex-row gap-2 text-[0.9rem] font-bold">
-                  Item Image
-                  <span className="text-[#ED4F4F]">*</span>
-                </p>
-                <p className="flex flex-row text-[0.8rem] gap-2">
-                  Image format .jpg, .jpeg, .png and minimum size 300x300
-                </p>
+                ))}
               </div>
             </div>
           </div>

@@ -45,7 +45,7 @@ interface Props {
   setIsAddMenuOpen: (isOpen: boolean) => void;
 }
 
-const CategoryDropdown: React.FC<Props> = ({
+const SubCategoryDropdown: React.FC<Props> = ({
   categories,
   items,
   setIsEditMenuOpen,
@@ -125,4 +125,4 @@ const CategoryDropdown: React.FC<Props> = ({
   );
 };
 
-export default CategoryDropdown;
+export default SubCategoryDropdown;
