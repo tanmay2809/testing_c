@@ -9,7 +9,7 @@ import { MdLockOutline } from "react-icons/md";
 import { PiEyeSlashLight, PiEyeLight } from "react-icons/pi";
 
 // assets
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 
 // components
 import Loader from "../../component/outlet/Loader";

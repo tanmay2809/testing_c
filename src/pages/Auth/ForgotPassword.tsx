@@ -6,8 +6,8 @@ import { CiMail } from "react-icons/ci";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 // assets
-import bgVideo from "../assets/bg-video.mp4";
-import logo from "../assets/logo.png";
+import bgVideo from "../../assets/bg-video.mp4";
+import logo from "../../assets/logo.png";
 
 interface FormData {
   email: string;

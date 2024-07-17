@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FaUser } from "react-icons/fa6";
 
 //images
-import feedback from "../assets/undraw_feedback_re_urmj 1.png";
+import feedback from "../../assets/undraw_feedback_re_urmj 1.png";
 
 //other components
 import BarChart from "../../component/Customer/BarChart";

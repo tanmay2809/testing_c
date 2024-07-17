@@ -9,8 +9,8 @@ import { FaCheck } from "react-icons/fa6";
 import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
 
 // assets
-import bgVideo from "../assets/bg-video.mp4";
-import logo from "../assets/logo.png";
+import bgVideo from "../../assets/bg-video.mp4";
+import logo from "../../assets/logo.png";
 
 interface FormData {
     password: string;

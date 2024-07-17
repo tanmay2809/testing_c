@@ -8,7 +8,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { FaAnglesRight } from "react-icons/fa6";
 
 // assets
-import invoice from "../assets/Invoice Template.png";
+import invoice from "../../assets/Invoice Template.png";
 
 const Invoice = () => {
   const { invoices } = useSelector((state: RootState) => state.invoice);

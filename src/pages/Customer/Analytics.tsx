@@ -22,7 +22,7 @@ import SegmentationPopup from "../../component/Customer/SegmentationPopup";
 import { months } from "../../constants/index";
 
 //images
-import feedback from "../assets/undraw_feedback_re_urmj 1.png";
+import feedback from "../../assets/undraw_feedback_re_urmj 1.png";
 import VisitPopup from "../../component/Customer/VisitPopup";
 
 ChartJS.register(ArcElement, Tooltip, Legend);

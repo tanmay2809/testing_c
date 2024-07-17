@@ -12,10 +12,10 @@ import { LuAsterisk } from "react-icons/lu";
 import { FaYoutube, FaFacebook } from "react-icons/fa";
 
 // assets
-import image from "../assets/Ellipse 2862.png";
-import instagram from "../assets/instagram.svg";
-import zomato from "../assets/Zomato.svg";
-import google from "../assets/Google-Review.png";
+import image from "../../assets/Ellipse 2862.png";
+import instagram from "../../assets/instagram.svg";
+import zomato from "../../assets/Zomato.svg";
+import google from "../../assets/Google-Review.png";
 
 const Stores = () => {
   const { stores } = useSelector((state: RootState) => state.store);
