@@ -7,11 +7,10 @@ import { MdLockOutline } from "react-icons/md";
 import { PiEyeSlashLight, PiEyeLight } from "react-icons/pi";
 
 // assets
-import bgVideo from "../assets/bg-video.mp4";
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 
 // components
-import Loader from "../component/outlet/Loader";
+import Loader from "../../component/outlet/Loader";
 
 interface FormData {
   email: string;
@@ -52,7 +51,7 @@ const Login: React.FC = () => {
       {videoLoading && <Loader />}
       <video
         className="fixed top-0 left-0 w-full h-full object-cover z-0"
-        src={bgVideo}
+        src="https://s3groupsnackbae.s3.ap-south-1.amazonaws.com/1721141264218"
         autoPlay
         muted
         loop

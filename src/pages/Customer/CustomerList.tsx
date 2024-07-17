@@ -6,12 +6,12 @@ import { TbArrowsSort } from "react-icons/tb";
 import { IoCloseOutline } from "react-icons/io5";
 
 //other components
-import CustomerDetail from "../component/Customer/CustomerDetail";
-import SegmentationPopup from "../component/Customer/SegmentationPopup";
-import CustomerFilter from "../component/Customer/CustomerFilter";
+import CustomerDetail from "../../component/Customer/CustomerDetail";
+import SegmentationPopup from "../../component/Customer/SegmentationPopup";
+import CustomerFilter from "../../component/Customer/CustomerFilter";
 
 //data
-import { Customer, customers, segmentationColors } from "../constants/index";
+import { Customer, customers, segmentationColors } from "../../constants/index";
 
 const CustomerList: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -161,7 +161,7 @@ const CustomerList: React.FC = () => {
               className="w-full h-[50px] bg-gray-100 pl-10 pr-3 py-2 rounded-md "
             />
           </div>
-          <div className="flex items-center text-[#004AAD] ">
+          <div className="flex items-center text-[#004AAD] flex-wrap gap-y-1 justify-center">
             <div className="relative">
               <button
                 className="bg-white border rounded-lg px-4 py-3 mx-2 flex items-center text-sm font-Roboto"
@@ -243,13 +243,13 @@ const CustomerList: React.FC = () => {
                   height="24.54"
                   rx="11.19"
                   stroke="white"
-                  stroke-width="5"
+                  strokeWidth="5"
                 />
                 <path
                   d="M18.6236 14.7973L24.3745 13.2897L21.785 22.8177L21.7842 22.8206L21.7671 22.82H21.75H9.16H9.15184L9.14369 22.8201L7.41392 13.2914L7.41399 13.2914L7.41201 13.2811L7.42563 13.2861L7.44075 13.291L12.7608 15.021L13.6558 15.312L14.0005 14.4362L15.7095 10.0944L17.4486 14.2186L17.7853 15.0171L18.6236 14.7973ZM20.38 1H11C8.34783 1 5.8043 2.05357 3.92893 3.92893C2.05357 5.8043 1 8.34783 1 11V22.54C1 25.1922 2.05357 27.7357 3.92893 29.6111C5.8043 31.4864 8.34783 32.54 11 32.54H20.38C23.0322 32.54 25.5757 31.4864 27.4511 29.6111C29.3264 27.7357 30.38 25.1922 30.38 22.54V11C30.38 8.34783 29.3264 5.8043 27.4511 3.92893C25.5757 2.05357 23.0322 1 20.38 1Z"
                   fill="black"
                   stroke="white"
-                  stroke-width="2"
+                  strokeWidth="2"
                 />
               </svg>
             </button>
@@ -284,97 +284,99 @@ const CustomerList: React.FC = () => {
         )}
 
         {/*Customer info table */}
-        <table className="min-w-full bg-white border font-inter text-base">
-          <thead>
-            <tr className="w-full bg-gray-100 text-center text-[#858687] ">
-              <th className="py-3 px-6">Customer Name</th>
-              <th className="py-3 px-6">Phone Number</th>
-              <th className="py-3 px-6">Total Visit</th>
-              <th className="py-3 px-6">Last Visit</th>
-              <th className="py-3 px-6">Segmentation</th>
-              <th className="py-3 px-6">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((customer, index) => (
-              <tr key={index} className="border-t text-base text-center">
-                <td className="py-3 px-6">{customer.name}</td>
-                <td className="py-3 px-6">{customer.phone} </td>
-                <td className="py-3 px-6">{customer.visits}</td>
-                <td className="py-3 px-6">{customer.lastVisit}</td>
-
-                {/*Segmentation logic */}
-                <td className="py-3 px-6 ">
-                  {/*segementation popup */}
-                  {hoveredSegmentation === index && (
-                    <div>
-                      {/*background blur div */}
-                      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[80] p-5"></div>
-                      {/*div to align popup */}
-                      <div className="relative right-[16.5rem] -top-36">
-                        <SegmentationPopup
-                          setVisibility={setSegmentationVisible}
-                          hoveredSegmentation={setHoveredSegmentation}
-                          segmentation={customer.segmentation}
-                          segIndex={index}
-                        />
-                      </div>
-                    </div>
-                  )}
-                  {/*segmentation column content */}
-                  <span
-                    className={` relative py-1 px-2 rounded-lg text-sm   ${
-                      segmentationColors[customer.segmentation]
-                    } ${hoveredSegmentation === index && "z-[90]"}`}
-                    onMouseEnter={() => {
-                      setHoveredSegmentation(index);
-                    }}
-                    onMouseLeave={() => {
-                      setHoveredSegmentation(null);
-                    }}
-                  >
-                    {customer.segmentation}
-                  </span>
-                </td>
-
-                <td className="py-3 px-6 ">
-                  <div
-                    className="flex justify-center items-center gap-2 cursor-pointer"
-                    onClick={() => handleViewDetails(customer)}
-                  >
-                    <button className="text-base font-inter font-medium">
-                      View Details
-                    </button>
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.66602 2L8.53394 9L1.66602 16"
-                        stroke="#64748B"
-                        strokeWidth="3"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M8.79883 2L15.6668 9L8.79883 16"
-                        stroke="#64748B"
-                        strokeWidth="3"
-                        strokeMiterlimit="10"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </td>
+        <div className="">
+          <table className=" bg-white border font-inter text-base w-full">
+            <thead>
+              <tr className="w-full bg-gray-100 text-center text-[#858687] ">
+                <th className="py-3 px-6">Customer Name</th>
+                <th className="py-3 px-6">Phone Number</th>
+                <th className="py-3 px-6">Total Visit</th>
+                <th className="py-3 px-6">Last Visit</th>
+                <th className="py-3 px-6">Segmentation</th>
+                <th className="py-3 px-6">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentItems.map((customer, index) => (
+                <tr key={index} className="border-t text-base text-center">
+                  <td className="py-3 px-6">{customer.name}</td>
+                  <td className="py-3 px-6">{customer.phone} </td>
+                  <td className="py-3 px-6">{customer.visits}</td>
+                  <td className="py-3 px-6">{customer.lastVisit}</td>
+
+                  {/*Segmentation logic */}
+                  <td className="py-3 px-6 ">
+                    {/*segementation popup */}
+                    {hoveredSegmentation === index && (
+                      <div>
+                        {/*background blur div */}
+                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[80] p-5"></div>
+                        {/*div to align popup */}
+                        <div className="relative right-[16.5rem] -top-36">
+                          <SegmentationPopup
+                            setVisibility={setSegmentationVisible}
+                            hoveredSegmentation={setHoveredSegmentation}
+                            segmentation={customer.segmentation}
+                            segIndex={index}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {/*segmentation column content */}
+                    <span
+                      className={` relative py-1 px-2 rounded-lg text-sm   ${
+                        segmentationColors[customer.segmentation]
+                      } ${hoveredSegmentation === index && "z-[90]"}`}
+                      onMouseEnter={() => {
+                        setHoveredSegmentation(index);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredSegmentation(null);
+                      }}
+                    >
+                      {customer.segmentation}
+                    </span>
+                  </td>
+
+                  <td className="py-3 px-6 ">
+                    <div
+                      className="flex justify-center items-center gap-2 cursor-pointer"
+                      onClick={() => handleViewDetails(customer)}
+                    >
+                      <button className="text-base font-inter font-medium">
+                        View Details
+                      </button>
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M1.66602 2L8.53394 9L1.66602 16"
+                          stroke="#64748B"
+                          strokeWidth="3"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M8.79883 2L15.6668 9L8.79883 16"
+                          stroke="#64748B"
+                          strokeWidth="3"
+                          strokeMiterlimit="10"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {/*Bottom part */}
         <div className="flex justify-between items-center py-4">
           <div className="flex justify-center gap-4 items-center">

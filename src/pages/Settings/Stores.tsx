@@ -1,6 +1,6 @@
-import { Store as StoreType } from "../redux/storeSlice";
+import { Store as StoreType } from "../../redux/storeSlice";
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { RootState } from "../../redux/store";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -12,10 +12,10 @@ import { LuAsterisk } from "react-icons/lu";
 import { FaYoutube, FaFacebook } from "react-icons/fa";
 
 // assets
-import image from "../assets/Ellipse 2862.png";
-import instagram from "../assets/instagram.svg";
-import zomato from "../assets/Zomato.svg";
-import google from "../assets/Google-Review.png";
+import image from "../../assets/Ellipse 2862.png";
+import instagram from "../../assets/instagram.svg";
+import zomato from "../../assets/Zomato.svg";
+import google from "../../assets/Google-Review.png";
 
 const Stores = () => {
   const { stores } = useSelector((state: RootState) => state.store);
@@ -164,8 +164,8 @@ const Stores = () => {
                     Social Handles
                   </p>
                   <div className="w-full flex flex-row items-center gap-4 mt-2">
-                    {store.socials.map((social) => (
-                      <>
+                    {store.socials.map((social,index) => (
+                      <div key={index}>
                         {social.name === "youtube" && (
                           <Link className="w-fit h-fit" to={social.link}>
                             <FaYoutube className="text-3xl text-[#E90303]" />
@@ -181,7 +181,7 @@ const Stores = () => {
                             <img src={instagram} className="w-7 h-auto" />
                           </Link>
                         )}
-                      </>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -190,8 +190,8 @@ const Stores = () => {
                     Feedback Channels
                   </p>
                   <div className="w-full flex flex-row items-center gap-4 mt-2">
-                    {store.channels.map((channel) => (
-                      <>
+                    {store.channels.map((channel,index) => (
+                      <div key={index}>
                         {channel.name === "zomato" && (
                           <Link className="w-fit h-fit" to={channel.link}>
                             <img src={zomato} className="w-16 h-auto" />
@@ -202,7 +202,7 @@ const Stores = () => {
                             <img src={google} className="w-16 h-auto" />
                           </Link>
                         )}
-                      </>
+                      </div>
                     ))}
                   </div>
                 </div>

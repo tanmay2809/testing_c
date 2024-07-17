@@ -2,7 +2,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 
 
 // assets
-import whatsapp from "../assets/whatsapp.png";
+import whatsapp from "../../assets/whatsapp.png";
 
 const Setting = () => {
   const location = useLocation();

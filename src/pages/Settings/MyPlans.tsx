@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // components
-import PlansComp from "../component/PlansComp";
+import PlansComp from "../../component/PlansComp";
 
 const MyPlans = () => {
   const [switchTab, setSwitchTab] = useState<string>("quarterly");

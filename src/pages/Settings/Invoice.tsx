@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { Invoice as InvoiceType } from "../redux/invoiceSlice";
+import { RootState } from "../../redux/store";
+import { Invoice as InvoiceType } from "../../redux/invoiceSlice";
 
 // icons
 import { IoMdCloseCircle } from "react-icons/io";
 import { FaAnglesRight } from "react-icons/fa6";
 
 // assets
-import invoice from "../assets/Invoice Template.png";
+import invoice from "../../assets/Invoice Template.png";
 
 const Invoice = () => {
   const { invoices } = useSelector((state: RootState) => state.invoice);

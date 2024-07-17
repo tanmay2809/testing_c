@@ -7,8 +7,8 @@ import { MdLockOutline } from "react-icons/md";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 // assets
-import bgVideo from "../assets/bg-video.mp4";
-import logo from "../assets/logo.png";
+import bgVideo from "../../assets/bg-video.mp4";
+import logo from "../../assets/logo.png";
 
 interface FormData {
     otp:string
