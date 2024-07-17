@@ -8,23 +8,23 @@ import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 
 export interface MenuItem {
-  id?: number;
+  _id?: string;
   name: string;
   image: Image[];
-  description?: string;
-  price?: string;
-  category?: string;
-  subcategory?: string;
-  serving?: string;
-  tag?: string;
+  description: string;
+  price: string;
+  category: string;
+  subcategory: string;
+  serving: string;
+  tag: string;
   active: boolean;
   categoryActive: boolean;
   clicks: number;
-  addone?: {
+  addone: {
     name: string;
     additionalPrice: string;
   }[];
-  type?: "veg" | "nonveg" | "egg" | "";
+  type: string;
 }
 
 interface AddMenuProps {
@@ -48,8 +48,8 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
     subcategory: "",
     serving: "",
     tag: "",
-    active: true,
-    categoryActive: true,
+    active: false,
+    categoryActive: false,
     clicks: 0,
     addone: [{ name: "", additionalPrice: "" }],
     type: "",
@@ -77,43 +77,6 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
       ...formData,
       addone: formData.addone?.filter((_, i) => i !== index),
     });
-  };
-
-  // food type function
-  const handleFoodTypeClick = (type: "veg" | "nonveg" | "egg") => {
-    if (formData.type === type) {
-      setFormData({
-        ...formData,
-        type: "",
-      });
-    } else {
-      setFormData({
-        ...formData,
-        type: type,
-      });
-    }
-  };
-
-  // dish tag click handler
-  const handleDishTagClick = (
-    type:
-      | "Chef's Special"
-      | "New Launch"
-      | "Dairy free"
-      | "Vegan"
-      | "Extra Spicy"
-  ) => {
-    if (formData.tag === type) {
-      setFormData({
-        ...formData,
-        tag: "",
-      });
-    } else {
-      setFormData({
-        ...formData,
-        tag: type,
-      });
-    }
   };
 
   const handleChange = (
@@ -283,7 +246,12 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                 className={`flex flex-row items-center gap-2 text-[0.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                   formData.type === "veg" ? "bg-[#004AAD] text-white" : ""
                 }`}
-                onClick={() => handleFoodTypeClick("veg")}
+                onClick={() => {
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    type: prevData.type === "veg" ? "" : "veg",
+                  }));
+                }}
               >
                 <BiFoodTag className="text-2xl text-[#67CE67]" />
                 Veg
@@ -292,7 +260,12 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                 className={`flex flex-row items-center gap-2 text-[0.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                   formData.type === "egg" ? "bg-[#004AAD] text-white" : ""
                 }`}
-                onClick={() => handleFoodTypeClick("egg")}
+                onClick={() => {
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    type: prevData.type === "egg" ? "" : "egg",
+                  }));
+                }}
               >
                 <BiFoodTag className="text-2xl text-[#F7C02B]" />
                 Egg
@@ -301,7 +274,12 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                 className={`flex flex-row items-center gap-2 px-3 text-[0.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                   formData.type === "nonveg" ? "bg-[#004AAD] text-white" : ""
                 }`}
-                onClick={() => handleFoodTypeClick("nonveg")}
+                onClick={() => {
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    type: prevData.type === "nonveg" ? "" : "nonveg",
+                  }));
+                }}
               >
                 <BiFoodTag className="text-2xl text-[#ED4F4F]" />
                 Non-Veg
@@ -517,7 +495,15 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                       ? "bg-[#004AAD] text-white"
                       : ""
                   }`}
-                  onClick={() => handleDishTagClick("Chef's Special")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag:
+                        prevData.tag === "Chef's Special"
+                          ? ""
+                          : "Chef's Special",
+                    }));
+                  }}
                 >
                   Chef's Special
                 </span>
@@ -527,7 +513,12 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                       ? "bg-[#004AAD] text-white"
                       : ""
                   }`}
-                  onClick={() => handleDishTagClick("New Launch")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag: prevData.tag === "New Launch" ? "" : "New Launch",
+                    }));
+                  }}
                 >
                   New Launch
                 </span>
@@ -537,7 +528,12 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                       ? "bg-[#004AAD] text-white"
                       : ""
                   }`}
-                  onClick={() => handleDishTagClick("Dairy free")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag: prevData.tag === "Dairy free" ? "" : "Dairy free",
+                    }));
+                  }}
                 >
                   Dairy free
                 </span>
@@ -545,7 +541,12 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                   className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                     formData.tag === "Vegan" ? "bg-[#004AAD] text-white" : ""
                   }`}
-                  onClick={() => handleDishTagClick("Vegan")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag: prevData.tag === "Vegan" ? "" : "Vegan",
+                    }));
+                  }}
                 >
                   Vegan
                 </span>
@@ -555,18 +556,16 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                       ? "bg-[#004AAD] text-white"
                       : ""
                   }`}
-                  onClick={() => handleDishTagClick("Extra Spicy")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag: prevData.tag === "Extra Spicy" ? "" : "Extra Spicy",
+                    }));
+                  }}
                 >
                   Extra Spicy
                 </span>
               </div>
-              <p
-                className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
-                // onClick={addAddOn}
-              >
-                <FaPlus className="text-lg" />
-                Request New
-              </p>
             </div>
           </div>
         </div>

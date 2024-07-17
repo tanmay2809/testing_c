@@ -4,7 +4,7 @@ import { fetchRestaurantDetails } from "../redux/menuslice";
 import type { RootState, AppDispatch } from "../redux/store";
 import Switch from "../component/Menu/switch";
 import axios from "axios";
-import AddMenuItem from "../component/Menu/AddMenuItem";
+import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
 import EditMenuItem from "../component/Menu/EditMenu";
 import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
@@ -14,25 +14,21 @@ import SubCategoryDropdown from "../component/Menu/SubCategoryDropdown";
 //icons
 import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
+import { baseUrl } from "../main";
 
-const Item = [
-  {
-    id: 1,
-    name: "Hulk Beast Burger",
-    image: "",
-    description: "",
-    price: "500",
-    category: "",
-    subcategory: "",
-    serving: "",
-    tag: "",
-    active: true,
-    categoryActive: true,
-    clicks: 0,
-    addone: [{ name: "", additionalPrice: "" }],
-    type: "veg",
-  },
-];
+export interface SubcategoryItem {
+  _id: string;
+  name: string;
+  image: string;
+  menuItems: MenuItem[];
+  active: boolean;
+}
+
+interface CategoryItem {
+  _id: string;
+  name: string;
+  subcategory: any[];
+}
 
 const Menu = () => {
   const [isAddMenuOpen, setIsAddMenuOpen] = useState<boolean>(false);
@@ -41,13 +37,39 @@ const Menu = () => {
   const [categoryModal, setCategoryModal] = useState<boolean>(false);
   const [editSubCategoryModal, setEditSubCategoryModal] =
     useState<boolean>(false);
-  const [selectedCard, setSelectedCard] = useState<number | null>(null);
+
+  const [selectedCard, setSelectedCard] = useState<MenuItem | null>(null);
 
   const [search, setSearch] = useState("");
-  console.log(selectedCard);
 
+  const [subcategories, setsubcategories] = useState<SubcategoryItem[]>();
+
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null
+  );
+
+  const getSubcategories = () => {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/getsubcategory/6694e0b752c576ffb9881135`,
+      headers: {},
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data.subcategories));
+        setsubcategories(response.data.subcategories);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // handle search
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(search);
+    // console.log(search);
     const inputValue = e.target.value;
     setSearch(inputValue);
     if (!inputValue) {
@@ -60,6 +82,7 @@ const Menu = () => {
     //searchMenu();
   };
 
+  // fetch categories
   const { data, loading, error } = useSelector(
     (state: RootState) => state.resturantdata
   );
@@ -68,50 +91,37 @@ const Menu = () => {
 
   const id: string = "668857dc758bf97a4d1406ab";
 
-  const [category1, setCategory1] = useState<string[]>([]);
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [subcategory1, setSubCategory1] = useState<string[]>([]);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchRestaurantDetails({ id }) as any);
     }
+    getSubcategories();
   }, [dispatch, id]);
 
   useEffect(() => {
     if (data) {
-      setCategory1(data.category || []);
+      setCategories(data.category || []);
       setSubCategory1(data.category?.subcategory || []);
     }
   }, [data]);
 
-  console.log(data);
+  const filteredCategory = selectedCategoryId
+    ? categories.filter((category) => category._id === selectedCategoryId)
+    : [];
+
+  console.log("filtered", filteredCategory);
+
+  // console.log(data);
 
   // setSubCategory(data?.subcategory);
 
   //console.log(data.category);
 
-  console.log(category1);
+  console.log(categories);
   console.log(subcategory1);
-
-  // post sub category
-  const addCategory = async () => {
-    const data = mainCategoryFormData;
-
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/api/addCategory/668857dc758bf97a4d1406ab",
-        data,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      console.log(JSON.stringify(response.data));
-      // Handle successful response here
-    } catch (error) {
-      console.error("Error adding category:", error);
-      // Handle error here
-    }
-  };
 
   if (loading) {
     return (
@@ -199,40 +209,20 @@ const Menu = () => {
                     </div>
                   </div>
                 </div>
-
-                <div className="w-full h-fit flex items-center justify-between mt-5">
-                  {/* Search result */}
-                  <div className="relative w-[35%]  flex items-center rounded-md border border-[#407fd1]  ">
-                    <input
-                      className="w-full sm:py-2 py-3 px-8 rounded-lg"
-                      type="text"
-                      value={search}
-                      onChange={handleSearch}
-                      placeholder="Search menu ..."
-                    />
-                    <CiSearch className="absolute text-[1.3rem] font-semibold ml-2 " />
-                  </div>
-
-                  <div className="flex items-center gap-5">
-                    <div></div>
-                    <div className="flex gap-5">
-                      <p>Action items </p>
-                      <Switch isActive={true} />
-                    </div>
-                  </div>
-                </div>
               </div>
 
               {/* bottom */}
               <div>
                 <div className="flex flex-row items-center gap-4 px-8 py-5">
-                  {category1.map((item, index) => (
+                  {categories.map((item) => (
                     <button
-                      key={index}
+                      key={item._id}
                       className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
-                      onClick={() => setIsEditMenuOpen(!isEditMenuOpen)}
+                      onClick={() => {
+                        setSelectedCategoryId(item._id);
+                      }}
                     >
-                      {(item?.name as string) || ""}
+                      {item?.name}
                     </button>
 
                     // setsubcategory1(item?.subcategory || '');
@@ -261,14 +251,15 @@ const Menu = () => {
                     onClick={() => setCategoryModal(true)}
                   />
                 </div>
+                {/* {subcategories?.map((subcategory) => ( */}
                 <SubCategoryDropdown
                   setIsAddMenuOpen={setIsAddMenuOpen}
                   setIsEditMenuOpen={setIsEditMenuOpen}
                   setIsSubCategoryOpen={setIsSubCategoryOpen}
                   setSelectedCard={setSelectedCard}
-                  categories={[{ name: "Pizza", count: 6 }]}
-                  items={Item}
+                  category={filteredCategory}
                 />
+                {/* ))} */}
               </div>
             </div>
 
@@ -295,7 +286,7 @@ const Menu = () => {
                 {isEditMenuOpen && selectedCard && (
                   <EditMenuItem
                     setIsEditMenu={setIsEditMenuOpen}
-                    item={Item[selectedCard]}
+                    item={selectedCard}
                   />
                 )}
               </div>

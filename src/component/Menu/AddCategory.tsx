@@ -1,8 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
 
 // icons
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
+import { baseUrl } from "../../main";
 
 interface CategoryProps {
   isCategoryOpen: (isOpen: boolean) => void;
@@ -10,11 +12,14 @@ interface CategoryProps {
 
 interface Category {
   name: string;
+  isPrimary: boolean;
 }
 
 const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<Category>({
     name: "",
+    isPrimary: false,
   });
 
   // onchange handler
@@ -27,7 +32,29 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
 
   // form submit handler
   const handleSubmit = (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
+    const config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/addCategory/668857dc758bf97a4d1406ab`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+        isCategoryOpen(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     console.log(formData);
   };
 
@@ -70,8 +97,13 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
                 <label className="text-[1.1rem] font-[400] mt-2 gap-3 text-center flex justify-betwee items-center">
                   <input
                     type="checkbox"
-                    // checked={rememberMe}
-                    // onChange={() => setRememberMe(!rememberMe)}
+                    checked={formData.isPrimary}
+                    onChange={() => {
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        isPrimary: prevData.isPrimary === false ? true : false,
+                      }));
+                    }}
                     className="size-[1rem] "
                   />
                   Mark as Primary
@@ -85,8 +117,18 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
                   Cancel
                 </button>
                 <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[0.8rem] py-2">
-                  Save
+                  {loading ? (
+                    <div className="inline-block  h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+                  ) : (
+                    <span>Save</span>
+                  )}
                 </button>
+                {/* <button
+                  type="submit"
+                  className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[0.8rem] py-2"
+                >
+                  Save
+                </button> */}
               </div>
             </form>
           </div>
