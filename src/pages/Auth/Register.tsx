@@ -85,7 +85,7 @@ const Register: React.FC = () => {
             onSubmit={submitHandler}
             className="w-full flex flex-col gap-y-3"
           >
-            <div className="font-bold text-left text-[28px]">
+            <div className="font-bold text-left text-[24px]">
               Create Business Account
             </div>
             <p className="text-[#64748B] text-left text-[16px]">
@@ -178,7 +178,7 @@ const Register: React.FC = () => {
             <div className="flex gap-2 mt-2 justify-center items-center">
               <p>Already have an account?</p>
               <Link to="/login">
-                <span className="text-[#004AAD] text-[1.1rem] font-bold">
+                <span className="text-[#004AAD] text-[1rem] font-semibold">
                   Login
                 </span>
               </Link>

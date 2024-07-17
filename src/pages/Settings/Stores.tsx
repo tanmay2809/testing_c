@@ -17,10 +17,23 @@ import instagram from "../../assets/instagram.svg";
 import zomato from "../../assets/Zomato.svg";
 import google from "../../assets/Google-Review.png";
 
+interface FormData {
+  outletName: string;
+  outletType: string;
+  outletMail: string;
+  outletLandmark: string;
+}
+
 const Stores = () => {
   const { stores } = useSelector((state: RootState) => state.store);
   const [modal, setModal] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
+  const [formData, setFormData] = useState<FormData>({
+    outletName: "",
+    outletType: "",
+    outletMail: "",
+    outletLandmark: "",
+  });
 
   const toggleModal = () => {
     setModal(!modal);
@@ -32,6 +45,19 @@ const Stores = () => {
       setIsClosing(false);
       toggleModal();
     }, 500);
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Handle form submission logic here, e.g., dispatching an action to update store details
+    console.log("Form data:", formData);
+    handleCloseModal();
   };
 
   return (
@@ -164,7 +190,7 @@ const Stores = () => {
                     Social Handles
                   </p>
                   <div className="w-full flex flex-row items-center gap-4 mt-2">
-                    {store.socials.map((social,index) => (
+                    {store.socials.map((social, index) => (
                       <div key={index}>
                         {social.name === "youtube" && (
                           <Link className="w-fit h-fit" to={social.link}>
@@ -190,7 +216,7 @@ const Stores = () => {
                     Feedback Channels
                   </p>
                   <div className="w-full flex flex-row items-center gap-4 mt-2">
-                    {store.channels.map((channel,index) => (
+                    {store.channels.map((channel, index) => (
                       <div key={index}>
                         {channel.name === "zomato" && (
                           <Link className="w-fit h-fit" to={channel.link}>
@@ -232,7 +258,7 @@ const Stores = () => {
           className={`fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-2`}
         >
           <div
-            className={`bg-white w-[31.25rem] shadow-lg rounded-lg overflow-y-auto h-full${
+            className={`bg-white w-[31.25rem] shadow-lg rounded-lg overflow-y-auto h-full ${
               isClosing ? "slide-out-right" : "slide-in-right"
             }`}
           >
@@ -251,14 +277,17 @@ const Stores = () => {
                   className="text-4xl hover:cursor-pointer"
                 />
               </div>
-              <div className="flex flex-col  h-[90%] justify-around">
-                <div className="flex justify-center pb-1 ">
-                  <img
-                    src={image}
-                    className="w-[4.38rem] h-[4.38rem] object-cover"
-                  />
-                </div>
-                <form className="flex flex-col gap-4 ">
+              <div className="flex flex-col  h-[90%]">
+                <form
+                  className="flex flex-col gap-4  justify-evenly h-full"
+                  onSubmit={handleSubmit}
+                >
+                  <div className="flex justify-center pb-1 ">
+                    <img
+                      src={image}
+                      className="w-[4.38rem] h-[4.38rem] object-cover"
+                    />
+                  </div>
                   <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
                       <label className="flex flex-row items-center text-sm font-[500]">
@@ -269,6 +298,9 @@ const Stores = () => {
                         type="text"
                         className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-lg"
                         placeholder="Enter Name"
+                        name="outletName"
+                        value={formData.outletName}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -282,9 +314,9 @@ const Stores = () => {
                       <select
                         className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem]"
                         id="type"
-                        name="type"
-                        // value="dw"
-                        // onChange={handleInputChange}
+                        name="outletType"
+                        value={formData.outletType}
+                        onChange={handleInputChange}
                       >
                         <option value="">Select Type</option>
                         <option value="1">1</option>
@@ -300,6 +332,9 @@ const Stores = () => {
                         type="text"
                         className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-lg"
                         placeholder="Enter Email ID"
+                        name="outletMail"
+                        value={formData.outletMail}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -311,21 +346,29 @@ const Stores = () => {
                         type="text"
                         className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-3"
                         placeholder="Enter Landmark"
+                        name="outletLandmark"
+                        value={formData.outletLandmark}
+                        onChange={handleInputChange}
                       />
                     </div>
                   </div>
+                  <div>
+                    <div className="flex flex-row gap-5 mt-3">
+                      <button
+                        className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-3 py-2"
+                        onClick={() => handleCloseModal()}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-3 py-2"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
                 </form>
-                <div className="flex flex-row gap-5 mt-3">
-                  <button
-                    className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-3 py-2"
-                    onClick={() => handleCloseModal()}
-                  >
-                    Cancel
-                  </button>
-                  <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-3 py-2">
-                    Save
-                  </button>
-                </div>
               </div>
             </div>
           </div>

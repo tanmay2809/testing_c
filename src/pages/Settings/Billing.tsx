@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 
 // icons
 import { LuAsterisk } from "react-icons/lu";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
 
+interface FormData {
+  companyName: string;
+  address: string;
+  gstNumber: string;
+  country: string;
+  state: string;
+  notRegisteredWithGST: boolean;
+}
+
 const Billing = () => {
   const [model, setModel] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
+  const [formData, setFormData] = useState<FormData>({
+    companyName: "",
+    address: "",
+    gstNumber: "",
+    country: "",
+    state: "",
+    notRegisteredWithGST: false,
+  });
 
   const toggleModel = () => {
     setModel(!model);
@@ -19,6 +36,34 @@ const Billing = () => {
       setIsClosing(false);
       toggleModel();
     }, 500);
+  };
+
+  const changeHandler = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === "notRegisteredWithGST") {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData({
+        ...formData,
+        [name]: checked,
+        gstNumber: checked ? "" : formData.gstNumber,
+      });
+    } else if (name === "gstNumber") {
+      setFormData({
+        ...formData,
+        [name]: value,
+        notRegisteredWithGST: value ? false : formData.notRegisteredWithGST,
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const submitHandler = (event: FormEvent) => {
+    event.preventDefault();
+    console.log(formData);
+    handleCloseModal();
   };
 
   return (
@@ -40,15 +85,15 @@ const Billing = () => {
               <div className="w-fit flex flex-col justify-center">
                 <button
                   className="w-fit h-fit flex flex-row justify-center items-center gap-2 text-black text-[1.2rem] font-[500] rounded-[0.5rem]"
-                  onClick={() => toggleModel()}
+                  onClick={toggleModel}
                 >
                   <BiEditAlt className="" />
                   Edit Details
                 </button>
               </div>
             </div>
-            <div className="bg-white rounded-xl flex flex-row flex-wrap gap-x-[0.75rem] gap-y-[1.37rem] w-fit h-fit p-[1.25rem]">
-              <div className="w-[15rem] flex flex-col">
+            <div className="bg-white rounded-xl flex flex-row flex-wrap sm:gap-x-[3.5rem] gap-x-[2.5rem] gap-y-[1.37rem] w-fit h-fit p-[1.25rem]">
+              <div className="w-[12.4rem] flex flex-col">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   Company Name
                 </p>
@@ -56,37 +101,37 @@ const Billing = () => {
                   Foodoos Private Limited
                 </h1>
               </div>
-              <div className="w-[12.5rem] flex flex-col">
+              <div className="w-[12.4rem] flex flex-col">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   Country
                 </p>
                 <h1 className="text-lg font-semibold">India</h1>
               </div>
-              <div className="w-[12.5rem] flex flex-col">
+              <div className="w-[12.4rem] flex flex-col">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   State
                 </p>
                 <h1 className="text-lg font-semibold">West Bengal</h1>
               </div>
-              <div className="w-[12.5rem] flex flex-col">
+              <div className="w-[12.4rem] flex flex-col ">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   City
                 </p>
                 <h1 className="text-lg font-semibold">Kolkata</h1>
               </div>
-              <div className="w-[9.375rem] flex flex-col">
+              <div className="w-[12.4rem] flex flex-col ">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   Pincode
                 </p>
                 <h1 className="text-lg font-semibold">5412</h1>
               </div>
-              <div className="w-[15rem] flex flex-col">
+              <div className="w-[12.4rem] flex flex-col">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   GST number
                 </p>
                 <h1 className="text-lg font-semibold">897564876778896</h1>
               </div>
-              <div className="w-[16.875rem] flex flex-col">
+              <div className="w-[12.4rem] flex flex-col">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   Address
                 </p>
@@ -98,7 +143,7 @@ const Billing = () => {
           </div>
         </div>
 
-        {/* Model */}
+        {/* Modal */}
         {model && (
           <div
             id="default-modal"
@@ -121,105 +166,128 @@ const Billing = () => {
                     </p>
                   </div>
                   <IoMdCloseCircle
-                    onClick={() => {
-                      handleCloseModal();
-                    }}
+                    onClick={handleCloseModal}
                     className="text-[2.5rem] hover:cursor-pointer"
                   />
                 </div>
                 <div className="flex flex-col mt-2 h-[88%] justify-evenly">
-                  <form className="flex flex-col gap-2 justify-center">
-                    <div className="flex flex-col gap-1">
-                      <label className="flex flex-row items-center text-[0.875rem] font-[500]">
-                        Company Name
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
-                        placeholder="Enter Name"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="flex flex-row items-center text-[0.875rem] font-[500]">
-                        Address
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
-                        placeholder="Enter Name"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <label className="flex flex-row items-center text-[0.875rem] font-[500]">
-                        GST Number
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
-                        placeholder="Enter Name"
-                      />
-                    </div>
-                    <div className="flex justify-between mt-1 items-center">
-                      <label className="text-sm font-semibold text-center flex items-center">
+                  <form
+                    onSubmit={submitHandler}
+                    className="flex flex-col gap-2 justify-evenly h-full"
+                  >
+                    <div className="flex flex-col gap-3 justify-between">
+                      <div className="flex flex-col gap-1">
+                        <label className="flex flex-row items-center text-[0.875rem] font-[500]">
+                          Company Name
+                          <LuAsterisk className="text-sm text-[#C62828]" />
+                        </label>
                         <input
-                          type="checkbox"
-                          className="size-[1.25rem] mr-2"
+                          required
+                          type="text"
+                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
+                          placeholder="Enter Name"
+                          name="companyName"
+                          value={formData.companyName}
+                          onChange={changeHandler}
                         />
-                        I am not registered with GST
-                      </label>
-                    </div>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="flex flex-row items-center text-[0.875rem] font-[500]">
+                          Address
+                          <LuAsterisk className="text-sm text-[#C62828]" />
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
+                          placeholder="Enter Address"
+                          name="address"
+                          value={formData.address}
+                          onChange={changeHandler}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="flex flex-row items-center text-[0.875rem] font-[500]">
+                          GST Number
+                          <LuAsterisk className="text-sm text-[#C62828]" />
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
+                          placeholder="Enter GST Number"
+                          name="gstNumber"
+                          value={formData.gstNumber}
+                          onChange={changeHandler}
+                        />
+                      </div>
+                      <div className="flex justify-between mt-1 items-center">
+                        <label className="text-sm font-semibold text-center flex items-center">
+                          <input
+                            type="checkbox"
+                            className="size-[1.25rem] mr-2"
+                            name="notRegisteredWithGST"
+                            checked={formData.notRegisteredWithGST}
+                            onChange={changeHandler}
+                          />
+                          I am not registered with GST
+                        </label>
+                      </div>
 
-                    <div className="flex flex-col gap-1">
-                      <label
-                        htmlFor="country"
-                        className="flex flex-row items-center text-[0.875rem] font-[500]"
-                      >
-                        Country
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <select
-                        className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem]"
-                        id="country"
-                        name="country"
-                      >
-                        <option value="">Select Country</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                      </select>
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="country"
+                          className="flex flex-row items-center text-[0.875rem] font-[500]"
+                        >
+                          Country
+                          <LuAsterisk className="text-sm text-[#C62828]" />
+                        </label>
+                        <select
+                          required
+                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem]"
+                          id="country"
+                          name="country"
+                          value={formData.country}
+                          onChange={changeHandler}
+                        >
+                          <option value="">Select Country</option>
+                          <option value="1">Country 1</option>
+                          <option value="2">Country 2</option>
+                        </select>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label
+                          htmlFor="state"
+                          className="flex flex-row items-center text-[0.875rem] font-[500]"
+                        >
+                          State
+                          <LuAsterisk className="text-sm text-[#C62828]" />
+                        </label>
+                        <select
+                          required
+                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem]"
+                          id="state"
+                          name="state"
+                          value={formData.state}
+                          onChange={changeHandler}
+                        >
+                          <option value="">Select State</option>
+                          <option value="1">State 1</option>
+                          <option value="2">State 2</option>
+                        </select>
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <label
-                        htmlFor="country"
-                        className="flex flex-row items-center text-[0.875rem] font-[500]"
+                    <div className="flex flex-row gap-5 mt-3">
+                      <button
+                        className="w-[50%] text-[1.1rem] rounded-[0.5rem] border-2 font-bold text-richblack-900 px-[12px] py-2"
+                        onClick={() => handleCloseModal()}
                       >
-                        State
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <select
-                        className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem]"
-                        id="state"
-                        name="state"
-                      >
-                        <option value="">Select State</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                      </select>
+                        Cancel
+                      </button>
+                      <button className="w-[50%] bg-[#004AAD] text-[1.1rem] rounded-[0.5rem] text-white font-bold text-richblack-900 px-[12px] py-2">
+                        Save
+                      </button>
                     </div>
                   </form>
-                  <div className="flex flex-row gap-5 mt-6">
-                    <button
-                      className="w-[50%] text-[1.1rem] rounded-[0.5rem] border-2 font-bold text-richblack-900 px-[12px] py-2"
-                      onClick={() => handleCloseModal()}
-                    >
-                      Cancel
-                    </button>
-                    <button className="w-[50%] bg-[#004AAD] text-[1.1rem] rounded-[0.5rem] text-white font-bold text-richblack-900 px-[12px] py-2">
-                      Save
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>

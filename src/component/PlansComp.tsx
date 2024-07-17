@@ -14,9 +14,30 @@ interface PlansProps {
   switch: string;
 }
 
+interface FormData {
+  companyName: string;
+  address: string;
+  country: string;
+  state: string;
+  city: string;
+  pinCode: string;
+  gstNumber: string;
+  notRegisteredWithGST: boolean;
+}
+
 const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
   const [switchTab, setSwitchTab] = useState<string>(initialSwitchTab);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [formData, setFormData] = useState<FormData>({
+    companyName: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    pinCode: "",
+    gstNumber: "",
+    notRegisteredWithGST: false,
+  });
 
   useEffect(() => {
     setSwitchTab(initialSwitchTab);
@@ -26,12 +47,44 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
     setIsOpen(!isOpen);
   };
 
+  const changeHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === "notRegisteredWithGST") {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData({
+        ...formData,
+        [name]: checked,
+        gstNumber: checked ? "" : formData.gstNumber,
+      });
+    } else if (name === "gstNumber") {
+      setFormData({
+        ...formData,
+        [name]: value,
+        notRegisteredWithGST: value ? false : formData.notRegisteredWithGST,
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(formData);
+    setIsOpen(!isOpen);
+    // Proceed with form submission logic here
+  };
+
   return (
     <>
       <div className="flex w-full items-center justify-center px-[1rem] gap-x-[1.2rem] -mt-3 md:flex-wrap sm:flex-wrap md:gap-y-5 sm:gap-y-5">
         {switchTab === "quarterly" &&
-          PlansData.quarterly.map((plan,index) => (
-            <div key={index} className="group w-[22rem] h-[36rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all justify-between">
+          PlansData.quarterly.map((plan, index) => (
+            <div
+              key={index}
+              className="group w-[22rem] h-[36rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all justify-between"
+            >
               <div className="flex flex-col gap-3">
                 <div className="flex items-center flex-wrap justify-between">
                   <h1 className="text-[1.625rem] text-[#1B223C] font-semibold flex flex-row items-center gap-2 group-hover:text-white">
@@ -53,8 +106,11 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                   {plan.validity}
                 </p>
                 <div className="w-full sm:h-[15.625rem] flex flex-col gap-3 mt-2">
-                  {plan.features.map((feature,index) => (
-                    <p key={index} className="flex flex-row items-center text-[0.9375rem] gap-1">
+                  {plan.features.map((feature, index) => (
+                    <p
+                      key={index}
+                      className="flex flex-row items-center text-[0.9375rem] gap-1"
+                    >
                       <GrFormCheckmark className="text-[1.25rem]" />
                       {feature}
                     </p>
@@ -66,46 +122,53 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                   {plan.button.btn}
                 </button>
               ) : (
-                <button className=" text-[1.1rem] bg-white rounded-[0.5rem] text-black border-2 font-bold text-richblack-900 px-[0.75rem] py-3  group-hover:text-[#004AAD]">
+                <button className="text-[1.1rem] bg-white rounded-[0.5rem] text-black border-2 font-bold text-richblack-900 px-[0.75rem] py-3 group-hover:text-[#004AAD]">
                   {plan.button.btn}
                 </button>
               )}
             </div>
           ))}
         {switchTab === "annual" &&
-          PlansData.annually.map((plan,index) => (
-            <div key={index} className="group w-[18.75rem] sm:w-[26.875rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all">
-              <h1 className="text-[1.625rem] text-[#1B223C] font-semibold flex flex-row items-center gap-2 group-hover:text-white">
-                {plan.name}
-                {plan.name === "Starter Plan" && (
-                  <span className="w-fit h-fit text-[0.9375rem] rounded-[0.5rem] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] ml-5 group-hover:text-black">
-                    Recommended
-                  </span>
-                )}
-              </h1>
-              <p className="text-[0.875rem] text-[#797878] group-hover:text-white">
-                {plan.desc}
-              </p>
-              <p className="text-[1.125rem] text-[#797878] flex flex-row items-center gap-2 border-b border-b-[#E7EBFF] pb-2 group-hover:text-white">
-                <span className="text-[1.625rem] text-[#1B223C] font-bold group-hover:text-white">
-                  ₹{plan.price}
-                </span>{" "}
-                {plan.validity}
-              </p>
-              <div className="w-full sm:h-[15.625rem] flex flex-col gap-3 mt-2">
-                {plan.features.map((feature) => (
-                  <p className="flex flex-row items-center text-[0.9375rem]">
-                    <GrFormCheckmark className="text-[1.25rem]" />
-                    {feature}
-                  </p>
-                ))}
+          PlansData.annually.map((plan, index) => (
+            <div
+              key={index}
+              className="group w-[22rem] h-[36rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all justify-between"
+            >
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center flex-wrap justify-between">
+                  <h1 className="text-[1.625rem] text-[#1B223C] font-semibold flex flex-row items-center gap-2 group-hover:text-white">
+                    {plan.name}
+                    {plan.name === "Starter Plan" && (
+                      <span className="w-fit h-fit text-[0.9375rem] rounded-[0.5rem] border border-[#004AAD] px-4 py-2 bg-[#FFDD66] ml-5 group-hover:text-black">
+                        Recommended
+                      </span>
+                    )}
+                  </h1>
+                </div>
+                <p className="text-[0.875rem] text-[#797878] group-hover:text-white">
+                  {plan.desc}
+                </p>
+                <p className="text-[1.125rem] text-[#797878] flex flex-row items-center gap-2 border-b border-b-[#E7EBFF] pb-2 group-hover:text-white">
+                  <span className="text-[1.625rem] text-[#1B223C] font-bold group-hover:text-white">
+                    ₹{plan.price}
+                  </span>{" "}
+                  {plan.validity}
+                </p>
+                <div className="w-full sm:h-[15.625rem] flex flex-col gap-3 mt-2">
+                  {plan.features.map((feature) => (
+                    <p className="flex flex-row items-center text-[0.9375rem]">
+                      <GrFormCheckmark className="text-[1.25rem]" />
+                      {feature}
+                    </p>
+                  ))}
+                </div>
               </div>
               {plan.button.start ? (
                 <button className="bg-[#004AAD] border-2  text-[1.1rem] rounded-[0.5rem] text-white border-[#004AAD] font-bold text-richblack-900 px-[0.75rem] py-3  group-hover:border-white">
                   {plan.button.btn}
                 </button>
               ) : (
-                <button className=" text-[1.1rem] bg-white rounded-[0.5rem] text-black border-2 font-bold text-richblack-900 px-[0.75rem] py-3  group-hover:text-[#004AAD]">
+                <button className="text-[1.1rem] bg-white rounded-[0.5rem] text-black border-2 font-bold text-richblack-900 px-[0.75rem] py-3 group-hover:text-[#004AAD]">
                   {plan.button.btn}
                 </button>
               )}
@@ -115,7 +178,7 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
 
       <div className="w-full h-fit px-[1rem] py-4 mt-8 rounded-xl">
         <div className="overflow-x-scroll">
-          <table className="w-full  ">
+          <table className="w-full">
             <thead>
               <tr>
                 {switchTab === "quarterly" && (
@@ -215,7 +278,7 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
               </tr>
             </thead>
             <tbody>
-              {PlansTable.map((plan,index) => (
+              {PlansTable.map((plan, index) => (
                 <tr key={index} className="text-center  h-20 text-sm">
                   <td className="text-base border-2 p-2">{plan.head}</td>
                   {plan.plan1 === "check" ? (
@@ -291,6 +354,7 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
           </table>
         </div>
       </div>
+
       {isOpen && (
         <div
           id="default-modal"
@@ -318,7 +382,10 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                 <h1 className="text-[1.375rem] text-[#444444] font-bold">
                   Billing Details
                 </h1>
-                <form className="flex flex-row flex-wrap justify-center gap-x-7 gap-y-5">
+                <form
+                  className="flex flex-row flex-wrap justify-center gap-x-7 gap-y-5"
+                  onSubmit={submitHandler}
+                >
                   <div className="flex flex-col gap-2">
                     <label className="flex flex-row items-center text-sm font-[500]">
                       Company Name
@@ -328,6 +395,10 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                       type="text"
                       className="w-[21.875rem] p-2 border-2 border-[#00000033] rounded-lg text-base"
                       placeholder="Enter Name"
+                      name="companyName"
+                      value={formData.companyName}
+                      onChange={changeHandler}
+                      required
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -339,6 +410,10 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                       type="text"
                       className="w-[21.875rem] p-2 border-2 border-[#00000033] rounded-lg text-base"
                       placeholder="Enter Address"
+                      name="address"
+                      value={formData.address}
+                      onChange={changeHandler}
+                      required
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -353,8 +428,9 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                       className="w-[21.875rem] p-2 border-2 border-[#00000033] rounded-lg text-base"
                       id="country"
                       name="country"
-                      value="dw"
-                      // onChange={handleInputChange}
+                      value={formData.country}
+                      onChange={changeHandler}
+                      required
                     >
                       <option value="">Select Country</option>
                       <option value="India">India</option>
@@ -373,8 +449,9 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                       className="w-[21.875rem] p-2 border-2 border-[#00000033] rounded-lg text-base"
                       id="state"
                       name="state"
-                      value="dw"
-                      // onChange={handleInputChange}
+                      value={formData.state}
+                      onChange={changeHandler}
+                      required
                     >
                       <option value="">Select State</option>
                       <option value="Uttar Pradesh">Uttar Pradesh</option>
@@ -390,6 +467,10 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                       type="text"
                       className="w-[21.875rem] p-2 border-2 border-[#00000033] rounded-lg text-base"
                       placeholder="Enter City"
+                      name="city"
+                      value={formData.city}
+                      onChange={changeHandler}
+                      required
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -401,17 +482,23 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                       type="text"
                       className="w-[21.875rem] p-2 border-2 border-[#00000033] rounded-lg text-base"
                       placeholder="Enter Pincode"
+                      name="pinCode"
+                      value={formData.pinCode}
+                      onChange={changeHandler}
+                      required
                     />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="flex flex-row items-center text-sm font-[500]">
                       GST Number
-                      <LuAsterisk className="text-sm text-[#C62828]" />
                     </label>
                     <input
                       type="text"
                       className="w-[21.875rem] p-2 border-2 border-[#00000033] rounded-lg text-base"
                       placeholder="Enter Number"
+                      name="gstNumber"
+                      value={formData.gstNumber}
+                      onChange={changeHandler}
                     />
                   </div>
                   <button className="w-[21.875rem] bg-[#004AAD] text-[1.1rem] rounded-lg text-white font-bold text-richblack-900 px-3 py-[0.5625rem] mt-7">
@@ -422,8 +509,9 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                     <label className="text-[1rem] font-semibold text-center flex items-center">
                       <input
                         type="checkbox"
-                        //   checked={rememberMe}
-                        //   onChange={() => setRememberMe(!rememberMe)}
+                        checked={formData.notRegisteredWithGST}
+                        onChange={changeHandler}
+                        name="notRegisteredWithGST"
                         className="size-[1.375rem] mr-2"
                       />
                       I am not registered with GST

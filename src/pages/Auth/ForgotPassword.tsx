@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 
 // icons
 import { CiMail } from "react-icons/ci";
-import { IoMdArrowRoundBack } from "react-icons/io";
+// import { IoMdArrowRoundBack } from "react-icons/io";
 
 // assets
-import bgVideo from "../../assets/bg-video.mp4";
 import logo from "../../assets/logo.png";
+
+//components
+import Loader from "../../component/outlet/Loader";
 
 interface FormData {
   email: string;
@@ -15,9 +17,10 @@ interface FormData {
 
 const ForgotPassword = () => {
   const [formData, setFormData] = useState<FormData>({
-    email: ""
+    email: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
+  const [videoLoading, setVideoLoading] = useState<boolean>(true);
 
   function changeHandler(event: ChangeEvent<HTMLInputElement>) {
     setFormData((prevData) => ({
@@ -29,7 +32,7 @@ const ForgotPassword = () => {
   function submitHandler(event: FormEvent) {
     event.preventDefault();
     setFormData({
-      email: ""
+      email: "",
     });
     setLoading(true);
     console.log("Printing the formData ");
@@ -38,12 +41,14 @@ const ForgotPassword = () => {
 
   return (
     <>
+      {videoLoading && <Loader />}
       <video
         className="fixed top-0 left-0 w-full h-full object-cover z-0"
-        src={bgVideo}
+        src="https://s3groupsnackbae.s3.ap-south-1.amazonaws.com/1721141264218"
         autoPlay
         muted
         loop
+        onLoadedData={() => setVideoLoading(false)}
       ></video>
       <div className="flex items-center justify-center lg:justify-end px-[1rem] md:px-[10rem] w-full h-[100vh] bg-main bg-no-repeat bg-cover bg-center">
         <img
@@ -56,10 +61,10 @@ const ForgotPassword = () => {
             className="w-full flex flex-col gap-y-5"
           >
             <div className="w-full flex flex-col gap-3">
-              <Link className="w-fit h-fit" to="/login">
+              {/* <Link className="w-fit h-fit" to="/login">
                 <IoMdArrowRoundBack className="text-[1.8rem]" />
-              </Link>
-              <div className="font-bold text-left text-[28px]">
+              </Link> */}
+              <div className="font-bold text-left text-[24px]">
                 Forgot Password?
               </div>
             </div>
@@ -83,7 +88,7 @@ const ForgotPassword = () => {
               </div>
             </div>
 
-            <button className="bg-[#004AAD] h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
+            <button className="bg-[#004AAD] h-13 text-[1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-6">
               {loading ? (
                 <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
               ) : (
@@ -93,7 +98,7 @@ const ForgotPassword = () => {
 
             <div className="flex gap-2 mt-2 justify-center items-center">
               <Link to="/login">
-                <span className="text-[#004AAD] text-[1.1rem] font-bold">
+                <span className="text-[#004AAD] text-[1rem] font-bold">
                   Back to Login
                 </span>
               </Link>
