@@ -17,7 +17,7 @@ interface EditMenuProps {
 
 const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string[]>([]);
 
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
@@ -54,16 +54,16 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
           : [{ name: "", additionalPrice: "" }],
       type: item.type,
     });
-    setImage(item.image);
+    setImage((prevImages) => [...prevImages, ...item.image]);
   }, [item]);
 
   // remove image function
-  const removeImage = () => {
-    setImage(null);
-    setFormData({
-      ...formData,
-      image: [],
-    });
+  const removeImage = (index: number) => {
+    setImage((prevImages) => prevImages.filter((_, i) => i !== index));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      image: prevFormData.image.filter((_, i) => i !== index),
+    }));
   };
 
   // addon functions
@@ -107,12 +107,41 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
     });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      const image = URL.createObjectURL(file);
-      setImage(image);
+  const handleImageChange = async (files: FileList) => {
+    const uploadedImageUrls: string[] = [];
+
+    for (const file of Array.from(files)) {
+      const imageFormData = new FormData();
+      imageFormData.append("file", file);
+
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${baseUrl}/api/fileUpload`,
+        data: imageFormData,
+      };
+
+      try {
+        const response = await axios.request(config);
+        if (response.data.status && response.data.data) {
+          const urls = response.data.data.map(
+            (item: { url: string }) => item.url
+          );
+          uploadedImageUrls.push(...urls);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+    setImage((prevImages) => [...prevImages, ...uploadedImageUrls]);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      image: [
+        ...prevFormData.image,
+        ...uploadedImageUrls.map((url) => ({ url })),
+      ],
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -402,9 +431,9 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
             >
               Images
             </label>
-            <div className="flex flex-row gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
-              <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
-                {image === null ? (
+            <div className="flex flex-col gap-8 bg-white px-5 py-5 rounded-lg border border-[#E2E8F0]">
+              <div className="flex flex-row gap-8">
+                <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
                   <div className="size-[90px] flex items-center justify-center w-full">
                     <label
                       htmlFor="dropzone-file"
@@ -419,32 +448,43 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                         type="file"
                         className="hidden"
                         accept="image/*"
+                        multiple
                         onChange={(e) => {
-                          if (e.target.files) handleFileChange(e);
+                          if (e.target.files) handleImageChange(e.target.files);
                         }}
                       />
                     </label>
                   </div>
-                ) : (
-                  <div>
-                    <img src={image} alt="uploaded"></img>
-                    <button
-                      onClick={removeImage}
+                </div>
+                <div className="w-1/2 flex flex-col items-start justify-center">
+                  <p className="flex flex-row gap-2 text-[0.9rem] font-bold">
+                    Item Image
+                    <span className="text-[#ED4F4F]">*</span>
+                  </p>
+                  <p className="flex flex-row text-[0.8rem] gap-2">
+                    Image format .jpg, .jpeg, .png and minimum size 300x300
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-row gap-4">
+                {image.map((image, index) => (
+                  <div
+                    key={index}
+                    className="size-[5.5rem] rounded-md bg-[#F8FAFC] relative"
+                  >
+                    <img
+                      src={image}
+                      alt="uploaded"
+                      className="w-full h-full rounded-md"
+                    />
+                    <span
+                      onClick={() => removeImage(index)}
                       className="absolute -top-2 -right-2 text-red-600"
                     >
                       <IoCloseCircle size={25} />
-                    </button>
+                    </span>
                   </div>
-                )}
-              </div>
-              <div className="w-1/2 flex flex-col items-start justify-center">
-                <p className="flex flex-row gap-2 text-[0.9rem] font-bold">
-                  Item Image
-                  <span className="text-[#ED4F4F]">*</span>
-                </p>
-                <p className="flex flex-row text-[0.8rem] gap-2">
-                  Image format .jpg, .jpeg, .png and minimum size 300x300
-                </p>
+                ))}
               </div>
             </div>
           </div>

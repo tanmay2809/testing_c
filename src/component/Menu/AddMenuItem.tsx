@@ -6,11 +6,15 @@ import { FaPlus } from "react-icons/fa6";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { SubcategoryItem } from "../../pages/Menu";
+import { MdOutlineTaskAlt } from "react-icons/md";
 
 export interface MenuItem {
   _id?: string;
   name: string;
-  image: Image[];
+  image: { url: string }[];
   description: string;
   price: string;
   category: string;
@@ -29,22 +33,23 @@ export interface MenuItem {
 
 interface AddMenuProps {
   setIsAddMenuOpen: (isOpen: boolean) => void;
+  categories: { _id: string; name: string; subcategory: SubcategoryItem[] }[];
 }
 
-interface Image {
-  name: string;
-  url: string;
-}
+const AddMenuItem: React.FC<AddMenuProps> = ({
+  categories,
+  setIsAddMenuOpen,
+}) => {
+  const [image, setImage] = useState<string[]>([]);
 
-const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
-  const [image, setImage] = useState<Image[]>([]);
+  console.log(categories);
 
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
     image: [],
     description: "",
     price: "",
-    category: "",
+    category: categories[0]?._id,
     subcategory: "",
     serving: "",
     tag: "",
@@ -105,29 +110,98 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
     });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const files = Array.from(e.target.files);
-      const newImages = files.map((file) => ({
-        name: file.name,
-        url: URL.createObjectURL(file),
-      }));
+  const handleImageChange = async (files: FileList) => {
+    const uploadedImageUrls: string[] = [];
 
-      console.log(newImages);
+    for (const file of Array.from(files)) {
+      const imageFormData = new FormData();
+      imageFormData.append("file", file);
 
-      setImage((prevImages) => [...prevImages, ...newImages]);
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        image: [...prevFormData.image, ...newImages],
-      }));
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: `${baseUrl}/api/fileUpload`,
+        data: imageFormData,
+      };
+
+      try {
+        const response = await axios.request(config);
+        if (response.data.status && response.data.data) {
+          const urls = response.data.data.map(
+            (item: { url: string }) => item.url
+          );
+          uploadedImageUrls.push(...urls);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
+
+    setImage((prevImages) => [...prevImages, ...uploadedImageUrls]);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      image: [
+        ...prevFormData.image,
+        ...uploadedImageUrls.map((url) => ({ url })),
+      ],
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    // window.location.reload();
+    const formattedFormData = {
+      ...formData,
+      image: formData.image.map((url) => ({ url })),
+    };
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/addMenuItem`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formattedFormData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setIsAddMenuOpen(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  const handleAddone = () => {
+    let data = JSON.stringify({
+      name: formData.addone[0].name,
+      price: formData.addone[0].additionalPrice,
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/addAddons`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  console.log(categories);
 
   return (
     <div>
@@ -151,7 +225,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
         </div>
 
         <div className="p-5">
-          {/* item name and category */}
+          {/* item name and subcategory */}
           <div className="flex flex-row gap-4 font-inter">
             <div className="w-1/2 mb-4">
               <label
@@ -177,19 +251,22 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                 htmlFor="category"
                 className="block text-gray-700 text-[1.2rem] font-inter mb-2"
               >
-                Add Category <span className="text-[#ED4F4F]">*</span>
+                Add Sub Category <span className="text-[#ED4F4F]">*</span>
               </label>
-              <select
-                className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
-                id="category"
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-              >
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>
+              {categories?.map((category) => (
+                <select
+                  className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
+                  id="subcategory"
+                  name="subcategory"
+                  value={formData.subcategory}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  {category.subcategory.map((subcategory) => (
+                    <option value={subcategory._id}>{subcategory.name}</option>
+                  ))}
+                </select>
+              ))}
             </div>
           </div>
 
@@ -344,6 +421,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                       </div>
                     </div>
                   </div>
+                  <MdOutlineTaskAlt className="text-white text-[2.5rem] hover:cursor-pointer bg-black rounded-full w-fit h-fit" />
                   <MdOutlineDeleteOutline
                     onClick={() => removeAddOn(index)}
                     className="text-red-500 text-[2.5rem] hover:cursor-pointer"
@@ -405,7 +483,9 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                         className="hidden"
                         accept="image/*"
                         multiple
-                        onChange={handleFileChange}
+                        onChange={(e) => {
+                          if (e.target.files) handleImageChange(e.target.files);
+                        }}
                       />
                     </label>
                   </div>
@@ -427,16 +507,16 @@ const AddMenuItem: React.FC<AddMenuProps> = ({ setIsAddMenuOpen }) => {
                     className="size-[5.5rem] rounded-md bg-[#F8FAFC] relative"
                   >
                     <img
-                      src={image.url}
+                      src={image}
                       alt="uploaded"
                       className="w-full h-full rounded-md"
                     />
-                    <button
+                    <span
                       onClick={() => removeImage(index)}
                       className="absolute -top-2 -right-2 text-red-600"
                     >
                       <IoCloseCircle size={25} />
-                    </button>
+                    </span>
                   </div>
                 ))}
               </div>

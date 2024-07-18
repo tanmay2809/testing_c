@@ -2,20 +2,31 @@ import { useState } from "react";
 
 // icons
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { CategoryItem, SubcategoryItem } from "../../pages/Menu";
 
 interface EditSubCategoryProps {
   setModal: (isOpen: boolean) => void;
+  subcategoryToEdit: SubcategoryItem | undefined;
+  categories: CategoryItem[];
+  activeCategory: CategoryItem[];
 }
 
 interface EditSubCategory {
-  name: string;
-  category: string;
+  name?: string;
+  category?: string;
+  image?: string;
 }
 
-const EditSubcategory: React.FC<EditSubCategoryProps> = ({ setModal }) => {
+const EditSubcategory: React.FC<EditSubCategoryProps> = ({
+  setModal,
+  subcategoryToEdit,
+  categories,
+  activeCategory,
+}) => {
   const [formData, setFormData] = useState<EditSubCategory>({
-    name: "",
-    category: "",
+    name: subcategoryToEdit?.name,
+    image: subcategoryToEdit?.image,
+    category: activeCategory[0]._id,
   });
 
   // onchange handler
@@ -45,7 +56,7 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({ setModal }) => {
         <div className="w-[380px] relative bg-white rounded-lg shadow">
           <div className="flex flex-row items-center justify-between gap-8 border-b-2 px-10 py-4">
             <div className="flex flex-col">
-              <h1 className="text-[1.5rem] font-[500]">Edit Category</h1>
+              <h1 className="text-[1.5rem] font-[500]">Edit Sub Category</h1>
             </div>
             <IoIosCloseCircleOutline
               onClick={() => {
@@ -61,7 +72,7 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({ setModal }) => {
             >
               <div className="flex flex-col gap-1">
                 <label className="flex flex-row mt-2 items-center text-[#0F172A] text-[1.2rem] font-Roboto">
-                  Category name
+                  Sub Category name
                 </label>
                 <input
                   type="text"
@@ -97,8 +108,9 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({ setModal }) => {
                   onChange={handleChange}
                 >
                   <option value="">Select Main Category</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
+                  {categories.map((category) => (
+                    <option value={category._id}>{category.name}</option>
+                  ))}
                 </select>
               </div>
 

@@ -24,7 +24,7 @@ export interface SubcategoryItem {
   active: boolean;
 }
 
-interface CategoryItem {
+export interface CategoryItem {
   _id: string;
   name: string;
   subcategory: any[];
@@ -40,12 +40,15 @@ const Menu = () => {
 
   const [selectedCard, setSelectedCard] = useState<MenuItem | null>(null);
 
+  const [subCategoryToEdit, setSubCategoryToEdit] = useState<SubcategoryItem>();
+
   const [search, setSearch] = useState("");
 
-  const [subcategories, setsubcategories] = useState<SubcategoryItem[]>();
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [subcategory1, setSubCategory1] = useState<string[]>([]);
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
-    null
+    categories[0]?._id
   );
 
   const getSubcategories = () => {
@@ -60,7 +63,6 @@ const Menu = () => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data.subcategories));
-        setsubcategories(response.data.subcategories);
       })
       .catch((error) => {
         console.log(error);
@@ -91,9 +93,6 @@ const Menu = () => {
 
   const id: string = "668857dc758bf97a4d1406ab";
 
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [subcategory1, setSubCategory1] = useState<string[]>([]);
-
   useEffect(() => {
     if (id) {
       dispatch(fetchRestaurantDetails({ id }) as any);
@@ -111,8 +110,6 @@ const Menu = () => {
   const filteredCategory = selectedCategoryId
     ? categories.filter((category) => category._id === selectedCategoryId)
     : [];
-
-  console.log("filtered", filteredCategory);
 
   // console.log(data);
 
@@ -213,39 +210,22 @@ const Menu = () => {
 
               {/* bottom */}
               <div>
-                <div className="flex flex-row items-center gap-4 px-8 py-5">
+                <div className="flex flex-row flex-wrap items-center gap-4 px-8 py-5">
                   {categories.map((item) => (
                     <button
                       key={item._id}
-                      className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
+                      className={`${
+                        item._id === selectedCategoryId
+                          ? "bg-white text-[#004AAD]"
+                          : "bg-[#004AAD] text-white"
+                      } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap`}
                       onClick={() => {
                         setSelectedCategoryId(item._id);
                       }}
                     >
                       {item?.name}
                     </button>
-
-                    // setsubcategory1(item?.subcategory || '');
                   ))}
-                  {/* <button
-              <div className="flex flex-row items-center gap-4 px-8 py-5">
-                {category1.map((item, index) => (
-                  <button
-                    key={index}
-                    className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
-                    onClick={() => setIsEditMenuOpen(!isEditMenuOpen)}
-                  >
-                    {(item?.name as string) || ""}
-                  </button>
-
-                  // setsubcategory1(item?.subcategory || '');
-                ))}
-                {/* <button
-                  onClick={() => setIsEditMenuOpen(!isEditMenuOpen)}
-                  className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
-                >
-                  Food Menu
-                </button> */}
                   <FiPlus
                     className="text-[2.4rem] rounded-full p-2 bg-[#F0F0F0] text-[#004AAD] hover:cursor-pointer"
                     onClick={() => setCategoryModal(true)}
@@ -258,6 +238,8 @@ const Menu = () => {
                   setIsSubCategoryOpen={setIsSubCategoryOpen}
                   setSelectedCard={setSelectedCard}
                   category={filteredCategory}
+                  subcategoryToEdit={setSubCategoryToEdit}
+                  editSubcategoryModal={setEditSubCategoryModal}
                 />
                 {/* ))} */}
               </div>
@@ -274,12 +256,18 @@ const Menu = () => {
               >
                 {/* add menu item form */}
                 {isAddMenuOpen && (
-                  <AddMenuItem setIsAddMenuOpen={setIsAddMenuOpen} />
+                  <AddMenuItem
+                    categories={filteredCategory}
+                    setIsAddMenuOpen={setIsAddMenuOpen}
+                  />
                 )}
 
                 {/* add sub category form */}
                 {isSubCategoryOpen && (
-                  <AddSubCategory setIsSubCategoryOpen={setIsSubCategoryOpen} />
+                  <AddSubCategory
+                    category={filteredCategory}
+                    setIsSubCategoryOpen={setIsSubCategoryOpen}
+                  />
                 )}
 
                 {/* edit menu form */}
@@ -299,7 +287,12 @@ const Menu = () => {
 
         {/* edit subcategory modal */}
         {editSubCategoryModal && (
-          <EditSubcategory setModal={setEditSubCategoryModal} />
+          <EditSubcategory
+            activeCategory={filteredCategory}
+            categories={categories}
+            subcategoryToEdit={subCategoryToEdit}
+            setModal={setEditSubCategoryModal}
+          />
         )}
       </div>
     </div>
