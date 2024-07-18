@@ -139,7 +139,7 @@ const Analytics: React.FC = () => {
     let weekendCount = 0;
     let weekdayCount = 0;
 
-    data.forEach((customer: any) => {
+    data?.forEach((customer: any) => {
       customer.visits.forEach((visit: string) => {
         const visitDate = new Date(visit);
         if (visitDate.getMonth() === monthIndex && visitDate.getFullYear() === year) {
@@ -161,7 +161,7 @@ const Analytics: React.FC = () => {
     const currentYear = currentDate.getFullYear();
     const selectedMonthIndex = index(weekMonth);
 
-    const { weekendVisits, weekdayVisits } = countVisits(currentYear, selectedMonthIndex, data.customerData);
+    const { weekendVisits, weekdayVisits } = countVisits(currentYear, selectedMonthIndex, data?.customerData);
 
     setWeekendVisit(weekendVisits);
     setWeekdayVisit(weekdayVisits);
@@ -208,7 +208,7 @@ const Analytics: React.FC = () => {
     setGrowthMonth(e.target.value);
   };
 
-  const getMonthIndex = (month: string): number => months.indexOf(month) + 1;
+  const getMonthIndex = (month: string): number => months.indexOf(month);
 
   const filterCustomers = (year : number, monthIndex: number, data: any): { newCustomers: number, regularCustomers: number } => {
     const newCustomers = data.filter((customer: any) => {
