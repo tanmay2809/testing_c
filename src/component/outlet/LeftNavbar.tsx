@@ -1,7 +1,12 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Frame from "./Frame";
 import Navbar from "./Navbar";
+
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRestaurantDetails } from "../../redux/restaurantData";
+import type { RootState, AppDispatch } from "../../redux/store";
 
 //icon
 import { RiDashboardFill } from "react-icons/ri";
@@ -30,7 +35,7 @@ const LeftNavbar = () => {
 
   const location = useLocation();
 
-  const data = [
+  const data1 = [
     {
       name: "Foodoos",
       id: "1234567",
@@ -40,6 +45,22 @@ const LeftNavbar = () => {
       id: "1234567",
     },
   ];
+
+  const { data } = useSelector(
+    (state: RootState) => state.resturantdata
+  );
+  console.log("restaurantData: ",data);
+  const useAppDispatch = () => useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
+
+  const id: string = "668857dc758bf97a4d1406ab";
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchRestaurantDetails({ id }) as any);
+    }
+  }, [dispatch, id]);
+
 
   return (
     <>
@@ -75,7 +96,7 @@ const LeftNavbar = () => {
               outlet ? "block" : "hidden"
             }  ${isOpen ? "block" : "hidden"}`}
           >
-            {data.map((item, index) => (
+            {data1?.map((item, index) => (
               <div
                 key={index}
                 className="flex flex-col   justify-between w-full  border-b border-[#706e6e] "
@@ -101,13 +122,13 @@ const LeftNavbar = () => {
               <div>
                 <Link
                   className={`${
-                    location.pathname === "/dashboard"
+                    location.pathname === "/"
                       ? "text-[#004AAD] bg-slate-100  "
                       : "text-[#64748B]"
                   } flex gap-2 text-nowrap  items-center hover:text-[#004AAD] rounded-xl ${
                     isOpen ? "px-5 mx-3 py-2.5 " : " p-4 "
                   } `}
-                  to="/dashboard"
+                  to="/"
                 >
                   <RiDashboardFill />
                   <span

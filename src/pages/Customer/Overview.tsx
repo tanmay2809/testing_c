@@ -128,7 +128,7 @@ const Overview: React.FC = () => {
             </div>
           </div>
           {/*chart */}
-          <div>
+          <div className="">
             <BarChart data={data} options={options} width={500} height={150}/>
           </div>
         </div>
