@@ -3,6 +3,8 @@ import { useState } from "react";
 // icons
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CategoryItem, SubcategoryItem } from "../../pages/Menu";
+import axios from "axios";
+import { baseUrl } from "../../main";
 
 interface EditSubCategoryProps {
   setModal: (isOpen: boolean) => void;
@@ -15,6 +17,7 @@ interface EditSubCategory {
   name?: string;
   category?: string;
   image?: string;
+  subcategory?: string;
 }
 
 const EditSubcategory: React.FC<EditSubCategoryProps> = ({
@@ -23,10 +26,13 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
   categories,
   activeCategory,
 }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [formData, setFormData] = useState<EditSubCategory>({
     name: subcategoryToEdit?.name,
     image: subcategoryToEdit?.image,
     category: activeCategory[0]._id,
+    subcategory: subcategoryToEdit?._id,
   });
 
   // onchange handler
@@ -42,7 +48,28 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
   // form submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    setLoading(true);
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/editSubCategory`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+        setModal(false);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -122,7 +149,11 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
                   Cancel
                 </button>
                 <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2">
-                  Save
+                  {loading ? (
+                    <div className="inline-block  h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+                  ) : (
+                    <span>Save</span>
+                  )}
                 </button>
               </div>
             </form>

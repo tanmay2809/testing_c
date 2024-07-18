@@ -21,9 +21,9 @@ export interface MenuItem {
   subcategory: string;
   serving: string;
   tag: string;
-  // active: boolean;
-  // categoryActive: boolean;
-  // clicks: number;
+  active?: boolean;
+  categoryActive?: boolean;
+  clicks?: number;
   addone: string[];
   type: string;
 }
@@ -48,9 +48,6 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
     subcategory: "",
     serving: "",
     tag: "",
-    // active: false,
-    // categoryActive: false,
-    // clicks: 0,
     addone: [],
     type: "",
   });
@@ -211,34 +208,6 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
       console.log(error);
     }
   };
-
-  // const handleAddone = () => {
-  //   let data = JSON.stringify({
-  //     name: formData.addone[0].name,
-  //     price: formData.addone[0].additionalPrice,
-  //   });
-
-  //   let config = {
-  //     method: "post",
-  //     maxBodyLength: Infinity,
-  //     url: `${baseUrl}/api/addAddons`,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     data: data,
-  //   };
-
-  //   axios
-  //     .request(config)
-  //     .then((response) => {
-  //       console.log(JSON.stringify(response.data));
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  console.log(categories);
 
   return (
     <div>

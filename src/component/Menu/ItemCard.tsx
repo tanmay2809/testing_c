@@ -1,11 +1,12 @@
 import { MdModeEditOutline } from "react-icons/md";
-import { SubcategoryItem } from "../../pages/Menu";
 import { MenuItem } from "./AddMenuItem";
 import Switch from "./switch";
 import { IoTrashOutline } from "react-icons/io5";
 import { BiFoodTag } from "react-icons/bi";
 import DeleteModal from "./DeleteModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import axios from "axios";
+import { baseUrl } from "../../main";
 
 interface Props {
   items: MenuItem[];
@@ -24,8 +25,25 @@ const ItemCard: React.FC<Props> = ({
 }) => {
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<MenuItem>();
+  const [itemToToggle, setItemToToggle] = useState<MenuItem>();
 
-  //   useEffect(() => {console.log("updated")}, [items]);
+  const toggleMenuItem = () => {
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/toggleActiveMenu/${itemToToggle?._id}`,
+      headers: {},
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
@@ -70,7 +88,13 @@ const ItemCard: React.FC<Props> = ({
               />
             </div>
             <div>
-              <Switch isActive={item.active} />
+              <Switch
+                onclick={() => {
+                  setItemToToggle(item);
+                  itemToToggle && toggleMenuItem();
+                }}
+                isActive={item.active}
+              />
             </div>
           </div>
         </div>
