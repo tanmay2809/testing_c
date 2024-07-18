@@ -5,7 +5,7 @@ import feedback from "../../assets/undraw_feedback_re_urmj 1.png";
 
 const Feedback: React.FC = () => {
   return (
-    <div className="py-4 px-8 flex items-center justify-start gap-10 border border-[#505050] font-inter mt-4">
+    <div className="py-4 px-8 flex items-center justify-start gap-10 border rounded-lg border-[#505050] font-inter mt-4">
       <img
         src={feedback}
         alt="Feedback"
