@@ -9,7 +9,7 @@ import Plans from "./pages/Plans";
 import LeftNavbar from "./component/outlet/LeftNavbar";
 import Dashboard from "./pages/Dashboard";
 import Menu from "./pages/Menu";
-import Marketing from "./pages/Marketing";
+import Marketing from "./pages/Marketing/Marketing";
 import Customer from "./pages/Customer/Customer";
 import Setting from "./pages/Settings/Setting";
 import MyPlans from "./pages/Settings/MyPlans";
@@ -19,6 +19,7 @@ import Stores from "./pages/Settings/Stores";
 import CustomerList from "./pages/Customer/CustomerList";
 import Overview from "./pages/Customer/Overview";
 import Analytics from "./pages/Customer/Analytics";
+import CampaignLibrary from "./pages/Marketing/CampaignLibrary";
 
 const App: React.FC = () => {
   console.log("App Component Rendered");
@@ -38,7 +39,11 @@ const App: React.FC = () => {
           <Route index element={<Dashboard />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/menu" element={<Menu />} />
-          <Route path="/marketing" element={<Marketing />} />
+          <Route path="/marketing" element={<Marketing />}>
+            <Route index element={<CampaignLibrary />} />
+            <Route path="campaignlibrary" element={<CampaignLibrary/>} />
+          </Route>
+
           <Route path="/customer" element={<Customer />}>
             <Route index element={<Overview />} />
             <Route path="overview" element={<Overview />} />

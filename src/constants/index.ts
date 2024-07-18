@@ -531,3 +531,132 @@ export const monthlyVisit = {
   headline: "Monthly Visit",
   body: "This graph shows visiting pattern of customers in a month",
 };
+
+// src/constants/slidesData.ts
+
+export interface Slide {
+  image: string;
+  title: string;
+}
+
+export interface SlideCategory {
+  title: string;
+  slides: Slide[];
+}
+
+export const slidesData: Record<string, SlideCategory> = {
+  recentlyViewed: {
+    title: "Recently Viewed",
+    slides: [
+      {
+        image: "../../assets/image 168.png",
+        title: "Welcome Greetings when they visit your business",
+      },
+      {
+        image: "image 168",
+        title: "Happy birthday to you! FREE starter on us",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Happy birthday to you! Enjoy Flat 10% OFF",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Welcome Greetings when they visit your business",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Happy birthday! Enjoy a complimentary dessert on the house.",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title:
+          "Happy Birthday! Treat yourself with a flat 25% discount from us.",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Feedback Campaign for Zomato reviews",
+      },
+      {
+        image: "image 166.png",
+        title: "      Feedback Campaign for Google reviews",
+      },
+      // Add more slides
+    ],
+  },
+  popularCampaigns: {
+    title: "Popular Campaigns",
+    slides: [
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Popular Campaign 1",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Popular Campaign 2",
+      },
+      // Add more slides
+    ],
+  },
+  utility: {
+    title: "Utility",
+    slides: [
+      { image: "https://via.placeholder.com/300x200", title: "Utility 1" },
+      { image: "https://via.placeholder.com/300x200", title: "Utility 2" },
+      // Add more slides
+    ],
+  },
+  birthdays: {
+    title: "Birthdays",
+    slides: [
+      { image: "https://via.placeholder.com/300x200", title: "Birthday 1" },
+      { image: "https://via.placeholder.com/300x200", title: "Birthday 2" },
+      // Add more slides
+    ],
+  },
+  anniversaries: {
+    title: "Anniversaries",
+    slides: [
+      { image: "https://via.placeholder.com/300x200", title: "Anniversary 1" },
+      { image: "https://via.placeholder.com/300x200", title: "Anniversary 2" },
+      // Add more slides
+    ],
+  },
+  events: {
+    title: "Events",
+    slides: [
+      { image: "https://via.placeholder.com/300x200", title: "Event 1" },
+      { image: "https://via.placeholder.com/300x200", title: "Event 2" },
+      // Add more slides
+    ],
+  },
+};
+
+export const pricingData = {
+  basic: [
+    {
+      utility: "0.50",
+    },
+    {
+      marketing: "1.10",
+    },
+  ],
+  premium: [
+    {
+      utility: "0.40",
+    },
+    {
+      marketing: "1.00",
+    },
+  ],
+};
+export const Campaigns = {
+  Questions: {
+    1: "What are Utility Campaigns?",
+    2: "What are Marketing Campaigns?",
+  },
+  answers: {
+    1: "A utility campaign focuses on providing functional value to customers, such as reminders, confirmations, updates, and customer support. These messages are usually transactional, offering useful information that enhances the user experience and ensures smooth service operations.",
+    2: "A marketing campaign aims to promote products or services, attract new customers, and drive sales. These messages often include offers, discounts, product announcements, and brand awareness efforts. Marketing campaigns are designed to engage customers and encourage them to take action.",
+  },
+};

@@ -1,13 +1,13 @@
 import { Store as StoreType } from "../../redux/storeSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
 // icons
 import { FaPlus } from "react-icons/fa6";
 import { BiEditAlt } from "react-icons/bi";
-import { IoMdCloseCircle } from "react-icons/io";
+import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
 import { FaYoutube, FaFacebook } from "react-icons/fa";
 
@@ -18,6 +18,7 @@ import zomato from "../../assets/Zomato.svg";
 import google from "../../assets/Google-Review.png";
 
 interface FormData {
+  image: string | null;
   outletName: string;
   outletType: string;
   outletMail: string;
@@ -28,12 +29,25 @@ const Stores = () => {
   const { stores } = useSelector((state: RootState) => state.store);
   const [modal, setModal] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
+    image: selectedImage,
     outletName: "",
     outletType: "",
     outletMail: "",
     outletLandmark: "",
   });
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleImageClick = () => {
+    setSelectedImage(null);
+  };
 
   const toggleModal = () => {
     setModal(!modal);
@@ -55,9 +69,22 @@ const Stores = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here, e.g., dispatching an action to update store details
+    // Handle form submission logic here
     console.log("Form data:", formData);
     handleCloseModal();
+  };
+
+  const handleEditClick = (store: StoreType) => {
+    setSelectedImage(image);
+    //when image comes from store itself then setSelectedImage(store.image)
+    setFormData({
+      image: selectedImage,
+      outletName: store.username,
+      outletType: store.type,
+      outletMail: store.email,
+      outletLandmark: store.landmark,
+    });
+    toggleModal();
   };
 
   return (
@@ -122,6 +149,7 @@ const Stores = () => {
               <div className="w-full flex flex-row justify-between">
                 <div className="flex flex-row gap-4">
                   <img
+                    //when image comes from store the src={store.image}
                     src={image}
                     className="w-[3.75rem] h-[3.75rem] object-cover"
                   />
@@ -137,7 +165,7 @@ const Stores = () => {
                 <div className="w-fit flex flex-col justify-center">
                   <button
                     className="w-fit h-fit flex flex-row justify-center items-center gap-2 text-black text-[1.25rem] font-[500] rounded-[0.5rem]"
-                    onClick={() => toggleModal()}
+                    onClick={() => handleEditClick(store)}
                   >
                     <BiEditAlt />
                     Edit Details
@@ -255,14 +283,16 @@ const Stores = () => {
           id="default-modal"
           // tabIndex="-1"
           aria-hidden="true"
-          className={`fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-2`}
+          className={
+            "fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-2"
+          }
         >
           <div
             className={`bg-white w-[31.25rem] shadow-lg rounded-lg overflow-y-auto h-full ${
               isClosing ? "slide-out-right" : "slide-in-right"
             }`}
           >
-            <div className="w-full relative p-6 bg-white rounded-lg shadow h-full">
+            <div className="w-full relative px-6 py-3 bg-white rounded-lg shadow h-full">
               <div className="flex flex-row justify-between">
                 <div className="flex flex-col">
                   <h1 className="text-2xl font-bold">Edit Store Details</h1>
@@ -277,17 +307,45 @@ const Stores = () => {
                   className="text-4xl hover:cursor-pointer"
                 />
               </div>
-              <div className="flex flex-col  h-[90%]">
+              <div className="flex flex-col  h-full">
                 <form
                   className="flex flex-col gap-4  justify-evenly h-full"
                   onSubmit={handleSubmit}
                 >
-                  <div className="flex justify-center pb-1 ">
-                    <img
-                      src={image}
-                      className="w-[4.38rem] h-[4.38rem] object-cover"
-                    />
+                  <div className="mt-4 flex justify-center flex-col items-center">
+                    
+                    {selectedImage ? (
+                      <div className="w-[7rem] h-[7rem] flex items-center justify-center  object-cover cursor-pointer hover:scale-105 hover:border hover:border-gray-300 rounded-lg">
+                        <img
+                          src={selectedImage}
+                          alt="Selected"
+                          className="w-[6rem] h-[6rem] object-cover rounded-md "
+                          onClick={handleImageClick}
+                        />
+                        {/* <button
+                          type="button"
+                          className="relative -top-28 -right-20  p-1 rounded-full shadow-lg"
+                          onClick={handleImageClick}
+                        >
+                          <IoMdCloseCircle size={24} className="text-[white]" />
+                        </button> */}
+                      </div>
+                    ) : (
+                      <label
+                        htmlFor="imageInput"
+                        className="flex flex-col items-center justify-center w-[8rem] h-[6rem] border-2 border-dashed bg-[#F1F7FF] border-gray-300 rounded-lg cursor-pointer "
+                      >
+                        <IoMdImages size={48} className="text-[#004AAD]" />
+                        <input
+                          type="file"
+                          id="imageInput"
+                          className="hidden"
+                          onChange={handleImageChange}
+                        />
+                      </label>
+                    )}
                   </div>
+
                   <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
                       <label className="flex flex-row items-center text-sm font-[500]">

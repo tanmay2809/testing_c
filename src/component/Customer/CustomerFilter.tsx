@@ -77,7 +77,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5 ">
       <div
-        className={`bg-white w-1/3 h-auto p-5 shadow-lg rounded-lg overflow-y-auto ${
+        className={`bg-white w-[30rem] h-auto p-5 shadow-lg rounded-lg overflow-y-auto ${
           isClosing ? "slide-out-right" : "slide-in-right"
         }`}
       >
@@ -94,7 +94,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
             &times;
           </button>
         </div>
-        <div className="mt-2">
+        <div className="mt-1 h-[88%] flex flex-col justify-evenly">
           {/*customer visted in */}
           <div className="mb-2 font-Roboto">
             <p className="text-xl font-medium mb-3">Customer visited in</p>

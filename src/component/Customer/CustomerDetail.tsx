@@ -45,7 +45,7 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5">
       <div
-        className={`bg-white lg:w-2/5 md:w-1/3 h-full p-7 shadow-lg overflow-y-auto rounded-xl ${
+        className={`bg-white w-[31.25rem] h-full p-7 shadow-lg overflow-y-auto rounded-xl ${
           isClosing ? "slide-out-right" : "slide-in-right"
         }`}
       >

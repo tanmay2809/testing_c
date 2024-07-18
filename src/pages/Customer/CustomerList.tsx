@@ -418,13 +418,11 @@ const CustomerList: React.FC = () => {
         isVisible={!!selectedCustomer}
         onClose={closeModal}
       />
-      <div className="transition-all ease-in-out duration-1000">
-        <CustomerFilter
-          isVisible={isFilterVisible}
-          onClose={toggleFilter}
-          filterData={filterElementsAdd}
-        />
-      </div>
+      <CustomerFilter
+        isVisible={isFilterVisible}
+        onClose={toggleFilter}
+        filterData={filterElementsAdd}
+      />
     </div>
   );
 };

@@ -3,14 +3,12 @@ import { useState } from "react";
 //icons
 import { FaUser } from "react-icons/fa6";
 
-//images
-import feedback from "../../assets/undraw_feedback_re_urmj 1.png";
-
 //other components
 import BarChart from "../../component/Customer/BarChart";
 
 //data for chart
 import { data, options, months } from "../../constants/index";
+import Feedback from "../../component/outlet/Feedback";
 
 const Overview: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>("Today");
@@ -136,20 +134,7 @@ const Overview: React.FC = () => {
         </div>
 
         {/*Feedback div */}
-        <div className="py-4 px-8 flex items-center justify-start gap-10 border border-[#505050] font-inter mt-4">
-          <img
-            src={feedback}
-            alt="Feedback image"
-            className="w-[70px] h-auto"
-          />
-          <div className="flex flex-col gap-4">
-            <p className=" text-base font-medium text-[#555555]">
-              Help us to make snackBAE better by adding a feedback or request
-              features that are best for your business
-            </p>
-            <p className="text-[#004AAD] text-base font-bold">Give Feedback</p>
-          </div>
-        </div>
+        <Feedback />
       </div>
     </div>
   );
