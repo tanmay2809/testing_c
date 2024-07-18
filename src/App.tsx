@@ -37,7 +37,6 @@ const App: React.FC = () => {
 
         <Route path="/" element={<LeftNavbar />}>
           <Route index element={<Dashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/marketing" element={<Marketing />}>
             <Route index element={<CampaignLibrary />} />

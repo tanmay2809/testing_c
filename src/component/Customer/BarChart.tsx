@@ -21,7 +21,7 @@ ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 
 const BarChart: React.FC<BarChartProps> = (props) => {
   return (
-    <div>
+    <div className="">
       <Bar
         data={props.data}
         options={props.options}

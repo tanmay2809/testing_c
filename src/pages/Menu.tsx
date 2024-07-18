@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchRestaurantDetails } from "../redux/menuslice";
-import type { RootState, AppDispatch } from "../redux/store";
 import Switch from "../component/Menu/switch";
 import axios from "axios";
 import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
@@ -10,6 +7,11 @@ import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
 import SubCategoryDropdown from "../component/Menu/SubCategoryDropdown";
+
+
+//redux
+import {  useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
 
 //icons
 import { FiPlus } from "react-icons/fi";
@@ -88,17 +90,12 @@ const Menu = () => {
   const { data, loading, error } = useSelector(
     (state: RootState) => state.resturantdata
   );
-  const useAppDispatch = () => useDispatch<AppDispatch>();
-  const dispatch = useAppDispatch();
-
-  const id: string = "668857dc758bf97a4d1406ab";
+  
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchRestaurantDetails({ id }) as any);
-    }
+    
     getSubcategories();
-  }, [dispatch, id]);
+  }, []);
 
   useEffect(() => {
     if (data) {
