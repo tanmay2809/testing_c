@@ -1,4 +1,7 @@
 import { useState } from "react";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { SubcategoryItem } from "../../pages/Menu";
 
 // icons
 import { BiFoodTag } from "react-icons/bi";
@@ -6,9 +9,6 @@ import { FaPlus } from "react-icons/fa6";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import axios from "axios";
-import { baseUrl } from "../../main";
-import { SubcategoryItem } from "../../pages/Menu";
 import { MdOutlineTaskAlt } from "react-icons/md";
 
 export interface MenuItem {
@@ -21,13 +21,10 @@ export interface MenuItem {
   subcategory: string;
   serving: string;
   tag: string;
-  active: boolean;
-  categoryActive: boolean;
-  clicks: number;
-  addone: {
-    name: string;
-    additionalPrice: string;
-  }[];
+  // active: boolean;
+  // categoryActive: boolean;
+  // clicks: number;
+  addone: string[];
   type: string;
 }
 
@@ -42,8 +39,6 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
 }) => {
   const [image, setImage] = useState<string[]>([]);
 
-  console.log(categories);
-
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
     image: [],
@@ -53,12 +48,18 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
     subcategory: "",
     serving: "",
     tag: "",
-    active: false,
-    categoryActive: false,
-    clicks: 0,
-    addone: [{ name: "", additionalPrice: "" }],
+    // active: false,
+    // categoryActive: false,
+    // clicks: 0,
+    addone: [],
     type: "",
   });
+
+  const [addonDetails, setAddonDetails] = useState<
+    { name: string; additionalPrice: string }[]
+  >([{ name: "", additionalPrice: "" }]);
+
+  const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
 
   // remove image function
   const removeImage = (index: number) => {
@@ -69,19 +70,19 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
     }));
   };
 
-  // addon functions
   const addAddOn = () => {
-    setFormData({
-      ...formData,
-      addone: [...(formData.addone || []), { name: "", additionalPrice: "" }],
-    });
+    setAddonDetails((prevDetails) => [
+      ...prevDetails,
+      { name: "", additionalPrice: "" },
+    ]);
   };
 
   const removeAddOn = (index: number) => {
-    setFormData({
-      ...formData,
-      addone: formData.addone?.filter((_, i) => i !== index),
-    });
+    setAddonDetails((prevDetails) => prevDetails.filter((_, i) => i !== index));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addone: prevFormData.addone.filter((_, i) => i !== index),
+    }));
   };
 
   const handleChange = (
@@ -92,22 +93,18 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
     field?: string
   ) => {
     const { name, value } = event.target;
-    setFormData((prevData) => {
-      if (index !== undefined && field) {
-        const updatedAddons = prevData.addone?.map((addon, i) =>
-          i === index ? { ...addon, [field]: value } : addon
-        );
-        return {
-          ...prevData,
-          addone: updatedAddons || prevData.addone,
-        };
-      } else {
-        return {
-          ...prevData,
-          [name]: value,
-        };
-      }
-    });
+    if (index !== undefined && field) {
+      setAddonDetails((prevDetails) => {
+        const newDetails = [...prevDetails];
+        newDetails[index] = { ...newDetails[index], [field]: value };
+        return newDetails;
+      });
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleImageChange = async (files: FileList) => {
@@ -126,6 +123,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
 
       try {
         const response = await axios.request(config);
+        console.log(response.data);
         if (response.data.status && response.data.data) {
           const urls = response.data.data.map(
             (item: { url: string }) => item.url
@@ -154,6 +152,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
       image: formData.image.map((url) => ({ url })),
     };
 
+    console.log(formattedFormData);
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -175,10 +174,11 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
       });
   };
 
-  const handleAddone = () => {
+  const handleAddone = async (index: number) => {
+    let addon = addonDetails[index];
     let data = JSON.stringify({
-      name: formData.addone[0].name,
-      price: formData.addone[0].additionalPrice,
+      name: addon.name,
+      price: addon.additionalPrice,
     });
 
     let config = {
@@ -191,15 +191,52 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
       data: data,
     };
 
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const response = await axios.request(config);
+      console.log(JSON.stringify(response.data));
+
+      if (response.data.Addone) {
+        const newAddOnId = response.data.Addone._id;
+        console.log(newAddOnId);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          addone: [...prevFormData.addone, newAddOnId],
+        }));
+        setAddonDetails((prevDetails) =>
+          prevDetails.filter((_, i) => i !== index)
+        );
+        setShowAddNewButton(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  // const handleAddone = () => {
+  //   let data = JSON.stringify({
+  //     name: formData.addone[0].name,
+  //     price: formData.addone[0].additionalPrice,
+  //   });
+
+  //   let config = {
+  //     method: "post",
+  //     maxBodyLength: Infinity,
+  //     url: `${baseUrl}/api/addAddons`,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     data: data,
+  //   };
+
+  //   axios
+  //     .request(config)
+  //     .then((response) => {
+  //       console.log(JSON.stringify(response.data));
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   console.log(categories);
 
@@ -293,18 +330,14 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                   type="text"
                   id="price"
                   name="price"
+                  required
                   value={formData.price}
                   onChange={handleChange}
                   className="w-full pl-6 focus:outline-none p-2 border border-gray-300 rounded-md"
                 />
               </div>
               <label className="text-[14px] font-[400] mt-4 text-center flex items-center">
-                <input
-                  type="checkbox"
-                  // checked={rememberMe}
-                  // onChange={() => setRememberMe(!rememberMe)}
-                  className="size-[1rem] mr-2"
-                />
+                <input type="checkbox" className="size-[1rem] mr-2" />
                 Inclusive of all taxes
               </label>
             </div>
@@ -373,14 +406,14 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
               Add-ons
             </label>
             <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
-              {formData.addone?.map((addon, index) => (
+              {addonDetails.map((addon, index) => (
                 <div
                   key={index}
                   className="mb-2 flex gap-2 items-end justify-between"
                 >
                   <div>
                     <label
-                      htmlFor="price"
+                      htmlFor={`addone-name-${index}`}
                       className="block text-gray-700 text-[1.1rem] font-[400] mb-2"
                     >
                       Add-on Name <span className="text-[#ED4F4F]">*</span>
@@ -395,46 +428,47 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                     />
                   </div>
                   <div>
-                    <div>
-                      <label
-                        htmlFor="addone-price"
-                        className="block text-gray-700 text-[1.1rem] font-[400] mb-2"
-                      >
-                        Additional Price
-                      </label>
-
-                      <div className="relative">
-                        <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
-                          ₹
-                        </span>
-
-                        <input
-                          type="text"
-                          id={`addone-price-${index}`}
-                          name={`addone-price-${index}`}
-                          value={addon.additionalPrice}
-                          onChange={(e) =>
-                            handleChange(e, index, "additionalPrice")
-                          }
-                          className="w-full pl-6 p-2 border border-gray-300 rounded-md"
-                        />
-                      </div>
+                    <label
+                      htmlFor={`addone-price-${index}`}
+                      className="block text-gray-700 text-[1.1rem] font-[400] mb-2"
+                    >
+                      Additional Price
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
+                        ₹
+                      </span>
+                      <input
+                        type="text"
+                        id={`addone-price-${index}`}
+                        name={`addone-price-${index}`}
+                        value={addon.additionalPrice}
+                        onChange={(e) =>
+                          handleChange(e, index, "additionalPrice")
+                        }
+                        className="w-full pl-6 p-2 border border-gray-300 rounded-md"
+                      />
                     </div>
                   </div>
-                  <MdOutlineTaskAlt className="text-white text-[2.5rem] hover:cursor-pointer bg-black rounded-full w-fit h-fit" />
+                  <MdOutlineTaskAlt
+                    onClick={() => handleAddone(index)}
+                    className="text-[#004AAD] bg-white text-[2.5rem] hover:cursor-pointer hover:bg-[#004AAD] hover:text-white transition-all mb-2 rounded-full w-fit h-fit"
+                  />
                   <MdOutlineDeleteOutline
                     onClick={() => removeAddOn(index)}
-                    className="text-red-500 text-[2.5rem] hover:cursor-pointer"
+                    className="text-red-500 text-[2.5rem] mb-1 hover:cursor-pointer"
                   />
                 </div>
               ))}
-              <p
-                className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
-                onClick={addAddOn}
-              >
-                <FaPlus className="text-xl" />
-                Add New
-              </p>
+              {showAddNewButton && (
+                <p
+                  className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
+                  onClick={addAddOn}
+                >
+                  <FaPlus className="text-xl" />
+                  Add New
+                </p>
+              )}
             </div>
           </div>
 

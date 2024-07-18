@@ -411,7 +411,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
               className="block text-gray-700 text-[1.2rem] font-inter mb-2"
             >
               Item Description
-            </label>
+            </label>  
             <textarea
               rows={3}
               id="description"

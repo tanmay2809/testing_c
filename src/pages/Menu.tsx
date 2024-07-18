@@ -105,10 +105,17 @@ const Menu = () => {
       setCategories(data.category || []);
       setSubCategory1(data.category?.subcategory || []);
     }
-  }, [data]);
+    if (categories.length > 0) {
+      setSelectedCategoryId(categories[0]._id);
+    }
+  }, [data, categories]);
+
+  console.log([categories[0]]);
 
   const filteredCategory = selectedCategoryId
     ? categories.filter((category) => category._id === selectedCategoryId)
+    : categories.length > 0
+    ? [categories[0]]
     : [];
 
   // console.log(data);

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // icons
 import { MdDragIndicator, MdModeEditOutline } from "react-icons/md";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoTrashOutline } from "react-icons/io5";
 
-// assets
+// components
 import { SubcategoryItem } from "../../pages/Menu";
 import { MenuItem } from "./AddMenuItem";
 import ItemCard from "./ItemCard";
@@ -45,6 +45,12 @@ const SubCategoryDropdown: React.FC<Props> = ({
       [id]: !prevState[id],
     }));
   };
+
+  useEffect(() => {
+    if (category && category.length > 0 && category[0].subcategory.length > 0) {
+      setIsOpen({ [category[0].subcategory[0]._id]: true });
+    }
+  }, [category]);
 
   return (
     <div className="space-y-2">
