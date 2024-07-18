@@ -1,10 +1,39 @@
+import axios from "axios";
 import deleted from "../../assets/deleted.png";
+import { MenuItem } from "./AddMenuItem";
+import { baseUrl } from "../../main";
+import { useState } from "react";
 
 interface DeleteProps {
   setModal: (isOpen: boolean) => void;
+  setSelectedCard: MenuItem | undefined;
 }
 
-const DeleteModal: React.FC<DeleteProps> = ({ setModal }) => {
+const DeleteModal: React.FC<DeleteProps> = ({ setModal, setSelectedCard }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  console.log(setSelectedCard);
+
+  const handleDelete = () => {
+    setLoading(true);
+    let config = {
+      method: "delete",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/deleteMenuItem/${setSelectedCard?._id}/${setSelectedCard?.subcategory}`,
+      headers: {},
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+        setModal(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div
       id="default-modal"
@@ -28,8 +57,15 @@ const DeleteModal: React.FC<DeleteProps> = ({ setModal }) => {
               >
                 Cancel
               </button>
-              <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2">
-                Delete
+              <button
+                className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2"
+                onClick={handleDelete}
+              >
+                {loading ? (
+                  <div className="inline-block  h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+                ) : (
+                  <span>Delete</span>
+                )}
               </button>
             </div>
           </div>

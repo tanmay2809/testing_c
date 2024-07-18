@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Item } from "./SubCategoryDropdown";
+import { useEffect, useState } from "react";
 import { MenuItem } from "./AddMenuItem";
 
 // icons
@@ -8,37 +7,62 @@ import { FaPlus } from "react-icons/fa6";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import axios from "axios";
+import { baseUrl } from "../../main";
 
 interface EditMenuProps {
   setIsEditMenu: (isOpen: boolean) => void;
-  item: Item;
+  item: MenuItem;
 }
 
 const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
-    image: "",
+    image: [],
     description: "",
     price: "",
     category: "",
     subcategory: "",
     serving: "",
     tag: "",
-    active: true,
-    categoryActive: true,
+    active: false,
+    categoryActive: false,
     clicks: 0,
     addone: [{ name: "", additionalPrice: "" }],
     type: "",
   });
+
+  useEffect(() => {
+    setFormData({
+      name: item.name,
+      image: item.image,
+      description: item.description,
+      price: item.price,
+      category: item.category,
+      subcategory: item.subcategory,
+      serving: item.serving,
+      tag: item.tag,
+      active: item.active,
+      categoryActive: item.categoryActive,
+      clicks: item.clicks,
+      addone:
+        item.addone.length > 0
+          ? item.addone
+          : [{ name: "", additionalPrice: "" }],
+      type: item.type,
+    });
+    setImage(item.image);
+  }, [item]);
 
   // remove image function
   const removeImage = () => {
     setImage(null);
     setFormData({
       ...formData,
-      image: "",
+      image: [],
     });
   };
 
@@ -55,43 +79,6 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
       ...formData,
       addone: formData.addone?.filter((_, i) => i !== index),
     });
-  };
-
-  // food type function
-  const handleFoodTypeClick = (type: "veg" | "nonveg" | "egg") => {
-    if (formData.type === type) {
-      setFormData({
-        ...formData,
-        type: "",
-      });
-    } else {
-      setFormData({
-        ...formData,
-        type: type,
-      });
-    }
-  };
-
-  // dish tag click handler
-  const handleDishTagClick = (
-    type:
-      | "Chef's Special"
-      | "New Launch"
-      | "Dairy free"
-      | "Vegan"
-      | "Extra Spicy"
-  ) => {
-    if (formData.tag === type) {
-      setFormData({
-        ...formData,
-        tag: "",
-      });
-    } else {
-      setFormData({
-        ...formData,
-        tag: type,
-      });
-    }
   };
 
   const handleChange = (
@@ -130,8 +117,27 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    // window.location.reload();
+    setLoading(true);
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/editMenuItem/${item._id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+        setIsEditMenu(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -144,7 +150,11 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
           </p>
           <div className="w-[43%] flex flex-row items-center justify-between">
             <button className="rounded-lg text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
-              Save
+              {loading ? (
+                <div className="inline-block  h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+              ) : (
+                <span>Save</span>
+              )}
             </button>
             <IoIosCloseCircleOutline
               onClick={() => {
@@ -251,7 +261,12 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                 className={`flex flex-row items-center gap-2 text-[0.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                   formData.type === "veg" ? "bg-[#004AAD] text-white" : ""
                 }`}
-                onClick={() => handleFoodTypeClick("veg")}
+                onClick={() => {
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    type: prevData.type === "veg" ? "" : "veg",
+                  }));
+                }}
               >
                 <BiFoodTag className="text-2xl text-[#67CE67]" />
                 Veg
@@ -260,7 +275,12 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                 className={`flex flex-row items-center gap-2 text-[0.9rem] border-2 px-3 py-1 rounded-md hover:cursor-pointer ${
                   formData.type === "egg" ? "bg-[#004AAD] text-white" : ""
                 }`}
-                onClick={() => handleFoodTypeClick("egg")}
+                onClick={() => {
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    type: prevData.type === "egg" ? "" : "egg",
+                  }));
+                }}
               >
                 <BiFoodTag className="text-2xl text-[#F7C02B]" />
                 Egg
@@ -269,7 +289,12 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                 className={`flex flex-row items-center gap-2 px-3 text-[0.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                   formData.type === "nonveg" ? "bg-[#004AAD] text-white" : ""
                 }`}
-                onClick={() => handleFoodTypeClick("nonveg")}
+                onClick={() => {
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    type: prevData.type === "nonveg" ? "" : "nonveg",
+                  }));
+                }}
               >
                 <BiFoodTag className="text-2xl text-[#ED4F4F]" />
                 Non-Veg
@@ -476,7 +501,15 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                       ? "bg-[#004AAD] text-white"
                       : ""
                   }`}
-                  onClick={() => handleDishTagClick("Chef's Special")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag:
+                        prevData.tag === "Chef's Special"
+                          ? ""
+                          : "Chef's Special",
+                    }));
+                  }}
                 >
                   Chef's Special
                 </span>
@@ -486,7 +519,12 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                       ? "bg-[#004AAD] text-white"
                       : ""
                   }`}
-                  onClick={() => handleDishTagClick("New Launch")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag: prevData.tag === "New Launch" ? "" : "New Launch",
+                    }));
+                  }}
                 >
                   New Launch
                 </span>
@@ -496,7 +534,12 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                       ? "bg-[#004AAD] text-white"
                       : ""
                   }`}
-                  onClick={() => handleDishTagClick("Dairy free")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag: prevData.tag === "Dairy free" ? "" : "Dairy free",
+                    }));
+                  }}
                 >
                   Dairy free
                 </span>
@@ -504,7 +547,12 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                   className={`flex flex-row items-center gap-2 px-4 text-[.9rem] border-2 py-1 rounded-md hover:cursor-pointer ${
                     formData.tag === "Vegan" ? "bg-[#004AAD] text-white" : ""
                   }`}
-                  onClick={() => handleDishTagClick("Vegan")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag: prevData.tag === "Vegan" ? "" : "Vegan",
+                    }));
+                  }}
                 >
                   Vegan
                 </span>
@@ -514,18 +562,16 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                       ? "bg-[#004AAD] text-white"
                       : ""
                   }`}
-                  onClick={() => handleDishTagClick("Extra Spicy")}
+                  onClick={() => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      tag: prevData.tag === "Extra Spicy" ? "" : "Extra Spicy",
+                    }));
+                  }}
                 >
                   Extra Spicy
                 </span>
               </div>
-              <p
-                className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
-                // onClick={addAddOn}
-              >
-                <FaPlus className="text-lg" />
-                Request New
-              </p>
             </div>
           </div>
         </div>
