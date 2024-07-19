@@ -94,7 +94,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
             &times;
           </button>
         </div>
-        <div className="mt-1 h-[88%] flex flex-col justify-evenly">
+        <div className="mt-1 h-[85%] flex flex-col justify-evenly">
           {/*customer visted in */}
           <div className="mb-2 font-Roboto">
             <p className="text-xl font-medium mb-3">Customer visited in</p>

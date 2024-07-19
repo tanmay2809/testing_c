@@ -1,9 +1,6 @@
 import React from "react";
 
-//icons
 import { Outlet, Link, useLocation } from "react-router-dom";
-
-//other components
 
 const Customer: React.FC = () => {
   const location = useLocation();

@@ -5,7 +5,7 @@ import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
 // icons
-import { FaPlus } from "react-icons/fa6";
+import { FaGoogle, FaInstagram, FaPlus } from "react-icons/fa6";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
@@ -23,6 +23,13 @@ interface FormData {
   outletType: string;
   outletMail: string;
   outletLandmark: string;
+  outletCity: string;
+  outletState: string;
+  outletPincode: number;
+  managerName: string;
+  managerContact: string;
+  socialHandles: { name: string; link: string }[];
+  feedbackChannels: { name: string; link: string }[];
 }
 
 const Stores = () => {
@@ -36,6 +43,13 @@ const Stores = () => {
     outletType: "",
     outletMail: "",
     outletLandmark: "",
+    outletCity: "",
+    outletState: "",
+    outletPincode: 9,
+    managerName: "",
+    managerContact: "",
+    socialHandles: [],
+    feedbackChannels: [],
   });
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -76,13 +90,19 @@ const Stores = () => {
 
   const handleEditClick = (store: StoreType) => {
     setSelectedImage(image);
-    //when image comes from store itself then setSelectedImage(store.image)
     setFormData({
-      image: selectedImage,
+      image: image,
       outletName: store.username,
       outletType: store.type,
       outletMail: store.email,
       outletLandmark: store.landmark,
+      outletCity: store.city,
+      outletState: store.state,
+      outletPincode: store.pincode,
+      managerName: store.manager,
+      managerContact: store.contact,
+      socialHandles: store.socials,
+      feedbackChannels: store.channels,
     });
     toggleModal();
   };
@@ -292,7 +312,7 @@ const Stores = () => {
               isClosing ? "slide-out-right" : "slide-in-right"
             }`}
           >
-            <div className="w-full relative px-6 py-3 bg-white rounded-lg shadow h-full">
+            <div className="w-full relative px-6 py-3 bg-white rounded-lg shadow h-fit">
               <div className="flex flex-row justify-between">
                 <div className="flex flex-col">
                   <h1 className="text-2xl font-bold">Edit Store Details</h1>
@@ -313,7 +333,6 @@ const Stores = () => {
                   onSubmit={handleSubmit}
                 >
                   <div className="mt-4 flex justify-center flex-col items-center">
-                    
                     {selectedImage ? (
                       <div className="w-[7rem] h-[7rem] flex items-center justify-center  object-cover cursor-pointer hover:scale-105 hover:border hover:border-gray-300 rounded-lg">
                         <img
@@ -347,84 +366,224 @@ const Stores = () => {
                   </div>
 
                   <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2">
-                      <label className="flex flex-row items-center text-sm font-[500]">
+                    <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="outletName"
+                      >
                         Outlet Name
-                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-lg"
-                        placeholder="Enter Name"
+                        id="outletName"
                         name="outletName"
                         value={formData.outletName}
                         onChange={handleInputChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="">
                       <label
-                        htmlFor="country"
-                        className="flex flex-row items-center text-sm font-[500]"
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="outletType"
                       >
                         Outlet Type
-                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
-                      <select
-                        className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem]"
-                        id="type"
+                      <input
+                        type="text"
+                        id="outletType"
                         name="outletType"
                         value={formData.outletType}
                         onChange={handleInputChange}
-                      >
-                        <option value="">Select Type</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                      </select>
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="flex flex-row items-center text-sm font-[500]">
-                        Outlet Mail ID
-                        <LuAsterisk className="text-sm text-[#C62828]" />
+                    <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="outletMail"
+                      >
+                        Outlet Mail
                       </label>
                       <input
-                        type="text"
-                        className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-lg"
-                        placeholder="Enter Email ID"
+                        type="email"
+                        id="outletMail"
                         name="outletMail"
                         value={formData.outletMail}
                         onChange={handleInputChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <label className="flex flex-row items-center text-sm font-[500]">
+                    <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="outletLandmark"
+                      >
                         Outlet Landmark
-                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-3"
-                        placeholder="Enter Landmark"
+                        id="outletLandmark"
                         name="outletLandmark"
                         value={formData.outletLandmark}
                         onChange={handleInputChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="outletCity"
+                      >
+                        Outlet City
+                      </label>
+                      <input
+                        type="text"
+                        id="outletCity"
+                        name="outletCity"
+                        value={formData.outletCity}
+                        onChange={handleInputChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="outletState"
+                      >
+                        Outlet State
+                      </label>
+                      <input
+                        type="text"
+                        id="outletState"
+                        name="outletState"
+                        value={formData.outletState}
+                        onChange={handleInputChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="outletPincode"
+                      >
+                        Outlet Pincode
+                      </label>
+                      <input
+                        type="text"
+                        id="outletPincode"
+                        name="outletPincode"
+                        value={formData.outletPincode}
+                        onChange={handleInputChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+
+                    {/*social handles */}
+                    {/* <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="socialHandles"
+                      >
+                        Social Handles
+                      </label>
+                      {formData.socialHandles.map((social, index) => (
+                        <div key={index} className="flex items-center mb-2">
+                          <input
+                            type="text"
+                            name="socialHandles"
+                            value={social.link}
+                            onChange={(e) => {
+                              const newSocialHandles = [
+                                ...formData.socialHandles,
+                              ];
+                              newSocialHandles[index].link = e.target.value;
+                              setFormData({
+                                ...formData,
+                                socialHandles: newSocialHandles,
+                              });
+                            }}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          />
+                        </div>
+                      ))}
+                    </div> */}
+
+                    {/*feedback */}
+                    {/* <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="feedbackChannels"
+                      >
+                        Feedback Channels
+                      </label>
+                      {formData.feedbackChannels.map((channel, index) => (
+                        <div key={index} className="flex items-center mb-2">
+                          <input
+                            type="text"
+                            name="feedbackChannels"
+                            value={channel.link}
+                            onChange={(e) => {
+                              const newFeedbackChannles = [
+                                ...formData.feedbackChannels,
+                              ];
+                              newFeedbackChannles[index].link = e.target.value;
+                              setFormData({
+                                ...formData,
+                                feedbackChannels: newFeedbackChannles,
+                              });
+                            }}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          />
+                        </div>
+                      ))}
+                    </div> */}
+                    <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="managerName"
+                      >
+                        Manager Name
+                      </label>
+                      <input
+                        type="text"
+                        id="managerName"
+                        name="managerName"
+                        value={formData.managerName}
+                        onChange={handleInputChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+                    <div className="">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-2"
+                        htmlFor="managerContact"
+                      >
+                        Manager Contact
+                      </label>
+                      <input
+                        type="text"
+                        id="managerContact"
+                        name="managerContact"
+                        value={formData.managerContact}
+                        onChange={handleInputChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
                   </div>
-                  <div>
-                    <div className="flex flex-row gap-5 mt-3">
-                      <button
-                        className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-3 py-2"
-                        onClick={() => handleCloseModal()}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-3 py-2"
-                      >
-                        Save
-                      </button>
-                    </div>
+                  <div className="flex flex-row gap-5 mt-3">
+                    <button
+                      className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-3 py-2"
+                      onClick={() => handleCloseModal()}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-3 py-2"
+                    >
+                      Save
+                    </button>
                   </div>
                 </form>
               </div>

@@ -15,6 +15,7 @@ import { Slide } from "../../constants/index";
 
 //images
 import whatsapp from "../../assets/whatsapp.png";
+import image1 from "../../assets/Group 1171278507.png";
 
 interface SliderComponentProps {
   slides: Slide[];
@@ -33,7 +34,8 @@ const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
           <SwiperSlide key={index} style={{ width: "16rem", height: "18rem" }}>
             <div className="relative h-full">
               <img
-                src={slide.image}
+                src={image1}
+                // src={slide.image}
                 alt={`Slide ${index + 1}`}
                 className="w-full h-full object-cover rounded-lg"
               />

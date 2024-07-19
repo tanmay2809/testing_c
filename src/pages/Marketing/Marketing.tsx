@@ -1,9 +1,18 @@
-import { FaPlus } from "react-icons/fa6";
-import { Link, Outlet } from "react-router-dom";
-import CampaignPricing from "../../component/Marketing/CampaignPricing";
 import { useState } from "react";
 
+//icons
+import { FaPlus } from "react-icons/fa6";
+
+import { Outlet, Link, useLocation } from "react-router-dom";
+
+//other components
+import CampaignPricing from "../../component/Marketing/CampaignPricing";
+
+
 const Marketing = () => {
+  const location = useLocation();
+  console.log("Customer Component Rendered");
+  console.log("Current Location:", location.pathname);
   const [isPricingVisible, setIsPricingVisible] = useState<boolean>(false);
 
   const togglePricing = () => {
@@ -61,13 +70,13 @@ const Marketing = () => {
         <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-3">
           <Link
             className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
-            to="/marketing/campaignlibrary"
+            to="/marketing/library"
           >
             Campaign Library
             <span
               className={`${
-                location.pathname === "/marketing/" ||
-                location.pathname === "/marketing/campaignlibrary"
+                location.pathname === "/marketing" ||
+                location.pathname === "/marketing/library"
                   ? "bg-[#004AAD]"
                   : "hidden"
               } h-1 w-[80%] rounded-t-[0.375rem]`}
@@ -75,12 +84,12 @@ const Marketing = () => {
           </Link>
           <Link
             className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
-            to="/marketing/managecampaigns"
+            to="/marketing/manage"
           >
             Manage Campaigns
             <span
               className={`${
-                location.pathname === "/marketing/managecampaigns"
+                location.pathname === "/marketing/manage"
                   ? "bg-[#004AAD]"
                   : "hidden"
               } h-1 w-[80%] rounded-t-[0.375rem]`}
