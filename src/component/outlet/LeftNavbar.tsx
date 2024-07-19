@@ -114,7 +114,7 @@ const LeftNavbar = () => {
           </div>
 
           <div
-            className={`flex flex-col justify-between    text-[#64748B] text-[1.1rem] ${
+            className={`flex w-full items-center flex-col justify-between    text-[#64748B] text-[1.1rem] ${
               isOpen ? "gap-8 mt-6" : "gap-20 mt-28"
             }`}
           >
@@ -136,7 +136,7 @@ const LeftNavbar = () => {
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
                     dashboard{" "}
-                    <span className=" text-transparent ">..._______</span>
+                    <span className=" text-transparent ">_______</span>
                   </span>
                 </Link>
               </div>
@@ -158,7 +158,7 @@ const LeftNavbar = () => {
                   >
                     menu{" "}
                     <span className=" text-transparent">
-                      ...__________........
+                      ...__________..
                     </span>
                   </span>
                 </Link>
@@ -180,7 +180,7 @@ const LeftNavbar = () => {
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
                     marketing{" "}
-                    <span className=" text-transparent ">..._______</span>
+                    <span className=" text-transparent ">_______</span>
                   </span>
                 </Link>
               </div>
@@ -201,18 +201,18 @@ const LeftNavbar = () => {
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
                     customer{" "}
-                    <span className=" text-transparent ">..._______</span>
+                    <span className=" text-transparent ">______</span>
                   </span>
                 </Link>
               </div>
             </div>
             <div
-              className={`py-3 font-semibold Poppins px-2 text-[.9rem] flex  items-center justify-center  flex-col gap-1 rounded-md bg-gradient-to-tl from-[#004AAD] to-[#EAABF0] mx-3  ${
+              className={ ` w-[90%] py-3 font-semibold Poppins px-1 text-[.9rem] flex  items-center justify-center  flex-col gap-1 rounded-md bg-gradient-to-tl from-[#004AAD] to-[#EAABF0] mx-2  ${
                 isOpen ? "block " : "hidden "
               } `}
             >
               <p className=" text-white  text-[.7rem] mx-3 ">
-                Upgrade to Premium to access all Features!
+                Upgrade to Premium to get access all Features!
               </p>
               <Link
                 to="/plans"
@@ -239,7 +239,7 @@ const LeftNavbar = () => {
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
                     setting{" "}
-                    <span className=" text-transparent ">..._______</span>
+                    <span className=" text-transparent ">_____</span>
                   </span>
                 </Link>
               </div>
