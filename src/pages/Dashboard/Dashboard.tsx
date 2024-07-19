@@ -51,7 +51,7 @@ const Dashboard = () => {
       
       {/* frame */}
 
-      <div className=" w-[93%] h-fit flex items-center justify-center ml-[7%]  ">
+      <div className=" w-[93%] h-fit flex flex-col items-center justify-center ml-[7%] px-[1rem]  ">
         <div className="w-full  h-fit flex flex-col items-center gap-2 mt-[80px] mb-[2rem] mx-[1.5rem]  ">
 
           <div className="w-full h-fit flex items-center justify-between bg-[#D7E8FF] font-inter font-[400] text-[.9rem] text-black px-4 py-2  rounded-xl ">
@@ -84,7 +84,7 @@ const Dashboard = () => {
            {/* Hellow Foodoos */}
           <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex py-[1.5rem] px-[2.5rem] rounded-lg ">
               <div className="w-[40%] h-fit">
-                <p className="flex items-center gap-4 font-Sen font-[700] text-[2rem] text-nowrap text-[#505050]">Hellow Foodoos <span><PiHandWaving  className=" text-black -rotate-[10deg]" /></span></p>
+                <p className="flex items-center gap-4 font-Sen font-[700] text-[2rem] text-nowrap text-[#505050] tracking-tight">Hello Foodoos <span><PiHandWaving  className=" text-black -rotate-[10deg]" /></span></p>
                 <div>
                   <div className="text-[1.2rem] font-Sen font-[700] leading-[1.6rem] mt-1 text-black">
                   <p>Lets build your success story</p>
@@ -101,7 +101,8 @@ const Dashboard = () => {
                 <div>
                   <p className="font-inter font-[600] text-[2.4rem] text-black">{status}<span className="font-[500] text-[1.2rem]">/3 completed</span></p>
                   <div className="w-[50%] h-[20px] bg-[#D7E8FF] rounded-xl">
-                    <div className={` w-[33%] bg-[#004AAD]  h-[90%] rounded-xl`}></div>
+                  <div className={`${status === 1 ? "w-[33%]" : "w-[66%]"}  bg-[#004AAD] h-[90%] rounded-xl`}></div>
+
                   </div>
                 </div>
 
@@ -124,7 +125,7 @@ const Dashboard = () => {
                         </div>
                         {
                           (status!=1) ? <button className="bg-[#FFCF27] px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Completed</button>:
-                          <button className="bg-white px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Start Now</button>
+                          <Link to='/menu' className="bg-white px-[2rem] my-1 flex items-center  rounded-lg text-[.98rem] text-black">Start Now</Link>
                         }
                         
                     </div>
@@ -333,10 +334,13 @@ const Dashboard = () => {
           </div>
 
           {/*Feedback div */}
-        <Feedback />
+          <Feedback />
+
+        
 
 
         </div>
+        
         
       </div>
     </div>

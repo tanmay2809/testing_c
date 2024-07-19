@@ -2,17 +2,63 @@
 //icon
 import { BiSolidError } from "react-icons/bi";
 import { GiChessKing } from "react-icons/gi";
-import { IoPeopleSharp } from "react-icons/io5";
+
 
 
 
 //lottie
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import TableComponent from "../../component/dashboard/TableComponent";
+
 const Table = () => {
+
+    const table =[
+        {
+            table:"1",
+            customercapture:"30",
+        },
+        {
+            table:"2",
+            customercapture:"30",
+        },
+        {
+            table:"3",
+            customercapture:"30",
+        },
+        {
+            table:"4",
+            customercapture:"30",
+        },
+        {
+            table:"5",
+            customercapture:"30",
+        },
+        {
+            table:"6",
+            customercapture:"30",
+        },
+        {
+            table:"7",
+            customercapture:"30",
+        },
+        {
+            table:"8",
+            customercapture:"30",
+        },
+        {
+            table:"9",
+            customercapture:"30",
+        },
+        {
+            table:"10",
+            customercapture:"30",
+        },
+
+    ]
+
   return (
     <div className="w-full h-fit relative ">
-     <div className=" w-[93%] h-fit flex items-center justify-center ml-[7%]  ">
+     <div className=" w-[93%] h-fit flex flex-col items-center justify-center ml-[7%] px-[1.6rem] gap-4 mb-[2rem] ">
         <div className="w-full  h-fit flex flex-col items-center gap-2 mt-[80px] mx-[1.5rem]  ">
             
             <div className="w-full h-fit flex items-center justify-between bg-[#D7E8FF] font-inter font-[400] text-[.9rem] text-black px-[1rem] py-[.5rem]  rounded-xl ">
@@ -55,12 +101,14 @@ const Table = () => {
                 />
                 </div>
             </div>
-
-            {/* table */}
-            <TableComponent />
-           
           
         </div>
+         {/* table */}
+         {table.map((item) => (
+                <div key={item.table} className="w-full">
+                 <TableComponent />
+                </div>
+        ))}
     </div>
     </div>
   )
