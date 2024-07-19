@@ -81,26 +81,7 @@ const Table = () => {
                 </div>
             </div>
 
-             {/* reach out your customer */}
-            <div className="w-full h-fit flex relative py-[1.5rem] px-[2.5rem] bg-[#FFCF27] rounded-md">
-                <div className="font-inter text-black w-[55%]">
-                <div className="font-[700] text-[2rem] leading-[2.7rem]">
-                <p>Reach out your customers like </p>
-                <p>never before</p>
-                </div>
-                
-                <p className="font-[600] text-[1.1rem] tracking-tighter mt-3">Explore our pre-made Templates tailored for eateries</p>
-                </div>
-
-                <div className=" absolute right-[5rem] -top-[.1rem] rotate-[13deg] ">
-                <DotLottieReact
-                    src="https://lottie.host/d4be8719-9a6c-4ad1-8cb8-46b28c108c50/b2zAzWhAdV.json"
-                    autoplay
-                    loop
-                    style={{ width: "300px", height: "200px", }}
-                />
-                </div>
-            </div>
+            
           
         </div>
          {/* table */}

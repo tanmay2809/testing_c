@@ -15,7 +15,7 @@ const Chart1: React.FC<SemiCircleProgressProps> = ({ percentage }) => {
     datasets: [
       {
         data: [percentage, 100 - percentage],
-        backgroundColor: ['#FF9F40', '#E0E0E0'],
+        backgroundColor: ['#004AAD', '#A4CBFF'],
         borderWidth: 0,
       },
     ],
@@ -33,18 +33,19 @@ const Chart1: React.FC<SemiCircleProgressProps> = ({ percentage }) => {
         display: false,
       },
     },
+    
   };
 
   return (
-    <div className='w-full h-[250px]  flex  justify-center  relative' >
-      <Doughnut data={data} options={options} className=' w-[200px]  left-0' />
+    <div className='w-full h-[300px]  flex  justify-center  relative' >
+      <Doughnut data={data} options={options} className=' w-[250px]  ' />
       <div 
         style={{
           position: 'absolute',
-          top: '52%',
-          left: '50%',
+          top: '55%',
+          left: '55%',
           transform: 'translate(-50%, -50%)',
-          fontSize: '40px',
+          fontSize: '50px',
           fontWeight: 'bold',
           color: '#FF9F40',
         }}

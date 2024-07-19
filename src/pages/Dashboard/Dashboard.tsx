@@ -42,6 +42,10 @@ const Dashboard = () => {
       name: "Cheese Burder",
       price:"1150",
     },
+    {
+      name: "Cheese Burder",
+      price:"1150",
+    },
   ];
 
   const handleScrollToTop = () => {
@@ -270,9 +274,9 @@ const Dashboard = () => {
           </div>
 
           {/* menu performance */}
-          <div className=" w-full flex h-fit font-inter justify-between  rounded-lg">
+          <div className=" w-full grid grid-cols-2 gap-4 h-fit font-inter   rounded-lg">
 
-            <div className='w-[49%] h-fit flex flex-col  my-[1rem]  bg-[#F1F7FF] rounded-lg '>
+            <div className=' w-full h-fit flex flex-col  my-[1rem]  bg-[#F1F7FF] rounded-lg '>
               <div className='flex justify-between items-center font-inter border-b px-[1rem] border-[#00000099] py-4'>
                 <p className='font-[700] text-[1.6rem] text-[#505050]'>Menu Performance</p>
                 <Link to="/menu" className='text-[1rem] flex items-center font-[700] text-[#64748B] px-4 py-2 bg-white rounded-lg'>Manage Menu <MdOutlineNavigateNext className='size-7 text-[#505050]  font-[900]' /></Link>
@@ -283,14 +287,14 @@ const Dashboard = () => {
 
                 {
                   top3menu.map((item, index) => (
-                    <div key={index} className='flex justify-between my-[.5rem] items-center bg-white rounded-lg px-[2rem] py-[.7rem] text-black'>
+                    <div key={index} className='flex justify-between my-[.5rem] items-center bg-white rounded-lg px-[2rem] py-[.3rem] text-black'>
                       <div className='font-inter '>
-                    <p className='text-[1.5rem] font-[500] '>{item.name}</p>
-                    <p className='flex gap-2 items-center font-[700] text-[1.15rem] text-[#464646]'>burger <RxDotFilled  className='size-6'/> <span>₹ 199</span></p>
+                    <p className='text-[1.3rem] font-[500] '>{item.name}</p>
+                    <p className='flex gap-2 items-center font-[700] text-[1.rem] text-[#464646]'>burger <RxDotFilled  className='size-6'/> <span>₹ 199</span></p>
                   </div>
                   <div>
-                    <p className='flex gap-3 text-[1.6rem] font-[500] items-center'>2431 <span><IoIosHeart className='text-red-500 size-6' /></span></p>
-                    <p className='font-[500] text-[1.1rem]'>Customer live this</p>
+                    <p className='flex gap-3 text-[1.4rem] font-[500] items-center'>2431 <span><IoIosHeart className='text-red-500 size-6' /></span></p>
+                    <p className='font-[500] text-[1.rem]'>Customer live this</p>
                   </div>
                     </div>  
                   ))
@@ -301,7 +305,7 @@ const Dashboard = () => {
 
             </div>
 
-            <div className='w-[49%] h-fit flex flex-col   my-[1rem] gap-3 '>
+            <div className=' w-full h-fit flex flex-col   my-[1rem] gap-3 '>
               <div className='w-full h-fit flex font-[500] flex-col px-[1.5rem]  font-roboto bg-[#F1F7FF] py-[1rem] rounded-lg text-[#000000]'>
                 
                 <p className=' text-[1.5rem] text-nowrap'>Total Menu Interaction by customers</p>
@@ -323,11 +327,11 @@ const Dashboard = () => {
                   
                 </div>
                 <div className='w-full h-fit flex px-[1.5rem] py-[2rem]'>
-                  <div className='w-[45%] font-Roboto font-[500]'>
+                  <div className='w-[50%] font-Roboto font-[500]'>
                     <p className=' leading-[2rem] text-[1rem]'>Enhance menu Media, description and category structure for better customer experience</p>
                   </div>
-                  <div className='w-[50%] font-Roboto font-[500]  relative'>
-                    <div className='absolute top-[70%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
+                  <div className='w-[60%] font-Roboto font-[500] h-[150px]  relative'>
+                    <div className='absolute top-[60%] left-[55%] translate-x-[-50%] translate-y-[-50%]'>
                     <Chart1 percentage={50} />
                     </div>
                    
