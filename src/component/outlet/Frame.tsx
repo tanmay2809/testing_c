@@ -3,6 +3,11 @@ import { CiSettings } from "react-icons/ci";
 import { IoLogoWhatsapp } from "react-icons/io";
 
 const frame = () => {
+ 
+  const handlefram =()=>{
+    document.getElementById("frame")!.style.display = "none";
+  }
+
   return (
     <div> {/* frame */}
     <div
@@ -16,7 +21,7 @@ const frame = () => {
             </p>
 
         
-        <Link to="/setting" className='flex  items-center text-[1.1rem] justify-start   text-[#64748B]'>
+        <Link to="/setting" onClick={handlefram} className='flex  items-center text-[1.1rem] justify-start   text-[#64748B]'>
           <CiSettings className="text-[1.2rem]" />
           <button
             
@@ -30,13 +35,13 @@ const frame = () => {
       </div>
       <div className="flex flex-col p-2 border-b gap-1 border-[#aca9a9] text-[#64748B] ">
 
-        <Link
+        <Link onClick={handlefram}
           to="https://www.snackbae.in/termsCondition"
           className="px-2  text-[1.1rem]  flex items-center justify-start  "
         >
           Terms & condition
         </Link>
-        <Link
+        <Link onClick={handlefram}
           to="https://www.snackbae.in/privacyPolicy"
           className="px-2  text-[1.1rem]   flex items-center justify-start  "
         >
@@ -47,20 +52,20 @@ const frame = () => {
       <div className="flex flex-col p-2 border-b gap-1 border-[#aca9a9] text-[#64748B] ">
 
         <Link
-          to="/plans"
+          to="/plans" onClick={handlefram}
           className="px-2  text-[1.1rem]  flex items-center justify-start  "
         >
           Book a demo
         </Link>
         <Link
-          to="/plans"
+          to="/plans" onClick={handlefram}
           className="px-2  text-[1.1rem]   flex items-center justify-start  "
         >
           Pricing
         </Link>
         
       </div>
-      <div className="flex px-2  text-[1.1rem]  gap-3 items-center text-[#64748B] justify-start p-2 ">
+      <div onClick={handlefram} className="flex cursor-pointer px-2  text-[1.1rem]  gap-3 items-center text-[#64748B] justify-start p-2 ">
       <IoLogoWhatsapp className="text-green-500 size-6" />
         <p className="font-semibold">Contact Us</p>
       </div>

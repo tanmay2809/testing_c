@@ -17,7 +17,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" fixed bg-white  z-50 w-full h-[70px] flex justify-between items-center px-[1.5rem] border-b shadow-xl py-[.5rem] shadow-[#00000026]">
+    <div className=" fixed bg-white  z-50 w-full h-[70px] flex justify-between items-center px-[2.5rem] border-b shadow-xl py-[.5rem] shadow-[#00000026]">
       {/* logo */}
       <img
         src={icon}

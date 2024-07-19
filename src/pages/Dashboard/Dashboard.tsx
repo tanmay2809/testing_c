@@ -44,6 +44,13 @@ const Dashboard = () => {
     },
   ];
 
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Optional: Add smooth scrolling animation
+    });
+  }
+
   const [status,setstatus] = useState(1);
  
   return (
@@ -125,7 +132,7 @@ const Dashboard = () => {
                         </div>
                         {
                           (status!=1) ? <button className="bg-[#FFCF27] px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Completed</button>:
-                          <Link to='/menu' className="bg-white px-[2rem] my-1 flex items-center  rounded-lg text-[.98rem] text-black">Start Now</Link>
+                          <Link to='/menu' onClick={handleScrollToTop} className="bg-white px-[2rem] my-1 flex items-center  rounded-lg text-[.98rem] text-black">Start Now</Link>
                         }
                         
                     </div>
@@ -233,8 +240,8 @@ const Dashboard = () => {
                   
                 </select>
 
-                <Link to="/customer/analytics" className='flex items-center  bg-white rounded-lg px-5 py-2 font-[700] text-[#64748B]'> View Analytics <MdNavigateNext className="text-[#505050] size-8 font-[800]"/></Link>
-                <Link to="/Table" className='flex items-center  bg-white rounded-lg px-5 py-2 font-[700] text-[#64748B]'> View Tables <MdNavigateNext className="text-[#505050] size-8 font-[800]"/></Link>
+                <Link to="/customer/analytics" onClick={handleScrollToTop} className='flex items-center  bg-white rounded-lg px-5 py-2 font-[700] text-[#64748B]'> View Analytics <MdNavigateNext className="text-[#505050] size-8 font-[800]"/></Link>
+                <Link to="/Table" onClick={handleScrollToTop} className='flex items-center  bg-white rounded-lg px-5 py-2 font-[700] text-[#64748B]'> View Tables <MdNavigateNext className="text-[#505050] size-8 font-[800]"/></Link>
               </div>
 
             </div>
