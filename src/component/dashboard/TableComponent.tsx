@@ -53,7 +53,7 @@ const TableComponent = () => {
                     <p className="font-inter font-[400] text-[1rem] text-nowrap text-[#505050]">Active since Nov 03, 2022 ( 605 Days )</p>
 
                 </div>
-                <div className="flex w-[50%] text-black font-inter font-[600] text-[1.3rem] gap-3 items-center justify-end">
+                <div className="flex w-[50%] text-black font-inter font-[600] text-[1.15rem] gap-3 items-center justify-end">
                     <p className="flex items-center gap-2 "> <MdOutlineFolderCopy className="size-6" />Copy Link</p>
                     <p className="flex items-center gap-2 "> <GoDownload className="size-6"/>Download</p>
                     <p className="flex items-center gap-2 "> <FaRegEye className="size-6" />Preview</p>
