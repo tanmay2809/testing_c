@@ -128,9 +128,6 @@ const Menu = () => {
 
   useEffect(() => {
     getSubcategories();
-  }, []);
-
-  useEffect(() => {
     if (data) {
       setCategories(data.category || []);
       setSubCategory1(data.category?.subcategory || []);
@@ -179,7 +176,10 @@ const Menu = () => {
           {/* left div */}
           <div
             className={` flex flex-col h-fit ${
-              isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen
+              isAddMenuOpen ||
+              isSubCategoryOpen ||
+              isEditMenuOpen ||
+              editSubCategoryModal
                 ? "w-[65%] pr-5"
                 : "w-[100%]"
             }`}
@@ -203,6 +203,7 @@ const Menu = () => {
                         setIsSubCategoryOpen(!isSubCategoryOpen);
                         setIsAddMenuOpen(false);
                         setIsEditMenuOpen(false);
+                        setEditSubCategoryModal(false);
                       }}
                     >
                       <FiPlus />
@@ -214,6 +215,7 @@ const Menu = () => {
                         setIsAddMenuOpen(!isAddMenuOpen);
                         setIsSubCategoryOpen(false);
                         setIsEditMenuOpen(false);
+                        setEditSubCategoryModal(false);
                       }}
                     >
                       <FiPlus />
@@ -253,7 +255,7 @@ const Menu = () => {
 
                 <div className="flex flex-row flex-wrap gap-2 sm:gap-4">
                   {search && searchMenuItems && (
-                    <ItemCard  items={searchMenuItems} />
+                    <ItemCard items={searchMenuItems} />
                   )}
                 </div>
               </div>
@@ -296,10 +298,16 @@ const Menu = () => {
             </div>
 
             {/* right div */}
-            {(isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen) && (
+            {(isAddMenuOpen ||
+              isSubCategoryOpen ||
+              isEditMenuOpen ||
+              editSubCategoryModal) && (
               <div
                 className={`${
-                  isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen
+                  isAddMenuOpen ||
+                  isSubCategoryOpen ||
+                  isEditMenuOpen ||
+                  editSubCategoryModal
                     ? "flex bg-[#EEF5FF] flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[35%] overflow-auto"
                     : "hidden"
                 }`}
@@ -327,6 +335,14 @@ const Menu = () => {
                     item={selectedCard}
                   />
                 )}
+                {editSubCategoryModal && (
+                  <EditSubcategory
+                    activeCategory={filteredCategory}
+                    categories={categories}
+                    subcategoryToEdit={subCategoryToEdit}
+                    setModal={setEditSubCategoryModal}
+                  />
+                )}
               </div>
             )}
           </div>
@@ -334,16 +350,6 @@ const Menu = () => {
 
         {/* category modal */}
         {categoryModal && <AddCategory isCategoryOpen={setCategoryModal} />}
-
-        {/* edit subcategory modal */}
-        {editSubCategoryModal && (
-          <EditSubcategory
-            activeCategory={filteredCategory}
-            categories={categories}
-            subcategoryToEdit={subCategoryToEdit}
-            setModal={setEditSubCategoryModal}
-          />
-        )}
       </div>
     </div>
   );
