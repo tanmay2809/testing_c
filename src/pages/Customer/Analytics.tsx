@@ -211,12 +211,12 @@ const Analytics: React.FC = () => {
   const getMonthIndex = (month: string): number => months.indexOf(month);
 
   const filterCustomers = (year : number, monthIndex: number, data: any): { newCustomers: number, regularCustomers: number } => {
-    const newCustomers = data.filter((customer: any) => {
+    const newCustomers = data?.filter((customer: any) => {
       const firstVisitDate = new Date(customer?.visits[0]);
       return firstVisitDate.getMonth() === monthIndex && firstVisitDate.getFullYear() === year;
     }).length;
 
-    const regularCustomers = data.filter((customer: any) => {
+    const regularCustomers = data?.filter((customer: any) => {
       const visitCount = customer.visits.filter((visit: string) => {
         const visitDate = new Date(visit);
         return visitDate.getMonth() === monthIndex && visitDate.getFullYear() === year;
