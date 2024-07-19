@@ -9,7 +9,7 @@ import axios from "axios";
 import { baseUrl } from "../../main";
 
 interface Props {
-  items: MenuItem[];
+  items?: MenuItem[];
   setIsEditMenuOpen: (isOpen: boolean) => void;
   setSelectedCard: (index: MenuItem) => void;
   setIsSubCategoryOpen: (isOpen: boolean) => void;
@@ -25,13 +25,12 @@ const ItemCard: React.FC<Props> = ({
 }) => {
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<MenuItem>();
-  const [itemToToggle, setItemToToggle] = useState<MenuItem>();
 
-  const toggleMenuItem = () => {
+  const toggleMenuItem = (item: MenuItem) => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${baseUrl}/api/toggleActiveMenu/${itemToToggle?._id}`,
+      url: `${baseUrl}/api/toggleActiveMenu/${item._id}`,
       headers: {},
     };
 
@@ -47,7 +46,7 @@ const ItemCard: React.FC<Props> = ({
 
   return (
     <>
-      {items.map((item) => (
+      {items?.map((item) => (
         <div
           key={item._id}
           className="w-[240px] h-[180px] p-4 border-2 rounded-[0.3rem] flex flex-col font-Roboto gap-8"
@@ -89,10 +88,7 @@ const ItemCard: React.FC<Props> = ({
             </div>
             <div>
               <Switch
-                onclick={() => {
-                  setItemToToggle(item);
-                  itemToToggle && toggleMenuItem();
-                }}
+                onclick={() => toggleMenuItem(item)}
                 isActive={item.active}
               />
             </div>

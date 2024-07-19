@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Switch from "../component/Menu/switch";
 import axios from "axios";
 import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
@@ -8,15 +8,15 @@ import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
 import SubCategoryDropdown from "../component/Menu/SubCategoryDropdown";
 
-
 //redux
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 
 //icons
 import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 import { baseUrl } from "../main";
+import ItemCard from "../component/Menu/ItemCard";
 
 export interface SubcategoryItem {
   _id: string;
@@ -44,7 +44,7 @@ const Menu = () => {
 
   const [subCategoryToEdit, setSubCategoryToEdit] = useState<SubcategoryItem>();
 
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
 
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [subcategory1, setSubCategory1] = useState<string[]>([]);
@@ -71,29 +71,62 @@ const Menu = () => {
       });
   };
 
-  // handle search
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(search);
+  //search bar
+
+  const [search, setSearch] = useState<string>("");
+  const [searchMenuItems, setSearchMenuItems] = useState<
+    MenuItem[] | undefined
+  >();
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(search);
     const inputValue = e.target.value;
     setSearch(inputValue);
     if (!inputValue) {
       // If input value is empty or length is less than or equal to 1, clear search menu items
-      //setSearchMenuItems([]);
+      setSearchMenuItems(undefined);
       return;
     }
-
-    setSearch(inputValue);
-    //searchMenu();
+    searchMenu(inputValue);
   };
+
+  const searchMenu = async (inputValue: string) => {
+    try {
+      const config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `${baseUrl}/api/searchMenuItems/668857dc758bf97a4d1406ab/${inputValue}`,
+        headers: {},
+      };
+
+      const response = await axios.request(config);
+      console.log(response.data.menuItems);
+      setSearchMenuItems(response.data.menuItems);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // // handle search
+  // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   // console.log(search);
+  //   const inputValue = e.target.value;
+  //   setSearch(inputValue);
+  //   if (!inputValue) {
+  //     // If input value is empty or length is less than or equal to 1, clear search menu items
+  //     //setSearchMenuItems([]);
+  //     return;
+  //   }
+
+  //   setSearch(inputValue);
+  //   //searchMenu();
+  // };
 
   // fetch categories
   const { data, loading, error } = useSelector(
     (state: RootState) => state.resturantdata
   );
-  
 
   useEffect(() => {
-    
     getSubcategories();
   }, []);
 
@@ -209,6 +242,19 @@ const Menu = () => {
                       <Switch isActive={true} />
                     </div>
                   </div>
+                </div>
+                {searchMenuItems && (
+                  <div className="w-full h-fit ml-2 mt-4 text-[1.5rem] font-semibold">
+                    <p className="border-b pb-3 border-black mb-3">
+                      Search result
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex flex-row flex-wrap gap-2 sm:gap-4">
+                  {search && searchMenuItems && (
+                    <ItemCard  items={searchMenuItems} />
+                  )}
                 </div>
               </div>
 
