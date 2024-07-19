@@ -7,7 +7,7 @@ import Verify from "./pages/Auth/Verify";
 import NewPassword from "./pages/Auth/NewPassword";
 import Plans from "./pages/Plans";
 import LeftNavbar from "./component/outlet/LeftNavbar";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Menu from "./pages/Menu";
 import Marketing from "./pages/Marketing/Marketing";
 import Customer from "./pages/Customer/Customer";
@@ -20,6 +20,7 @@ import CustomerList from "./pages/Customer/CustomerList";
 import Overview from "./pages/Customer/Overview";
 import Analytics from "./pages/Customer/Analytics";
 import CampaignLibrary from "./pages/Marketing/CampaignLibrary";
+import Table from "./pages/Dashboard/Table";
 
 const App: React.FC = () => {
   console.log("App Component Rendered");
@@ -37,6 +38,7 @@ const App: React.FC = () => {
 
         <Route path="/" element={<LeftNavbar />}>
           <Route index element={<Dashboard />} />
+          <Route path="/table" element={<Table />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/marketing" element={<Marketing />}>
             <Route index element={<CampaignLibrary />} />

@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState,ChangeEvent,useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 //chartjs
 import { Doughnut } from "react-chartjs-2";
@@ -33,13 +35,27 @@ const dataForDoughnut: ChartData<"doughnut"> = {
   datasets: [
     {
       label: "Customer Gender",
-      data: [12, 19, 4],
+      data: [],
       backgroundColor: ["#34C759", "#F9AB35", "#F93535"],
       borderColor: ["#34C759", "#F9AB35", "#F93535"],
       borderWidth: 1,
     },
   ],
 };
+
+// interface CustomerData {
+//   userId: {
+//     _id: string;
+//     name: string;
+//     gender: string;
+//     phone: string;
+//     birthday?: string; 
+//     anniversary?: string;
+//   };
+//   resId: string;
+//   visits: string[];
+//   __v: number;
+// }
 
 const optionsForDoughnut: ChartOptions<"doughnut"> = {
   responsive: true,
@@ -77,6 +93,7 @@ const dataForBar = {
     },
   ],
 };
+
 const optionsForBar = {
   scales: {
     x: {
@@ -98,6 +115,148 @@ const optionsForBar = {
 };
 
 const Analytics: React.FC = () => {
+
+  const { data } = useSelector(
+    (state: RootState) => state.resturantdata
+  );
+  console.log("resData: ",data);
+
+  //for gender
+  dataForDoughnut.datasets[0].data = [data?.femaleVisitors, data?.maleVisitors, data?.otherVisitors];
+
+  //weekdays vs weekends
+  const [weekMonth,setWeekMonth] = useState<string>(months[new Date().getMonth()]);
+  const [weekendVisit, setWeekendVisit] = useState<number>(0);
+  const [weekdayVisit, setWeekdayVisit] = useState<number>(0);
+
+  const handleWeekMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setWeekMonth(e.target.value);
+  };
+
+  const index = (month: string): number => months.indexOf(month);
+
+  const countVisits = (year: number, monthIndex: number, data: any): { weekendVisits: number, weekdayVisits: number } => {
+    let weekendCount = 0;
+    let weekdayCount = 0;
+
+    data?.forEach((customer: any) => {
+      customer.visits.forEach((visit: string) => {
+        const visitDate = new Date(visit);
+        if (visitDate.getMonth() === monthIndex && visitDate.getFullYear() === year) {
+          const dayOfWeek = visitDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+          if (dayOfWeek === 0 || dayOfWeek === 6) {
+            weekendCount++;
+          } else {
+            weekdayCount++;
+          }
+        }
+      });
+    });
+
+    return { weekendVisits: weekendCount, weekdayVisits: weekdayCount };
+  };
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const selectedMonthIndex = index(weekMonth);
+
+    const { weekendVisits, weekdayVisits } = countVisits(currentYear, selectedMonthIndex, data?.customerData);
+
+    setWeekendVisit(weekendVisits);
+    setWeekdayVisit(weekdayVisits);
+
+    console.log(weekendVisit," ",weekdayVisit);
+  }, [weekMonth, data?.customerData]);
+
+
+  //for celebration
+  const [celebrationMonth, setCelebrationMonth] = useState<string>(months[new Date().getMonth()]);
+  const [birthdays, setBirthdays] = useState<number>(0);
+  const [anniversaries, setAnniversaries] = useState<number>(0);
+  const handleCelebMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setCelebrationMonth(e.target.value);
+  };
+  useEffect(() => {
+    const monthIndex = months.indexOf(celebrationMonth);
+    console.log("mi : ",monthIndex);
+    
+    const filteredBirthdays:number = data?.customerData?.filter((customer: any) => {
+      const [birthDay, birthMonth, birthYear] = customer?.userId?.birthday.split('/').map(Number);
+      console.log(birthDay,birthMonth,birthYear);
+      return birthMonth - 1 === monthIndex;
+    })?.length;
+
+    const filteredAnniversaries:number = data?.customerData?.filter((customer: any) => {
+      const [annDay, annMonth, annYear] = customer?.userId?.anniversary.split('/').map(Number);
+      console.log(annDay,annMonth,annYear);
+      return annMonth - 1 === monthIndex;
+    })?.length;
+
+    setBirthdays(filteredBirthdays);
+    setAnniversaries(filteredAnniversaries);
+    // console.log(birthdays,"  ",anniversaries);
+  }, [celebrationMonth, data.customerData]);
+
+  //for growth rate
+  const [growthMonth, setGrowthMonth] = useState<string>(months[new Date().getMonth()]);
+  const [newCustomers, setNewCustomers] = useState<number>(0);
+  const [regularCustomers, setRegularCustomers] = useState<number>(0);
+  const [newCustomersDiff, setNewCustomersDiff] = useState<number>(0);
+  const [regularCustomersDiff, setRegularCustomersDiff] = useState<number>(0);
+  const handleGrowthMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setGrowthMonth(e.target.value);
+  };
+
+  const getMonthIndex = (month: string): number => months.indexOf(month);
+
+  const filterCustomers = (year : number, monthIndex: number, data: any): { newCustomers: number, regularCustomers: number } => {
+    const newCustomers = data.filter((customer: any) => {
+      const firstVisitDate = new Date(customer?.visits[0]);
+      return firstVisitDate.getMonth() === monthIndex && firstVisitDate.getFullYear() === year;
+    }).length;
+
+    const regularCustomers = data.filter((customer: any) => {
+      const visitCount = customer.visits.filter((visit: string) => {
+        const visitDate = new Date(visit);
+        return visitDate.getMonth() === monthIndex && visitDate.getFullYear() === year;
+      }).length;
+      return visitCount > 3;
+    }).length;
+
+    return { newCustomers, regularCustomers };
+  };
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const monthIndex = getMonthIndex(growthMonth);
+    console.log(monthIndex);
+    const selectedYear = currentDate.getMonth() === monthIndex ? currentYear : currentYear - 1;
+    const prevMonthIndex = (monthIndex === 0) ? 11 : monthIndex - 1;
+    const prevMonthYear = monthIndex === 0 ? selectedYear - 1 : selectedYear;
+
+    const currentMonthData = filterCustomers(selectedYear,monthIndex, data?.customerData);
+    const prevMonthData = filterCustomers(prevMonthYear,prevMonthIndex, data?.customerData);
+
+    setNewCustomers(currentMonthData?.newCustomers);
+    console.log(newCustomers , "  ",prevMonthData?.newCustomers);
+    setRegularCustomers(currentMonthData?.regularCustomers);
+    console.log(regularCustomers," ",prevMonthData?.regularCustomers);
+
+    setNewCustomersDiff(
+      (prevMonthData.newCustomers && newCustomers) ? 
+      ((newCustomers - prevMonthData?.newCustomers) / prevMonthData?.newCustomers) * 100
+        : (prevMonthData.newCustomers == 0 && newCustomers) ? 100 : 0
+    );
+
+    setRegularCustomersDiff(
+      (prevMonthData?.regularCustomers && regularCustomers)
+        ? ((currentMonthData?.regularCustomers - prevMonthData?.regularCustomers) / prevMonthData?.regularCustomers) * 100
+        : (prevMonthData.regularCustomers == 0 && regularCustomers) ? 100 : 0
+    );
+  }, [growthMonth, data?.customerData]);
+
   const [hoveredSegmentation, setHoveredSegmentation] = useState<
     string | number | null
   >(null);
@@ -114,7 +273,7 @@ const Analytics: React.FC = () => {
           <div className="mb-2">
             <span className="text-sm">
               Total Customer Database:{" "}
-              <strong className="text-[#004AAD]">100 Record</strong>
+              <strong className="text-[#004AAD]">{data?.customerData?.length} Record</strong>
             </span>
           </div>
           <div className="lg:flex md:flex lg:text-left text-[#505050] sm:text-sm ">
@@ -126,8 +285,8 @@ const Analytics: React.FC = () => {
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">New Customers</p>
-              <h2 className="text-3xl font-bold">60%</h2>
-              <p className="font-bold">60 customers</p>
+              <h2 className="text-3xl font-bold">{data?.newCustomers}%</h2>
+              <p className="font-bold">{(data?.newCustomers/100)*data?.customerData?.length} customers</p>
             </div>
             {hoveredSegmentation === 1 && (
               <div>
@@ -163,8 +322,8 @@ const Analytics: React.FC = () => {
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Regular Customers</p>
-              <h2 className="text-3xl font-bold">20%</h2>
-              <p className="font-bold">20 customers</p>
+              <h2 className="text-3xl font-bold">{data?.regularCustomers}%</h2>
+              <p className="font-bold">{(data?.regularCustomers/100)*data?.customerData?.length} customers</p>
             </div>
             {hoveredSegmentation === 3 && (
               <div>
@@ -200,8 +359,8 @@ const Analytics: React.FC = () => {
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Loyal Customers</p>
-              <h2 className="text-3xl font-bold">5%</h2>
-              <p className="font-bold">5 customers</p>
+              <h2 className="text-3xl font-bold">{data?.loyalCustomers}%</h2>
+              <p className="font-bold">{(data?.loyalCustomers/100)*data?.customerData?.length} customers</p>
             </div>
 
             <div
@@ -212,8 +371,8 @@ const Analytics: React.FC = () => {
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Customers at risk</p>
-              <h2 className="text-3xl font-bold">15%</h2>
-              <p className="font-bold">15 customers</p>
+              <h2 className="text-3xl font-bold">{data?.riskCustomers}%</h2>
+              <p className="font-bold">{(data?.riskCustomers/100)*data?.customerData?.length} customers</p>
             </div>
           </div>
         </div>
@@ -314,7 +473,7 @@ const Analytics: React.FC = () => {
                   />
                 </div>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-bold">100</span>
+                  <span className="text-2xl font-bold">{data?.customerData?.length}</span>
                   <p className="text-sm text-gray-600">Customers</p>
                 </div>
               </div>
@@ -342,11 +501,13 @@ const Analytics: React.FC = () => {
                 <h3 className="text-base font-bold mb-2">
                   Customer Celebration
                 </h3>
-                <p className="text-[#434A5E]">08 Celebration</p>{" "}
+                <p className="text-[#434A5E]">{birthdays+anniversaries} Celebration</p>{" "}
               </div>
               <select
                 id="month"
                 name="month"
+                value={celebrationMonth}
+                onChange={handleCelebMonthChange}
                 className="font-inter px-2 py-2 text-base focus:outline-none sm:text-sm rounded-md border border-black mt-1"
               >
                 {months.map((month) => (
@@ -359,12 +520,12 @@ const Analytics: React.FC = () => {
             <div className="border-t border-gray-200 pt-10 flex flex-col  gap-12">
               <div className="flex justify-between items-center mb-4 xsm:flex-col">
                 <div className="flex items-center justify-start gap-4 lg:w-3/5">
-                  <p className="text-[2.5rem] text-[#3A9E3E]">02</p>
+                  <p className="text-[2.5rem] text-[#3A9E3E]">{birthdays}</p>
                   <p className="text-sm">
                     <span className="text-[#004AAD] font-semibold ">
                       Birthdays
                     </span>
-                    <br />6 Customers have their birthdays
+                    <br />{birthdays} Customers have their birthdays
                   </p>
                 </div>
                 <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
@@ -373,12 +534,12 @@ const Analytics: React.FC = () => {
               </div>
               <div className="flex justify-between items-center ">
                 <div className="flex items-center justify-start gap-4 lg:w-3/5">
-                  <p className="text-[2.5rem] text-[#F9AB35]">02</p>
+                  <p className="text-[2.5rem] text-[#F9AB35]">{anniversaries}</p>
                   <p className="text-sm">
                     <span className="text-[#004AAD] font-semibold text-sm">
                       Anniversary
                     </span>
-                    <br />8 Customers have their Anniversary
+                    <br />{anniversaries} Customers have their Anniversary
                   </p>
                 </div>
                 <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
@@ -402,6 +563,8 @@ const Analytics: React.FC = () => {
               <select
                 id="month"
                 name="month"
+                value={growthMonth}
+                onChange={handleGrowthMonthChange}
                 className="font-inter px-2 py-2 text-base focus:outline-none rounded-md border border-black mt-1"
               >
                 {months.map((month) => (
@@ -415,7 +578,7 @@ const Analytics: React.FC = () => {
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center justify-start gap-4">
                   <div className="flex items-center ">
-                    <p className="text-[2.5rem] text-[#3A9E3E]">12%</p>
+                    <p className="text-[2.5rem] text-[#3A9E3E]">{newCustomersDiff}%</p>
                     <FaArrowUpLong className="text-2xl text-[#3A9E3E]" />
                   </div>
                   <p className="text-sm">
@@ -430,7 +593,7 @@ const Analytics: React.FC = () => {
               <div className="lg:flex justify-between items-center">
                 <div className="flex items-center justify-start gap-4">
                   <div className="flex items-center ">
-                    <p className="text-[2.5rem] text-[#F9AB35]">10%</p>
+                    <p className="text-[2.5rem] text-[#F9AB35]">{regularCustomersDiff}%</p>
                     <FaArrowDownLong className="text-2xl text-[#F9AB35]" />
                   </div>
                   <p className="text-sm">
