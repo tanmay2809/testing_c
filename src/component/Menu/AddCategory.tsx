@@ -10,7 +10,7 @@ interface CategoryProps {
   isCategoryOpen: (isOpen: boolean) => void;
 }
 
-interface Category {
+export interface Category {
   name: string;
   isPrimary: boolean;
 }

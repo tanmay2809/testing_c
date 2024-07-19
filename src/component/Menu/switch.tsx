@@ -1,30 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-interface SwitchOfferProps {
-  isActive: boolean; // Adjust the type as needed
+interface SwitchProps {
+  isActive: boolean | undefined;
+  onclick: () => void;
 }
 
-const Switch: React.FC<SwitchOfferProps> = ({}) => {
-  const [switc, setSwitch] = useState(false);
+const Switch: React.FC<SwitchProps> = ({ isActive, onclick }) => {
+  const [switc, setSwitch] = useState(isActive);
 
-  const switch1 = () => {
-    setSwitch(!switc);
+  useEffect(() => {
+    setSwitch(isActive);
+  }, [isActive]);
+
+  const handleClick = () => {
+    setSwitch((prev) => !prev);
+    onclick();
   };
 
   return (
-    <div>
+    <div onClick={handleClick} className="cursor-pointer">
       {!switc ? (
-        <div
-          className="w-[40px] h-[22px] bg-slate-400 rounded-full flex items-center cursor-pointer"
-          onClick={switch1}
-        >
+        <div className="w-[40px] h-[22px] bg-slate-400 rounded-full flex items-center">
           <div className="size-[18px] bg-white rounded-full ml-[0.15rem]"></div>
         </div>
       ) : (
-        <div
-          className="w-[40px] h-[22px] bg-green-400 rounded-full flex items-center cursor-pointer"
-          onClick={switch1}
-        >
+        <div className="w-[40px] h-[22px] bg-green-400 rounded-full flex items-center">
           <div className="size-[18px] bg-white rounded-full ml-5"></div>
         </div>
       )}

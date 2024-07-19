@@ -2,21 +2,49 @@ import { useState } from "react";
 
 // icons
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { CategoryItem, SubcategoryItem } from "../../pages/Menu";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 
 interface EditSubCategoryProps {
   setModal: (isOpen: boolean) => void;
+  subcategoryToEdit: SubcategoryItem;
+  categories: CategoryItem[];
+  activeCategory: CategoryItem[];
 }
 
 interface EditSubCategory {
-  name: string;
-  category: string;
+  name?: string;
+  category?: string;
+  image?: string;
+  subcategory?: string;
 }
 
-const EditSubcategory: React.FC<EditSubCategoryProps> = ({ setModal }) => {
+const EditSubcategory: React.FC<EditSubCategoryProps> = ({
+  setModal,
+  subcategoryToEdit,
+  categories,
+  activeCategory,
+}) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [image, setImage] = useState<string>(subcategoryToEdit?.image);
+
   const [formData, setFormData] = useState<EditSubCategory>({
-    name: "",
-    category: "",
+    name: subcategoryToEdit?.name,
+    image: subcategoryToEdit?.image,
+    category: activeCategory[0]._id,
+    subcategory: subcategoryToEdit?._id,
   });
+
+  // remove image function
+  const removeImage = () => {
+    setImage("");
+    setFormData({
+      ...formData,
+      image: "",
+    });
+  };
 
   // onchange handler
   const handleChange = (
@@ -28,95 +56,166 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({ setModal }) => {
     }));
   };
 
+  // file change handler
+  const handleImageChange = async (file: File) => {
+    const imageFormData = new FormData();
+    imageFormData.append("file", file);
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/fileUpload`,
+      data: imageFormData,
+    };
+
+    try {
+      const response = await axios.request(config);
+      if (response.data.status && response.data.data) {
+        const url = response.data.data[0].url;
+        setImage(url);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          image: url,
+        }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // form submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    setLoading(true);
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/editSubCategory`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+        setModal(false);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
-    <div
-      id="default-modal"
-      // tabIndex="-1"
-      aria-hidden="true"
-      className={`fixed inset-0 z-50 flex items-center justify-center w-full h-full overflow-y-auto overflow-x-hidden bg-gray-900 bg-opacity-50`}
-    >
-      <div className={`p-4 w-full sm:w-fit h-fit`}>
-        <div className="w-[380px] relative bg-white rounded-lg shadow">
-          <div className="flex flex-row items-center justify-between gap-8 border-b-2 px-10 py-4">
-            <div className="flex flex-col">
-              <h1 className="text-[1.5rem] font-[500]">Edit Category</h1>
-            </div>
+    <div>
+      <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
+        {/* save and cancel buttons */}
+        <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-5 py-4  px-5 items-center justify-between">
+          <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold font-Roboto">
+            Edit Sub-Category
+          </p>
+          <div className="w-[43%] flex flex-row items-center justify-between font-Roboto">
+            <button className="rounded-lg text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
+              {loading ? (
+                <div className="inline-block  h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+              ) : (
+                <span>Save</span>
+              )}
+            </button>
             <IoIosCloseCircleOutline
               onClick={() => {
                 setModal(false);
               }}
-              className="text-[1.7rem] hover:cursor-pointer"
+              className="text-2xl hover:cursor-pointer"
             />
           </div>
-          <div className="flex flex-col mt-2 px-8 pb-5">
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col gap-2 justify-center"
+        </div>
+
+        {/* sub category name */}
+        <div className="p-5">
+          <div className="mb-4">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 text-[1.2rem] font-inter mb-2"
             >
-              <div className="flex flex-col gap-1">
-                <label className="flex flex-row mt-2 items-center text-[#0F172A] text-[1.2rem] font-Roboto">
-                  Category name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  className="w-full py-2 px-4 mt-2 focus:outline-none border-2 border-[#00000033] rounded-[8px] text-[18px]"
-                  placeholder="Sub-Category name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-                <label className="text-[18px] font-[400] mt-2 gap-3 text-center flex justify-betwee items-center">
-                  <input
-                    type="checkbox"
-                    // checked={rememberMe}
-                    // onChange={() => setRememberMe(!rememberMe)}
-                    className="size-[16px] "
-                  />
-                  Mark as Main Primary
-                </label>
-              </div>
+              Sub Category name <span className="text-[#ED4F4F]">*</span>
+            </label>
+            <input
+              placeholder="Eg: Starter"
+              type="text"
+              id="subcategory"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              // required
+              className="w-full focus:outline-none p-2 border border-gray-300 rounded-md font-inter"
+            />
+          </div>
 
-              <div className="mt-4">
-                <label
-                  htmlFor="category"
-                  className="block text-gray-700 text-[1.2rem] font-inter mb-2"
-                >
-                  Select Main Category
-                </label>
-                <select
-                  className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
-                  id="category"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Main Category</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                </select>
+          {/* Images */}
+          <div className="mb-4">
+            <label
+              htmlFor="category"
+              className="block text-gray-700 text-[1.2rem] font-Roboto mb-2"
+            >
+              Sub-Category icon
+              <p className=" font-Roboto text-[.8rem] m-1">
+                one image at a time allowed
+              </p>
+            </label>
+            <div className="flex flex-row gap-8 bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
+              <div className="size-[90px] bg-[#F8FAFC] rounded-md flex items-center justify-center relative ">
+                {image === "" ? (
+                  <div className="size-[90px] flex items-center justify-center w-full">
+                    <label
+                      htmlFor="dropzone-file"
+                      className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
+                    >
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <IoCloudUploadOutline className="text-[#004AAD] text-2xl" />
+                      </div>
+                      <input
+                        id="dropzone-file"
+                        name="image"
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0])
+                            handleImageChange(e.target.files[0]);
+                        }}
+                      />
+                    </label>
+                  </div>
+                ) : (
+                  <div>
+                    <img src={image} alt="uploaded"></img>
+                    <span
+                      onClick={removeImage}
+                      className="absolute -top-2 -right-2 text-red-600 hover:cursor-pointer"
+                    >
+                      <IoCloseCircle size={24} />
+                    </span>
+                  </div>
+                )}
               </div>
-
-              <div className="flex flex-row gap-5 mt-3">
-                <button
-                  className="w-[50%]  text-[1.1rem] rounded-[8px] border-2 font-bold text-richblack-900 px-[12px] py-2"
-                  onClick={() => setModal(false)}
-                >
-                  Cancel
-                </button>
-                <button className="w-[50%] bg-[#004AAD]  text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-2">
-                  Save
-                </button>
+              <div className="w-1/2 flex flex-col items-start justify-center font-inter">
+                <p className="flex flex-row gap-2 text-[0.9rem] font-bold">
+                  sub-category icon
+                  <span className="text-[#ED4F4F]">*</span>
+                </p>
+                <p className="flex flex-row text-[0.8rem] gap-2">
+                  Image format .jpg, .jpeg, .png and minimum size 300x300
+                </p>
               </div>
-            </form>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

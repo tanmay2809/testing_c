@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchRestaurantDetails } from "../redux/menuslice";
-import type { RootState, AppDispatch } from "../redux/store";
+import { ChangeEvent, useEffect, useState } from "react";
 import Switch from "../component/Menu/switch";
 import axios from "axios";
 import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
@@ -11,10 +8,15 @@ import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
 import SubCategoryDropdown from "../component/Menu/SubCategoryDropdown";
 
+//redux
+import { useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
+
 //icons
 import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 import { baseUrl } from "../main";
+import ItemCard from "../component/Menu/ItemCard";
 
 export interface SubcategoryItem {
   _id: string;
@@ -24,7 +26,7 @@ export interface SubcategoryItem {
   active: boolean;
 }
 
-interface CategoryItem {
+export interface CategoryItem {
   _id: string;
   name: string;
   subcategory: any[];
@@ -40,12 +42,15 @@ const Menu = () => {
 
   const [selectedCard, setSelectedCard] = useState<MenuItem | null>(null);
 
-  const [search, setSearch] = useState("");
+  const [subCategoryToEdit, setSubCategoryToEdit] = useState<SubcategoryItem>();
 
-  const [subcategories, setsubcategories] = useState<SubcategoryItem[]>();
+  // const [search, setSearch] = useState("");
+
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [subcategory1, setSubCategory1] = useState<string[]>([]);
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
-    null
+    categories[0]?._id
   );
 
   const getSubcategories = () => {
@@ -60,59 +65,85 @@ const Menu = () => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data.subcategories));
-        setsubcategories(response.data.subcategories);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  // handle search
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(search);
+  //search bar
+
+  const [search, setSearch] = useState<string>("");
+  const [searchMenuItems, setSearchMenuItems] = useState<
+    MenuItem[] | undefined
+  >();
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(search);
     const inputValue = e.target.value;
     setSearch(inputValue);
     if (!inputValue) {
       // If input value is empty or length is less than or equal to 1, clear search menu items
-      //setSearchMenuItems([]);
+      setSearchMenuItems(undefined);
       return;
     }
-
-    setSearch(inputValue);
-    //searchMenu();
+    searchMenu(inputValue);
   };
+
+  const searchMenu = async (inputValue: string) => {
+    try {
+      const config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: `${baseUrl}/api/searchMenuItems/668857dc758bf97a4d1406ab/${inputValue}`,
+        headers: {},
+      };
+
+      const response = await axios.request(config);
+      console.log(response.data.menuItems);
+      setSearchMenuItems(response.data.menuItems);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // // handle search
+  // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   // console.log(search);
+  //   const inputValue = e.target.value;
+  //   setSearch(inputValue);
+  //   if (!inputValue) {
+  //     // If input value is empty or length is less than or equal to 1, clear search menu items
+  //     //setSearchMenuItems([]);
+  //     return;
+  //   }
+
+  //   setSearch(inputValue);
+  //   //searchMenu();
+  // };
 
   // fetch categories
   const { data, loading, error } = useSelector(
     (state: RootState) => state.resturantdata
   );
-  const useAppDispatch = () => useDispatch<AppDispatch>();
-  const dispatch = useAppDispatch();
-
-  const id: string = "668857dc758bf97a4d1406ab";
-
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [subcategory1, setSubCategory1] = useState<string[]>([]);
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchRestaurantDetails({ id }) as any);
-    }
     getSubcategories();
-  }, [dispatch, id]);
-
-  useEffect(() => {
     if (data) {
       setCategories(data.category || []);
       setSubCategory1(data.category?.subcategory || []);
     }
-  }, [data]);
+    if (categories.length > 0) {
+      setSelectedCategoryId(categories[0]._id);
+    }
+  }, [data, categories]);
+
+  console.log([categories[0]]);
 
   const filteredCategory = selectedCategoryId
     ? categories.filter((category) => category._id === selectedCategoryId)
+    : categories.length > 0
+    ? [categories[0]]
     : [];
-
-  console.log("filtered", filteredCategory);
 
   // console.log(data);
 
@@ -145,7 +176,10 @@ const Menu = () => {
           {/* left div */}
           <div
             className={` flex flex-col h-fit ${
-              isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen
+              isAddMenuOpen ||
+              isSubCategoryOpen ||
+              isEditMenuOpen ||
+              editSubCategoryModal
                 ? "w-[65%] pr-5"
                 : "w-[100%]"
             }`}
@@ -169,6 +203,7 @@ const Menu = () => {
                         setIsSubCategoryOpen(!isSubCategoryOpen);
                         setIsAddMenuOpen(false);
                         setIsEditMenuOpen(false);
+                        setEditSubCategoryModal(false);
                       }}
                     >
                       <FiPlus />
@@ -180,6 +215,7 @@ const Menu = () => {
                         setIsAddMenuOpen(!isAddMenuOpen);
                         setIsSubCategoryOpen(false);
                         setIsEditMenuOpen(false);
+                        setEditSubCategoryModal(false);
                       }}
                     >
                       <FiPlus />
@@ -209,43 +245,39 @@ const Menu = () => {
                     </div>
                   </div>
                 </div>
+                {searchMenuItems && (
+                  <div className="w-full h-fit ml-2 mt-4 text-[1.5rem] font-semibold">
+                    <p className="border-b pb-3 border-black mb-3">
+                      Search result
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex flex-row flex-wrap gap-2 sm:gap-4">
+                  {search && searchMenuItems && (
+                    <ItemCard items={searchMenuItems} />
+                  )}
+                </div>
               </div>
 
               {/* bottom */}
               <div>
-                <div className="flex flex-row items-center gap-4 px-8 py-5">
+                <div className="flex flex-row flex-wrap items-center gap-4 px-8 py-5">
                   {categories.map((item) => (
                     <button
                       key={item._id}
-                      className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
+                      className={`${
+                        item._id === selectedCategoryId
+                          ? "bg-white text-[#004AAD]"
+                          : "bg-[#004AAD] text-white"
+                      } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap`}
                       onClick={() => {
                         setSelectedCategoryId(item._id);
                       }}
                     >
                       {item?.name}
                     </button>
-
-                    // setsubcategory1(item?.subcategory || '');
                   ))}
-                  {/* <button
-              <div className="flex flex-row items-center gap-4 px-8 py-5">
-                {category1.map((item, index) => (
-                  <button
-                    key={index}
-                    className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
-                    onClick={() => setIsEditMenuOpen(!isEditMenuOpen)}
-                  >
-                    {(item?.name as string) || ""}
-                  </button>
-
-                  // setsubcategory1(item?.subcategory || '');
-                ))}
-                {/* <button
-                  onClick={() => setIsEditMenuOpen(!isEditMenuOpen)}
-                  className="bg-[#004AAD] text-white font-semibold text-[1rem] px-5 py-2 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
-                >
-                  Food Menu
-                </button> */}
                   <FiPlus
                     className="text-[2.4rem] rounded-full p-2 bg-[#F0F0F0] text-[#004AAD] hover:cursor-pointer"
                     onClick={() => setCategoryModal(true)}
@@ -258,28 +290,42 @@ const Menu = () => {
                   setIsSubCategoryOpen={setIsSubCategoryOpen}
                   setSelectedCard={setSelectedCard}
                   category={filteredCategory}
+                  subcategoryToEdit={setSubCategoryToEdit}
+                  editSubcategoryModal={setEditSubCategoryModal}
                 />
                 {/* ))} */}
               </div>
             </div>
 
             {/* right div */}
-            {(isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen) && (
+            {(isAddMenuOpen ||
+              isSubCategoryOpen ||
+              isEditMenuOpen ||
+              editSubCategoryModal) && (
               <div
                 className={`${
-                  isAddMenuOpen || isSubCategoryOpen || isEditMenuOpen
+                  isAddMenuOpen ||
+                  isSubCategoryOpen ||
+                  isEditMenuOpen ||
+                  editSubCategoryModal
                     ? "flex bg-[#EEF5FF] flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[35%] overflow-auto"
                     : "hidden"
                 }`}
               >
                 {/* add menu item form */}
                 {isAddMenuOpen && (
-                  <AddMenuItem setIsAddMenuOpen={setIsAddMenuOpen} />
+                  <AddMenuItem
+                    categories={filteredCategory}
+                    setIsAddMenuOpen={setIsAddMenuOpen}
+                  />
                 )}
 
                 {/* add sub category form */}
                 {isSubCategoryOpen && (
-                  <AddSubCategory setIsSubCategoryOpen={setIsSubCategoryOpen} />
+                  <AddSubCategory
+                    category={filteredCategory}
+                    setIsSubCategoryOpen={setIsSubCategoryOpen}
+                  />
                 )}
 
                 {/* edit menu form */}
@@ -289,6 +335,14 @@ const Menu = () => {
                     item={selectedCard}
                   />
                 )}
+                {editSubCategoryModal && (
+                  <EditSubcategory
+                    activeCategory={filteredCategory}
+                    categories={categories}
+                    subcategoryToEdit={subCategoryToEdit}
+                    setModal={setEditSubCategoryModal}
+                  />
+                )}
               </div>
             )}
           </div>
@@ -296,11 +350,6 @@ const Menu = () => {
 
         {/* category modal */}
         {categoryModal && <AddCategory isCategoryOpen={setCategoryModal} />}
-
-        {/* edit subcategory modal */}
-        {editSubCategoryModal && (
-          <EditSubcategory setModal={setEditSubCategoryModal} />
-        )}
       </div>
     </div>
   );

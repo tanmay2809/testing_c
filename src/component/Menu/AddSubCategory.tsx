@@ -1,24 +1,33 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
+import { baseUrl } from "../../main";
+import { CategoryItem } from "../../pages/Menu";
 
 interface SubCategory {
   name: string;
   image: string;
+  category: string;
 }
 
 interface SubCategoryProps {
+  category: CategoryItem[];
   setIsSubCategoryOpen: (isOpen: boolean) => void;
 }
 
 const AddSubCategory: React.FC<SubCategoryProps> = ({
+  category,
   setIsSubCategoryOpen,
 }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [image, setImage] = useState<string | null>(null);
 
   const [formData, setFormData] = useState<SubCategory>({
     name: "",
     image: "",
+    category: category[0]._id,
   });
 
   // onchange handler
@@ -34,15 +43,31 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
   };
 
   // file change handler
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      const image = URL.createObjectURL(file);
-      setImage(image);
-      setFormData({
-        ...formData,
-        image: image,
-      });
+  const handleImageChange = async (file: File) => {
+    const imageFormData = new FormData();
+    imageFormData.append("file", file);
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/fileUpload`,
+      data: imageFormData,
+    };
+
+    try {
+      const response = await axios.request(config);
+      if (response.data.status && response.data.data) {
+        const url = response.data.data[0].url;
+
+        // Update state with the new image URL
+        setImage(url);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          image: url,
+        }));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -58,8 +83,27 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
   // form submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    // window.location.reload();
+    setLoading(true);
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/addsubCategory`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+        setIsSubCategoryOpen(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -71,8 +115,12 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
             Add Sub-Category
           </p>
           <div className="w-[43%] flex flex-row items-center justify-between font-Roboto">
-            <button className="rounded-xl text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
-              Save
+            <button className="rounded-lg text-white bg-[#004AAD] w-fit px-[2.5rem] py-2">
+              {loading ? (
+                <div className="inline-block  h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+              ) : (
+                <span>Save</span>
+              )}
             </button>
             <IoIosCloseCircleOutline
               onClick={() => {
@@ -133,7 +181,8 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
                         className="hidden"
                         accept="image/*"
                         onChange={(e) => {
-                          if (e.target.files) handleFileChange(e);
+                          if (e.target.files && e.target.files[0])
+                            handleImageChange(e.target.files[0]);
                         }}
                       />
                     </label>

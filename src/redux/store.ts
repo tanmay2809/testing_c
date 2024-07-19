@@ -1,7 +1,7 @@
 import { configureStore, Store } from "@reduxjs/toolkit";
 import storeReducer from "./storeSlice";
 import invoiceReducer from "./invoiceSlice";
-import restaurantSlice from "./menuslice";
+import restaurantSlice from "./restaurantData";
 
 export const store: Store = configureStore({
   reducer: {
