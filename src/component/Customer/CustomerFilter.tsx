@@ -1,15 +1,45 @@
 import React, { useState } from "react";
-
+import {Customer} from '../../constants/index';
 interface FilterProps {
   isVisible: boolean;
   onClose: () => void;
   filterData: (data: string[]) => void;
+  customerData: [
+    {
+      userId: {
+        name: string;
+        email: string;
+        phone: string;
+        birthday?: string;
+        gender: string;
+        anniversary?: string;
+      };
+      visits: string[];
+    }
+  ];
+  setCustomerData: (data: any) => void;
+  originalData : [
+    {
+      userId: {
+        name: string;
+        email: string;
+        phone: string;
+        birthday?: string;
+        gender: string;
+        anniversary?: string;
+      };
+      visits: string[];
+    }
+  ];
 }
 
 const CustomerFilter: React.FC<FilterProps> = ({
   isVisible,
   onClose,
   filterData,
+  customerData,
+  setCustomerData,
+  originalData,
 }) => {
   const [visitFilter, setVisitFilter] = useState<string>(
     "Visited in Last 30 days"
@@ -41,6 +71,28 @@ const CustomerFilter: React.FC<FilterProps> = ({
     setGender(updatedGender);
   };
 
+
+  const getCustomerSegment = (visits: string[]): string => {
+    const now = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(now.getDate() - 30);
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(now.getDate() - 60);
+
+    const visitsWithin30Days = visits?.filter(visit => new Date(visit) >= thirtyDaysAgo);
+    const visitsWithin60Days = visits?.filter(visit => new Date(visit) >= sixtyDaysAgo);
+
+    if (visitsWithin30Days?.length === 1) {
+      return "New";
+    } else if (visitsWithin30Days?.length >= 3) {
+      return "Regular";
+    } else if (visitsWithin60Days?.length > 5) {
+      return "Loyal";
+    } else {
+      return "Risk";
+    }
+  };
+
   //apply
   const handleApply = () => {
     const data: string[] = [];
@@ -58,6 +110,63 @@ const CustomerFilter: React.FC<FilterProps> = ({
     }
     data.push(...segmentation, ...gender, visitFilter, nonVisitFilter);
     filterData(data);
+
+    const filteredData = customerData?.filter((customer) => {
+      const visitDates = customer?.visits?.map((visit) => new Date(visit));
+      const now = new Date();
+  
+      // Filter based on visit dates
+      const visitFilterCheck = () => {
+        if (visitFilter === "Visited in Last 30 days") {
+          return visitDates.some(
+            (visit) =>
+              now.getTime() - visit.getTime() <= 30 * 24 * 60 * 60 * 1000
+          );
+        } else if (visitFilter === "Visited in Last 60 days") {
+          return visitDates.some(
+            (visit) =>
+              now.getTime() - visit.getTime() <= 60 * 24 * 60 * 60 * 1000
+          );
+        } else if (visitFilter === "Custom") {
+          const customDate = new Date(customDateVisit);
+          return visitDates.some((visit) => visit == customDate);
+        }
+        return true;
+      };
+  
+      // Filter based on non-visit dates
+      const nonVisitFilterCheck = () => {
+        if (nonVisitFilter === "Not visited in Last 30 days") {
+          return visitDates.every(
+            (visit) =>
+              now.getTime() - visit.getTime() > 30 * 24 * 60 * 60 * 1000
+          );
+        } else if (nonVisitFilter === "Not visited in Last 60 days") {
+          return visitDates.every(
+            (visit) =>
+              now.getTime() - visit.getTime() > 60 * 24 * 60 * 60 * 1000
+          );
+        } else if (nonVisitFilter === "Custom") {
+          const customDate = new Date(customDateNotVisit);
+          return visitDates.every((visit) => visit < customDate);
+        }
+        return true;
+      };
+  
+      // Filter based on segmentation
+      const segmentationCheck = segmentation.length
+        ? segmentation.includes(getCustomerSegment(customer?.visits))
+        : true;
+  
+      // Filter based on gender
+      const genderCheck = gender.length
+        ? gender.includes(customer?.userId?.gender)
+        : true;
+  
+      return visitFilterCheck() && nonVisitFilterCheck() && segmentationCheck && genderCheck;
+    });
+    setCustomerData(filteredData);
+    // filterData(filteredData);
 
     setIsClosing(true);
     setTimeout(() => {
@@ -94,7 +203,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
             &times;
           </button>
         </div>
-        <div className="mt-1 h-[85%] flex flex-col justify-evenly">
+        <div className="mt-1 h-[88%] flex flex-col justify-evenly">
           {/*customer visted in */}
           <div className="mb-2 font-Roboto">
             <p className="text-xl font-medium mb-3">Customer visited in</p>
