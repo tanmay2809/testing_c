@@ -548,4 +548,3 @@ const CustomerList: React.FC = () => {
 };
 
 export default CustomerList;
-
