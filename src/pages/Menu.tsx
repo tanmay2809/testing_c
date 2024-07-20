@@ -1,12 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import Switch from "../component/Menu/switch";
 import axios from "axios";
-import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
+
+// components
 import EditMenuItem from "../component/Menu/EditMenu";
 import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
 import SubCategoryDropdown from "../component/Menu/SubCategoryDropdown";
+import ItemCard from "../component/Menu/ItemCard";
+import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
+import Switch from "../component/Menu/switch";
 
 //redux
 import { useSelector } from "react-redux";
@@ -16,14 +19,14 @@ import type { RootState } from "../redux/store";
 import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 import { baseUrl } from "../main";
-import ItemCard from "../component/Menu/ItemCard";
+import { MdDelete } from "react-icons/md";
+import { BiSearchAlt2 } from "react-icons/bi";
 
 // assets
 import FoodMenu from "../assets/Food Menu.png";
 import Burger from "../assets/Burger.png";
 import Category from "../assets/category.png";
 import Bussiness from "../assets/Business Task list.png";
-import { MdDelete } from "react-icons/md";
 
 export interface SubcategoryItem {
   _id: string;
@@ -56,7 +59,7 @@ const Menu = () => {
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [subcategory1, setSubCategory1] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string>("");
-  const [showActive, setShowActive] = useState<boolean>(true);
+  const [showActive, setShowActive] = useState<boolean>(false);
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
     categories[0]?._id
@@ -107,7 +110,10 @@ const Menu = () => {
 
       const response = await axios.request(config);
       console.log(response.data.menuItems);
-      setSearchMenuItems(response.data.menuItems);
+      const items = response.data.menuItems.filter(
+        (item: MenuItem) => item.category === selectedCategoryId
+      );
+      setSearchMenuItems(items);
     } catch (error) {
       console.log(error);
     }
@@ -153,6 +159,18 @@ const Menu = () => {
 
   const handleSelectedType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(e.target.value);
+  };
+
+  const filterItems = (items: MenuItem[]) => {
+    return items.filter((item) => {
+      const types =
+        selectedType === "" ||
+        (selectedType === "Veg" && item.type === "veg") ||
+        (selectedType === "Non-Veg" && item.type === "nonveg") ||
+        (selectedType === "Egg" && item.type === "egg");
+      const active = showActive ? item.active : !item.active || true;
+      return types && active;
+    });
   };
 
   // console.log(data);
@@ -269,30 +287,10 @@ const Menu = () => {
                         onclick={() => {
                           setShowActive(!showActive);
                         }}
-                        isActive={true}
+                        isActive={showActive}
                       />
                     </div>
                   </div>
-                </div>
-                {searchMenuItems && (
-                  <div className="w-full h-fit ml-2 mt-4 text-[1.5rem] font-semibold">
-                    <p className="border-b pb-3 border-black mb-3">
-                      Search result
-                    </p>
-                  </div>
-                )}
-
-                <div className="flex flex-row flex-wrap gap-2 sm:gap-4">
-                  {search && searchMenuItems && (
-                    <ItemCard
-                      setIsEditMenuOpen={setIsEditMenuOpen}
-                      setSelectedCard={setSelectedCard}
-                      setIsSubCategoryOpen={setIsSubCategoryOpen}
-                      setIsAddMenuOpen={setIsAddMenuOpen}
-                      editSubcategoryModal={setEditSubCategoryModal}
-                      items={searchMenuItems}
-                    />
-                  )}
                 </div>
               </div>
 
@@ -383,17 +381,37 @@ const Menu = () => {
                   </div>
                 )}
 
-                <SubCategoryDropdown
-                  setIsAddMenuOpen={setIsAddMenuOpen}
-                  setIsEditMenuOpen={setIsEditMenuOpen}
-                  setIsSubCategoryOpen={setIsSubCategoryOpen}
-                  setSelectedCard={setSelectedCard}
-                  category={filteredCategory}
-                  subcategoryToEdit={setSubCategoryToEdit}
-                  editSubcategoryModal={setEditSubCategoryModal}
-                  selectedType={selectedType}
-                  showActive={showActive}
-                />
+                {/* Search Results */}
+                {searchMenuItems && (
+                  <div className="w-full flex flex-row items-center gap-2 h-fit ml-2 mb-4 mt-4 text-[1.5rem] font-semibold">
+                    <BiSearchAlt2 className="text-[2rem] rotate-90 mt-1" />
+                    <p className="text-[1.7rem] font-semibold">Search result</p>
+                  </div>
+                )}
+
+                {search && searchMenuItems ? (
+                  <ItemCard
+                    setIsEditMenuOpen={setIsEditMenuOpen}
+                    setSelectedCard={setSelectedCard}
+                    setIsSubCategoryOpen={setIsSubCategoryOpen}
+                    setIsAddMenuOpen={setIsAddMenuOpen}
+                    editSubcategoryModal={setEditSubCategoryModal}
+                    items={filterItems(searchMenuItems)}
+                    showActive={showActive}
+                  />
+                ) : (
+                  <SubCategoryDropdown
+                    setIsAddMenuOpen={setIsAddMenuOpen}
+                    setIsEditMenuOpen={setIsEditMenuOpen}
+                    setIsSubCategoryOpen={setIsSubCategoryOpen}
+                    setSelectedCard={setSelectedCard}
+                    category={filteredCategory}
+                    subcategoryToEdit={setSubCategoryToEdit}
+                    editSubcategoryModal={setEditSubCategoryModal}
+                    selectedType={selectedType}
+                    showActive={showActive}
+                  />
+                )}
               </div>
             </div>
 

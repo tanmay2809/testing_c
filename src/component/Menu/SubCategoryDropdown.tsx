@@ -76,13 +76,23 @@ const SubCategoryDropdown: React.FC<Props> = ({
     setCategories(updatedCategory);
   };
 
+  const filterItems = (items: MenuItem[]) => {
+    return items.filter((item) => {
+      const types =
+        selectedType === "" ||
+        (selectedType === "Veg" && item.type === "veg") ||
+        (selectedType === "Non-Veg" && item.type === "nonveg") ||
+        (selectedType === "Egg" && item.type === "egg");
+      const active = showActive ? item.active : !item.active || true;
+      return types && active;
+    });
+  };
+
   useEffect(() => {
     if (category && category.length > 0 && category[0].subcategory.length > 0) {
       setIsOpen({ [category[0].subcategory[0]._id]: true });
     }
   }, [category]);
-
-  console.log(showActive);
 
   return (
     <div className="space-y-2">
@@ -234,37 +244,15 @@ const SubCategoryDropdown: React.FC<Props> = ({
               </div>
               {/* Items cards */}
               {isOpen[subcategory._id] && (
-                <div className="flex flex-row flex-wrap px-2 py-4 gap-x-4 gap-y-4">
-                  <ItemCard
-                    items={
-                      (selectedType === "" &&
-                        subcategory.menuItems.filter(
-                          (item) => item.active === showActive
-                        )) ||
-                      (selectedType === "Veg" &&
-                        subcategory.menuItems.filter(
-                          (item) =>
-                            item.type === "veg" && item.active === showActive
-                        )) ||
-                      (selectedType === "Non-Veg" &&
-                        subcategory.menuItems.filter(
-                          (item) =>
-                            item.type === "nonveg" && item.active === showActive
-                        )) ||
-                      (selectedType === "Egg" &&
-                        subcategory.menuItems.filter(
-                          (item) =>
-                            item.type === "egg" && item.active === showActive
-                        ))
-                    }
-                    showActive={showActive}
-                    setIsAddMenuOpen={setIsAddMenuOpen}
-                    setIsEditMenuOpen={setIsEditMenuOpen}
-                    setIsSubCategoryOpen={setIsSubCategoryOpen}
-                    setSelectedCard={setSelectedCard}
-                    editSubcategoryModal={editSubcategoryModal}
-                  />
-                </div>
+                <ItemCard
+                  items={filterItems(subcategory.menuItems)}
+                  showActive={showActive}
+                  setIsAddMenuOpen={setIsAddMenuOpen}
+                  setIsEditMenuOpen={setIsEditMenuOpen}
+                  setIsSubCategoryOpen={setIsSubCategoryOpen}
+                  setSelectedCard={setSelectedCard}
+                  editSubcategoryModal={editSubcategoryModal}
+                />
               )}
             </div>
           ))}
