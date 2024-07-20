@@ -270,156 +270,169 @@ export const segmentationColors = {
 };
 
 export interface Customer {
-  name: string;
-  phone: string;
-  visits: number;
-  lastVisit: string;
-  segmentation: "New" | "Regular" | "Risk" | "Loyal";
+  userId : {
+    _id: string;
+    name: string;
+    phone: string;
+    gender: string;
+    birthday: string;
+    anniversary : string;
+    favoriteMenuItems : [
+      {
+        resId: string;
+        menuItems : string[];
+        _id:string;
+      }
+    ]
+  }
+  resId : string;
+  visits: string[];
+  // segmentation: "New" | "Regular" | "Risk" | "Loyal";
 }
 
 //dummy data for customersList
-export const customers: Customer[] = [
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "Risk",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "Risk",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "Risk",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "Risk",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "Risk",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "Risk",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "Risk",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "Risk",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "New",
-  },
-  {
-    name: "Sam Sundar",
-    phone: "+91 7603037718",
-    visits: 1,
-    lastVisit: "Today",
-    segmentation: "Regular",
-  },
-];
+// export const customers: Customer[] = [
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "Risk",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "Risk",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "Risk",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "Risk",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "Risk",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "Risk",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "Risk",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "Risk",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "New",
+//   },
+//   {
+//     name: "Sam Sundar",
+//     phone: "+91 7603037718",
+//     visits: 1,
+//     lastVisit: "Today",
+//     segmentation: "Regular",
+//   },
+// ];
 
 //hardcoded data for segmentation popups
 export const segmentationDetails: {
