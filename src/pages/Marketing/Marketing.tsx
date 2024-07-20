@@ -2,14 +2,14 @@ import { useState } from "react";
 
 //icons
 import { FaPlus } from "react-icons/fa6";
-
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 
 //other components
 import CampaignPricing from "../../component/Marketing/CampaignPricing";
 
 
 const Marketing = () => {
+  const navigate=useNavigate();
   const location = useLocation();
   console.log("Customer Component Rendered");
   console.log("Current Location:", location.pathname);
@@ -59,7 +59,7 @@ const Marketing = () => {
                 />
               </svg>
             </button>
-            <button className="w-[10.5rem] flex justify-center items-center gap-1 bg-[white] text-[#004AAD] px-2 py-2 text-base font-[500] rounded-md border border-[#E2E8F0]">
+            <button onClick={()=>navigate("/createcampaign")} className="w-[10.5rem] flex justify-center items-center gap-1 bg-[white] text-[#004AAD] px-2 py-2 text-base font-[500] rounded-md border border-[#E2E8F0]">
               <FaPlus className="text-base" />
               Create Campaign
             </button>
@@ -70,13 +70,12 @@ const Marketing = () => {
         <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-3">
           <Link
             className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
-            to="/marketing/library"
+            to="/marketing"
           >
             Campaign Library
             <span
               className={`${
-                location.pathname === "/marketing" ||
-                location.pathname === "/marketing/library"
+                location.pathname === "/marketing"
                   ? "bg-[#004AAD]"
                   : "hidden"
               } h-1 w-[80%] rounded-t-[0.375rem]`}
