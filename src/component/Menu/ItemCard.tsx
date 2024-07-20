@@ -7,6 +7,7 @@ import DeleteModal from "./DeleteModal";
 import { useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 interface Props {
   items?: MenuItem[];
@@ -14,6 +15,7 @@ interface Props {
   setSelectedCard: (index: MenuItem) => void;
   setIsSubCategoryOpen: (isOpen: boolean) => void;
   setIsAddMenuOpen: (isOpen: boolean) => void;
+  editSubcategoryModal: (isOpen: boolean) => void;
 }
 
 const ItemCard: React.FC<Props> = ({
@@ -22,6 +24,7 @@ const ItemCard: React.FC<Props> = ({
   setSelectedCard,
   setIsSubCategoryOpen,
   setIsAddMenuOpen,
+  editSubcategoryModal,
 }) => {
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<MenuItem>();
@@ -38,6 +41,7 @@ const ItemCard: React.FC<Props> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        toast.success("Menu item toggle");
       })
       .catch((error) => {
         console.log(error);
@@ -82,6 +86,7 @@ const ItemCard: React.FC<Props> = ({
                   setIsEditMenuOpen(true);
                   setIsSubCategoryOpen(false);
                   setIsAddMenuOpen(false);
+                  editSubcategoryModal(false);
                   setSelectedCard(item);
                 }}
               />

@@ -6,10 +6,11 @@ import { CategoryItem, SubcategoryItem } from "../../pages/Menu";
 import axios from "axios";
 import { baseUrl } from "../../main";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 interface EditSubCategoryProps {
   setModal: (isOpen: boolean) => void;
-  subcategoryToEdit: SubcategoryItem;
+  subcategoryToEdit: SubcategoryItem | undefined;
   categories: CategoryItem[];
   activeCategory: CategoryItem[];
 }
@@ -28,7 +29,9 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
   activeCategory,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [image, setImage] = useState<string>(subcategoryToEdit?.image);
+  const [image, setImage] = useState<string | undefined>(
+    subcategoryToEdit?.image
+  );
 
   const [formData, setFormData] = useState<EditSubCategory>({
     name: subcategoryToEdit?.name,
@@ -103,6 +106,7 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
         console.log(JSON.stringify(response.data));
         setLoading(false);
         setModal(false);
+        toast.success("Subcategory Edit successful");
         window.location.reload();
       })
       .catch((error) => {
@@ -111,10 +115,10 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
   };
 
   return (
-    <div>
+    <div className="h-full overflow-y-scroll no-scrollbar">
       <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
         {/* save and cancel buttons */}
-        <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-5 py-4  px-5 items-center justify-between">
+        <div className="w-[35%] flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold font-Roboto">
             Edit Sub-Category
           </p>
@@ -136,7 +140,7 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
         </div>
 
         {/* sub category name */}
-        <div className="p-5">
+        <div className="p-5 relative top-[70px]">
           <div className="mb-4">
             <label
               htmlFor="name"

@@ -210,10 +210,10 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
+    <div className="overflow-y-scroll no-scrollbar">
+      <form onSubmit={handleSubmit} className="bg-[#EEF5FF] ">
         {/* save and cancel buttons */}
-        <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-5 py-4  px-5 items-center justify-between">
+        <div className="w-[35%] flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold font-inter">
             Add Menu Item
           </p>
@@ -230,7 +230,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
           </div>
         </div>
 
-        <div className="p-5">
+        <div className="p-5 relative top-[70px]">
           {/* item name and subcategory */}
           <div className="flex flex-row gap-4 font-inter">
             <div className="w-1/2 mb-4">

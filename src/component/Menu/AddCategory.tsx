@@ -5,6 +5,7 @@ import { useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
 import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 interface CategoryProps {
   isCategoryOpen: (isOpen: boolean) => void;
@@ -50,6 +51,7 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
         console.log(JSON.stringify(response.data));
         setLoading(false);
         isCategoryOpen(false);
+        toast.success("Category Added");
       })
       .catch((error) => {
         console.log(error);

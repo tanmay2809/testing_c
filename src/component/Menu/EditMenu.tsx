@@ -6,7 +6,7 @@ import { BiFoodTag } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
-import { MdOutlineDeleteOutline } from "react-icons/md";
+import { MdOutlineDeleteOutline, MdOutlineTaskAlt } from "react-icons/md";
 import axios from "axios";
 import { baseUrl } from "../../main";
 
@@ -24,14 +24,11 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
     image: [],
     description: "",
     price: "",
-    category: "",
+    category: item.category,
     subcategory: "",
     serving: "",
     tag: "",
-    active: false,
-    categoryActive: false,
-    clicks: 0,
-    addone: [{ name: "", additionalPrice: "" }],
+    addone: [],
     type: "",
   });
 
@@ -48,14 +45,17 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
       active: item.active,
       categoryActive: item.categoryActive,
       clicks: item.clicks,
-      addone:
-        item.addone.length > 0
-          ? item.addone
-          : [{ name: "", additionalPrice: "" }],
+      addone: [],
       type: item.type,
     });
-    setImage((prevImages) => [...prevImages, ...item.image]);
+    setImage(item.image.map((img) => img.url));
   }, [item]);
+
+  const [addonDetails, setAddonDetails] = useState<
+    { name: string; additionalPrice: string }[]
+  >([{ name: "", additionalPrice: "" }]);
+
+  const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
 
   // remove image function
   const removeImage = (index: number) => {
@@ -66,19 +66,24 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
     }));
   };
 
+      console.log(formData);
+      console.log(image);
+
+
   // addon functions
   const addAddOn = () => {
-    setFormData({
-      ...formData,
-      addone: [...(formData.addone || []), { name: "", additionalPrice: "" }],
-    });
+    setAddonDetails((prevDetails) => [
+      ...prevDetails,
+      { name: "", additionalPrice: "" },
+    ]);
   };
 
   const removeAddOn = (index: number) => {
-    setFormData({
-      ...formData,
-      addone: formData.addone?.filter((_, i) => i !== index),
-    });
+    setAddonDetails((prevDetails) => prevDetails.filter((_, i) => i !== index));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      addone: prevFormData.addone.filter((_, i) => i !== index),
+    }));
   };
 
   const handleChange = (
@@ -89,22 +94,18 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
     field?: string
   ) => {
     const { name, value } = event.target;
-    setFormData((prevData) => {
-      if (index !== undefined && field) {
-        const updatedAddons = prevData.addone?.map((addon, i) =>
-          i === index ? { ...addon, [field]: value } : addon
-        );
-        return {
-          ...prevData,
-          addone: updatedAddons || prevData.addone,
-        };
-      } else {
-        return {
-          ...prevData,
-          [name]: value,
-        };
-      }
-    });
+    if (index !== undefined && field) {
+      setAddonDetails((prevDetails) => {
+        const newDetails = [...prevDetails];
+        newDetails[index] = { ...newDetails[index], [field]: value };
+        return newDetails;
+      });
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleImageChange = async (files: FileList) => {
@@ -123,6 +124,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
 
       try {
         const response = await axios.request(config);
+        console.log(response.data);
         if (response.data.status && response.data.data) {
           const urls = response.data.data.map(
             (item: { url: string }) => item.url
@@ -142,6 +144,44 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
         ...uploadedImageUrls.map((url) => ({ url })),
       ],
     }));
+  };
+
+  const handleAddone = async (index: number) => {
+    let addon = addonDetails[index];
+    let data = JSON.stringify({
+      name: addon.name,
+      price: addon.additionalPrice,
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/addAddons`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    try {
+      const response = await axios.request(config);
+      console.log(JSON.stringify(response.data));
+
+      if (response.data.Addone) {
+        const newAddOnId = response.data.Addone._id;
+        console.log(newAddOnId);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          addone: [...prevFormData.addone, newAddOnId],
+        }));
+        setAddonDetails((prevDetails) =>
+          prevDetails.filter((_, i) => i !== index)
+        );
+        setShowAddNewButton(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -170,10 +210,10 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
   };
 
   return (
-    <div>
+    <div className="overflow-y-scroll no-scrollbar">
       <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
         {/* save and cancel buttons */}
-        <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-5 py-4  px-5 items-center justify-between">
+        <div className="w-[35%] flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold">
             Edit Menu Item
           </p>
@@ -194,7 +234,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
           </div>
         </div>
 
-        <div className="p-5">
+        <div className="p-5 relative top-[70px]">
           {/* item name and category */}
           <div className="flex flex-row gap-4">
             <div className="w-1/2 mb-4">
@@ -332,7 +372,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
           </div>
 
           {/* add-ons */}
-          <div className="mb-4">
+          <div className="mb-4 font-inter">
             <label
               htmlFor="addone"
               className="block text-gray-700 text-[1.2rem] font-inter mb-2"
@@ -340,14 +380,14 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
               Add-ons
             </label>
             <div className="bg-white px-5 py-3 rounded-lg border border-[#E2E8F0]">
-              {formData.addone?.map((addon, index) => (
+              {addonDetails.map((addon, index) => (
                 <div
                   key={index}
                   className="mb-2 flex gap-2 items-end justify-between"
                 >
                   <div>
                     <label
-                      htmlFor="price"
+                      htmlFor={`addone-name-${index}`}
                       className="block text-gray-700 text-[1.1rem] font-[400] mb-2"
                     >
                       Add-on Name <span className="text-[#ED4F4F]">*</span>
@@ -362,45 +402,47 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                     />
                   </div>
                   <div>
-                    <div>
-                      <label
-                        htmlFor="addone-price"
-                        className="block text-gray-700 text-[1.1rem] font-[400] mb-2"
-                      >
-                        Additional Price
-                      </label>
-
-                      <div className="relative">
-                        <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
-                          ₹
-                        </span>
-
-                        <input
-                          type="text"
-                          id={`addone-price-${index}`}
-                          name={`addone-price-${index}`}
-                          value={addon.additionalPrice}
-                          onChange={(e) =>
-                            handleChange(e, index, "additionalPrice")
-                          }
-                          className="w-full pl-6 p-2 border border-gray-300 rounded-md"
-                        />
-                      </div>
+                    <label
+                      htmlFor={`addone-price-${index}`}
+                      className="block text-gray-700 text-[1.1rem] font-[400] mb-2"
+                    >
+                      Additional Price
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-2 top-1/2 transform -translate-y-1/2 font-bold">
+                        ₹
+                      </span>
+                      <input
+                        type="text"
+                        id={`addone-price-${index}`}
+                        name={`addone-price-${index}`}
+                        value={addon.additionalPrice}
+                        onChange={(e) =>
+                          handleChange(e, index, "additionalPrice")
+                        }
+                        className="w-full pl-6 p-2 border border-gray-300 rounded-md"
+                      />
                     </div>
                   </div>
+                  <MdOutlineTaskAlt
+                    onClick={() => handleAddone(index)}
+                    className="text-[#004AAD] bg-white text-[2.5rem] hover:cursor-pointer hover:bg-[#004AAD] hover:text-white transition-all mb-2 rounded-full w-fit h-fit"
+                  />
                   <MdOutlineDeleteOutline
                     onClick={() => removeAddOn(index)}
-                    className="text-red-500 text-[2.5rem] hover:cursor-pointer"
+                    className="text-red-500 text-[2.5rem] mb-1 hover:cursor-pointer"
                   />
                 </div>
               ))}
-              <p
-                className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
-                onClick={addAddOn}
-              >
-                <FaPlus className="text-xl" />
-                Add New
-              </p>
+              {showAddNewButton && (
+                <p
+                  className="text-[#004AAD] font-semibold flex flex-row items-center gap-2 hover:cursor-pointer w-fit mt-4"
+                  onClick={addAddOn}
+                >
+                  <FaPlus className="text-xl" />
+                  Add New
+                </p>
+              )}
             </div>
           </div>
 
@@ -411,7 +453,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
               className="block text-gray-700 text-[1.2rem] font-inter mb-2"
             >
               Item Description
-            </label>  
+            </label>
             <textarea
               rows={3}
               id="description"

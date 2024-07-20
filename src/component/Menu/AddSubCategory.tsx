@@ -4,6 +4,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { baseUrl } from "../../main";
 import { CategoryItem } from "../../pages/Menu";
+import { toast } from "react-toastify";
 
 interface SubCategory {
   name: string;
@@ -100,6 +101,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
         console.log(JSON.stringify(response.data));
         setLoading(false);
         setIsSubCategoryOpen(false);
+        toast.success("Subcategory Added");
       })
       .catch((error) => {
         console.log(error);
@@ -107,10 +109,10 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
   };
 
   return (
-    <div>
+    <div className="overflow-y-scroll no-scrollbar h-full">
       <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
         {/* save and cancel buttons */}
-        <div className="flex flex-row bg-white border-b-2 border-b-[#00000050] mt-5 py-4  px-5 items-center justify-between">
+        <div className="w-[35%] flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold font-Roboto">
             Add Sub-Category
           </p>
@@ -132,7 +134,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
         </div>
 
         {/* sub category name */}
-        <div className="p-5">
+        <div className="p-5 relative top-[70px]">
           <div className="mb-4">
             <label
               htmlFor="name"

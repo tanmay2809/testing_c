@@ -3,6 +3,7 @@ import deleted from "../../assets/deleted.png";
 import { MenuItem } from "./AddMenuItem";
 import { baseUrl } from "../../main";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface DeleteProps {
   setModal: (isOpen: boolean) => void;
@@ -28,6 +29,7 @@ const DeleteModal: React.FC<DeleteProps> = ({ setModal, setSelectedCard }) => {
         console.log(JSON.stringify(response.data));
         setLoading(false);
         setModal(false);
+        toast.success("Item Deleted");
       })
       .catch((error) => {
         console.log(error);

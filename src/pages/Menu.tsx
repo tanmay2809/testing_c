@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Switch from "../component/Menu/switch";
 import axios from "axios";
 import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
@@ -17,6 +17,13 @@ import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 import { baseUrl } from "../main";
 import ItemCard from "../component/Menu/ItemCard";
+
+// assets
+import FoodMenu from "../assets/Food Menu.png";
+import Burger from "../assets/Burger.png";
+import Category from "../assets/category.png";
+import Bussiness from "../assets/Business Task list.png";
+import { MdDelete } from "react-icons/md";
 
 export interface SubcategoryItem {
   _id: string;
@@ -44,10 +51,11 @@ const Menu = () => {
 
   const [subCategoryToEdit, setSubCategoryToEdit] = useState<SubcategoryItem>();
 
-  // const [search, setSearch] = useState("");
+  const [hoveredCategoryId, setHoveredCategoryId] = useState<string>();
 
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [subcategory1, setSubCategory1] = useState<string[]>([]);
+  const [selectedType, setSelectedType] = useState<string>("");
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
     categories[0]?._id
@@ -72,18 +80,15 @@ const Menu = () => {
   };
 
   //search bar
-
   const [search, setSearch] = useState<string>("");
   const [searchMenuItems, setSearchMenuItems] = useState<
     MenuItem[] | undefined
   >();
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(search);
     const inputValue = e.target.value;
     setSearch(inputValue);
     if (!inputValue) {
-      // If input value is empty or length is less than or equal to 1, clear search menu items
       setSearchMenuItems(undefined);
       return;
     }
@@ -145,6 +150,10 @@ const Menu = () => {
     ? [categories[0]]
     : [];
 
+  const handleSelectedType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedType(e.target.value);
+  };
+
   // console.log(data);
 
   // setSubCategory(data?.subcategory);
@@ -153,6 +162,7 @@ const Menu = () => {
 
   console.log(categories);
   console.log(subcategory1);
+  console.log(selectedType);
 
   if (loading) {
     return (
@@ -238,10 +248,23 @@ const Menu = () => {
                   </div>
 
                   <div className="flex items-center gap-5">
-                    <div></div>
+                    <div>
+                      <select
+                        className="w-full px-8 focus:outline-none p-2 border  border-gray-300 rounded-md"
+                        id="filter"
+                        name="filter"
+                        value={selectedType}
+                        onChange={handleSelectedType}
+                      >
+                        <option value="">All Menu</option>
+                        <option value="Veg">Veg</option>
+                        <option value="Egg">Egg</option>
+                        <option value="Non-Veg">Non-Veg</option>
+                      </select>
+                    </div>
                     <div className="flex gap-5">
-                      <p>Action items </p>
-                      <Switch isActive={true} />
+                      <p>Active items </p>
+                      <Switch onclick={() => {}} isActive={true} />
                     </div>
                   </div>
                 </div>
@@ -255,13 +278,62 @@ const Menu = () => {
 
                 <div className="flex flex-row flex-wrap gap-2 sm:gap-4">
                   {search && searchMenuItems && (
-                    <ItemCard items={searchMenuItems} />
+                    <ItemCard
+                      setIsEditMenuOpen={setIsEditMenuOpen}
+                      setSelectedCard={setSelectedCard}
+                      setIsSubCategoryOpen={setIsSubCategoryOpen}
+                      setIsAddMenuOpen={setIsAddMenuOpen}
+                      editSubcategoryModal={setEditSubCategoryModal}
+                      items={searchMenuItems}
+                    />
                   )}
                 </div>
               </div>
 
               {/* bottom */}
               <div>
+                {/* If no category present */}
+                {categories.length === 0 && (
+                  <div className="w-full h-fit sm:p-9 px-1 py-4 flex flex-col sm:gap-10 gap-7 sm:mb-0 mb-5 font-inter">
+                    <div className="flex items-center gap-6 ">
+                      <img className=" size-20" src={FoodMenu} alt="" />
+                      <p className="sm:text-[1.7rem] text-[1.5rem] text-[#4B4B4B] font-semibold">
+                        Create Menu in 2 easy steps
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-10 sm:ml-3 ml-4 ">
+                      <img className="size-12" src={Category} alt="" />
+                      <div>
+                        <p className="sm:text-[1.2rem] text-[1.1rem] font-[500]">
+                          Add Main Category + Under-Category
+                        </p>
+                        <p className="text-[.9rem]">
+                          Helps to structure your menu for customers
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-10 sm:ml-3 ml-4 ">
+                      <img className="size-12" src={Burger} alt="" />
+                      <div>
+                        <p className="sm:text-[1.2rem] text-[1.1rem] font-[500]">
+                          Add items and their details
+                        </p>
+                        <p className="text-[.9rem]">
+                          The right price and description helps in increasing
+                          orders
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setCategoryModal(true)}
+                      className="bg-[#004AAD] sm:w-[20%] px-5 py-3 rounded-md border text-[1.1rem] font-semibold  border-[#000000B2] text-white"
+                    >
+                      Start Creating !
+                    </button>
+                  </div>
+                )}
+
+                {/* Main category buttons */}
                 <div className="flex flex-row flex-wrap items-center gap-4 px-8 py-5">
                   {categories.map((item) => (
                     <button
@@ -270,12 +342,18 @@ const Menu = () => {
                         item._id === selectedCategoryId
                           ? "bg-white text-[#004AAD]"
                           : "bg-[#004AAD] text-white"
-                      } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap`}
-                      onClick={() => {
-                        setSelectedCategoryId(item._id);
-                      }}
+                      } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap relative`}
+                      onClick={() => setSelectedCategoryId(item._id)}
+                      onMouseEnter={() => setHoveredCategoryId(item._id)}
+                      onMouseLeave={() => setHoveredCategoryId("")}
                     >
                       {item?.name}
+                      {hoveredCategoryId === item._id && (
+                        <MdDelete
+                          className="bg-white outline-1 outline-white rounded-md absolute text-[1.7rem] -top-3 -right-3 text-red-500"
+                          onClick={() => {}}
+                        />
+                      )}
                     </button>
                   ))}
                   <FiPlus
@@ -283,7 +361,22 @@ const Menu = () => {
                     onClick={() => setCategoryModal(true)}
                   />
                 </div>
-                {/* {subcategories?.map((subcategory) => ( */}
+
+                {/* If no subcategory present */}
+                {filteredCategory[0]?.subcategory.length === 0 && (
+                  <div className="w-full flex flex-col items-center gap-10 font-inter">
+                    <img src={Bussiness} className="w-[15%] h-auto" />
+                    <div className="flex flex-col gap-2 items-center">
+                      <h1 className="text-[1.5rem] text-[#4B4B4B] font-semibold">
+                        Main Category successfully created
+                      </h1>
+                      <p className="text-[1.3rem] text-[#AAA5A5] font-semibold">
+                        Now Add sub category & Menu items
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <SubCategoryDropdown
                   setIsAddMenuOpen={setIsAddMenuOpen}
                   setIsEditMenuOpen={setIsEditMenuOpen}
@@ -293,7 +386,6 @@ const Menu = () => {
                   subcategoryToEdit={setSubCategoryToEdit}
                   editSubcategoryModal={setEditSubCategoryModal}
                 />
-                {/* ))} */}
               </div>
             </div>
 

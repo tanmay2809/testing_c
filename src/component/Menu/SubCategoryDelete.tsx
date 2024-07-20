@@ -4,6 +4,7 @@ import { MenuItem } from "./AddMenuItem";
 import { baseUrl } from "../../main";
 import { useState } from "react";
 import { SubcategoryItem } from "../../pages/Menu";
+import { toast } from "react-toastify";
 
 interface DeleteProps {
   setModal: (isOpen: boolean) => void;
@@ -41,6 +42,7 @@ const SubCategoryDeleteModal: React.FC<DeleteProps> = ({
         console.log(JSON.stringify(response.data));
         setLoading(false);
         setModal(false);
+        toast.success("Subcategory Deleted");
       })
       .catch((error) => {
         console.log(error);
