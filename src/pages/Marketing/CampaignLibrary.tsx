@@ -10,17 +10,27 @@ import { slidesData } from "../../constants/index";
 //lottie
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
-//scrolling
-import { Link, Element } from "react-scroll";
-
 const CampaignLibrary: React.FC = () => {
-  const buttons: { name: string; target: string }[] = [
-    { name: "All", target: "all" },
-    { name: "Utility", target: "utility" },
-    { name: "Birthdays", target: "birthdays" },
-    { name: "Anniversary", target: "anniversaries" },
-    { name: "Events", target: "events" },
+  const buttons: { name: string }[] = [
+    { name: "All" },
+    { name: "Utility" },
+    { name: "Birthdays" },
+    { name: "Anniversaries" },
+    { name: "Events" },
   ];
+
+  const scrollToElement = (id: string) => {
+    const element = document.getElementById(id);
+    const additionalOffset = 80;
+    if (element) {
+      const elementPosition =
+        element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - additionalOffset;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+    } else {
+      console.warn(`Element with ID "${id}" not found.`);
+    }
+  };
 
   return (
     <div className="w-full h-fit relative">
@@ -47,25 +57,23 @@ const CampaignLibrary: React.FC = () => {
           {/* Buttons div */}
           <div className="mt-6 flex items-center gap-3">
             {buttons.map((button, index) => (
-              <Link
+              <button
+                onClick={() => scrollToElement(button.name)}
                 key={index}
-                to={button.target}
-                smooth={true}
-                duration={500}
-                className="w-[100px] text-center px-1 py-1 bg-[#F1F7FF] text-[#004AAD] rounded-md border border-gray-200 shadow-md shadow-slate-300 cursor-pointer"
+                className=" w-28 text-center px-1 py-1 bg-[#F1F7FF] text-[#004AAD] rounded-md border border-gray-200 shadow-md shadow-slate-300 cursor-pointer"
               >
                 {button.name}
-              </Link>
+              </button>
             ))}
           </div>
         </div>
 
         {/* All swiper div */}
         {Object.entries(slidesData).map(([key, value]) => (
-          <Element key={key} name={key} className="mt-6">
+          <div key={key} id={value.title} className="mt-6">
             <h2 className="text-2xl font-bold mb-4">{value.title}</h2>
             <SliderComponent slides={value.slides} />
-          </Element>
+          </div>
         ))}
 
         {/* Feedback div */}
