@@ -28,6 +28,7 @@ const WhatsAppSettings: React.FC = () => {
                 <label className="inline-flex items-center mr-6">
                   <input
                     type="checkbox"
+                    checked={!customChecked}
                     className="form-checkbox text-[#004AAD]"
                   />
                   <span className="ml-2">SnackBAE</span>
