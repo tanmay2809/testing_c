@@ -17,6 +17,10 @@ import { MenuItem } from "./AddMenuItem";
 import ItemCard from "./ItemCard";
 import SubCategoryDeleteModal from "./SubCategoryDelete";
 import { Category } from "./AddCategory";
+import Switch from "./switch";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 interface Props {
   category:
@@ -49,6 +53,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
     useState<SubcategoryItem>();
   const [categoryID, setCategoryID] = useState<string>("");
   const [categories, setCategories] = useState<Category>();
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>("");
 
   // toggle function to differentiate in dropwdowns
   const handleToggle = (id: string) => {
@@ -86,6 +91,32 @@ const SubCategoryDropdown: React.FC<Props> = ({
       const active = showActive ? item.active : !item.active || true;
       return types && active;
     });
+  };
+
+  const handleSubcategoryToggle = (id: string) => {
+    let data = JSON.stringify({
+      subcategory: id,
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/togglesubcategory`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        toast.success("Subcategory toggle");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -222,6 +253,10 @@ const SubCategoryDropdown: React.FC<Props> = ({
                   </p>
                 </div>
                 <div className="w-fit flex flex-row items-center text-[1.5rem] gap-4 text-[#004AAD]">
+                  <Switch
+                    isActive={subcategory.active}
+                    onclick={() => handleSubcategoryToggle(subcategory._id)}
+                  />
                   <IoTrashOutline
                     onClick={() => {
                       setCategoryID(cat._id);

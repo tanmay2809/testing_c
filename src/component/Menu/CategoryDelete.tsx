@@ -7,19 +7,23 @@ import { toast } from "react-toastify";
 
 interface DeleteProps {
   setModal: (isOpen: boolean) => void;
-  setSelectedCard: MenuItem | undefined;
+  categoryID: string | null;
+  restaurantID: string | null;
 }
 
-const DeleteModal: React.FC<DeleteProps> = ({ setModal, setSelectedCard }) => {
+const CategoryDelete: React.FC<DeleteProps> = ({
+  setModal,
+  categoryID,
+  restaurantID,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
-  console.log(setSelectedCard);
 
   const handleDelete = () => {
     setLoading(true);
     let config = {
       method: "delete",
       maxBodyLength: Infinity,
-      url: `${baseUrl}/api/deleteMenuItem/${setSelectedCard?._id}/${setSelectedCard?.subcategory}`,
+      url: `${baseUrl}/api/deletecategory/${restaurantID}/${categoryID}`,
       headers: {},
     };
 
@@ -27,10 +31,8 @@ const DeleteModal: React.FC<DeleteProps> = ({ setModal, setSelectedCard }) => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        setLoading(false);
-        setModal(false);
         window.location.reload();
-        toast.success("Item Deleted");
+        toast.success("Category Deleted");
       })
       .catch((error) => {
         console.log(error);
@@ -78,4 +80,4 @@ const DeleteModal: React.FC<DeleteProps> = ({ setModal, setSelectedCard }) => {
   );
 };
 
-export default DeleteModal;
+export default CategoryDelete;

@@ -27,6 +27,7 @@ import FoodMenu from "../assets/Food Menu.png";
 import Burger from "../assets/Burger.png";
 import Category from "../assets/category.png";
 import Bussiness from "../assets/Business Task list.png";
+import CategoryDelete from "../component/Menu/CategoryDelete";
 
 export interface SubcategoryItem {
   _id: string;
@@ -64,6 +65,8 @@ const Menu = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
     categories[0]?._id
   );
+
+  const [categoryDelete, setCategoryDelete] = useState<boolean>(false);
 
   const getSubcategories = () => {
     let config = {
@@ -118,22 +121,7 @@ const Menu = () => {
       console.log(error);
     }
   };
-  // // handle search
-  // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   // console.log(search);
-  //   const inputValue = e.target.value;
-  //   setSearch(inputValue);
-  //   if (!inputValue) {
-  //     // If input value is empty or length is less than or equal to 1, clear search menu items
-  //     //setSearchMenuItems([]);
-  //     return;
-  //   }
 
-  //   setSearch(inputValue);
-  //   //searchMenu();
-  // };
-
-  // fetch categories
   const { data, loading, error } = useSelector(
     (state: RootState) => state.resturantdata
   );
@@ -215,7 +203,7 @@ const Menu = () => {
           >
             {/* top */}
             <div className="w-full h-fit flex flex-col px-10 py-5  border-b  ">
-              <div className="w-full h-fit flex flex-col px-10 py-5  border-b  ">
+              <div className="w-full h-fit flex flex-col py-5  border-b  ">
                 <div className="w-full h-fit flex  items-center justify-between">
                   <div className="w-[50%]">
                     <p className="text-[1.7rem] font-bold text-[#000000]">
@@ -338,7 +326,7 @@ const Menu = () => {
                 )}
 
                 {/* Main category buttons */}
-                <div className="flex flex-row flex-wrap items-center gap-4 px-8 py-5">
+                <div className="flex flex-row flex-wrap items-center gap-4 py-5">
                   {categories.map((item) => (
                     <button
                       key={item._id}
@@ -348,14 +336,14 @@ const Menu = () => {
                           : "bg-[#004AAD] text-white"
                       } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap relative`}
                       onClick={() => setSelectedCategoryId(item._id)}
-                      onMouseEnter={() => setHoveredCategoryId(item._id)}
-                      onMouseLeave={() => setHoveredCategoryId("")}
+                      // onMouseEnter={() => setHoveredCategoryId(item._id)}
+                      // onMouseLeave={() => setHoveredCategoryId("")}
                     >
                       {item?.name}
-                      {hoveredCategoryId === item._id && (
+                      {selectedCategoryId === item._id && (
                         <MdDelete
                           className="bg-white outline-1 outline-white rounded-md absolute text-[1.7rem] -top-3 -right-3 text-red-500"
-                          onClick={() => {}}
+                          onClick={() => setCategoryDelete(true)}
                         />
                       )}
                     </button>
@@ -468,6 +456,15 @@ const Menu = () => {
 
         {/* category modal */}
         {categoryModal && <AddCategory isCategoryOpen={setCategoryModal} />}
+
+        {/* category delete modal */}
+        {categoryDelete && (
+          <CategoryDelete
+            setModal={setCategoryDelete}
+            categoryID={selectedCategoryId}
+            restaurantID="668857dc758bf97a4d1406ab"
+          />
+        )}
       </div>
     </div>
   );

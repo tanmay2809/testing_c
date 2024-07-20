@@ -51,6 +51,7 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
         console.log(JSON.stringify(response.data));
         setLoading(false);
         isCategoryOpen(false);
+        window.location.reload();
         toast.success("Category Added");
       })
       .catch((error) => {

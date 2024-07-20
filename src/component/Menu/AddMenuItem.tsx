@@ -10,6 +10,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { MdOutlineTaskAlt } from "react-icons/md";
+import { toast } from "react-toastify";
 
 export interface MenuItem {
   _id?: string;
@@ -53,8 +54,8 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
   });
 
   const [addonDetails, setAddonDetails] = useState<
-    { name: string; additionalPrice: string }[]
-  >([{ name: "", additionalPrice: "" }]);
+    { name: string; additionalPrice: string; id: string }[]
+  >([{ name: "", additionalPrice: "", id: "" }]);
 
   const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
 
@@ -67,19 +68,23 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
     }));
   };
 
+  // addone functions
+  const removeAddOn = (index: number) => {
+    const addOnId = addonDetails[index].id;
+    if (addOnId) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        addone: prevFormData.addone.filter((id) => id !== addOnId),
+      }));
+    }
+    setAddonDetails((prevDetails) => prevDetails.filter((_, i) => i !== index));
+  };
+
   const addAddOn = () => {
     setAddonDetails((prevDetails) => [
       ...prevDetails,
-      { name: "", additionalPrice: "" },
+      { name: "", additionalPrice: "", id: "" },
     ]);
-  };
-
-  const removeAddOn = (index: number) => {
-    setAddonDetails((prevDetails) => prevDetails.filter((_, i) => i !== index));
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      addone: prevFormData.addone.filter((_, i) => i !== index),
-    }));
   };
 
   const handleChange = (
@@ -144,12 +149,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const formattedFormData = {
-      ...formData,
-      image: formData.image.map((url) => ({ url })),
-    };
-
-    console.log(formattedFormData);
+    console.log(formData);
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -157,7 +157,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
       headers: {
         "Content-Type": "application/json",
       },
-      data: formattedFormData,
+      data: formData,
     };
 
     axios
@@ -165,6 +165,8 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
       .then((response) => {
         console.log(JSON.stringify(response.data));
         setIsAddMenuOpen(false);
+        window.location.reload();
+        toast.success("Menu Item Added");
       })
       .catch((error) => {
         console.log(error);
@@ -200,7 +202,9 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
           addone: [...prevFormData.addone, newAddOnId],
         }));
         setAddonDetails((prevDetails) =>
-          prevDetails.filter((_, i) => i !== index)
+          prevDetails.map((addon, i) =>
+            i === index ? { ...addon, id: newAddOnId } : addon
+          )
         );
         setShowAddNewButton(true);
       }
@@ -423,10 +427,12 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                     onClick={() => handleAddone(index)}
                     className="text-[#004AAD] bg-white text-[2.5rem] hover:cursor-pointer hover:bg-[#004AAD] hover:text-white transition-all mb-2 rounded-full w-fit h-fit"
                   />
-                  <MdOutlineDeleteOutline
-                    onClick={() => removeAddOn(index)}
-                    className="text-red-500 text-[2.5rem] mb-1 hover:cursor-pointer"
-                  />
+                  {addon.id && (
+                    <MdOutlineDeleteOutline
+                      onClick={() => removeAddOn(index)}
+                      className="text-red-500 text-[2.5rem] mb-1 hover:cursor-pointer"
+                    />
+                  )}
                 </div>
               ))}
               {showAddNewButton && (
@@ -438,7 +444,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                   Add New
                 </p>
               )}
-            </div>
+            </div>{" "}
           </div>
 
           {/* item description */}
@@ -450,7 +456,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
               Item Description
             </label>
             <textarea
-              rows={3}
+              rows={4}
               id="description"
               name="description"
               value={formData.description}
