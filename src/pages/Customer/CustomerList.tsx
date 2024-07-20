@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import axios from "axios";
 
 //icons
 import { FaFilter, FaSearch } from "react-icons/fa";
 import { TbArrowsSort } from "react-icons/tb";
-import { IoCloseOutline } from "react-icons/io5";
+import { IoCloseOutline, IoEllipseSharp } from "react-icons/io5";
 
 //other components
 import CustomerDetail from "../../component/Customer/CustomerDetail";
@@ -11,9 +14,19 @@ import SegmentationPopup from "../../component/Customer/SegmentationPopup";
 import CustomerFilter from "../../component/Customer/CustomerFilter";
 
 //data
-import { Customer, customers, segmentationColors } from "../../constants/index";
+import { Customer, segmentationColors } from "../../constants/index";
+import { baseUrl } from "../../main";
 
 const CustomerList: React.FC = () => {
+
+  const { data } = useSelector(
+    (state: RootState) => state.resturantdata
+  );
+
+  console.log("resData: ", data);
+  const [resData, setResData] = useState<any>(data);
+  const [customerData, setCustomerData] = useState<any>(data?.customerData);
+  console.log(customerData);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
@@ -27,12 +40,13 @@ const CustomerList: React.FC = () => {
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const [filterData, setFilterData] = useState<string[]>([]);
   const [sort, setSort] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   //calculate the indices of first and last customer
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = customers.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(customers.length / itemsPerPage);
+  // const indexOfLastItem = currentPage * itemsPerPage; 
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = customers.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(resData?.length / itemsPerPage);
 
   // Helper function to create pagination buttons
   const getPaginationButtons = () => {
@@ -43,9 +57,8 @@ const CustomerList: React.FC = () => {
     buttons.push(
       <button
         key={1}
-        className={`mx-1 px-3 py-2 border ${
-          currentPage === 1 ? "bg-[#004AAD] text-white" : "bg-white"
-        }`}
+        className={`mx-1 px-3 py-2 border ${currentPage === 1 ? "bg-[#004AAD] text-white" : "bg-white"
+          }`}
         onClick={(event) => handleClick(event, 1)}
       >
         1
@@ -71,9 +84,8 @@ const CustomerList: React.FC = () => {
         buttons.push(
           <button
             key={i}
-            className={`mx-1 px-3 py-2 border ${
-              currentPage === i ? "bg-[#004AAD] text-white" : "bg-white"
-            }`}
+            className={`mx-1 px-3 py-2 border ${currentPage === i ? "bg-[#004AAD] text-white" : "bg-white"
+              }`}
             onClick={(event) => handleClick(event, i)}
           >
             {i}
@@ -96,9 +108,8 @@ const CustomerList: React.FC = () => {
       buttons.push(
         <button
           key={totalPages}
-          className={`mx-1 px-3 py-2 border ${
-            currentPage === totalPages ? "bg-[#004AAD] text-white" : "bg-white"
-          }`}
+          className={`mx-1 px-3 py-2 border ${currentPage === totalPages ? "bg-[#004AAD] text-white" : "bg-white"
+            }`}
           onClick={(event) => handleClick(event, totalPages)}
         >
           {totalPages}
@@ -130,6 +141,7 @@ const CustomerList: React.FC = () => {
 
   //filter
   const toggleFilter = () => {
+    // setCustomerData(data?.customerData);
     setIsFilterVisible(!isFilterVisible);
   };
   const filterElementsAdd = (data: string[]) => {
@@ -145,10 +157,114 @@ const CustomerList: React.FC = () => {
     setSort(false);
     console.log(criteria);
     //the sorting logic goes here
+    const sortedData = [...customerData];
+
+    switch (criteria) {
+      case "visit-high":
+        sortedData.sort((a, b) => b?.visits?.length - a?.visits?.length);
+        break;
+
+      case "visit-low":
+        sortedData.sort((a, b) => a?.visits?.length - b?.visits?.length);
+        break;
+
+      case "latest-visit":
+        sortedData.sort((a, b) => {
+          const latestVisitA = new Date(a?.visits[a?.visits?.length - 1]);
+          const latestVisitB = new Date(b?.visits[b?.visits?.length - 1]);
+          return latestVisitB.getTime() - latestVisitA.getTime();
+        });
+        break;
+
+      default:
+        break;
+    }
+    setCustomerData(sortedData);
+  };
+
+  const getLastVisitDisplay = (visits: string[]): string => {
+    if (visits.length === 0) return "No visits";
+
+    const lastVisit = new Date(visits[visits.length - 1]);
+    const now = new Date();
+
+    const lastVisitDate = lastVisit.getDate();
+    const lastVisitMonth = lastVisit.getMonth();
+    const lastVisitYear = lastVisit.getFullYear();
+
+    const currentDate = now.getDate();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    if (lastVisitDate === currentDate && lastVisitMonth === currentMonth && lastVisitYear === currentYear) {
+      return "Today";
+    }
+
+    const yesterday = new Date();
+    yesterday.setDate(currentDate - 1);
+    if (lastVisitDate === yesterday.getDate() && lastVisitMonth === yesterday.getMonth() && lastVisitYear === yesterday.getFullYear()) {
+      return "1 day ago";
+    }
+
+    if (lastVisitMonth === yesterday.getMonth() && lastVisitYear === yesterday.getFullYear() && currentDate - lastVisitDate <= 7) {
+      const diff = currentDate - lastVisitDate;
+      return `${diff} days ago`;
+    }
+
+    return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
+  };
+
+  const getCustomerSegment = (visits: string[]): string => {
+    const now = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(now.getDate() - 30);
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(now.getDate() - 60);
+
+    const visitsWithin30Days = visits?.filter(visit => new Date(visit) >= thirtyDaysAgo);
+    const visitsWithin60Days = visits?.filter(visit => new Date(visit) >= sixtyDaysAgo);
+
+    if (visitsWithin30Days?.length === 1) {
+      return "New";
+    } else if (visitsWithin30Days?.length >= 3) {
+      return "Regular";
+    } else if (visitsWithin60Days?.length > 5) {
+      return "Loyal";
+    } else {
+      return "Risk";
+    }
+  };
+
+  const searchUser = (searchTerm: string): void => {
+    console.log(searchTerm);
+    setSearchValue(searchTerm);
+    console.log(searchValue, " ", resData._id);
+    if (searchTerm == "") {
+      setCustomerData(data?.customerData);
+    }
+    else {
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${baseUrl}/api/searchUser/${data._id}/${searchTerm}`,
+        headers: {}
+      };
+
+      axios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          setCustomerData(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    }
+
   };
 
   console.log(segmentationVisible);
-  return (
+  return ( 
     <div className="w-full h-fit relative ">
       <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] ">
         {/*Top div */}
@@ -157,6 +273,7 @@ const CustomerList: React.FC = () => {
             <FaSearch className="relative left-7 text-gray-400" />
             <input
               type="search"
+              onChange={(e) => searchUser(e.target.value)}
               placeholder="Search by customer name, phone number"
               className="w-full h-[50px] bg-gray-100 pl-10 pr-3 py-2 rounded-md "
             />
@@ -258,7 +375,7 @@ const CustomerList: React.FC = () => {
         <div className="mb-4">
           <span className="text-base">
             Total Customer Database:{" "}
-            <strong className="text-[#004AAD]">100 Record</strong>
+            <strong className="text-[#004AAD]">{data?.customerData?.length} Record</strong>
           </span>
         </div>
 
@@ -297,12 +414,12 @@ const CustomerList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((customer, index) => (
+              {customerData?.map((customer: any, index: any) => (
                 <tr key={index} className="border-t text-base text-center">
-                  <td className="py-3 px-6">{customer.name}</td>
-                  <td className="py-3 px-6">{customer.phone} </td>
-                  <td className="py-3 px-6">{customer.visits}</td>
-                  <td className="py-3 px-6">{customer.lastVisit}</td>
+                  <td className="py-3 px-6">{customer?.userId?.name}</td>
+                  <td className="py-3 px-6">+91 {customer?.userId?.phone} </td>
+                  <td className="py-3 px-6">{customer?.visits?.length}</td>
+                  <td className="py-3 px-6">{getLastVisitDisplay(customer?.visits)}</td>
 
                   {/*Segmentation logic */}
                   <td className="py-3 px-6 ">
@@ -316,7 +433,7 @@ const CustomerList: React.FC = () => {
                           <SegmentationPopup
                             setVisibility={setSegmentationVisible}
                             hoveredSegmentation={setHoveredSegmentation}
-                            segmentation={customer.segmentation}
+                            segmentation={getCustomerSegment(customer?.visits || [])}
                             segIndex={index}
                           />
                         </div>
@@ -324,9 +441,8 @@ const CustomerList: React.FC = () => {
                     )}
                     {/*segmentation column content */}
                     <span
-                      className={` relative py-1 px-2 rounded-lg text-sm   ${
-                        segmentationColors[customer.segmentation]
-                      } ${hoveredSegmentation === index && "z-[90]"}`}
+                      className={` relative py-1 px-2 rounded-lg text-sm   ${segmentationColors[getCustomerSegment(customer?.visits)]
+                        } ${hoveredSegmentation === index && "z-[90]"}`}
                       onMouseEnter={() => {
                         setHoveredSegmentation(index);
                       }}
@@ -334,7 +450,7 @@ const CustomerList: React.FC = () => {
                         setHoveredSegmentation(null);
                       }}
                     >
-                      {customer.segmentation}
+                      {getCustomerSegment(customer.visits)}
                     </span>
                   </td>
 
@@ -416,15 +532,20 @@ const CustomerList: React.FC = () => {
       <CustomerDetail
         customer={selectedCustomer}
         isVisible={!!selectedCustomer}
+        segmentation={getCustomerSegment(selectedCustomer?.visits)}
         onClose={closeModal}
       />
       <CustomerFilter
         isVisible={isFilterVisible}
         onClose={toggleFilter}
         filterData={filterElementsAdd}
+        customerData={customerData}
+        setCustomerData={setCustomerData}
+        originalData = {resData?.customerData}
       />
     </div>
   );
 };
 
 export default CustomerList;
+
