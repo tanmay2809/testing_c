@@ -154,9 +154,10 @@ const Billing = () => {
               className={`bg-white w-[31.25rem] shadow-lg rounded-lg overflow-y-auto ${
                 isClosing ? "slide-out-right" : "slide-in-right"
               }`}
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              <div className="w-full relative px-6 py-4 bg-white rounded-lg shadow h-full">
-                <div className="flex flex-row justify-between">
+              <div className="w-full relative px-6 py-4 bg-white rounded-lg shadow h-fit">
+                <div className=" sticky bg-white top-0 flex flex-row justify-between py-3 border-b border-b-gray-400">
                   <div className="flex flex-col">
                     <h1 className="text-[1.5rem] font-bold">
                       Edit Billing Details
@@ -274,6 +275,36 @@ const Billing = () => {
                           <option value="1">State 1</option>
                           <option value="2">State 2</option>
                         </select>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="flex flex-row items-center text-[0.875rem] font-[500]">
+                          City
+                          <LuAsterisk className="text-sm text-[#C62828]" />
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
+                          placeholder="Enter City"
+                          name="city"
+                          value={formData.companyName}
+                          onChange={changeHandler}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="flex flex-row items-center text-[0.875rem] font-[500]">
+                          Pin-code
+                          <LuAsterisk className="text-sm text-[#C62828]" />
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
+                          placeholder="Enter pincode"
+                          name="pincode"
+                          value={formData.companyName}
+                          onChange={changeHandler}
+                        />
                       </div>
                     </div>
                     <div className="flex flex-row gap-5 mt-3">
