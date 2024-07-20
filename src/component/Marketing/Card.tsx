@@ -19,6 +19,7 @@ import whatsapp from "../../assets/whatsapp.png";
 import { FaBell } from "react-icons/fa6";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { IoEyeOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Card: React.FC<CardProps> = ({
   imageUrl,
@@ -34,18 +35,22 @@ const Card: React.FC<CardProps> = ({
   status,
 }) => {
   const [toggle, setToggle] = useState(false);
+  const navigate=useNavigate();
 
+  const sendToCampaign=()=>{
+    navigate(`/campaign/${type}`)
+  }
   const handleToggle = () => {
     setToggle(!toggle);
   };
   return (
-    <div className="relative h-fit lg:mt-3 md:mt-6 mt-6 font-inter">
+    <div className="relative h-fit lg:mt-3 md:mt-6 mt-6 font-inter cursor-pointer" >
       <div className="w-full lg:h-[8.5rem] relative bg-[#FFCF27] py-3 lg:pl-[18rem]  md:h-[10rem] pl-[13rem] -mt-2 rounded-tl-xl rounded-tr-xl flex justify-between">
         <div className=" h-full flex flex-col justify-center min-w-52">
           <h1 className="text-xl font-semibold">
-            Reach out to your customers like never before
+            {message}
           </h1>
-          <p className="mt-2 text-base">Created on 01-08-22</p>
+          <p className="mt-2 text-base">Created on {createdDate}</p>
         </div>
         <div className="lg:flex lg:items-center gap-2 p-4 justify-center">
           <button className="flex items-center space-x-1 text-[#E61856] bg-white p-2 rounded-lg">
@@ -53,7 +58,7 @@ const Card: React.FC<CardProps> = ({
             <span>Delete</span>
           </button>
 
-          <button className="flex items-center space-x-1 text-[#004AAD] bg-white p-2 rounded-lg">
+          <button className="flex items-center space-x-1 text-[#004AAD] bg-white p-2 rounded-lg" onClick={sendToCampaign}>
             <IoEyeOutline />
             <span>Preview</span>
           </button>
@@ -91,7 +96,7 @@ const Card: React.FC<CardProps> = ({
           />
           <div className="absolute top-0 left-0 px-6 py-3 w-full">
             <p className="text-white font-medium text-xl">
-              Happy birthday to you! Free dessert on us
+              {message}
             </p>
           </div>
           <div className="flex gap-2 absolute bottom-0 left-0 px-6 py-3">
@@ -107,19 +112,19 @@ const Card: React.FC<CardProps> = ({
           <div className=" p-4 flex justify-evenly w-full border-b border-dashed border-black text-[#505050]">
             <div className="flex flex-col justify-around h-[5rem] border-r border-[#505050] lg:pr-10 md:pr-6 pr-3">
               <p className="text-lg font-semibold">Delivered</p>
-              <p className="text-2xl font-semibold">0</p>
+              <p className="text-2xl font-semibold">{delivered}</p>
             </div>
             <div className="flex flex-col justify-around h-[5rem]  border-r border-[#505050] lg:pr-10 md:pr-6 pr-3">
-              <p className="text-lg font-semibold">Delivered</p>
-              <p className="text-2xl font-semibold">0</p>
+              <p className="text-lg font-semibold">Visits</p>
+              <p className="text-2xl font-semibold">{visits}</p>
             </div>
             <div className="flex flex-col justify-around h-[5rem]  border-r border-[#505050] lg:pr-10 md:pr-6 pr-3">
-              <p className="text-lg font-semibold">Delivered</p>
-              <p className="text-2xl font-semibold">0</p>
+              <p className="text-lg font-semibold">Visit Rate</p>
+              <p className="text-2xl font-semibold">{visitsRate} %</p>
             </div>
             <div className="flex flex-col justify-around h-[5rem] pr-10 md:pr-6">
-              <p className="text-lg font-semibold">Delivered</p>
-              <p className="text-2xl font-semibold">0</p>
+              <p className="text-lg font-semibold">Weekly Cost</p>
+              <p className="text-2xl font-semibold">{weeklyCost}</p>
             </div>
           </div>
           <div className="h-1/2 w-full text-[#505050]">
@@ -127,19 +132,19 @@ const Card: React.FC<CardProps> = ({
               <div className="flex justify-between gap-2 w-full pl-10 pr-4 pt-4 text-lg ">
                 <p className="font-semibold">
                   Schedule:{" "}
-                  <span className="font-medium text-base">On Birthdays</span>
+                  <span className="font-medium text-base">{schedule}</span>
                 </p>
                 <div className="flex gap-4">
                   <p className="font-semibold">
                     Type:{" "}
                     <span className="font-medium text-base text-[#004AAD]">
-                      Marketing
+                      {type}
                     </span>
                   </p>
                   <p className="font-semibold ">
                     Status:{" "}
                     <span className="font-medium text-base text-[#EA052E]">
-                      Under review
+                      {status}
                     </span>
                   </p>
                 </div>
@@ -148,7 +153,7 @@ const Card: React.FC<CardProps> = ({
             <div className="w-full p-4 text-lg pt-2 pl-10 pr-4">
               <p className="font-semibold">
                 Target customer:{" "}
-                <span className="font-medium text-base">All Customers</span>
+                <span className="font-medium text-base">{targetCustomer}</span>
               </p>
             </div>
           </div>

@@ -23,6 +23,8 @@ import CampaignLibrary from "./pages/Marketing/CampaignLibrary";
 import Table from "./pages/Dashboard/Table";
 import ManageCampaigns from "./pages/Marketing/ManageCampaigns";
 import WhatsAppSettings from "./pages/Marketing/WhatsAppSettings";
+import Campaigns from "./pages/Marketing/Campaigns";
+import CreateCampaigns from "./pages/Marketing/CreateCampaign";
 
 const App: React.FC = () => {
   console.log("App Component Rendered");
@@ -44,14 +46,14 @@ const App: React.FC = () => {
           <Route path="/menu" element={<Menu />} />
           <Route path="/marketing" element={<Marketing />}>
             <Route index element={<CampaignLibrary />} />
-            <Route path="library" element={<CampaignLibrary />} />
             <Route path="manage" element={<ManageCampaigns />} />
             <Route path="whatsappsetting" element={<WhatsAppSettings />} />
           </Route>
+          <Route path="/campaign/:type" element={<Campaigns />} />
+          <Route path="/createcampaign" element={<CreateCampaigns />} />
 
           <Route path="/customer" element={<Customer />}>
             <Route index element={<Overview />} />
-            <Route path="overview" element={<Overview />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="customerList" element={<CustomerList />} />
           </Route>

@@ -550,6 +550,7 @@ export const monthlyVisit = {
 export interface Slide {
   image: string;
   title: string;
+  type: string;
 }
 
 export interface SlideCategory {
@@ -564,35 +565,43 @@ export const slidesData: Record<string, SlideCategory> = {
       {
         image: "../../assets/image 168.png",
         title: "Welcome Greetings when they visit your business",
+        type: "Utility",
       },
       {
         image: "image 168",
         title: "Happy birthday to you! FREE starter on us",
+        type: "Marketing",
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Happy birthday to you! Enjoy Flat 10% OFF",
+        type: "Utility",
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Welcome Greetings when they visit your business",
+        type: "Marketing",
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Happy birthday! Enjoy a complimentary dessert on the house.",
+        type: "Utility",
       },
       {
         image: "https://via.placeholder.com/300x200",
         title:
           "Happy Birthday! Treat yourself with a flat 25% discount from us.",
+        type: "Utility",
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Feedback Campaign for Zomato reviews",
+        type: "Utility",
       },
       {
         image: "image 166.png",
-        title: "      Feedback Campaign for Google reviews",
+        title: "Feedback Campaign for Google reviews",
+        type: "Marketing",
       },
       // Add more slides
     ],
@@ -603,10 +612,12 @@ export const slidesData: Record<string, SlideCategory> = {
       {
         image: "https://via.placeholder.com/300x200",
         title: "Popular Campaign 1",
+        type: "Marketing",
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Popular Campaign 2",
+        type: "Marketing",
       },
       // Add more slides
     ],
@@ -614,32 +625,64 @@ export const slidesData: Record<string, SlideCategory> = {
   utility: {
     title: "Utility",
     slides: [
-      { image: "https://via.placeholder.com/300x200", title: "Utility 1" },
-      { image: "https://via.placeholder.com/300x200", title: "Utility 2" },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Utility 1",
+        type: "Utility",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Utility 2",
+        type: "Utility",
+      },
       // Add more slides
     ],
   },
   birthdays: {
     title: "Birthdays",
     slides: [
-      { image: "https://via.placeholder.com/300x200", title: "Birthday 1" },
-      { image: "https://via.placeholder.com/300x200", title: "Birthday 2" },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Birthday 1",
+        type: "Utility",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Birthday 2",
+        type: "Utility",
+      },
       // Add more slides
     ],
   },
   anniversaries: {
     title: "Anniversaries",
     slides: [
-      { image: "https://via.placeholder.com/300x200", title: "Anniversary 1" },
-      { image: "https://via.placeholder.com/300x200", title: "Anniversary 2" },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Anniversary 1",
+        type: "Utility",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Anniversary 2",
+        type: "Utility",
+      },
       // Add more slides
     ],
   },
   events: {
     title: "Events",
     slides: [
-      { image: "https://via.placeholder.com/300x200", title: "Event 1" },
-      { image: "https://via.placeholder.com/300x200", title: "Event 2" },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Event 1",
+        type: "Utility",
+      },
+      {
+        image: "https://via.placeholder.com/300x200",
+        title: "Event 2",
+        type: "Utility",
+      },
       // Add more slides
     ],
   },

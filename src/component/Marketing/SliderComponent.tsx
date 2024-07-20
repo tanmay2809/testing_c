@@ -16,12 +16,19 @@ import { Slide } from "../../constants/index";
 //images
 import whatsapp from "../../assets/whatsapp.png";
 import image1 from "../../assets/Group 1171278507.png";
+import { useNavigate } from "react-router-dom";
 
 interface SliderComponentProps {
   slides: Slide[];
 }
 
 const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
+  const navigate = useNavigate();
+
+  const sendToCampaign = (type: string) => {
+    console.log(type)
+    navigate(`/campaign/${type}`);
+  };
   return (
     <div className="mx-auto w-full ">
       <Swiper
@@ -31,7 +38,12 @@ const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
         mousewheel={{ forceToAxis: true }}
       >
         {slides.map((slide, index) => (
-          <SwiperSlide key={index} style={{ width: "16rem", height: "18rem" }}>
+          <SwiperSlide
+            key={index}
+            style={{ width: "16rem", height: "18rem" }}
+            onClick={() => sendToCampaign(slide.type)}
+            className="cursor-pointer"
+          >
             <div className="relative h-full">
               <img
                 src={image1}
