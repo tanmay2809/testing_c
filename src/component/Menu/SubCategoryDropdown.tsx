@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from "react";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "react-beautiful-dnd";
 
 // icons
 import { MdDragIndicator, MdModeEditOutline } from "react-icons/md";
@@ -10,12 +16,6 @@ import { SubcategoryItem } from "../../pages/Menu";
 import { MenuItem } from "./AddMenuItem";
 import ItemCard from "./ItemCard";
 import SubCategoryDeleteModal from "./SubCategoryDelete";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
 import { Category } from "./AddCategory";
 
 interface Props {
@@ -28,6 +28,8 @@ interface Props {
   setIsAddMenuOpen: (isOpen: boolean) => void;
   subcategoryToEdit: (index: SubcategoryItem) => void;
   editSubcategoryModal: (index: boolean) => void;
+  selectedType: string;
+  showActive: boolean;
 }
 
 const SubCategoryDropdown: React.FC<Props> = ({
@@ -38,6 +40,8 @@ const SubCategoryDropdown: React.FC<Props> = ({
   setIsAddMenuOpen,
   subcategoryToEdit,
   editSubcategoryModal,
+  selectedType,
+  showActive,
 }) => {
   const [isOpen, setIsOpen] = useState<{ [key: string]: boolean }>({});
   const [subDeleteModal, setSubDeleteModal] = useState<boolean>(false);
@@ -78,9 +82,11 @@ const SubCategoryDropdown: React.FC<Props> = ({
     }
   }, [category]);
 
+  console.log(showActive);
+
   return (
     <div className="space-y-2">
-      <div>
+      {/* <div>
         {category?.map((cat) => (
           <div>
             <DragDropContext onDragEnd={handleDragEnd}>
@@ -152,7 +158,6 @@ const SubCategoryDropdown: React.FC<Props> = ({
                                     </div>
                                   </div>
 
-                                  {/* Items cards */}
                                   {isOpen[subcategory._id] && (
                                     <div className="flex flex-row flex-wrap px-2 py-4 gap-x-4 gap-y-4">
                                       <ItemCard
@@ -183,7 +188,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
             </DragDropContext>
           </div>
         ))}
-      </div>
+      </div> */}
 
       {category?.map((cat) => (
         <div className="flex flex-col gap-4" key={cat.name}>
@@ -231,7 +236,28 @@ const SubCategoryDropdown: React.FC<Props> = ({
               {isOpen[subcategory._id] && (
                 <div className="flex flex-row flex-wrap px-2 py-4 gap-x-4 gap-y-4">
                   <ItemCard
-                    items={subcategory.menuItems}
+                    items={
+                      (selectedType === "" &&
+                        subcategory.menuItems.filter(
+                          (item) => item.active === showActive
+                        )) ||
+                      (selectedType === "Veg" &&
+                        subcategory.menuItems.filter(
+                          (item) =>
+                            item.type === "veg" && item.active === showActive
+                        )) ||
+                      (selectedType === "Non-Veg" &&
+                        subcategory.menuItems.filter(
+                          (item) =>
+                            item.type === "nonveg" && item.active === showActive
+                        )) ||
+                      (selectedType === "Egg" &&
+                        subcategory.menuItems.filter(
+                          (item) =>
+                            item.type === "egg" && item.active === showActive
+                        ))
+                    }
+                    showActive={showActive}
                     setIsAddMenuOpen={setIsAddMenuOpen}
                     setIsEditMenuOpen={setIsEditMenuOpen}
                     setIsSubCategoryOpen={setIsSubCategoryOpen}

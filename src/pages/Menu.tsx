@@ -56,6 +56,7 @@ const Menu = () => {
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [subcategory1, setSubCategory1] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string>("");
+  const [showActive, setShowActive] = useState<boolean>(true);
 
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
     categories[0]?._id
@@ -264,7 +265,12 @@ const Menu = () => {
                     </div>
                     <div className="flex gap-5">
                       <p>Active items </p>
-                      <Switch onclick={() => {}} isActive={true} />
+                      <Switch
+                        onclick={() => {
+                          setShowActive(!showActive);
+                        }}
+                        isActive={true}
+                      />
                     </div>
                   </div>
                 </div>
@@ -385,6 +391,8 @@ const Menu = () => {
                   category={filteredCategory}
                   subcategoryToEdit={setSubCategoryToEdit}
                   editSubcategoryModal={setEditSubCategoryModal}
+                  selectedType={selectedType}
+                  showActive={showActive}
                 />
               </div>
             </div>
