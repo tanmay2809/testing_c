@@ -5,7 +5,7 @@ import { useState, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
 // icons
-import { FaGoogle, FaInstagram, FaPlus } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
@@ -14,7 +14,7 @@ import { FaYoutube, FaFacebook } from "react-icons/fa";
 // assets
 import image from "../../assets/Ellipse 2862.png";
 import instagram from "../../assets/instagram.svg";
-import zomato from "../../assets/Zomato.svg";
+import zomato from "../../assets/image 159.png";
 import google from "../../assets/Google-Review.png";
 
 interface FormData {
@@ -28,8 +28,11 @@ interface FormData {
   outletPincode: number;
   managerName: string;
   managerContact: string;
-  socialHandles: { name: string; link: string }[];
-  feedbackChannels: { name: string; link: string }[];
+  insta: string;
+  facebook: string;
+  youtube: string;
+  googleReview: string;
+  zomatoReview: string;
 }
 
 const Stores = () => {
@@ -48,8 +51,11 @@ const Stores = () => {
     outletPincode: 9,
     managerName: "",
     managerContact: "",
-    socialHandles: [],
-    feedbackChannels: [],
+    insta: "",
+    facebook: "",
+    youtube: "",
+    googleReview: "",
+    zomatoReview: "",
   });
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -101,8 +107,11 @@ const Stores = () => {
       outletPincode: store.pincode,
       managerName: store.manager,
       managerContact: store.contact,
-      socialHandles: store.socials,
-      feedbackChannels: store.channels,
+      insta: "", //store.insta,
+      facebook: "", //store.facebook,
+      youtube: "", //store.youtube,
+      googleReview: "", //store.googleReview,
+      zomatoReview: "", //store.zomatoReiew,
     });
     toggleModal();
   };
@@ -311,9 +320,10 @@ const Stores = () => {
             className={`bg-white w-[31.25rem] shadow-lg rounded-lg overflow-y-auto h-full ${
               isClosing ? "slide-out-right" : "slide-in-right"
             }`}
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            <div className="w-full relative px-6 py-3 bg-white rounded-lg shadow h-fit">
-              <div className="flex flex-row justify-between">
+            <div className=" w-full relative px-6 py-3 bg-white rounded-lg shadow h-fit">
+              <div className="flex flex-row justify-between sticky top-0 bg-white pb-2 border-b border-b-gray-400 w-full">
                 <div className="flex flex-col">
                   <h1 className="text-2xl font-bold">Edit Store Details</h1>
                   <p className="text-base font-medium">
@@ -334,7 +344,7 @@ const Stores = () => {
                 >
                   <div className="mt-4 flex justify-center flex-col items-center">
                     {selectedImage ? (
-                      <div className="w-[7rem] h-[7rem] flex items-center justify-center  object-cover cursor-pointer hover:scale-105 hover:border hover:border-gray-300 rounded-lg">
+                      <div className="w-[6rem] h-[6rem] flex items-center justify-center  object-cover cursor-pointer hover:scale-105 hover:border hover:border-gray-300 rounded-lg">
                         <img
                           src={selectedImage}
                           alt="Selected"
@@ -368,10 +378,11 @@ const Stores = () => {
                   <div className="flex flex-col gap-4">
                     <div className="">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="flex text-gray-700 text-sm font-bold mb-2"
                         htmlFor="outletName"
                       >
                         Outlet Name
+                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
@@ -379,15 +390,16 @@ const Stores = () => {
                         name="outletName"
                         value={formData.outletName}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
                     </div>
                     <div className="">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="flex text-gray-700 text-sm font-bold mb-2"
                         htmlFor="outletType"
                       >
                         Outlet Type
+                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
@@ -395,15 +407,16 @@ const Stores = () => {
                         name="outletType"
                         value={formData.outletType}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
                     </div>
                     <div className="">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="flex text-gray-700 text-sm font-bold mb-2"
                         htmlFor="outletMail"
                       >
                         Outlet Mail
+                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="email"
@@ -411,15 +424,16 @@ const Stores = () => {
                         name="outletMail"
                         value={formData.outletMail}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
                     </div>
                     <div className="">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="flex text-gray-700 text-sm font-bold mb-2"
                         htmlFor="outletLandmark"
                       >
                         Outlet Landmark
+                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
@@ -427,15 +441,16 @@ const Stores = () => {
                         name="outletLandmark"
                         value={formData.outletLandmark}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
                     </div>
                     <div className="">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="flex text-gray-700 text-sm font-bold mb-2"
                         htmlFor="outletCity"
                       >
                         Outlet City
+                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
@@ -443,15 +458,16 @@ const Stores = () => {
                         name="outletCity"
                         value={formData.outletCity}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
                     </div>
                     <div className="">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="flex text-gray-700 text-sm font-bold mb-2"
                         htmlFor="outletState"
                       >
                         Outlet State
+                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
@@ -459,15 +475,16 @@ const Stores = () => {
                         name="outletState"
                         value={formData.outletState}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
                     </div>
                     <div className="">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="flex text-gray-700 text-sm font-bold mb-2"
                         htmlFor="outletPincode"
                       >
                         Outlet Pincode
+                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
@@ -475,75 +492,233 @@ const Stores = () => {
                         name="outletPincode"
                         value={formData.outletPincode}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
                     </div>
 
                     {/*social handles */}
-                    {/* <div className="">
+                    <div className="">
                       <label
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="socialHandles"
                       >
                         Social Handles
                       </label>
-                      {formData.socialHandles.map((social, index) => (
-                        <div key={index} className="flex items-center mb-2">
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
+                          <svg
+                            width="29"
+                            height="29"
+                            viewBox="0 0 29 29"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clip-path="url(#clip0_223_38425)">
+                              <rect
+                                x="0.283203"
+                                y="0.5"
+                                width="239"
+                                height="73"
+                                rx="15"
+                                fill="white"
+                              />
+                              <g clip-path="url(#clip1_223_38425)">
+                                <path
+                                  d="M19.5332 0.5H9.0332C6.71256 0.5 4.48696 1.42187 2.84602 3.06282C1.20508 4.70376 0.283203 6.92936 0.283203 9.25L0.283203 19.75C0.283203 22.0706 1.20508 24.2962 2.84602 25.9372C4.48696 27.5781 6.71256 28.5 9.0332 28.5H19.5332C21.8538 28.5 24.0794 27.5781 25.7204 25.9372C27.3613 24.2962 28.2832 22.0706 28.2832 19.75V9.25C28.2832 6.92936 27.3613 4.70376 25.7204 3.06282C24.0794 1.42187 21.8538 0.5 19.5332 0.5ZM25.6582 19.75C25.6582 23.1275 22.9107 25.875 19.5332 25.875H9.0332C5.6557 25.875 2.9082 23.1275 2.9082 19.75V9.25C2.9082 5.8725 5.6557 3.125 9.0332 3.125H19.5332C22.9107 3.125 25.6582 5.8725 25.6582 9.25V19.75Z"
+                                  fill="url(#paint0_linear_223_38425)"
+                                />
+                                <path
+                                  d="M14.2832 7.5C12.4267 7.5 10.6462 8.2375 9.33346 9.55025C8.0207 10.863 7.2832 12.6435 7.2832 14.5C7.2832 16.3565 8.0207 18.137 9.33346 19.4497C10.6462 20.7625 12.4267 21.5 14.2832 21.5C16.1397 21.5 17.9202 20.7625 19.233 19.4497C20.5457 18.137 21.2832 16.3565 21.2832 14.5C21.2832 12.6435 20.5457 10.863 19.233 9.55025C17.9202 8.2375 16.1397 7.5 14.2832 7.5ZM14.2832 18.875C13.1233 18.8736 12.0113 18.4122 11.1911 17.5921C10.371 16.7719 9.90959 15.6599 9.9082 14.5C9.9082 12.0868 11.8717 10.125 14.2832 10.125C16.6947 10.125 18.6582 12.0868 18.6582 14.5C18.6582 16.9115 16.6947 18.875 14.2832 18.875Z"
+                                  fill="url(#paint1_linear_223_38425)"
+                                />
+                                <path
+                                  d="M21.8117 7.90725C22.3268 7.90725 22.7444 7.48964 22.7444 6.9745C22.7444 6.45935 22.3268 6.04175 21.8117 6.04175C21.2965 6.04175 20.8789 6.45935 20.8789 6.9745C20.8789 7.48964 21.2965 7.90725 21.8117 7.90725Z"
+                                  fill="url(#paint2_linear_223_38425)"
+                                />
+                              </g>
+                            </g>
+                            <defs>
+                              <linearGradient
+                                id="paint0_linear_223_38425"
+                                x1="2.8452"
+                                y1="25.938"
+                                x2="25.7212"
+                                y2="3.062"
+                                gradientUnits="userSpaceOnUse"
+                              >
+                                <stop stop-color="#FFC107" />
+                                <stop offset="0.507" stop-color="#F44336" />
+                                <stop offset="0.99" stop-color="#9C27B0" />
+                              </linearGradient>
+                              <linearGradient
+                                id="paint1_linear_223_38425"
+                                x1="9.3342"
+                                y1="19.449"
+                                x2="19.2322"
+                                y2="9.551"
+                                gradientUnits="userSpaceOnUse"
+                              >
+                                <stop stop-color="#FFC107" />
+                                <stop offset="0.507" stop-color="#F44336" />
+                                <stop offset="0.99" stop-color="#9C27B0" />
+                              </linearGradient>
+                              <linearGradient
+                                id="paint2_linear_223_38425"
+                                x1="21.1519"
+                                y1="7.63425"
+                                x2="22.4714"
+                                y2="6.31475"
+                                gradientUnits="userSpaceOnUse"
+                              >
+                                <stop stop-color="#FFC107" />
+                                <stop offset="0.507" stop-color="#F44336" />
+                                <stop offset="0.99" stop-color="#9C27B0" />
+                              </linearGradient>
+                              <clipPath id="clip0_223_38425">
+                                <rect
+                                  x="0.283203"
+                                  y="0.5"
+                                  width="28"
+                                  height="28"
+                                  rx="8"
+                                  fill="white"
+                                />
+                              </clipPath>
+                              <clipPath id="clip1_223_38425">
+                                <rect
+                                  width="28"
+                                  height="28"
+                                  fill="white"
+                                  transform="translate(0.283203 0.5)"
+                                />
+                              </clipPath>
+                            </defs>
+                          </svg>
                           <input
                             type="text"
-                            name="socialHandles"
-                            value={social.link}
-                            onChange={(e) => {
-                              const newSocialHandles = [
-                                ...formData.socialHandles,
-                              ];
-                              newSocialHandles[index].link = e.target.value;
-                              setFormData({
-                                ...formData,
-                                socialHandles: newSocialHandles,
-                              });
-                            }}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            name="insta"
+                            value=""
+                            onChange={handleInputChange}
+                            className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />
                         </div>
-                      ))}
-                    </div> */}
+                        <div className="flex items-center gap-2">
+                          <svg
+                            width="29"
+                            height="29"
+                            viewBox="0 0 29 29"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clip-path="url(#clip0_223_38422)">
+                              <path
+                                d="M14.2832 0.5C6.55083 0.5 0.283203 6.76762 0.283203 14.5C0.283203 22.2315 6.55083 28.5 14.2832 28.5C22.0156 28.5 28.2832 22.2315 28.2832 14.5C28.2832 6.76762 22.0156 0.5 14.2832 0.5Z"
+                                fill="#004AAD"
+                              />
+                              <path
+                                d="M12.2606 22.289H15.4797V14.498H17.627L17.9113 11.8135H15.4797L15.4832 10.4695C15.4832 9.76949 15.5497 9.39412 16.5542 9.39412H17.8965V6.70874H15.7483C13.168 6.70874 12.2606 8.01161 12.2606 10.2017V11.8135H10.6523V14.4989H12.2606V22.289Z"
+                                fill="white"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_223_38422">
+                                <rect
+                                  width="28"
+                                  height="28"
+                                  fill="white"
+                                  transform="translate(0.283203 0.5)"
+                                />
+                              </clipPath>
+                            </defs>
+                          </svg>
+
+                          <input
+                            type="text"
+                            name="facebook"
+                            value=""
+                            onChange={handleInputChange}
+                            className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
+                          />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <svg
+                            width="29"
+                            height="29"
+                            viewBox="0 0 29 29"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clip-path="url(#clip0_223_38418)">
+                              <path
+                                d="M12.3838 17.3522L17.1368 14.5006L12.3838 11.6489V17.3522Z"
+                                fill="#E90303"
+                              />
+                              <path
+                                d="M14.2832 0.5C6.5517 0.5 0.283203 6.76762 0.283203 14.5C0.283203 22.2324 6.5517 28.5 14.2832 28.5C22.0147 28.5 28.2832 22.2315 28.2832 14.5C28.2832 6.7685 22.0147 0.5 14.2832 0.5ZM21.8852 15.1134C21.8852 16.4259 21.733 17.7384 21.733 17.7384C21.733 17.7384 21.5842 18.8566 21.1292 19.3475C20.5508 19.9932 19.9033 19.9967 19.6058 20.0352C17.4778 20.198 14.2832 20.2032 14.2832 20.2032C14.2832 20.2032 10.33 20.1648 9.1137 20.0405C8.77508 19.9731 8.01645 19.9924 7.4372 19.3475C6.98133 18.8558 6.83345 17.7384 6.83345 17.7384C6.83345 17.7384 6.6812 16.4268 6.6812 15.1134V13.8831C6.6812 12.5706 6.83345 11.259 6.83345 11.259C6.83345 11.259 6.9822 10.1407 7.4372 9.64812C8.01558 9.0015 8.66308 8.998 8.96058 8.96125C11.0877 8.79675 14.2797 8.79675 14.2797 8.79675H14.2867C14.2867 8.79675 17.4787 8.79675 19.6058 8.96125C19.9025 8.998 20.5508 9.0015 21.1292 9.64725C21.5851 10.1399 21.733 11.2581 21.733 11.2581C21.733 11.2581 21.8852 12.5706 21.8852 13.8831V15.1134Z"
+                                fill="#E90303"
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_223_38418">
+                                <rect
+                                  width="28"
+                                  height="28"
+                                  fill="white"
+                                  transform="translate(0.283203 0.5)"
+                                />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                          <input
+                            type="text"
+                            name="youtube"
+                            value=""
+                            onChange={handleInputChange}
+                            className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
+                          />
+                        </div>
+                      </div>
+                    </div>
 
                     {/*feedback */}
-                    {/* <div className="">
+                    <div className="">
                       <label
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="feedbackChannels"
                       >
                         Feedback Channels
                       </label>
-                      {formData.feedbackChannels.map((channel, index) => (
-                        <div key={index} className="flex items-center mb-2">
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
+                          <img src={google} width="29" height="29" />
                           <input
                             type="text"
-                            name="feedbackChannels"
-                            value={channel.link}
-                            onChange={(e) => {
-                              const newFeedbackChannles = [
-                                ...formData.feedbackChannels,
-                              ];
-                              newFeedbackChannles[index].link = e.target.value;
-                              setFormData({
-                                ...formData,
-                                feedbackChannels: newFeedbackChannles,
-                              });
-                            }}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            name="googleReview"
+                            value=""
+                            onChange={handleInputChange}
+                            className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />
                         </div>
-                      ))}
-                    </div> */}
+                        <div className="flex items-center gap-2">
+                          <img src={zomato} width="29" height="29" />
+                          <input
+                            type="text"
+                            name="googleReview"
+                            value=""
+                            onChange={handleInputChange}
+                            className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="flex text-gray-700 text-sm font-bold mb-2"
                         htmlFor="managerName"
                       >
                         Manager Name
+                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
@@ -551,15 +726,16 @@ const Stores = () => {
                         name="managerName"
                         value={formData.managerName}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
                     </div>
                     <div className="">
                       <label
-                        className="block text-gray-700 text-sm font-bold mb-2"
+                        className="flex text-gray-700 text-sm font-bold mb-2"
                         htmlFor="managerContact"
                       >
                         Manager Contact
+                        <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
@@ -567,7 +743,7 @@ const Stores = () => {
                         name="managerContact"
                         value={formData.managerContact}
                         onChange={handleInputChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
                     </div>
                   </div>
