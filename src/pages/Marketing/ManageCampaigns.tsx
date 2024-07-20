@@ -86,7 +86,7 @@ const ManageCampaigns: React.FC = () => {
             weeklyCost={0}
             schedule="On Birthdays"
             targetCustomer="Advance Filter"
-            type="Marketing"
+            type="Utility"
             status="Under Review"
           />
           <Card
