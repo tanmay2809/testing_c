@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 
-export const baseUrl ='https://dolphin-app-fmayj.ondigitalocean.app';
+export const baseUrl = "https://dolphin-app-fmayj.ondigitalocean.app";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

@@ -101,6 +101,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
         console.log(JSON.stringify(response.data));
         setLoading(false);
         setIsSubCategoryOpen(false);
+        window.location.reload();
         toast.success("Subcategory Added");
       })
       .catch((error) => {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../../main";
 import { SubcategoryItem } from "../../pages/Menu";
+import { toast } from "react-toastify";
 
 // icons
 import { BiFoodTag } from "react-icons/bi";
@@ -10,7 +11,6 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { MdOutlineTaskAlt } from "react-icons/md";
-import { toast } from "react-toastify";
 
 export interface MenuItem {
   _id?: string;

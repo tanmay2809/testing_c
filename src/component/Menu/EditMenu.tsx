@@ -35,7 +35,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
   useEffect(() => {
     setFormData({
       name: item.name,
-      image: item.image,
+      image: item.image.map((imageUrl) => ({ url: imageUrl })),
       description: item.description,
       price: item.price,
       category: item.category,
@@ -48,7 +48,9 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
       addone: [],
       type: item.type,
     });
-    setImage(item.image.map((img) => img.url));
+    setImage((prevImages) => [...prevImages, ...item.image]);
+    console.log(image);
+    console.log(formData);
   }, [item]);
 
   const [addonDetails, setAddonDetails] = useState<
@@ -65,10 +67,6 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
       image: prevFormData.image.filter((_, i) => i !== index),
     }));
   };
-
-      console.log(formData);
-      console.log(image);
-
 
   // addon functions
   const addAddOn = () => {

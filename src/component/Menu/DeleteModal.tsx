@@ -30,7 +30,7 @@ const DeleteModal: React.FC<DeleteProps> = ({ setModal, setSelectedCard }) => {
         setLoading(false);
         setModal(false);
         window.location.reload();
-        toast.success("Item Deleted");
+        toast.error("Item Deleted");
       })
       .catch((error) => {
         console.log(error);

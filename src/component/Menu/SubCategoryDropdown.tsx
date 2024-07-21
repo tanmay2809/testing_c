@@ -5,6 +5,9 @@ import {
   Droppable,
   DropResult,
 } from "react-beautiful-dnd";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 // icons
 import { MdDragIndicator, MdModeEditOutline } from "react-icons/md";
@@ -18,9 +21,6 @@ import ItemCard from "./ItemCard";
 import SubCategoryDeleteModal from "./SubCategoryDelete";
 import { Category } from "./AddCategory";
 import Switch from "./switch";
-import axios from "axios";
-import { baseUrl } from "../../main";
-import { toast } from "react-toastify";
 
 interface Props {
   category:
@@ -52,8 +52,8 @@ const SubCategoryDropdown: React.FC<Props> = ({
   const [subcategoryToDelete, setSubcategoryToDelete] =
     useState<SubcategoryItem>();
   const [categoryID, setCategoryID] = useState<string>("");
-  const [categories, setCategories] = useState<Category>();
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string>("");
+  // const [categories, setCategories] = useState<Category>();
+  // const [selectedSubcategory, setSelectedSubcategory] = useState<string>("");
 
   // toggle function to differentiate in dropwdowns
   const handleToggle = (id: string) => {
@@ -63,23 +63,23 @@ const SubCategoryDropdown: React.FC<Props> = ({
     }));
   };
 
-  const handleDragEnd = (result: DropResult) => {
-    if (!result.destination) {
-      return;
-    }
-    const { source, destination } = result;
-    if (
-      source.index === destination.index &&
-      source.droppableId === destination.droppableId
-    ) {
-      return;
-    }
+  // const handleDragEnd = (result: DropResult) => {
+  //   if (!result.destination) {
+  //     return;
+  //   }
+  //   const { source, destination } = result;
+  //   if (
+  //     source.index === destination.index &&
+  //     source.droppableId === destination.droppableId
+  //   ) {
+  //     return;
+  //   }
 
-    const updatedCategory = Array.from(category!);
-    const [movedCategory] = updatedCategory.splice(source.index, 1);
-    updatedCategory.splice(destination.index, 0, movedCategory);
-    setCategories(updatedCategory);
-  };
+  //   // const updatedCategory = Array.from(category!);
+  //   // const [movedCategory] = updatedCategory.splice(source.index, 1);
+  //   // updatedCategory.splice(destination.index, 0, movedCategory);
+  //   // setCategories(updatedCategory);
+  // };
 
   const filterItems = (items: MenuItem[]) => {
     return items.filter((item) => {
@@ -243,7 +243,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
                   <MdDragIndicator />
                   <IoMdArrowDropdown
                     className={`text-[#004AAD] ${
-                      isOpen[subcategory._id] && "transform rotate-180"
+                      isOpen[subcategory._id] ? "transform" : "-rotate-90"
                     }`}
                     onClick={() => handleToggle(subcategory._id)}
                   />
