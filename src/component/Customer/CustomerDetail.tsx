@@ -5,7 +5,6 @@ import { IoCloseCircle } from "react-icons/io5";
 
 //images
 import whatsapp from "../../assets/whatsapp.png";
-import call from "../../assets/Call.png";
 
 interface Customer {
   // segmentation: "New" | "Regular" | "Risk" | "Loyal";
@@ -175,7 +174,7 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
                 </span>
               </h3>
               <div className="flex justify-start gap-[0.2rem] items-center">
-                <p className="text-sm text-gray-500 w-1/2">
+                <p className="text-sm text-gray-500 ">
                   Customer Since {formatDate(customer?.visits)}
                 </p>
                 <span className="text-xs text-gray-500 bg-[#D5E7FF] rounded-full px-2 py-1 ml-2">
@@ -183,10 +182,7 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
                 </span>
               </div>
             </div>
-            <div className="ml-auto flex items-center space-x-2">
-              <button className="bg-[#F1F1F1] p-2 rounded-lg">
-                <img src={call} />
-              </button>
+            <div className="ml-auto flex items-center">
               <button className="bg-[#F1F1F1] p-2 rounded-lg">
                 <img src={whatsapp} className="w-6 h-auto" />
               </button>

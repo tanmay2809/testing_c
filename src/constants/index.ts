@@ -452,14 +452,14 @@ export const segmentationDetails: {
   },
   Regular: {
     title: "Regular",
-    description: "These customers visit your business regularly.",
-    proTip: "Offer loyalty rewards to encourage continued patronage.",
+    description: "These customers have visited your business for more than 3 time in last 30 days.",
+    proTip: "Send  Offer campaigns on their next Visit at your business",
     color: "bg-purple-200 text-purple-800",
   },
   Risk: {
     title: "Risk",
-    description: "These customers have decreased their visit frequency.",
-    proTip: "Send a re-engagement campaign with special offers.",
+    description: "These customers have not visited your business in last 60 Days",
+    proTip: "Send  Offer campaigns for retaining them to Visit at your business again",
     color: "bg-red-200 text-red-800",
   },
   Loyal: {

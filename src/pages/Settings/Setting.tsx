@@ -9,8 +9,6 @@ const Setting = () => {
 
   return (
     <div className="w-full h-fit relative  ">
-      
-
       <div className="w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px]">
           <div className="flex flex-col">
@@ -26,7 +24,7 @@ const Setting = () => {
         </div>
 
         {/* Buttons Container */}
-        <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-3">
+        <div className="w-[100%] stciky top-[160px] flex flex-row justify-start border-b border-b-[#000000CC] -mt-3">
           <Link
             className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
             to="/setting/store"

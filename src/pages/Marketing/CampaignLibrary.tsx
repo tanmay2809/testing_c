@@ -36,23 +36,27 @@ const CampaignLibrary: React.FC = () => {
     <div className="w-full h-fit relative">
       <div className="w-[93%] h-fit px-[2rem] py-[1rem] gap-10 ml-[7%]">
         <div className="font-inter">
-          {/* Top yellow box */}
-          <div className="w-full h-[12.5rem] relative flex justify-between bg-[#FFCF27] py-3 px-6 rounded-lg -mt-2">
-            <div className="w-1/2 h-full flex flex-col justify-center">
-              <h1 className="text-3xl font-bold">
-                Reach out to your customers like never before
-              </h1>
-              <p className="mt-2 text-lg">
+          {/* reach out your customer */}
+          <div className="w-full h-fit flex relative mt-[.5rem] py-[1.5rem] px-[2.5rem] bg-[#FFCF27] rounded-md">
+            <div className="font-inter text-black w-[55%]">
+              <div className="font-[700] text-[2rem] leading-[2.7rem]">
+                <p>Reach out your customers like </p>
+                <p>never before</p>
+              </div>
+
+              <p className="font-[600] text-[1.1rem] tracking-tighter mt-3">
                 Explore our pre-made Templates tailored for eateries
               </p>
             </div>
-            <DotLottieReact
-              className="relative -left-20 rotate-12 w-auto h-80 -top-[3.5rem]"
-              src="https://lottie.host/d4be8719-9a6c-4ad1-8cb8-46b28c108c50/b2zAzWhAdV.json"
-              loop
-              autoplay
-              speed={1}
-            />
+
+            <div className=" absolute right-[5rem] -top-[.1rem] rotate-[13deg] ">
+              <DotLottieReact
+                src="https://lottie.host/d4be8719-9a6c-4ad1-8cb8-46b28c108c50/b2zAzWhAdV.json"
+                autoplay
+                loop
+                style={{ width: "300px", height: "200px" }}
+              />
+            </div>
           </div>
           {/* Buttons div */}
           <div className="mt-6 flex items-center gap-3">

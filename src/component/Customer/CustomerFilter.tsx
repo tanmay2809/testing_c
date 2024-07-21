@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Customer} from '../../constants/index';
+
 interface FilterProps {
   isVisible: boolean;
   onClose: () => void;
@@ -18,7 +18,7 @@ interface FilterProps {
     }
   ];
   setCustomerData: (data: any) => void;
-  originalData : [
+  originalData: [
     {
       userId: {
         name: string;
@@ -41,12 +41,8 @@ const CustomerFilter: React.FC<FilterProps> = ({
   setCustomerData,
   originalData,
 }) => {
-  const [visitFilter, setVisitFilter] = useState<string>(
-    "Visited in Last 30 days"
-  );
-  const [nonVisitFilter, setNonVisitFilter] = useState<string>(
-    "Not visited in Last 30 days"
-  );
+  const [visitFilter, setVisitFilter] = useState<string>("");
+  const [nonVisitFilter, setNonVisitFilter] = useState<string>("");
   const [segmentation, setSegmentation] = useState<string[]>([]);
   const [gender, setGender] = useState<string[]>([]);
   const [customDateVisit, setCustomDateVisit] = useState<string>("");
@@ -71,7 +67,6 @@ const CustomerFilter: React.FC<FilterProps> = ({
     setGender(updatedGender);
   };
 
-
   const getCustomerSegment = (visits: string[]): string => {
     const now = new Date();
     const thirtyDaysAgo = new Date();
@@ -79,8 +74,12 @@ const CustomerFilter: React.FC<FilterProps> = ({
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(now.getDate() - 60);
 
-    const visitsWithin30Days = visits?.filter(visit => new Date(visit) >= thirtyDaysAgo);
-    const visitsWithin60Days = visits?.filter(visit => new Date(visit) >= sixtyDaysAgo);
+    const visitsWithin30Days = visits?.filter(
+      (visit) => new Date(visit) >= thirtyDaysAgo
+    );
+    const visitsWithin60Days = visits?.filter(
+      (visit) => new Date(visit) >= sixtyDaysAgo
+    );
 
     if (visitsWithin30Days?.length === 1) {
       return "New";
@@ -114,7 +113,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
     const filteredData = customerData?.filter((customer) => {
       const visitDates = customer?.visits?.map((visit) => new Date(visit));
       const now = new Date();
-  
+
       // Filter based on visit dates
       const visitFilterCheck = () => {
         if (visitFilter === "Visited in Last 30 days") {
@@ -133,7 +132,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
         }
         return true;
       };
-  
+
       // Filter based on non-visit dates
       const nonVisitFilterCheck = () => {
         if (nonVisitFilter === "Not visited in Last 30 days") {
@@ -152,18 +151,23 @@ const CustomerFilter: React.FC<FilterProps> = ({
         }
         return true;
       };
-  
+
       // Filter based on segmentation
       const segmentationCheck = segmentation.length
         ? segmentation.includes(getCustomerSegment(customer?.visits))
         : true;
-  
+
       // Filter based on gender
       const genderCheck = gender.length
         ? gender.includes(customer?.userId?.gender)
         : true;
-  
-      return visitFilterCheck() && nonVisitFilterCheck() && segmentationCheck && genderCheck;
+
+      return (
+        visitFilterCheck() &&
+        nonVisitFilterCheck() &&
+        segmentationCheck &&
+        genderCheck
+      );
     });
     setCustomerData(filteredData);
     // filterData(filteredData);
@@ -214,7 +218,13 @@ const CustomerFilter: React.FC<FilterProps> = ({
                     ? "bg-[#004AAD] text-white"
                     : ""
                 }`}
-                onClick={() => setVisitFilter("Visited in Last 30 days")}
+                onClick={() => {
+                  if (visitFilter !== "Visited in Last 30 days") {
+                    setVisitFilter("Visited in Last 30 days");
+                  }else{
+                    setVisitFilter("");
+                  }
+                }}
               >
                 Last 30 days
               </button>
@@ -224,7 +234,13 @@ const CustomerFilter: React.FC<FilterProps> = ({
                     ? "bg-[#004AAD] text-white"
                     : ""
                 }`}
-                onClick={() => setVisitFilter("Visited in Last 60 days")}
+                onClick={() => {
+                  if (visitFilter !== "Visited in Last 60 days") {
+                    setVisitFilter("Visited in Last 60 days");
+                  }else{
+                    setVisitFilter("");
+                  }
+                }}
               >
                 Last 60 days
               </button>
@@ -233,7 +249,13 @@ const CustomerFilter: React.FC<FilterProps> = ({
                   className={`px-3 py-1 border rounded-lg ${
                     visitFilter === "Custom" ? "bg-[#004AAD] text-white" : ""
                   }`}
-                  onClick={() => setVisitFilter("Custom")}
+                  onClick={() => {
+                    if (visitFilter !== "Custom") {
+                      setVisitFilter("Custom");
+                    }else{
+                      setVisitFilter("");
+                    }
+                  }}
                 >
                   Custom
                 </button>
@@ -260,7 +282,13 @@ const CustomerFilter: React.FC<FilterProps> = ({
                     ? "bg-[#004AAD] text-white"
                     : ""
                 }`}
-                onClick={() => setNonVisitFilter("Not visited in Last 30 days")}
+                onClick={() => {
+                  if (nonVisitFilter !== "Visited in Last 30 days") {
+                    setNonVisitFilter("Visited in Last 30 days");
+                  }else{
+                    setNonVisitFilter("");
+                  }
+                }}
               >
                 Last 30 days
               </button>
@@ -270,7 +298,13 @@ const CustomerFilter: React.FC<FilterProps> = ({
                     ? "bg-[#004AAD] text-white"
                     : ""
                 }`}
-                onClick={() => setNonVisitFilter("Not visited in Last 60 days")}
+                onClick={() => {
+                  if (nonVisitFilter !== "Visited in Last 60 days") {
+                    setNonVisitFilter("Visited in Last 60 days");
+                  }else{
+                    setNonVisitFilter("");
+                  }
+                }}
               >
                 Last 60 days
               </button>
@@ -279,7 +313,13 @@ const CustomerFilter: React.FC<FilterProps> = ({
                   className={`px-3 py-1 border rounded-lg ${
                     nonVisitFilter === "Custom" ? "bg-[#004AAD] text-white" : ""
                   }`}
-                  onClick={() => setNonVisitFilter("Custom")}
+                  onClick={() => {
+                    if (nonVisitFilter !== "Custom") {
+                      setNonVisitFilter("Custom");
+                    }else{
+                      setNonVisitFilter("");
+                    }
+                  }}
                 >
                   Custom
                 </button>
