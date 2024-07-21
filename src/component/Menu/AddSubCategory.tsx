@@ -195,7 +195,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
                     <img src={image} alt="uploaded"></img>
                     <button
                       onClick={removeImage}
-                      className="absolute -top-2 -right-2 text-red-600"
+                      className="absolute -top-2 -right-2 text-red-600 hover:cursor-pointer"
                     >
                       <IoCloseCircle size={24} />
                     </button>

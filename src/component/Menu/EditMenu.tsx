@@ -519,7 +519,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                     />
                     <span
                       onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 text-red-600"
+                      className="absolute -top-2 -right-2 text-red-600 hover:cursor-pointer"
                     >
                       <IoCloseCircle size={25} />
                     </span>
