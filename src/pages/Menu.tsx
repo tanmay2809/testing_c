@@ -439,6 +439,7 @@ const Menu = () => {
                   <EditMenuItem
                     setIsEditMenu={setIsEditMenuOpen}
                     item={selectedCard}
+                    categories={filteredCategory}
                   />
                 )}
                 {editSubCategoryModal && (

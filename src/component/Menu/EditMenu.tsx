@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { MenuItem } from "./AddMenuItem";
+import { SubcategoryItem } from "../../pages/Menu";
+import axios from "axios";
+import { baseUrl } from "../../main";
 
 // icons
 import { BiFoodTag } from "react-icons/bi";
@@ -7,15 +10,18 @@ import { FaPlus } from "react-icons/fa6";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline, MdOutlineTaskAlt } from "react-icons/md";
-import axios from "axios";
-import { baseUrl } from "../../main";
 
 interface EditMenuProps {
   setIsEditMenu: (isOpen: boolean) => void;
   item: MenuItem;
+  categories: { _id: string; name: string; subcategory: SubcategoryItem[] }[];
 }
 
-const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
+const EditMenuItem: React.FC<EditMenuProps> = ({
+  setIsEditMenu,
+  item,
+  categories,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string[]>([]);
 
@@ -259,19 +265,24 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                 htmlFor="category"
                 className="block text-gray-700 text-[1.2rem] font-inter mb-2"
               >
-                Add Category <span className="text-[#ED4F4F]">*</span>
+                Add Sub Category <span className="text-[#ED4F4F]">*</span>
               </label>
-              <select
-                className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
-                id="category"
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-              >
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>
+              {categories?.map((category) => (
+                <select
+                  className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
+                  id="category"
+                  name="category"
+                  value={formData.subcategory}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  {category.subcategory.map((subcategory) => (
+                    <option value={subcategory.name} key={subcategory._id}>
+                      {subcategory.name}
+                    </option>
+                  ))}
+                </select>
+              ))}
             </div>
           </div>
 

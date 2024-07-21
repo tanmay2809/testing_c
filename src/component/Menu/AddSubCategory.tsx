@@ -22,8 +22,8 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
   setIsSubCategoryOpen,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
-
   const [image, setImage] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
 
   const [formData, setFormData] = useState<SubCategory>({
     name: "",
@@ -45,6 +45,28 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
 
   // file change handler
   const handleImageChange = async (file: File) => {
+    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+
+    if (!validTypes.includes(file.type)) {
+      setError("Invalid file type. Only .jpg, .jpeg, .png are allowed.");
+      return;
+    }
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    const isValidSize = await new Promise((resolve) => {
+      img.onload = () => {
+        if (img.width < 300 || img.height < 300) {
+          setError("Image size must be at least 300x300.");
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      };
+    });
+
+    if (!isValidSize) return;
+
     const imageFormData = new FormData();
     imageFormData.append("file", file);
 
@@ -59,13 +81,12 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
       const response = await axios.request(config);
       if (response.data.status && response.data.data) {
         const url = response.data.data[0].url;
-
-        // Update state with the new image URL
         setImage(url);
         setFormData((prevFormData) => ({
           ...prevFormData,
           image: url,
         }));
+        setError("");
       }
     } catch (error) {
       console.log(error);
@@ -210,6 +231,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
                 <p className="flex flex-row text-[0.8rem] gap-2">
                   Image format .jpg, .jpeg, .png and minimum size 300x300
                 </p>
+                {error && <p className="text-[0.9rem] text-red-600">{error}</p>}
               </div>
             </div>
           </div>

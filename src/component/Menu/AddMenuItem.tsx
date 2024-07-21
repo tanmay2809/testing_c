@@ -59,6 +59,8 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
 
   const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
 
+  const [error, setError] = useState<string>("");
+
   // remove image function
   const removeImage = (index: number) => {
     setImage((prevImages) => prevImages.filter((_, i) => i !== index));
@@ -110,9 +112,37 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
   };
 
   const handleImageChange = async (files: FileList) => {
+    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
     const uploadedImageUrls: string[] = [];
+    let hasError = false;
+
+    setError("");
 
     for (const file of Array.from(files)) {
+      if (!validTypes.includes(file.type)) {
+        setError("Invalid file type. Only .jpg, .jpeg, .png are allowed.");
+        hasError = true;
+        break;
+      }
+
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      const isValidSize = await new Promise((resolve) => {
+        img.onload = () => {
+          if (img.width < 300 || img.height < 300) {
+            setError("Image size must be at least 300x300.");
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        };
+      });
+
+      if (!isValidSize) {
+        hasError = true;
+        break;
+      }
+
       const imageFormData = new FormData();
       imageFormData.append("file", file);
 
@@ -134,17 +164,21 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
         }
       } catch (error) {
         console.log(error);
+        hasError = true;
+        break;
       }
     }
 
-    setImage((prevImages) => [...prevImages, ...uploadedImageUrls]);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      image: [
-        ...prevFormData.image,
-        ...uploadedImageUrls.map((url) => ({ url })),
-      ],
-    }));
+    if (!hasError) {
+      setImage((prevImages) => [...prevImages, ...uploadedImageUrls]);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: [
+          ...prevFormData.image,
+          ...uploadedImageUrls.map((url) => ({ url })),
+        ],
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -270,10 +304,13 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                   name="subcategory"
                   value={formData.subcategory}
                   onChange={handleChange}
+                  key={category._id}
                 >
                   <option value="">Select</option>
                   {category.subcategory.map((subcategory) => (
-                    <option value={subcategory._id}>{subcategory.name}</option>
+                    <option value={subcategory._id} key={subcategory._id}>
+                      {subcategory.name}
+                    </option>
                   ))}
                 </select>
               ))}
@@ -507,6 +544,9 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                   <p className="flex flex-row text-[0.8rem] gap-2">
                     Image format .jpg, .jpeg, .png and minimum size 300x300
                   </p>
+                  {error && (
+                    <p className="text-[0.9rem] text-red-600">{error}</p>
+                  )}
                 </div>
               </div>
               <div className="flex flex-row gap-4">
