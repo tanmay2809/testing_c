@@ -21,6 +21,7 @@ import ConfirmCampaign from "./ConfirmCampaign";
 //toastify
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FormattingControls from "./FormattingControls";
 
 interface RadioOption {
   label: string;
@@ -31,6 +32,18 @@ interface RadioOption {
 // interface CampaignsPops{
 //   tye:string
 // }
+
+type SectionStyles = {
+  color: string;
+  bold: boolean;
+  italic: boolean;
+};
+
+type StylesState = {
+  header: SectionStyles;
+  body: SectionStyles;
+  footer: SectionStyles;
+};
 
 const Campaigns: React.FC = () => {
   const { type } = useParams();
@@ -51,6 +64,11 @@ const Campaigns: React.FC = () => {
   const [footer, setFooter] = useState<string>("Thank You");
   const [loading, setLoading] = useState<boolean>(false);
   const [Confirmation, setConfirmation] = useState<boolean>(false);
+  const [styles, setStyles] = useState<StylesState>({
+    header: { color: "#000000", bold: false, italic: false },
+    body: { color: "#000000", bold: false, italic: false },
+    footer: { color: "#000000", bold: false, italic: false },
+  });
 
   const activateCampaign = () => {
     setLoading(true);
@@ -175,8 +193,8 @@ const Campaigns: React.FC = () => {
   return (
     <div className="w-full h-fit relative">
       <div className="w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 ml-[7%] ">
-        <div className="w-full flex flex-row justify-between mt-[60px] font-inter">
-          <div className="bg-white  rounded-lg p-6 w-full ">
+        <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
+          <div className="bg-white rounded-lg p-1 w-full ">
             {!Confirmation && (
               <div className="bg-white">
                 <div className="flex justify-between w-full">
@@ -206,9 +224,9 @@ const Campaigns: React.FC = () => {
             )}
 
             {/*main content div */}
-            <div className="bg-[#F5F9FF] flex justify-between gap-10 p-10">
+            <div className="bg-[#F5F9FF] flex justify-between gap-10 lg:py-5 lg:px-10 md:p-5 rounded-lg">
               {/*text div */}
-              <div className=" w-[65%]">
+              <div className=" lg:w-[65%] md:w-[50%]">
                 {/*booking */}
                 {!Confirmation && (
                   <>
@@ -349,23 +367,38 @@ const Campaigns: React.FC = () => {
                           </h1>
                           <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
                             <GiMeal className="text-gray-500" />
-                            <h2 className="font-semibold text-base w-full">
+                            <h2 className="font-medium text-base w-full">
                               <input
                                 type="text"
                                 id="name"
                                 placeholder="Enter the header"
-                                className="bg-[#F5F9FF]  h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                className="bg-[#F5F9FF] h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
                                 value={header}
                                 onChange={(
                                   event: ChangeEvent<HTMLInputElement>
                                 ) => {
-                                  setHeader(event.target.value);
+                                  if (event.target.value.length <= 100) {
+                                    setHeader(event.target.value);
+                                  }
+                                }}
+                                style={{
+                                  color: styles.header.color,
+                                  fontWeight: styles.header.bold
+                                    ? "bold"
+                                    : "normal",
+                                  fontStyle: styles.header.italic
+                                    ? "italic"
+                                    : "",
                                 }}
                               />
                             </h2>
                           </div>
-                          {/* <div></div> */}{" "}
-                          {/*the bottom characters and colour, bold, italic, etc. */}
+                          <FormattingControls
+                            content={header}
+                            section="header"
+                            styles={styles}
+                            setStyles={setStyles}
+                          />
                         </div>
 
                         {/*body*/}
@@ -390,11 +423,22 @@ const Campaigns: React.FC = () => {
                                 ) => {
                                   setBody(event.target.value);
                                 }}
+                                style={{
+                                  color: styles.body.color,
+                                  fontWeight: styles.body.bold
+                                    ? "bold"
+                                    : "normal",
+                                  fontStyle: styles.body.italic ? "italic" : "",
+                                }}
                               />
                             </h2>
                           </div>
-                          {/* <div></div> */}{" "}
-                          {/*the bottom characters and colour, bold, italic, etc. */}
+                          <FormattingControls
+                            content={body}
+                            section="body"
+                            styles={styles}
+                            setStyles={setStyles}
+                          />
                         </div>
 
                         {/*footer*/}
@@ -419,11 +463,24 @@ const Campaigns: React.FC = () => {
                                 ) => {
                                   setFooter(event.target.value);
                                 }}
+                                style={{
+                                  color: styles.footer.color,
+                                  fontWeight: styles.footer.bold
+                                    ? "bold"
+                                    : "normal",
+                                  fontStyle: styles.footer.italic
+                                    ? "italic"
+                                    : "",
+                                }}
                               />
                             </h2>
                           </div>
-                          {/* <div></div> */}{" "}
-                          {/*the bottom characters and colour, bold, italic, etc. */}
+                          <FormattingControls
+                            content={footer}
+                            section="footer"
+                            styles={styles}
+                            setStyles={setStyles}
+                          />
                         </div>
 
                         {/*buttons*/}
@@ -667,14 +724,14 @@ const Campaigns: React.FC = () => {
                 )}
               </div>
 
-              {/*screen div */}
-              <div className="relative w-full max-w-xs mx-auto p-3">
+              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-20 lg:top-40 md:right-11">
                 <img
                   src={screen}
                   alt="Phone Screen"
-                  className="w-[85%] h-auto mx-auto"
+                  className="lg:w-[88%] md:w-[90%] h-auto mx-auto -mt-7"
                 />
-                <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[6rem] w-[13.6rem] left-[3rem]">
+
+                <div className=" md:w-[12rem] absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[4.5rem] lg:w-[13.9rem] left-[2.8rem]">
                   <div className="bg-white  p-4 rounded-md  ">
                     {selectedImage && type === "Marketing" && (
                       <div className="w-[12rem]  h-[6rem]">
@@ -684,9 +741,36 @@ const Campaigns: React.FC = () => {
                         />
                       </div>
                     )}
-                    <p className="text-sm text-gray-600 mt-1">{header}</p>
-                    <p className="text-sm text-gray-600">{body}</p>
-                    <p className="text-sm text-gray-600">{footer}</p>
+                    <p
+                      className="text-sm text-gray-600 mt-1"
+                      style={{
+                        color: styles.header.color,
+                        fontWeight: styles.header.bold ? "bold" : "normal",
+                        fontStyle: styles.header.italic ? "italic" : "",
+                      }}
+                    >
+                      {header}
+                    </p>
+                    <p
+                      className="text-sm text-gray-600"
+                      style={{
+                        color: styles.body.color,
+                        fontWeight: styles.body.bold ? "bold" : "normal",
+                        fontStyle: styles.body.italic ? "italic" : "",
+                      }}
+                    >
+                      {body}
+                    </p>
+                    <p
+                      className="text-sm text-gray-600"
+                      style={{
+                        color: styles.footer.color,
+                        fontWeight: styles.footer.bold ? "bold" : "normal",
+                        fontStyle: styles.footer.italic ? "italic" : "",
+                      }}
+                    >
+                      {footer}
+                    </p>
                   </div>
                   {buttons.map((button, index) => {
                     return (
