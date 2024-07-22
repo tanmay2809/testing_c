@@ -1,5 +1,7 @@
 
-import { useState } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import { Link } from "react-router-dom";
 
 import Feedback from "../../component/outlet/Feedback";
@@ -55,9 +57,25 @@ const Dashboard = () => {
     });
   }
 
+  const { data } = useSelector(
+    (state: RootState) => state.resturantdata
+  );
+  // as { data: RestaurantData };
+  console.log("resData: ", data);
+
   const [status,setstatus] = useState(1);
+
+  useEffect(() => {
+    if(data?.category )
+      {
+        setstatus(2);
+      }
+  }, []);
+
+  
  
   return (
+
     <div className="w-full h-fit relative ">
       
       {/* frame */}
@@ -93,7 +111,9 @@ const Dashboard = () => {
             </div>
           </div>
            {/* Hellow Foodoos */}
-          <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex py-[1.5rem] px-[2.5rem] rounded-lg ">
+
+           {
+              status!=3 &&  <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex py-[1.5rem] px-[2.5rem] rounded-lg ">
               <div className="w-[40%] h-fit">
                 <p className="flex items-center gap-4 font-Sen font-[700] text-[2rem] text-nowrap text-[#505050] tracking-tight">Hello Foodoos <span><PiHandWaving  className=" text-black -rotate-[10deg]" /></span></p>
                 <div>
@@ -135,7 +155,7 @@ const Dashboard = () => {
                           <p className="font-[400] text-[.85rem] text-nowrap">Create digital menu for better customer interaction</p>
                         </div>
                         {
-                          (status!=1) ? <button className="bg-[#FFCF27] px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Completed</button>:
+                          (status==2) ? <button className="bg-[#FFCF27] px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Completed</button>:
                           <Link to='/menu' onClick={handleScrollToTop} className="bg-white px-[2rem] my-1 flex items-center  rounded-lg text-[.98rem] text-black">Start Now</Link>
                         }
                         
@@ -146,7 +166,7 @@ const Dashboard = () => {
                           <p className="font-[400] text-[.85rem] text-nowrap">Automate Campaign for better customer engagement </p>
                         </div>
                         {
-                          (status!=1) ? <button className="bg-[#FFCF27] px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Completed</button>:
+                          (status!=2) ? <button className="bg-[#FFCF27] px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Completed</button>:
                           <button className="bg-white px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Start Now</button>
                         }
                     </div>
@@ -158,6 +178,8 @@ const Dashboard = () => {
 
               </div>
           </div>
+           }
+          
 
           {/* Campaign Overview */}
           <div className="bg-[#F1F7FF] w-full h-fit flex flex-col  py-[1.5rem] font-inter px-[2.5rem] rounded-lg">

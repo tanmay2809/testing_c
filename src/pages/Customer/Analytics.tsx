@@ -88,7 +88,7 @@ const dataForBar = {
       label: "Customer Visits",
       data: [12, 19],
       backgroundColor: ["#FB7311", "#FFC700"],
-      barThickness: 80,
+      barThickness: 70,
       borderRadius: {
         topLeft: 10,
         topRight: 10,
@@ -448,9 +448,9 @@ const Analytics: React.FC = () => {
         </div>
 
         {/*Customer visit weekends vs weekdays */}
-        <div className="lg:flex gap-4  font-inter">
-          <div className="bg-[#F1F7FF] rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4">
-            <div>
+        <div className="lg:flex gap-4 w-full h-fit  font-inter">
+          <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-x-hidden">
+            <div className="w-full h-full">
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 Customer Visit
                 <div
@@ -465,13 +465,13 @@ const Analytics: React.FC = () => {
               </h3>
               <p className="text-base font-medium">Weekdays vs Weekends</p>
             </div>
-            <div className="relative flex justify-center items-center mb-4">
-              <div className="w-full h-full">
+            <div className=" w-full h-fit flex absolute left-4 top-[5.6rem]  ">
+              <div className="w-full h-full ">
                 <BarChart
                   data={dataForBar}
                   options={optionsForBar}
-                  width={200}
-                  height={75}
+                  width={160}
+                  height={80}
                 />
               </div>
             </div>
