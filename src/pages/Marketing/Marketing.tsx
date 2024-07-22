@@ -7,6 +7,9 @@ import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 //other components
 import CampaignPricing from "../../component/Marketing/CampaignPricing";
 
+//svg
+import doubleArrow from "/doubleArrow.svg";
+
 const Marketing = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,30 +36,7 @@ const Marketing = () => {
               onClick={togglePricing}
             >
               Pricing
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1.66602 2L8.53394 9L1.66602 16"
-                  stroke="#64748B"
-                  strokeWidth="3"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8.79883 2L15.6668 9L8.79883 16"
-                  stroke="#64748B"
-                  strokeWidth="3"
-                  strokeMiterlimit="10"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <img src={doubleArrow}/>
             </button>
             <button
               onClick={() => navigate("/createcampaign")}

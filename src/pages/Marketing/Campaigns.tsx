@@ -21,7 +21,11 @@ import ConfirmCampaign from "./ConfirmCampaign";
 //toastify
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import FormattingControls from "./FormattingControls";
+import FormattingControls from "../../component/Marketing/FormattingControls";
+
+//svg
+import booking from "/booking.svg";
+import utility from "/utility.svg";
 
 interface RadioOption {
   label: string;
@@ -37,8 +41,7 @@ type SectionStyles = {
   color: string;
   bold: boolean;
   italic: boolean;
-  underline: boolean;
-  linethrough: boolean;
+
 };
 
 type StylesState = {
@@ -71,22 +74,18 @@ const Campaigns: React.FC = () => {
       color: "#000000",
       bold: false,
       italic: false,
-      underline: false,
-      linethrough: false,
+
     },
     body: {
       color: "#000000",
       bold: false,
       italic: false,
-      underline: false,
-      linethrough: false,
+
     },
     footer: {
       color: "#000000",
       bold: false,
       italic: false,
-      underline: false,
-      linethrough: false,
     },
   });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -228,12 +227,12 @@ const Campaigns: React.FC = () => {
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
           <div className="bg-white rounded-lg p-1 w-full ">
             {!Confirmation && (
-              <div className="bg-white">
+              <div className="bg-white sticky pt-[1.6rem] top-[4rem] ">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold mb-1">
                     Template Preview
                   </h2>
-                  <div className="flex gap-2">
+                  <div className="flex gap-6">
                     <Link to="/marketing">
                       <button className=" text-[#E61856] bg-[#FDF1F1] p-2 rounded-lg">
                         Cancel
@@ -266,18 +265,7 @@ const Campaigns: React.FC = () => {
                       <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
                         <div className="flex items-center gap-3">
                           <div className="bg-[#FFCF27] p-4 rounded-lg">
-                            <svg
-                              width="24"
-                              height="25"
-                              viewBox="0 0 24 25"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M9.98821 16.9716L6.59998 17.9245L7.83527 22.3363C8.08233 23.2186 8.99998 23.8186 10.0235 23.5716C10.9764 23.3245 11.5059 22.3363 11.2588 21.3833L9.98821 16.9716ZM20.4 12.5598C21.7764 11.9951 22.5529 10.4422 22.1647 8.95982C21.7764 7.47746 20.2941 6.55982 18.8117 6.80688L17.4706 2.00688C17.2588 1.30099 16.5529 0.912759 15.8823 1.08923C15.1764 1.30099 14.7882 2.00688 14.9647 2.67746L19.2353 18.0304C19.4117 18.701 20.1176 19.1245 20.8235 18.9481C21.5294 18.7716 21.9176 18.0304 21.7059 17.3598L20.4 12.5598ZM8.36468 8.99511C8.2588 9.10099 8.22351 9.20688 8.2588 9.34805L10.0588 15.8775C10.0941 16.0186 10.2 16.0892 10.3059 16.1245L18.4941 18.101L14.3294 3.0657L8.36468 8.99511ZM9.42351 16.0539C7.55292 9.20688 7.55292 9.55982 7.58821 9.17158L4.41174 10.0539C4.12939 10.1245 3.88233 10.3363 3.74115 10.5833C3.63527 10.7598 3.59998 10.9363 3.59998 11.1481C2.2588 11.6775 1.44704 13.1951 1.87057 14.6422C2.22351 15.9481 3.38821 16.7951 4.6941 16.7951C4.87057 16.7951 5.01174 16.7951 5.18821 16.7598C5.36468 17.1128 5.75292 17.3245 6.14115 17.3245C6.24704 17.3245 6.35292 17.3245 6.42351 17.2892L9.59998 16.4069C9.4941 16.2657 9.42351 16.1598 9.42351 16.0539Z"
-                                fill="#404040"
-                              />
-                            </svg>
+                           <img src={booking}/>
                           </div>
                           <div>
                             <h3 className="text-xl font-semibold mb-2">
@@ -293,18 +281,7 @@ const Campaigns: React.FC = () => {
                       <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
                         <div className="flex items-center gap-3">
                           <div className="bg-[#FFA858] p-4 rounded-lg">
-                            <svg
-                              width="24"
-                              height="25"
-                              viewBox="0 0 24 25"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M21.443 17.3675C21.233 16.9925 20.978 16.6175 20.693 16.22C20.0148 15.3731 19.5447 14.379 19.3205 13.3175L19.0055 8.8925C18.818 5.465 16.8155 2 12.833 2H11.168C7.18548 2 5.16798 5.465 4.96548 8.885L4.65048 13.3175C4.42721 14.3884 3.95726 15.3925 3.27798 16.25C3.02298 16.64 2.76798 17 2.59548 17.3375C2.41035 17.586 2.29823 17.8812 2.27173 18.1899C2.24523 18.4986 2.3054 18.8086 2.44548 19.085C2.60891 19.3753 2.84968 19.6145 3.14099 19.776C3.4323 19.9375 3.76272 20.0151 4.09548 20H9.88548C9.76213 20.3398 9.7225 20.7044 9.76993 21.0628C9.81736 21.4212 9.95047 21.763 10.158 22.059C10.3655 22.3551 10.6413 22.5968 10.962 22.7636C11.2827 22.9305 11.6389 23.0176 12.0005 23.0176C12.362 23.0176 12.7182 22.9305 13.039 22.7636C13.3597 22.5968 13.6355 22.3551 13.843 22.059C14.0505 21.763 14.1836 21.4212 14.231 21.0628C14.2785 20.7044 14.2388 20.3398 14.1155 20H19.9055C20.2413 20.0122 20.5738 19.9302 20.8654 19.7632C21.1571 19.5961 21.3961 19.3508 21.5555 19.055C21.6957 18.7911 21.7594 18.4934 21.7395 18.1952C21.7197 17.8971 21.617 17.6104 21.443 17.3675ZM12.7505 20.75C12.7505 20.8983 12.7065 21.0433 12.6241 21.1667C12.5417 21.29 12.4245 21.3861 12.2875 21.4429C12.1504 21.4997 11.9997 21.5145 11.8542 21.4856C11.7087 21.4566 11.575 21.3852 11.4702 21.2803C11.3653 21.1754 11.2938 21.0418 11.2649 20.8963C11.236 20.7508 11.2508 20.6 11.3076 20.463C11.3643 20.3259 11.4605 20.2088 11.5838 20.1264C11.7071 20.044 11.8521 20 12.0005 20C12.1994 20 12.3902 20.079 12.5308 20.2197C12.6715 20.3603 12.7505 20.5511 12.7505 20.75ZM20.2505 18.3725C20.2505 18.4325 20.123 18.5 19.9355 18.5H4.09548C3.90798 18.5 3.81048 18.4325 3.78048 18.3725C3.75048 18.3125 3.78048 18.23 3.85548 18.11C4.05798 17.765 4.29048 17.405 4.53048 17.045C5.28048 15.965 6.03048 14.735 6.14298 13.4225L6.46548 8.99C6.62298 6.455 7.95048 3.5 11.168 3.5H12.833C16.0505 3.5 17.378 6.455 17.5355 8.9975L17.858 13.4225C17.948 14.75 18.7505 15.965 19.5005 17.045C19.7405 17.405 19.973 17.795 20.213 18.1775C20.2369 18.2032 20.253 18.2352 20.2597 18.2696C20.2663 18.3041 20.2631 18.3397 20.2505 18.3725Z"
-                                fill="black"
-                              />
-                            </svg>
+                            <img src={utility}/>
                           </div>
                           <div>
                             <h3 className="text-xl font-semibold mb-2">
@@ -424,16 +401,7 @@ const Campaigns: React.FC = () => {
                                   fontStyle: styles.header.italic
                                     ? "italic"
                                     : "",
-                                  textDecoration: `
-                                    ${
-                                      styles.header.underline ? "underline" : ""
-                                    } 
-                                    ${
-                                      styles.header.linethrough
-                                        ? " line-through"
-                                        : ""
-                                    }
-                                  `,
+                                  
                                 }}
                               />
                             </h2>
@@ -479,14 +447,7 @@ const Campaigns: React.FC = () => {
                                     ? "bold"
                                     : "normal",
                                   fontStyle: styles.body.italic ? "italic" : "",
-                                  textDecoration: `
-                                    ${styles.body.underline ? "underline" : ""} 
-                                    ${
-                                      styles.body.linethrough
-                                        ? " line-through"
-                                        : ""
-                                    }
-                                  `,
+                                  
                                 }}
                               />
                             </h2>
@@ -533,16 +494,7 @@ const Campaigns: React.FC = () => {
                                   fontStyle: styles.footer.italic
                                     ? "italic"
                                     : "",
-                                  textDecoration: `
-                                    ${
-                                      styles.footer.underline ? "underline" : ""
-                                    } 
-                                    ${
-                                      styles.footer.linethrough
-                                        ? " line-through"
-                                        : ""
-                                    }
-                                  `,
+                                  
                                 }}
                               />
                             </h2>
@@ -794,7 +746,7 @@ const Campaigns: React.FC = () => {
                 )}
               </div>
 
-              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-20 lg:top-40 md:right-11 md:top-48 sm:right-6 sm:top-56 h-fit">
+              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[11rem] md:right-11 md:top-48 sm:right-6 sm:top-56 h-fit">
                 <img
                   src={screen}
                   alt="Phone Screen"
@@ -817,16 +769,7 @@ const Campaigns: React.FC = () => {
                         color: styles.header.color,
                         fontWeight: styles.header.bold ? "bold" : "normal",
                         fontStyle: styles.header.italic ? "italic" : "",
-                        textDecoration: `
-                                    ${
-                                      styles.header.underline ? "underline" : ""
-                                    } 
-                                    ${
-                                      styles.header.linethrough
-                                        ? " line-through"
-                                        : ""
-                                    }
-                                  `,
+                        
                       }}
                     >
                       {header}
@@ -837,14 +780,7 @@ const Campaigns: React.FC = () => {
                         color: styles.body.color,
                         fontWeight: styles.body.bold ? "bold" : "normal",
                         fontStyle: styles.body.italic ? "italic" : "",
-                        textDecoration: `
-                                    ${styles.body.underline ? "underline" : ""} 
-                                    ${
-                                      styles.body.linethrough
-                                        ? " line-through"
-                                        : ""
-                                    }
-                                  `,
+                        
                       }}
                     >
                       {body}
@@ -855,16 +791,7 @@ const Campaigns: React.FC = () => {
                         color: styles.footer.color,
                         fontWeight: styles.footer.bold ? "bold" : "normal",
                         fontStyle: styles.footer.italic ? "italic" : "",
-                        textDecoration: `
-                                    ${
-                                      styles.footer.underline ? "underline" : ""
-                                    } 
-                                    ${
-                                      styles.footer.linethrough
-                                        ? " line-through"
-                                        : ""
-                                    }
-                                  `,
+                        
                       }}
                     >
                       {footer}

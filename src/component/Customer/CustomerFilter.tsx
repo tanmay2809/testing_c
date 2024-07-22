@@ -50,8 +50,8 @@ const CustomerFilter: React.FC<FilterProps> = ({
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
   if (!isVisible) return null;
-  console.log(originalData)
-  
+  console.log(originalData);
+
   //add or remove segment
   const toggleSegment = (segment: string) => {
     const updatedSegmentation = segmentation.includes(segment)
@@ -96,21 +96,19 @@ const CustomerFilter: React.FC<FilterProps> = ({
   //apply
   const handleApply = () => {
     const data: string[] = [];
+
+    // Push appropriate filters into the data array
     if (visitFilter === "Custom") {
       data.push(...segmentation, ...gender, customDateVisit, nonVisitFilter);
-      filterData(data);
-      onClose();
-      return;
-    }
-    if (nonVisitFilter === "Custom") {
+    } else if (nonVisitFilter === "Custom") {
       data.push(...segmentation, ...gender, visitFilter, customDateNotVisit);
-      filterData(data);
-      onClose();
-      return;
+    } else {
+      data.push(...segmentation, ...gender, visitFilter, nonVisitFilter);
     }
-    data.push(...segmentation, ...gender, visitFilter, nonVisitFilter);
+
     filterData(data);
 
+    // Filtering logic for customer data
     const filteredData = customerData?.filter((customer) => {
       const visitDates = customer?.visits?.map((visit) => new Date(visit));
       const now = new Date();
@@ -129,7 +127,9 @@ const CustomerFilter: React.FC<FilterProps> = ({
           );
         } else if (visitFilter === "Custom") {
           const customDate = new Date(customDateVisit);
-          return visitDates.some((visit) => visit == customDate);
+          return visitDates.some(
+            (visit) => visit.getTime() === customDate.getTime()
+          );
         }
         return true;
       };
@@ -148,7 +148,9 @@ const CustomerFilter: React.FC<FilterProps> = ({
           );
         } else if (nonVisitFilter === "Custom") {
           const customDate = new Date(customDateNotVisit);
-          return visitDates.every((visit) => visit < customDate);
+          return visitDates.every(
+            (visit) => visit.getTime() < customDate.getTime()
+          );
         }
         return true;
       };
@@ -163,6 +165,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
         ? gender.includes(customer?.userId?.gender)
         : true;
 
+      // Return true if the customer passes all filters
       return (
         visitFilterCheck() &&
         nonVisitFilterCheck() &&
@@ -170,9 +173,10 @@ const CustomerFilter: React.FC<FilterProps> = ({
         genderCheck
       );
     });
-    setCustomerData(filteredData);
-    // filterData(filteredData);
 
+    setCustomerData(filteredData);
+
+    // Close the filter modal with a slight delay
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
@@ -222,7 +226,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
                 onClick={() => {
                   if (visitFilter !== "Visited in Last 30 days") {
                     setVisitFilter("Visited in Last 30 days");
-                  }else{
+                  } else {
                     setVisitFilter("");
                   }
                 }}
@@ -238,7 +242,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
                 onClick={() => {
                   if (visitFilter !== "Visited in Last 60 days") {
                     setVisitFilter("Visited in Last 60 days");
-                  }else{
+                  } else {
                     setVisitFilter("");
                   }
                 }}
@@ -253,7 +257,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
                   onClick={() => {
                     if (visitFilter !== "Custom") {
                       setVisitFilter("Custom");
-                    }else{
+                    } else {
                       setVisitFilter("");
                     }
                   }}
@@ -261,14 +265,17 @@ const CustomerFilter: React.FC<FilterProps> = ({
                   Custom
                 </button>
                 {visitFilter === "Custom" && (
-                  <input
-                    type="date"
-                    id="customDateInput"
-                    value={customDateVisit}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setCustomDateVisit(e.target.value)
-                    }
-                  />
+                  <div>
+                    <input
+                      className="absolute right-36 top-[8.5rem] w-10 opacity-0"
+                      type="date"
+                      id="customDateInput"
+                      value={customDateVisit}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setCustomDateVisit(e.target.value)
+                      }
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -286,7 +293,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
                 onClick={() => {
                   if (nonVisitFilter !== "Visited in Last 30 days") {
                     setNonVisitFilter("Visited in Last 30 days");
-                  }else{
+                  } else {
                     setNonVisitFilter("");
                   }
                 }}
@@ -302,7 +309,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
                 onClick={() => {
                   if (nonVisitFilter !== "Visited in Last 60 days") {
                     setNonVisitFilter("Visited in Last 60 days");
-                  }else{
+                  } else {
                     setNonVisitFilter("");
                   }
                 }}
@@ -317,7 +324,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
                   onClick={() => {
                     if (nonVisitFilter !== "Custom") {
                       setNonVisitFilter("Custom");
-                    }else{
+                    } else {
                       setNonVisitFilter("");
                     }
                   }}
