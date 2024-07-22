@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { MenuItem } from "./AddMenuItem";
+import { SubcategoryItem } from "../../pages/Menu";
+import axios from "axios";
+import { baseUrl } from "../../main";
 
 // icons
 import { BiFoodTag } from "react-icons/bi";
@@ -7,15 +10,18 @@ import { FaPlus } from "react-icons/fa6";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline, MdOutlineTaskAlt } from "react-icons/md";
-import axios from "axios";
-import { baseUrl } from "../../main";
 
 interface EditMenuProps {
   setIsEditMenu: (isOpen: boolean) => void;
   item: MenuItem;
+  categories: { _id: string; name: string; subcategory: SubcategoryItem[] }[];
 }
 
-const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
+const EditMenuItem: React.FC<EditMenuProps> = ({
+  setIsEditMenu,
+  item,
+  categories,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string[]>([]);
 
@@ -35,7 +41,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
   useEffect(() => {
     setFormData({
       name: item.name,
-      image: item.image,
+      image: item.image.map((imageUrl) => ({ url: imageUrl })),
       description: item.description,
       price: item.price,
       category: item.category,
@@ -48,7 +54,9 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
       addone: [],
       type: item.type,
     });
-    setImage(item.image.map((img) => img.url));
+    setImage((prevImages) => [...prevImages, ...item.image]);
+    console.log(image);
+    console.log(formData);
   }, [item]);
 
   const [addonDetails, setAddonDetails] = useState<
@@ -65,10 +73,6 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
       image: prevFormData.image.filter((_, i) => i !== index),
     }));
   };
-
-      console.log(formData);
-      console.log(image);
-
 
   // addon functions
   const addAddOn = () => {
@@ -213,7 +217,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
     <div className="overflow-y-scroll no-scrollbar">
       <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
         {/* save and cancel buttons */}
-        <div className="w-[35%] flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
+        <div className="w-full flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold">
             Edit Menu Item
           </p>
@@ -261,19 +265,24 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                 htmlFor="category"
                 className="block text-gray-700 text-[1.2rem] font-inter mb-2"
               >
-                Add Category <span className="text-[#ED4F4F]">*</span>
+                Add Sub Category <span className="text-[#ED4F4F]">*</span>
               </label>
-              <select
-                className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
-                id="category"
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-              >
-                <option value="">Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>
+              {categories?.map((category) => (
+                <select
+                  className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
+                  id="category"
+                  name="category"
+                  value={formData.subcategory}
+                  onChange={handleChange}
+                >
+                  <option value="">Select</option>
+                  {category.subcategory.map((subcategory) => (
+                    <option value={subcategory.name} key={subcategory._id}>
+                      {subcategory.name}
+                    </option>
+                  ))}
+                </select>
+              ))}
             </div>
           </div>
 
@@ -521,7 +530,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({ setIsEditMenu, item }) => {
                     />
                     <span
                       onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 text-red-600"
+                      className="absolute -top-2 -right-2 text-red-600 hover:cursor-pointer"
                     >
                       <IoCloseCircle size={25} />
                     </span>

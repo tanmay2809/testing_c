@@ -42,7 +42,8 @@ const SubCategoryDeleteModal: React.FC<DeleteProps> = ({
         console.log(JSON.stringify(response.data));
         setLoading(false);
         setModal(false);
-        toast.success("Subcategory Deleted");
+        window.location.reload();
+        toast.error("Subcategory Deleted");
       })
       .catch((error) => {
         console.log(error);

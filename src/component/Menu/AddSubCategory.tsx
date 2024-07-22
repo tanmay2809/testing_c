@@ -22,8 +22,8 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
   setIsSubCategoryOpen,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
-
   const [image, setImage] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
 
   const [formData, setFormData] = useState<SubCategory>({
     name: "",
@@ -45,6 +45,28 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
 
   // file change handler
   const handleImageChange = async (file: File) => {
+    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+
+    if (!validTypes.includes(file.type)) {
+      setError("Invalid file type. Only .jpg, .jpeg, .png are allowed.");
+      return;
+    }
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    const isValidSize = await new Promise((resolve) => {
+      img.onload = () => {
+        if (img.width < 300 || img.height < 300) {
+          setError("Image size must be at least 300x300.");
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      };
+    });
+
+    if (!isValidSize) return;
+
     const imageFormData = new FormData();
     imageFormData.append("file", file);
 
@@ -59,13 +81,12 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
       const response = await axios.request(config);
       if (response.data.status && response.data.data) {
         const url = response.data.data[0].url;
-
-        // Update state with the new image URL
         setImage(url);
         setFormData((prevFormData) => ({
           ...prevFormData,
           image: url,
         }));
+        setError("");
       }
     } catch (error) {
       console.log(error);
@@ -101,6 +122,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
         console.log(JSON.stringify(response.data));
         setLoading(false);
         setIsSubCategoryOpen(false);
+        window.location.reload();
         toast.success("Subcategory Added");
       })
       .catch((error) => {
@@ -112,7 +134,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
     <div className="overflow-y-scroll no-scrollbar h-full">
       <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
         {/* save and cancel buttons */}
-        <div className="w-[35%] flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
+        <div className="w-full flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold font-Roboto">
             Add Sub-Category
           </p>
@@ -194,7 +216,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
                     <img src={image} alt="uploaded"></img>
                     <button
                       onClick={removeImage}
-                      className="absolute -top-2 -right-2 text-red-600"
+                      className="absolute -top-2 -right-2 text-red-600 hover:cursor-pointer"
                     >
                       <IoCloseCircle size={24} />
                     </button>
@@ -209,6 +231,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
                 <p className="flex flex-row text-[0.8rem] gap-2">
                   Image format .jpg, .jpeg, .png and minimum size 300x300
                 </p>
+                {error && <p className="text-[0.9rem] text-red-600">{error}</p>}
               </div>
             </div>
           </div>

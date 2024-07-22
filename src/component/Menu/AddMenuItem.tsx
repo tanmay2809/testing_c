@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../../main";
 import { SubcategoryItem } from "../../pages/Menu";
+import { toast } from "react-toastify";
 
 // icons
 import { BiFoodTag } from "react-icons/bi";
@@ -10,7 +11,6 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { MdOutlineTaskAlt } from "react-icons/md";
-import { toast } from "react-toastify";
 
 export interface MenuItem {
   _id?: string;
@@ -58,6 +58,8 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
   >([{ name: "", additionalPrice: "", id: "" }]);
 
   const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
+
+  const [error, setError] = useState<string>("");
 
   // remove image function
   const removeImage = (index: number) => {
@@ -110,9 +112,37 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
   };
 
   const handleImageChange = async (files: FileList) => {
+    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
     const uploadedImageUrls: string[] = [];
+    let hasError = false;
+
+    setError("");
 
     for (const file of Array.from(files)) {
+      if (!validTypes.includes(file.type)) {
+        setError("Invalid file type. Only .jpg, .jpeg, .png are allowed.");
+        hasError = true;
+        break;
+      }
+
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      const isValidSize = await new Promise((resolve) => {
+        img.onload = () => {
+          if (img.width < 300 || img.height < 300) {
+            setError("Image size must be at least 300x300.");
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        };
+      });
+
+      if (!isValidSize) {
+        hasError = true;
+        break;
+      }
+
       const imageFormData = new FormData();
       imageFormData.append("file", file);
 
@@ -134,17 +164,21 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
         }
       } catch (error) {
         console.log(error);
+        hasError = true;
+        break;
       }
     }
 
-    setImage((prevImages) => [...prevImages, ...uploadedImageUrls]);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      image: [
-        ...prevFormData.image,
-        ...uploadedImageUrls.map((url) => ({ url })),
-      ],
-    }));
+    if (!hasError) {
+      setImage((prevImages) => [...prevImages, ...uploadedImageUrls]);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        image: [
+          ...prevFormData.image,
+          ...uploadedImageUrls.map((url) => ({ url })),
+        ],
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -217,7 +251,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
     <div className="overflow-y-scroll no-scrollbar">
       <form onSubmit={handleSubmit} className="bg-[#EEF5FF] ">
         {/* save and cancel buttons */}
-        <div className="w-[35%] flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
+        <div className="w-full flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4 px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold font-inter">
             Add Menu Item
           </p>
@@ -270,10 +304,13 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                   name="subcategory"
                   value={formData.subcategory}
                   onChange={handleChange}
+                  key={category._id}
                 >
                   <option value="">Select</option>
                   {category.subcategory.map((subcategory) => (
-                    <option value={subcategory._id}>{subcategory.name}</option>
+                    <option value={subcategory._id} key={subcategory._id}>
+                      {subcategory.name}
+                    </option>
                   ))}
                 </select>
               ))}
@@ -507,6 +544,9 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                   <p className="flex flex-row text-[0.8rem] gap-2">
                     Image format .jpg, .jpeg, .png and minimum size 300x300
                   </p>
+                  {error && (
+                    <p className="text-[0.9rem] text-red-600">{error}</p>
+                  )}
                 </div>
               </div>
               <div className="flex flex-row gap-4">
@@ -522,7 +562,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                     />
                     <span
                       onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 text-red-600"
+                      className="absolute -top-2 -right-2 text-red-600 hover:cursor-pointer"
                     >
                       <IoCloseCircle size={25} />
                     </span>

@@ -32,6 +32,7 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
   const [image, setImage] = useState<string | undefined>(
     subcategoryToEdit?.image
   );
+  const [error, setError] = useState<string>("");
 
   const [formData, setFormData] = useState<EditSubCategory>({
     name: subcategoryToEdit?.name,
@@ -61,6 +62,28 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
 
   // file change handler
   const handleImageChange = async (file: File) => {
+    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+
+    if (!validTypes.includes(file.type)) {
+      setError("Invalid file type. Only .jpg, .jpeg, .png are allowed.");
+      return;
+    }
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    const isValidSize = await new Promise((resolve) => {
+      img.onload = () => {
+        if (img.width < 300 || img.height < 300) {
+          setError("Image size must be at least 300x300.");
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      };
+    });
+
+    if (!isValidSize) return;
+
     const imageFormData = new FormData();
     imageFormData.append("file", file);
 
@@ -80,6 +103,7 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
           ...prevFormData,
           image: url,
         }));
+        setError("");
       }
     } catch (error) {
       console.log(error);
@@ -118,7 +142,7 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
     <div className="h-full overflow-y-scroll no-scrollbar">
       <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
         {/* save and cancel buttons */}
-        <div className="w-[35%] flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
+        <div className="w-full flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold font-Roboto">
             Edit Sub-Category
           </p>
@@ -215,6 +239,7 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
                 <p className="flex flex-row text-[0.8rem] gap-2">
                   Image format .jpg, .jpeg, .png and minimum size 300x300
                 </p>
+                {error && <p className="text-[0.9rem] text-red-600">{error}</p>}
               </div>
             </div>
           </div>
