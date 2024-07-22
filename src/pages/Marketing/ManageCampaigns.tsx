@@ -12,7 +12,7 @@ const ManageCampaigns: React.FC = () => {
 
   return (
     <div className="w-full h-fit relative">
-      <div className="w-[93%] h-fit px-[2rem] ml-[7%]">
+      <div className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%]">
         <div className="flex items-center justify-between p-4 -mt-2">
           {/* Buttons div */}
           <div className=" flex items-center gap-3">

@@ -118,7 +118,7 @@ const Stores = () => {
 
   return (
     <div className="w-full h-fit relative">
-      <div className="w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center gap-2 justify-center ml-[7%]">
+      <div className="lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center gap-2 justify-center lg:ml-[7%]">
         <div className="w-full flex flex-row justify-between">
           <div className="flex flex-col -mt-3">
             <h1 className="text-2xl font-[500]">My stores</h1>

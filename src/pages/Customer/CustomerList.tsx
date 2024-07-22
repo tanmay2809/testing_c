@@ -266,7 +266,7 @@ const CustomerList: React.FC = () => {
   console.log(segmentationVisible);
   return ( 
     <div className="w-full h-fit relative ">
-      <div className=" w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 ml-[7%] ">
+      <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         {/*Top div */}
         <div className="mb-4 flex justify-between items-center font-inter">
           <div className="relative flex items-center w-[410px]">

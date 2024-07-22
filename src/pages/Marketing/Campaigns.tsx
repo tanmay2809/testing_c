@@ -224,7 +224,7 @@ const Campaigns: React.FC = () => {
 
   return (
     <div className="w-full h-fit relative">
-      <div className="w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 ml-[7%] ">
+      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
           <div className="bg-white rounded-lg p-1 w-full ">
             {!Confirmation && (
