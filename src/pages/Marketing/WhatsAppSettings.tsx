@@ -5,10 +5,12 @@ import phone from "../../assets/Pixel 6 Pro.png";
 import whatsapp from "../../assets/whatsapp.png";
 
 const WhatsAppSettings: React.FC = () => {
-  const [customChecked, setCustomChecked] = useState(false);
+  const [selectedCheckbox, setSelectedCheckbox] = useState<string | null>(null);
 
-  const handleCustomChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomChecked(event.target.checked);
+  const handleCheckboxChange = (checkboxName: string) => {
+    setSelectedCheckbox(
+      checkboxName === selectedCheckbox ? null : checkboxName
+    );
   };
   return (
     <div className="w-full h-fit relative">
@@ -24,12 +26,13 @@ const WhatsAppSettings: React.FC = () => {
                 </p>
               </div>
 
-              <div className="flex justify-start gap-9">
+              <div className="flex justify-start gap-9 flex-wrap ">
                 <label className="inline-flex items-center mr-6">
                   <input
                     type="checkbox"
-                    checked={!customChecked}
                     className="form-checkbox text-[#004AAD]"
+                    checked={selectedCheckbox === "SnackBAE"}
+                    onChange={() => handleCheckboxChange("SnackBAE")}
                   />
                   <span className="ml-2">SnackBAE</span>
                 </label>
@@ -37,8 +40,8 @@ const WhatsAppSettings: React.FC = () => {
                   <input
                     type="checkbox"
                     className="form-checkbox text-[#004AAD]"
-                    checked={customChecked}
-                    onChange={handleCustomChange}
+                    checked={selectedCheckbox === "Custom"}
+                    onChange={() => handleCheckboxChange("Custom")}
                   />
                   <span className="ml-2">Custom</span>
                   <span className="ml-2 text-base text-white bg-[#004AAD] px-2 py-1 rounded-lg">
@@ -48,7 +51,7 @@ const WhatsAppSettings: React.FC = () => {
               </div>
             </div>
 
-            {customChecked && (
+            {selectedCheckbox==="Custom" && (
               <div className=" flex justify-between bg-[#F1F7FF] p-6 rounded-2xl">
                 <p className="text-lg font-medium ">Manage WhatsApp Profile</p>
                 <svg
@@ -101,12 +104,12 @@ const WhatsAppSettings: React.FC = () => {
                 </a>
               </div>
             </div>
-            {!customChecked && (
+            {selectedCheckbox==="SnackBAE" && (
               <div className=" flex justify-between items-center bg-[#F1F7FF] p-4 rounded-2xl">
                 <p className="text-lg font-medium ">
                   Want to connect your custom number?
                 </p>
-                <button className="flex items-center gap-2 bg-[#60D66A] text-white py-2 px-3 rounded-lg">
+                <button className="flex items-center lg:gap-2 bg-[#60D66A] text-white py-2 lg:px-3 md:px-1 rounded-lg">
                   <img src={whatsapp} className="w-7" />
                   Connect Number
                 </button>

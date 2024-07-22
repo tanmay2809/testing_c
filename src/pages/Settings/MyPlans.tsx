@@ -6,6 +6,19 @@ import PlansComp from "../../component/PlansComp";
 const MyPlans = () => {
   const [switchTab, setSwitchTab] = useState<string>("quarterly");
 
+  const scrollToElement = (id: string) => {
+    const element = document.getElementById(id);
+    const additionalOffset = 80;
+    if (element) {
+      const elementPosition =
+        element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - additionalOffset;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+    } else {
+      console.warn(`Element with ID "${id}" not found.`);
+    }
+  };
+
   return (
     <>
       <div className="w-full h-fit relative font-inter">
@@ -17,7 +30,10 @@ const MyPlans = () => {
                 <p className="text-[1rem]">Current Plan</p>
               </div>
               <div className="w-fit h-fit">
-                <button className="w-[8rem] flex flex-row justify-center items-center gap-2 bg-[#004AAD] text-white  py-1 text-lg font-[500] rounded-[0.5rem]">
+                <button
+                  onClick={() => scrollToElement("upgrade")}
+                  className="w-[8rem] flex flex-row justify-center items-center gap-2 bg-[#004AAD] text-white  py-1 text-lg font-[500] rounded-[0.5rem]"
+                >
                   Upgrade
                 </button>
                 <svg
@@ -62,27 +78,19 @@ const MyPlans = () => {
                 <h1 className="text-base font-semibold">15 Days</h1>
               </div>
               <div className="flex flex-col">
-                <p className=" text-[#616161] font-[400]">
-                  Starting Date
-                </p>
+                <p className=" text-[#616161] font-[400]">Starting Date</p>
                 <h1 className="text-base font-semibold">01-03-2023</h1>
               </div>
               <div className="flex flex-col">
-                <p className=" text-[#616161] font-[400]">
-                  Next Billing Date
-                </p>
+                <p className=" text-[#616161] font-[400]">Next Billing Date</p>
                 <h1 className="text-base font-semibold">15-03-2023</h1>
               </div>
               <div className="flex flex-col">
-                <p className=" text-[#616161] font-[400]">
-                  Payment status
-                </p>
+                <p className=" text-[#616161] font-[400]">Payment status</p>
                 <h1 className="text-base font-semibold">Pending</h1>
               </div>
               <div className="flex flex-col">
-                <p className=" text-[#616161] font-[400]">
-                  Status
-                </p>
+                <p className=" text-[#616161] font-[400]">Status</p>
                 <h1 className="text-base font-semibold">
                   <span>Trial Period</span> (15 Days)
                 </h1>
@@ -115,6 +123,7 @@ const MyPlans = () => {
               </div>
             </div>
           </div>
+          <div id="upgrade"></div>
           <PlansComp switch={switchTab} />
         </div>
       </div>

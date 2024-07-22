@@ -156,8 +156,8 @@ const Billing = () => {
               }`}
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              <div className="w-full relative px-6 py-4 bg-white rounded-lg shadow h-fit">
-                <div className=" sticky bg-white top-0 flex flex-row justify-between py-3 border-b border-b-gray-400">
+              <div className="w-full relative  bg-white rounded-lg shadow h-fit">
+                <div className="px-6  sticky bg-white top-0 flex flex-row justify-between py-3 border-b border-b-gray-400">
                   <div className="flex flex-col">
                     <h1 className="text-[1.5rem] font-bold">
                       Edit Billing Details
@@ -171,7 +171,7 @@ const Billing = () => {
                     className="text-[2.5rem] hover:cursor-pointer"
                   />
                 </div>
-                <div className="flex flex-col mt-2 h-[88%] justify-evenly">
+                <div className="px-6 py-4 flex flex-col mt-2 h-[88%] justify-evenly">
                   <form
                     onSubmit={submitHandler}
                     className="flex flex-col gap-2 justify-evenly h-full"

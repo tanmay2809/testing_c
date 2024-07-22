@@ -322,8 +322,8 @@ const Stores = () => {
             }`}
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            <div className=" w-full relative px-6 py-3 bg-white rounded-lg shadow h-fit">
-              <div className="flex flex-row justify-between sticky top-0 bg-white pb-2 border-b border-b-gray-400 w-full">
+            <div className=" w-full relative  bg-white rounded-lg shadow h-fit">
+              <div className="px-6 py-3 flex flex-row justify-between sticky top-0 bg-white pb-2 border-b border-b-gray-400 w-full">
                 <div className="flex flex-col">
                   <h1 className="text-2xl font-bold">Edit Store Details</h1>
                   <p className="text-base font-medium">
@@ -337,7 +337,7 @@ const Stores = () => {
                   className="text-4xl hover:cursor-pointer"
                 />
               </div>
-              <div className="flex flex-col  h-full">
+              <div className="flex flex-col px-6 py-3 h-full">
                 <form
                   className="flex flex-col gap-4  justify-evenly h-full"
                   onSubmit={handleSubmit}
@@ -597,7 +597,8 @@ const Stores = () => {
                           <input
                             type="text"
                             name="insta"
-                            value=""
+                            placeholder="Instagram link"
+                            value={formData.insta}
                             onChange={handleInputChange}
                             className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />
@@ -635,7 +636,8 @@ const Stores = () => {
                           <input
                             type="text"
                             name="facebook"
-                            value=""
+                            placeholder="Facebook link"
+                            value={formData.facebook}
                             onChange={handleInputChange}
                             className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />
@@ -672,7 +674,8 @@ const Stores = () => {
                           <input
                             type="text"
                             name="youtube"
-                            value=""
+                            placeholder="Youtube link"
+                            value={formData.youtube}
                             onChange={handleInputChange}
                             className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />
@@ -694,7 +697,8 @@ const Stores = () => {
                           <input
                             type="text"
                             name="googleReview"
-                            value=""
+                            placeholder="Google review"
+                            value={formData.googleReview}
                             onChange={handleInputChange}
                             className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />
@@ -703,8 +707,9 @@ const Stores = () => {
                           <img src={zomato} width="29" height="29" />
                           <input
                             type="text"
-                            name="googleReview"
-                            value=""
+                            placeholder="Zomato review"
+                            name="zomatoReview"
+                            value={formData.zomatoReview}
                             onChange={handleInputChange}
                             className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />

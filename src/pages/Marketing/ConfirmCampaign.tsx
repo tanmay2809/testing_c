@@ -5,7 +5,7 @@ interface ConfirmCampaignProps {
 }
 const ConfirmCampaign: React.FC<ConfirmCampaignProps> = ({backClick}) => {
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md h-[90%] flex flex-col justify-between">
+    <div className="p-6 bg-white rounded-lg shadow-md h-[80vh] flex flex-col justify-between">
       <div className="flex flex-col gap-4">
         <div className="flex gap-2 items-center p-4 bg-[#F5F9FF] rounded-lg text-black">
           <div className="flex-shrink-0">

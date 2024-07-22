@@ -49,7 +49,7 @@ const CampaignLibrary: React.FC = () => {
               </p>
             </div>
 
-            <div className=" absolute right-[5rem] -top-[.1rem] rotate-[13deg] ">
+            <div className=" absolute lg:right-[5rem] -top-[.1rem] rotate-[13deg] md:right-[2rem]  sm:right-[0.5rem]">
               <DotLottieReact
                 src="https://lottie.host/d4be8719-9a6c-4ad1-8cb8-46b28c108c50/b2zAzWhAdV.json"
                 autoplay

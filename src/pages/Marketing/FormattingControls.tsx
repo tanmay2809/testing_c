@@ -7,6 +7,8 @@ type SectionStyles = {
   color: string;
   bold: boolean;
   italic: boolean;
+  underline:boolean;
+  linethrough:boolean
 };
 
 type StylesState = {
@@ -54,10 +56,30 @@ const FormattingControls: React.FC<FormattingControlsProps> = ({
     }));
   };
 
+  const toggleUnderline=()=>{
+    setStyles((prevStyles) => ({
+      ...prevStyles,
+      [section]: {
+        ...prevStyles[section],
+        underline: !prevStyles[section].underline,
+      },
+    }));
+  }
+
+  const toggleLineThrough=()=>{
+    setStyles((prevStyles) => ({
+      ...prevStyles,
+      [section]: {
+        ...prevStyles[section],
+        linethrough: !prevStyles[section].linethrough,
+      },
+    }));
+  }
+
   return (
     <div className="flex items-center justify-between gap-2 mt-2 text-[#555555] text-sm">
-      <span>Characters: {content.length} /100</span>
-      <div className="flex items-center gap-2">
+      <span>Characters: {content.length} /{section==="header" && 100}{section==="body" && 1000}{section==="footer" && 200}</span>
+      <div className="flex items-center gap-2 flex-wrap justify-center">
         <button
           onClick={() =>
             setShowColorPicker(showColorPicker === section ? null : section)
@@ -66,7 +88,7 @@ const FormattingControls: React.FC<FormattingControlsProps> = ({
           style={{ backgroundColor: styles[section].color }}
         ></button>
         {showColorPicker === section && (
-          <div className={`absolute ${section==="header" && "z-10 top-[34rem]" } ${section==="body" && "z-10 top-[46rem]" } ${section==="footer" && "z-10 top-[58.6rem]" }`}>
+          <div className={`absolute ${section==="header" && "z-10 top-[47rem]" } ${section==="body" && "z-10 top-[59.5rem]" } ${section==="footer" && "z-10 top-[72rem]" }`}>
             <SketchPicker
               color={styles[section].color}
               onChange={(color) => handleColorChange(color)}
@@ -133,7 +155,7 @@ const FormattingControls: React.FC<FormattingControlsProps> = ({
             />
           </svg>
         </button>
-        <button className="border rounded p-1">
+        <button className="border rounded p-1" onClick={toggleUnderline}>
           <svg
             width="28"
             height="28"
@@ -147,7 +169,7 @@ const FormattingControls: React.FC<FormattingControlsProps> = ({
             />
           </svg>
         </button>
-        <button className="border rounded p-1">
+        <button className="border rounded p-1" onClick={toggleLineThrough}>
           <svg
             width="28"
             height="28"

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, ChangeEvent, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 //images
@@ -37,6 +37,8 @@ type SectionStyles = {
   color: string;
   bold: boolean;
   italic: boolean;
+  underline: boolean;
+  linethrough: boolean;
 };
 
 type StylesState = {
@@ -60,7 +62,7 @@ const CreateCampaigns: React.FC = () => {
   const [templateCheck, setTemplateCheck] = useState<string>("");
   const [header, setHeader] = useState<string>("Bon Appétit!");
   const [body, setBody] = useState<string>(
-    "Hey Customer's Nameenjoy our exclusive deals on thisweekend. Book now and enjoyexclusive offers."
+    "Hey Customer's Name enjoy our exclusive deals on this weekend."
   );
   const [footer, setFooter] = useState<string>("Thank You");
   const [loading, setLoading] = useState<boolean>(false);
@@ -69,10 +71,37 @@ const CreateCampaigns: React.FC = () => {
   const [selectedCampaign, setSelectedCampaign] = useState<string>("");
   const [campaignName, setCampaignName] = useState<string>("");
   const [styles, setStyles] = useState<StylesState>({
-    header: { color: "#000000", bold: false, italic: false },
-    body: { color: "#000000", bold: false, italic: false },
-    footer: { color: "#000000", bold: false, italic: false },
+    header: {
+      color: "#000000",
+      bold: false,
+      italic: false,
+      underline: false,
+      linethrough: false,
+    },
+    body: {
+      color: "#000000",
+      bold: false,
+      italic: false,
+      underline: false,
+      linethrough: false,
+    },
+    footer: {
+      color: "#000000",
+      bold: false,
+      italic: false,
+      underline: false,
+      linethrough: false,
+    },
   });
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"; // Reset the height
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set the height based on the scroll height
+    }
+    setSelectedImage(egImage);
+  }, []);
 
   const handleCreateCampaignCheckboxChange = (
     event: ChangeEvent<HTMLInputElement>
@@ -180,10 +209,6 @@ const CreateCampaigns: React.FC = () => {
   const handleDeleteButton = (id: number) => {
     setButtons(buttons.filter((button) => button.id !== id));
   };
-
-  useEffect(() => {
-    setSelectedImage(egImage);
-  }, []);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -503,20 +528,23 @@ const CreateCampaigns: React.FC = () => {
                           <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
                             <GiMeal className="text-gray-500" />
                             <h2 className="font-medium text-base w-full">
-                              <input
-                                type="text"
+                              <textarea
                                 id="name"
                                 placeholder="Enter the header"
                                 className="bg-[#F5F9FF] h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
                                 value={header}
+                                rows={1}
+                                ref={textareaRef}
                                 onChange={(
-                                  event: ChangeEvent<HTMLInputElement>
+                                  event: ChangeEvent<HTMLTextAreaElement>
                                 ) => {
                                   if (event.target.value.length <= 100) {
                                     setHeader(event.target.value);
                                   }
                                 }}
                                 style={{
+                                  scrollbarWidth: "none",
+                                  msOverflowStyle: "none",
                                   color: styles.header.color,
                                   fontWeight: styles.header.bold
                                     ? "bold"
@@ -524,6 +552,16 @@ const CreateCampaigns: React.FC = () => {
                                   fontStyle: styles.header.italic
                                     ? "italic"
                                     : "",
+                                  textDecoration: `
+                                    ${
+                                      styles.header.underline ? "underline" : ""
+                                    } 
+                                    ${
+                                      styles.header.linethrough
+                                        ? " line-through"
+                                        : ""
+                                    }
+                                  `,
                                 }}
                               />
                             </h2>
@@ -547,23 +585,36 @@ const CreateCampaigns: React.FC = () => {
                           </h1>
                           <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
                             <h2 className=" text-base w-full">
-                              <input
-                                type="text"
-                                id="body"
-                                placeholder="Enter the body"
-                                className="bg-[#F5F9FF]  h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                              <textarea
+                                id="name"
+                                placeholder="Enter the header"
+                                className="bg-[#F5F9FF] h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
                                 value={body}
+                                rows={4}
+                                ref={textareaRef}
                                 onChange={(
-                                  event: ChangeEvent<HTMLInputElement>
+                                  event: ChangeEvent<HTMLTextAreaElement>
                                 ) => {
-                                  setBody(event.target.value);
+                                  if (event.target.value.length <= 1000) {
+                                    setBody(event.target.value);
+                                  }
                                 }}
                                 style={{
+                                  scrollbarWidth: "none",
+                                  msOverflowStyle: "none",
                                   color: styles.body.color,
                                   fontWeight: styles.body.bold
                                     ? "bold"
                                     : "normal",
                                   fontStyle: styles.body.italic ? "italic" : "",
+                                  textDecoration: `
+                                    ${styles.body.underline ? "underline" : ""} 
+                                    ${
+                                      styles.body.linethrough
+                                        ? " line-through"
+                                        : ""
+                                    }
+                                  `,
                                 }}
                               />
                             </h2>
@@ -587,18 +638,22 @@ const CreateCampaigns: React.FC = () => {
                           </h1>
                           <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
                             <h2 className=" text-base w-full">
-                              <input
-                                type="text"
+                              <textarea
                                 id="footer"
                                 placeholder="Enter the footer"
                                 className="bg-[#F5F9FF]  h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
-                                value={footer}
+                                rows={1}
+                                ref={textareaRef}
                                 onChange={(
-                                  event: ChangeEvent<HTMLInputElement>
+                                  event: ChangeEvent<HTMLTextAreaElement>
                                 ) => {
-                                  setFooter(event.target.value);
+                                  if (event.target.value.length <= 200) {
+                                    setFooter(event.target.value);
+                                  }
                                 }}
                                 style={{
+                                  scrollbarWidth: "none",
+                                  msOverflowStyle: "none",
                                   color: styles.footer.color,
                                   fontWeight: styles.footer.bold
                                     ? "bold"
@@ -606,6 +661,16 @@ const CreateCampaigns: React.FC = () => {
                                   fontStyle: styles.footer.italic
                                     ? "italic"
                                     : "",
+                                  textDecoration: `
+                                    ${
+                                      styles.footer.underline ? "underline" : ""
+                                    } 
+                                    ${
+                                      styles.footer.linethrough
+                                        ? " line-through"
+                                        : ""
+                                    }
+                                  `,
                                 }}
                               />
                             </h2>
@@ -859,15 +924,15 @@ const CreateCampaigns: React.FC = () => {
               </div>
 
               {/*screen div */}
-              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-20 lg:top-40 md:right-11">
+              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-20 lg:top-40 md:right-11 md:top-48 sm:right-6 sm:top-56">
                 <img
                   src={screen}
                   alt="Phone Screen"
-                  className="lg:w-[88%] md:w-[90%] h-auto mx-auto -mt-7"
+                  className="lg:w-[88%] md:w-[85%] h-auto mx-auto -mt-7"
                 />
                 {next && (
                   <>
-                    <div className=" md:w-[12rem] absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[4.5rem] lg:w-[13.9rem] left-[2.8rem]">
+                    <div className="  absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit lg:top-[4.5rem] lg:w-[13.9rem] lg:left-[2.8rem] md:top-[4.5rem] md:w-[15.3rem] md:left-[2.16rem]  sm:w-[13.9rem] sm:top-[4.5rem] sm:left-[2.8rem]">
                       <div className="bg-white  p-4 rounded-md  ">
                         {selectedImage && type === "Marketing" && (
                           <div className="w-[12rem]  h-[6rem]">
@@ -877,9 +942,64 @@ const CreateCampaigns: React.FC = () => {
                             />
                           </div>
                         )}
-                        <p className="text-sm text-gray-600 mt-1">{header}</p>
-                        <p className="text-sm text-gray-600">{body}</p>
-                        <p className="text-sm text-gray-600">{footer}</p>
+                        <p
+                          className="text-sm text-gray-600 mt-1"
+                          style={{
+                            color: styles.header.color,
+                            fontWeight: styles.header.bold ? "bold" : "normal",
+                            fontStyle: styles.header.italic ? "italic" : "",
+                            textDecoration: `
+                                    ${
+                                      styles.header.underline ? "underline" : ""
+                                    } 
+                                    ${
+                                      styles.header.linethrough
+                                        ? " line-through"
+                                        : ""
+                                    }
+                                  `,
+                          }}
+                        >
+                          {header}
+                        </p>
+                        <p
+                          className="text-sm text-gray-600"
+                          style={{
+                            color: styles.body.color,
+                            fontWeight: styles.body.bold ? "bold" : "normal",
+                            fontStyle: styles.body.italic ? "italic" : "",
+                            textDecoration: `
+                                    ${styles.body.underline ? "underline" : ""} 
+                                    ${
+                                      styles.body.linethrough
+                                        ? " line-through"
+                                        : ""
+                                    }
+                                  `,
+                          }}
+                        >
+                          {body}
+                        </p>
+                        <p
+                          className="text-sm text-gray-600"
+                          style={{
+                            color: styles.footer.color,
+                            fontWeight: styles.footer.bold ? "bold" : "normal",
+                            fontStyle: styles.footer.italic ? "italic" : "",
+                            textDecoration: `
+                                    ${
+                                      styles.footer.underline ? "underline" : ""
+                                    } 
+                                    ${
+                                      styles.footer.linethrough
+                                        ? " line-through"
+                                        : ""
+                                    }
+                                  `,
+                          }}
+                        >
+                          {footer}
+                        </p>
                       </div>
                       {buttons.map((button, index) => {
                         return (

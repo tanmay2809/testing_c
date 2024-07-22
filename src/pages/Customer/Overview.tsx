@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 // import {RestaurantState as RestaurantData} from '../../redux/restaurantData';
 
-
 //icons
 import { FaUser } from "react-icons/fa6";
 
@@ -16,16 +15,14 @@ import { options, months } from "../../constants/index";
 import Feedback from "../../component/outlet/Feedback";
 
 const Overview: React.FC = () => {
-
-  const { data } = useSelector(
-    (state: RootState) => state.resturantdata
-  );
+  const { data } = useSelector((state: RootState) => state.resturantdata);
   // as { data: RestaurantData };
   console.log("resData: ", data);
 
-
   const [selectedDay, setSelectedDay] = useState<string>("Today");
-  const [selectedMonth, setSelectedMonth] = useState<string>(months[new Date().getMonth()]);
+  const [selectedMonth, setSelectedMonth] = useState<string>(
+    months[new Date().getMonth()]
+  );
   const [newCustomers, setNewCustomers] = useState<number>(0);
   const [regularCustomers, setRegularCustomers] = useState<number>(0);
 
@@ -35,9 +32,12 @@ const Overview: React.FC = () => {
 
   const getMonthIndex = (month: string): number => months.indexOf(month);
 
-  const filterCustomers = (year: number, monthIndex: number, data: any): { newCustomers: number, regularCustomers: number } => {
+  const filterCustomers = (
+    year: number,
+    monthIndex: number,
+    data: any
+  ): { newCustomers: number; regularCustomers: number } => {
     const today = new Date();
-
 
     let startDate: Date;
     let endDate: Date;
@@ -73,15 +73,22 @@ const Overview: React.FC = () => {
       return totalVisits > 2 && recentVisit;
     }).length;
 
-    return { newCustomers: newCustomersCount, regularCustomers: regularCustomersCount };
+    return {
+      newCustomers: newCustomersCount,
+      regularCustomers: regularCustomersCount,
+    };
   };
 
   useEffect(() => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const selectedMonthIndex = getMonthIndex(selectedMonth);
-    console.log("selected month index : ", selectedMonthIndex)
-    const { newCustomers, regularCustomers } = filterCustomers(currentYear, selectedMonthIndex, data?.customerData);
+    console.log("selected month index : ", selectedMonthIndex);
+    const { newCustomers, regularCustomers } = filterCustomers(
+      currentYear,
+      selectedMonthIndex,
+      data?.customerData
+    );
 
     setNewCustomers(newCustomers);
     setRegularCustomers(regularCustomers);
@@ -106,19 +113,21 @@ const Overview: React.FC = () => {
             {/* Right Section */}
             <div className="lg:flex md:flex gap-2">
               <button
-                className={`${selectedDay === "Today"
+                className={`${
+                  selectedDay === "Today"
                     ? "bg-[#004AAD] text-white"
                     : "bg-white"
-                  } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
+                } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
                 onClick={() => setSelectedDay("Today")}
               >
                 Today
               </button>
               <button
-                className={`${selectedDay === "Weekly"
+                className={`${
+                  selectedDay === "Weekly"
                     ? "bg-[#004AAD] text-white"
                     : "bg-white"
-                  } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
+                } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
                 onClick={() => setSelectedDay("Weekly")}
               >
                 Weekly
@@ -152,19 +161,21 @@ const Overview: React.FC = () => {
               </div>
             </div>
             <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-[9rem] flex flex-col justify-evenly">
-              <div className="text-3xl font-bold  text-[#505050]">{newCustomers}</div>
+              <div className="text-3xl font-bold  text-[#505050]">
+                {newCustomers}
+              </div>
               <div className="flex justify-start gap-3 items-center">
                 <FaUser />
                 <p className="text-[#505050] text-lg">New Customer</p>
               </div>
             </div>
             <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-[9rem] flex flex-col justify-evenly">
-              <div className="text-3xl font-bold  text-[#505050]">{regularCustomers}</div>
+              <div className="text-3xl font-bold  text-[#505050]">
+                {regularCustomers}
+              </div>
               <div className="flex justify-start gap-3 items-center">
                 <FaUser />
-                <p className="text-[#505050] text-lg">
-                  Regular Customer
-                </p>
+                <p className="text-[#505050] text-lg">Regular Customer</p>
               </div>
             </div>
           </div>
@@ -207,14 +218,12 @@ const Overview: React.FC = () => {
         {/* <div className="">
             <BarChart data={data} options={options} width={500} height={150}/>
           </div> */}
+        {/*Feedback div */}
+        <Feedback />
+        {/* </div> */}
       </div>
-
-      {/*Feedback div */}
-      <Feedback />
-      {/* </div> */}
     </div>
   );
 };
 
 export default Overview;
-

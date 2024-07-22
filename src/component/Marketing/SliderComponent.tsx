@@ -51,10 +51,10 @@ const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
                 alt={`Slide ${index + 1}`}
                 className="w-full h-full object-cover rounded-lg"
               />
-              <div className="absolute top-0 left-0 px-2 py-3 w-full">
-                <p className="text-white font-bold">{slide.title}</p>
+              <div className="absolute top-0 left-0 px-4 py-3 w-full">
+                <p className="text-white font-semibold text-lg">{slide.title}</p>
               </div>
-              <div className="flex gap-2 absolute bottom-0 left-0 px-3 py-3">
+              <div className="flex gap-2 absolute bottom-0 left-0 px-4 py-3">
                 <div className="bg-white rounded-full p-3">
                   <FaBell />
                 </div>

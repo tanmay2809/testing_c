@@ -50,7 +50,8 @@ const CustomerFilter: React.FC<FilterProps> = ({
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
   if (!isVisible) return null;
-
+  console.log(originalData)
+  
   //add or remove segment
   const toggleSegment = (segment: string) => {
     const updatedSegmentation = segmentation.includes(segment)

@@ -47,66 +47,68 @@ const Invoice = () => {
               {invoices.map((invoice: InvoiceType) => (
                 <div
                   key={invoice.number}
-                  className="p-5 flex flex-row justify-between border-2 rounded-xl"
+                  className="py-5 px-2  border-2 rounded-xl flex items-center justify-between"
                 >
-                  <div className="flex flex-col">
-                    <p className="text-[0.875rem] text-[#616161] font-[700]">
-                      Invoice Number
-                    </p>
-                    <p className="text-[1rem] text-[#616161] font-[400]">
-                      {invoice.number}
-                    </p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-[0.875rem] text-[#616161] font-[700]">
-                      Company invoice name
-                    </p>
-                    <p className="text-[1rem] text-[#616161] font-[400]">
-                      {invoice.name}
-                    </p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-[0.875rem] text-[#616161] font-[700]">
-                      Invoice Date
-                    </p>
-                    <p className="text-[1rem] text-[#616161] font-[400]">
-                      {invoice.date}
-                    </p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-[0.875rem] text-[#616161] font-[700]">
-                      Invoice Amount
-                    </p>
-                    <p className="text-[1rem] text-[#616161] font-[400]">
-                      ₹{invoice.amount}
-                    </p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-[0.875rem] text-[#616161] font-[700]">
-                      GST Charges
-                    </p>
-                    <p className="text-[1rem] text-[#616161] font-[400]">
-                      ₹{invoice.charges}
-                    </p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-[0.875rem] text-[#616161] font-[700]">
-                      Payment Mode
-                    </p>
-                    <p className="text-[1rem] text-[#616161] font-[400]">
-                      {invoice.mode}
-                    </p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-[0.875rem] text-[#616161] font-[700]">
-                      Billing period
-                    </p>
-                    <p className="text-[1rem] text-[#616161] font-[400]">
-                      {invoice.period}
-                    </p>
+                  <div className="flex flex-row items-center flex-wrap gap-1">
+                    <div className=" w-[8rem] flex flex-col">
+                      <p className="text-[0.875rem] text-[#616161] font-[700]">
+                        Invoice Number
+                      </p>
+                      <p className="text-[1rem] text-[#616161] font-[400]">
+                        {invoice.number}
+                      </p>
+                    </div>
+                    <div className=" w-fit flex flex-col">
+                      <p className="text-[0.875rem] text-[#616161] font-[700]">
+                        Company invoice name
+                      </p>
+                      <p className="text-[1rem] text-[#616161] font-[400]">
+                        {invoice.name}
+                      </p>
+                    </div>
+                    <div className=" w-[8rem] flex flex-col">
+                      <p className="text-[0.875rem] text-[#616161] font-[700]">
+                        Invoice Date
+                      </p>
+                      <p className="text-[1rem] text-[#616161] font-[400]">
+                        {invoice.date}
+                      </p>
+                    </div>
+                    <div className=" w-[8rem] flex flex-col">
+                      <p className="text-[0.875rem] text-[#616161] font-[700]">
+                        Invoice Amount
+                      </p>
+                      <p className="text-[1rem] text-[#616161] font-[400]">
+                        ₹{invoice.amount}
+                      </p>
+                    </div>
+                    <div className=" w-[8rem] flex flex-col">
+                      <p className="text-[0.875rem] text-[#616161] font-[700]">
+                        GST Charges
+                      </p>
+                      <p className="text-[1rem] text-[#616161] font-[400]">
+                        ₹{invoice.charges}
+                      </p>
+                    </div>
+                    <div className=" w-[8rem] flex flex-col">
+                      <p className="text-[0.875rem] text-[#616161] font-[700]">
+                        Payment Mode
+                      </p>
+                      <p className="text-[1rem] text-[#616161] font-[400]">
+                        {invoice.mode}
+                      </p>
+                    </div>
+                    <div className=" w-[8rem] flex flex-col">
+                      <p className="text-[0.875rem] text-[#616161] font-[700]">
+                        Billing period
+                      </p>
+                      <p className="text-[1rem] text-[#616161] font-[400]">
+                        {invoice.period}
+                      </p>
+                    </div>
                   </div>
                   <button
-                    className="flex flex-row items-center gap-2 text-[1.125rem] font-[600]"
+                    className="flex flex-row items-center gap-1 text-[1.1rem] font-[600]"
                     onClick={() => toggleModel()}
                   >
                     View Details{" "}

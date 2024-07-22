@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({
           </h1>
           <p className="mt-2 text-base">Created on {createdDate}</p>
         </div>
-        <div className="lg:flex lg:items-center gap-2 p-4 justify-center">
+        <div className="lg:flex lg:items-center gap-2 p-4 justify-center flex-wrap">
           <button className="flex items-center space-x-1 text-[#E61856] bg-white p-2 rounded-lg">
             <RiDeleteBinLine />
             <span>Delete</span>
@@ -109,20 +109,20 @@ const Card: React.FC<CardProps> = ({
           </div>
         </div>
         <div className="flex flex-col w-full h-full">
-          <div className=" p-4 flex justify-evenly w-full border-b border-dashed border-black text-[#505050]">
-            <div className="flex flex-col justify-around h-[5rem] border-r border-[#505050] lg:pr-10 md:pr-6 pr-3">
+          <div className=" p-4 flex w-full border-b border-dashed border-black text-[#505050]">
+            <div className="flex flex-col justify-around h-[5rem] border-r border-[#505050] lg:pr-14 lg:pl-14 md:pr-4 md:pl-4 ">
               <p className="text-lg font-semibold">Delivered</p>
               <p className="text-2xl font-semibold">{delivered}</p>
             </div>
-            <div className="flex flex-col justify-around h-[5rem]  border-r border-[#505050] lg:pr-10 md:pr-6 pr-3">
+            <div className="flex flex-col justify-around h-[5rem]  border-r border-[#505050] lg:pr-14 lg:pl-14  md:pr-4 md:pl-4 ">
               <p className="text-lg font-semibold">Visits</p>
               <p className="text-2xl font-semibold">{visits}</p>
             </div>
-            <div className="flex flex-col justify-around h-[5rem]  border-r border-[#505050] lg:pr-10 md:pr-6 pr-3">
+            <div className="flex flex-col justify-around h-[5rem] border-r border-[#505050] lg:pr-14 lg:pl-14  md:pr-4 md:pl-4 ">
               <p className="text-lg font-semibold">Visit Rate</p>
               <p className="text-2xl font-semibold">{visitsRate} %</p>
             </div>
-            <div className="flex flex-col justify-around h-[5rem] pr-10 md:pr-6">
+            <div className="flex flex-col justify-around h-[5rem] lg:pr-14 lg:pl-14  md:pr-4 md:pl-4">
               <p className="text-lg font-semibold">Weekly Cost</p>
               <p className="text-2xl font-semibold">{weeklyCost}</p>
             </div>
