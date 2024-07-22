@@ -397,8 +397,7 @@ const Menu = () => {
                     subcategoryToEdit={setSubCategoryToEdit}
                     editSubcategoryModal={setEditSubCategoryModal}
                     selectedType={selectedType}
-                      showActive={showActive}
-                      categories={categories}
+                    showActive={showActive}
                   />
                 )}
               </div>
@@ -420,7 +419,7 @@ const Menu = () => {
                 } slide-in-right`}
               >
                 {/* add menu item form */}
-                {isAddMenuOpen && ( 
+                {isAddMenuOpen && (
                   <AddMenuItem
                     categories={filteredCategory}
                     setIsAddMenuOpen={setIsAddMenuOpen}

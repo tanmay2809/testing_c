@@ -19,7 +19,6 @@ import { SubcategoryItem } from "../../pages/Menu";
 import { MenuItem } from "./AddMenuItem";
 import ItemCard from "./ItemCard";
 import SubCategoryDeleteModal from "./SubCategoryDelete";
-import { Category } from "./AddCategory";
 import Switch from "./switch";
 
 interface Props {
