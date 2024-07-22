@@ -17,15 +17,15 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" fixed bg-white  z-50 w-full h-[70px] flex justify-between items-center px-[2.5rem] border-b shadow-xl py-[.5rem] shadow-[#00000026]">
+    <div className=" fixed bg-white z-50 w-full h-[70px] flex flex-row lg:justify-between gap-[45%] items-center px-[2.5rem] border-b shadow-xl py-[.5rem] shadow-[#00000026]">
       {/* logo */}
       <img
         src={icon}
         alt="logo"
-        className="h-[100%] ml-[1rem] aspect-auto  cursor-pointer  "
+        className="h-[100%] w-auto max-w-[25%] ml-[1rem] aspect-auto  cursor-pointer  "
       />
 
-      <div className="flex items-center justify-evenly w-[25%]  ">
+      <div className="flex items-center justify-evenly w-[25%]">
         <div className="text-[#64748B] text-[1.1rem] font-bold flex items-center gap-5 bg-[#EFF6FF] px-6 py-2 rounded-xl ">
           <IoMdWallet />
           <p>₹1000</p>
@@ -36,7 +36,7 @@ const Navbar = () => {
         <img
           onClick={handlefram}
           src={logo1}
-          className="size-24  object-cover cursor-pointer"
+          className="size-24 object-cover cursor-pointer"
           alt="logo1"
         />
       </div>

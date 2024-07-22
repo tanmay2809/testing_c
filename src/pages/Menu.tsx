@@ -188,7 +188,7 @@ const Menu = () => {
   }
   return (
     <div className="w-full h-fit relative ">
-      <div className=" w-[93%]  h-fit flex items-center justify-center ml-[7%]  ">
+      <div className="w-full lg:w-[93%]  h-fit flex items-center justify-center lg:ml-[7%]  ">
         <div className="w-full h-fit flex mt-[70px] ">
           {/* left div */}
           <div
@@ -397,7 +397,8 @@ const Menu = () => {
                     subcategoryToEdit={setSubCategoryToEdit}
                     editSubcategoryModal={setEditSubCategoryModal}
                     selectedType={selectedType}
-                    showActive={showActive}
+                      showActive={showActive}
+                      categories={categories}
                   />
                 )}
               </div>
@@ -414,12 +415,12 @@ const Menu = () => {
                   isSubCategoryOpen ||
                   isEditMenuOpen ||
                   editSubCategoryModal
-                    ? "flex bg-[#EEF5FF] flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[100%] sm:w-[75%] md:w-[65%] lg:w-[35%] overflow-auto transition-transform transform translate-x-full md:translate-x-0"
+                    ? "flex bg-[#EEF5FF] flex-col z-[100] fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[100%] sm:w-[75%] md:w-[65%] lg:w-[35%] overflow-auto transition-transform transform translate-x-full md:translate-x-0"
                     : "hidden"
                 } slide-in-right`}
               >
                 {/* add menu item form */}
-                {isAddMenuOpen && (
+                {isAddMenuOpen && ( 
                   <AddMenuItem
                     categories={filteredCategory}
                     setIsAddMenuOpen={setIsAddMenuOpen}
