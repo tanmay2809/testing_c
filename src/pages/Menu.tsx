@@ -197,7 +197,7 @@ const Menu = () => {
               isSubCategoryOpen ||
               isEditMenuOpen ||
               editSubCategoryModal
-                ? "w-[65%] pr-5"
+                ? "w-[100%] lg:w-[65%] pr-5"
                 : "w-[100%]"
             }`}
           >
@@ -414,9 +414,9 @@ const Menu = () => {
                   isSubCategoryOpen ||
                   isEditMenuOpen ||
                   editSubCategoryModal
-                    ? "flex bg-[#EEF5FF] flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[35%] overflow-auto"
+                    ? "flex bg-[#EEF5FF] flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[100%] sm:w-[75%] md:w-[65%] lg:w-[35%] overflow-auto transition-transform transform translate-x-full md:translate-x-0"
                     : "hidden"
-                }`}
+                } slide-in-right`}
               >
                 {/* add menu item form */}
                 {isAddMenuOpen && (
@@ -442,6 +442,8 @@ const Menu = () => {
                     categories={filteredCategory}
                   />
                 )}
+
+                {/* edit subcategory form */}
                 {editSubCategoryModal && (
                   <EditSubcategory
                     activeCategory={filteredCategory}

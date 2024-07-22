@@ -217,7 +217,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
     <div className="overflow-y-scroll no-scrollbar">
       <form onSubmit={handleSubmit} className="bg-[#EEF5FF]">
         {/* save and cancel buttons */}
-        <div className="w-[35%] flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
+        <div className="w-full flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4  px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold">
             Edit Menu Item
           </p>
