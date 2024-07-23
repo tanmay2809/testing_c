@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import axios from "axios";
@@ -6,12 +6,15 @@ import axios from "axios";
 //icons
 import { FaFilter, FaSearch } from "react-icons/fa";
 import { TbArrowsSort } from "react-icons/tb";
-import { IoCloseOutline, IoEllipseSharp } from "react-icons/io5";
+import { IoCloseOutline } from "react-icons/io5";
 
 //other components
 import CustomerDetail from "../../component/Customer/CustomerDetail";
 import SegmentationPopup from "../../component/Customer/SegmentationPopup";
 import CustomerFilter from "../../component/Customer/CustomerFilter";
+
+//images
+import noData from "../../assets/undraw_no_data_re_kwbl 1.png";
 
 //data
 import { Customer, segmentationColors } from "../../constants/index";
@@ -22,14 +25,13 @@ import exportIcon from "/exportIcon.svg";
 import premium from "/premium.svg";
 import doubleArrow from "/doubleArrow.svg";
 
-
 const CustomerList: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
 
   console.log("resData: ", data);
+
   const [resData, setResData] = useState<any>(data);
   const [customerData, setCustomerData] = useState<any>(data?.customerData);
-  console.log(customerData);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
@@ -40,16 +42,96 @@ const CustomerList: React.FC = () => {
   >(null);
   const [segmentationVisible, setSegmentationVisible] =
     useState<boolean>(false);
-  const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
-  const [filterData, setFilterData] = useState<string[]>([]);
   const [sort, setSort] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
+
+  //filter states
+  const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
+  const [filterData, setFilterData] = useState<string[]>([]);
+  const [customDateVisit, setCustomDateVisit] = useState<string>("");
+  const [customDateNotVisit, setCustomDateNotVisit] = useState<string>("");
+  const [segmentation, setSegmentation] = useState<string[]>([]);
+  const [gender, setGender] = useState<string[]>([]);
+
+  useEffect(() => {
+    console.log("Inside useEffect");
+    console.log("data: ", data);
+    setCustomerData(data?.customerData);
+  }, [data]);
 
   //calculate the indices of first and last customer
   // const indexOfLastItem = currentPage * itemsPerPage;
   // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   // const currentItems = customers.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(resData?.length / itemsPerPage);
+
+  const handleFilter = () => {
+    const egData = data?.customerData;
+    const filteredCustomers = egData.filter((customer: Customer) => {
+      const customerSegment = getCustomerSegment(customer.visits);
+      console.log(customerSegment);
+      // Filter by visitFilter
+      const now = new Date();
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(now.getDate() - 30);
+      const sixtyDaysAgo = new Date();
+      sixtyDaysAgo.setDate(now.getDate() - 60);
+      const customDateVisitObj = new Date(customDateVisit);
+      const customDateNotVisitObj = new Date(customDateNotVisit);
+
+      let visitCondition;
+      {
+        filterData.map((visitFilter) => {
+          visitCondition =
+            (visitFilter === "Visited in Last 30 days" &&
+              customer.visits.some(
+                (visit: string) => new Date(visit) >= thirtyDaysAgo
+              )) ||
+            (visitFilter === "Visited in Last 60 days" &&
+              customer.visits.some(
+                (visit: string) => new Date(visit) >= sixtyDaysAgo
+              )) ||
+            (visitFilter === "Custom" &&
+              customer.visits.some(
+                (visit: string) => new Date(visit) >= customDateVisitObj
+              ));
+        });
+      }
+
+      let nonVisitCondition;
+      {
+        filterData.map((nonVisitFilter) => {
+          nonVisitCondition =
+            (nonVisitFilter === "Not visited in Last 30 days" &&
+              customer.visits.every(
+                (visit: string) => new Date(visit) < thirtyDaysAgo
+              )) ||
+            (nonVisitFilter === "Not visited in Last 60 days" &&
+              customer.visits.every(
+                (visit: string) => new Date(visit) < sixtyDaysAgo
+              )) ||
+            (nonVisitFilter === "Custom" &&
+              customer.visits.some(
+                (visit: string) => new Date(visit) >= customDateNotVisitObj
+              ));
+        });
+      }
+
+      const segmentCondition =
+        segmentation.length === 0 || segmentation.includes(customerSegment);
+      console.log(segmentCondition);
+      const genderCondition =
+        gender.length === 0 || gender.includes(customer.userId.gender);
+
+      return (
+        (true || visitCondition) &&
+        (true || nonVisitCondition) &&
+        segmentCondition &&
+        genderCondition
+      );
+    });
+    setCustomerData(filteredCustomers);
+  };
 
   // Helper function to create pagination buttons
   const getPaginationButtons = () => {
@@ -156,6 +238,7 @@ const CustomerList: React.FC = () => {
   const handleFilterDataRemove = (data: string) => {
     let newData: string[] = filterData.filter((el: string) => el !== data);
     setFilterData(newData);
+    handleFilter();
   };
 
   //sort
@@ -341,7 +424,7 @@ const CustomerList: React.FC = () => {
             <button className="bg-[#004AAD] text-white rounded-lg px-2 py-2 flex items-center text-base">
               <img src={exportIcon} />
               Export
-              <img src={premium}  className="relative -top-5 -right-5"/>
+              <img src={premium} className="relative -top-5 -right-5" />
             </button>
           </div>
         </div>
@@ -359,6 +442,7 @@ const CustomerList: React.FC = () => {
           <div className="font-inter flex items-center justify-start gap-2 mb-4">
             <h2 className="font-bold text-base text-[#454545]">Filter</h2>
             {filterData.map((data: string, index: number) => {
+              
               return (
                 <div
                   key={index}
@@ -389,64 +473,74 @@ const CustomerList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {customerData?.map((customer: any, index: any) => (
-                <tr key={index} className="border-t text-base text-center">
-                  <td className="py-3 px-6">{customer?.userId?.name}</td>
-                  <td className="py-3 px-6">+91 {customer?.userId?.phone} </td>
-                  <td className="py-3 px-6">{customer?.visits?.length}</td>
-                  <td className="py-3 px-6">
-                    {getLastVisitDisplay(customer?.visits)}
-                  </td>
+              {customerData ? (
+                customerData.map((customer: any, index: any) => (
+                  <tr key={index} className="border-t text-base text-center">
+                    <td className="py-3 px-6">{customer?.userId?.name}</td>
+                    <td className="py-3 px-6">
+                      +91 {customer?.userId?.phone}{" "}
+                    </td>
+                    <td className="py-3 px-6">{customer?.visits?.length}</td>
+                    <td className="py-3 px-6">
+                      {getLastVisitDisplay(customer?.visits)}
+                    </td>
 
-                  {/*Segmentation logic */}
-                  <td className="py-3 px-6 ">
-                    {/*segementation popup */}
-                    {hoveredSegmentation === index && (
-                      <div>
-                        {/*background blur div */}
-                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[80] p-5"></div>
-                        {/*div to align popup */}
-                        <div className="relative right-[16.5rem] -top-36">
-                          <SegmentationPopup
-                            setVisibility={setSegmentationVisible}
-                            hoveredSegmentation={setHoveredSegmentation}
-                            segmentation={getCustomerSegment(
-                              customer?.visits || []
-                            )}
-                            segIndex={index}
-                          />
+                    {/*Segmentation logic */}
+                    <td className="py-3 px-6 ">
+                      {/*segementation popup */}
+                      {hoveredSegmentation === index && (
+                        <div>
+                          {/*background blur div */}
+                          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[80] p-5"></div>
+                          {/*div to align popup */}
+                          <div className="relative right-[16.5rem] -top-36">
+                            <SegmentationPopup
+                              setVisibility={setSegmentationVisible}
+                              hoveredSegmentation={setHoveredSegmentation}
+                              segmentation={getCustomerSegment(
+                                customer?.visits || []
+                              )}
+                              segIndex={index}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    )}
-                    {/*segmentation column content */}
-                    <span
-                      className={` relative py-1 px-2 rounded-lg text-sm   ${
-                        segmentationColors[getCustomerSegment(customer?.visits)]
-                      } ${hoveredSegmentation === index && "z-[90]"}`}
-                      onMouseEnter={() => {
-                        setHoveredSegmentation(index);
-                      }}
-                      onMouseLeave={() => {
-                        setHoveredSegmentation(null);
-                      }}
-                    >
-                      {getCustomerSegment(customer.visits)}
-                    </span>
-                  </td>
+                      )}
+                      {/*segmentation column content */}
+                      <span
+                        className={` relative py-1 px-2 rounded-lg text-sm   ${
+                          segmentationColors[
+                            getCustomerSegment(customer?.visits)
+                          ]
+                        } ${hoveredSegmentation === index && "z-[90]"}`}
+                        onMouseEnter={() => {
+                          setHoveredSegmentation(index);
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredSegmentation(null);
+                        }}
+                      >
+                        {getCustomerSegment(customer.visits)}
+                      </span>
+                    </td>
 
-                  <td className="py-3 px-6 ">
-                    <div
-                      className="flex justify-center items-center gap-2 cursor-pointer"
-                      onClick={() => handleViewDetails(customer)}
-                    >
-                      <button className="text-base font-inter font-medium">
-                        View Details
-                      </button>
-                      <img src={doubleArrow}/>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                    <td className="py-3 px-6 ">
+                      <div
+                        className="flex justify-center items-center gap-2 cursor-pointer"
+                        onClick={() => handleViewDetails(customer)}
+                      >
+                        <button className="text-base font-inter font-medium">
+                          View Details
+                        </button>
+                        <img src={doubleArrow} />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <div className="flex justify-center">
+                  <img src={noData} className="w-full text-center" />
+                </div>
+              )}
             </tbody>
           </table>
         </div>
@@ -498,7 +592,15 @@ const CustomerList: React.FC = () => {
         filterData={filterElementsAdd}
         customerData={customerData}
         setCustomerData={setCustomerData}
-        originalData={resData?.customerData}
+        originalData={data?.customerData}
+        customDateVisit={customDateVisit}
+        customDateNotVisit={customDateNotVisit}
+        setcustomDateVisit={setCustomDateVisit}
+        setcustomDateNotVisit={setCustomDateNotVisit}
+        gender={gender}
+        setGender={setGender}
+        segmentation={segmentation}
+        setSegmentation={setSegmentation}
       />
     </div>
   );

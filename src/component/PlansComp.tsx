@@ -118,7 +118,10 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                 </div>
               </div>
               {plan.button.start ? (
-                <button className="bg-[#004AAD] border-2 text-[1.1rem] rounded-[0.5rem] text-white border-[#004AAD] font-bold text-richblack-900 px-[0.75rem] py-3  group-hover:border-white">
+                <button
+                  onClick={() => toggleModal()}
+                  className="bg-[#004AAD] border-2 text-[1.1rem] rounded-[0.5rem] text-white border-[#004AAD] font-bold text-richblack-900 px-[0.75rem] py-3  group-hover:border-white"
+                >
                   {plan.button.btn}
                 </button>
               ) : (
@@ -164,7 +167,10 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                 </div>
               </div>
               {plan.button.start ? (
-                <button className="bg-[#004AAD] border-2  text-[1.1rem] rounded-[0.5rem] text-white border-[#004AAD] font-bold text-richblack-900 px-[0.75rem] py-3  group-hover:border-white">
+                <button
+                  onClick={() => toggleModal()}
+                  className="bg-[#004AAD] border-2  text-[1.1rem] rounded-[0.5rem] text-white border-[#004AAD] font-bold text-richblack-900 px-[0.75rem] py-3  group-hover:border-white"
+                >
                   {plan.button.btn}
                 </button>
               ) : (
@@ -197,10 +203,7 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                         </span>{" "}
                         (15 days)
                       </p>
-                      <button
-                        className="w-[12.5rem] h-fit text-[1.1rem] mt-2 rounded-[0.5rem] border-2 border-black font-bold text-richblack-900 px-[0.75rem] py-2"
-                        onClick={() => toggleModal()}
-                      >
+                      <button className="w-[12.5rem] h-fit text-[1.1rem] mt-2 rounded-[0.5rem] border-2 border-black font-bold text-richblack-900 px-[0.75rem] py-2">
                         Current Plan
                       </button>
                     </th>
@@ -244,10 +247,7 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                         </span>{" "}
                         (15 days)
                       </p>
-                      <button
-                        className="w-[12.5rem] h-fit text-[1.1rem] mt-2 rounded-[0.5rem] border-2 border-black font-bold text-richblack-900 px-[0.75rem] py-2"
-                        onClick={() => toggleModal()}
-                      >
+                      <button className="w-[12.5rem] h-fit text-[1.1rem] mt-2 rounded-[0.5rem] border-2 border-black font-bold text-richblack-900 px-[0.75rem] py-2">
                         Current Plan
                       </button>
                     </th>

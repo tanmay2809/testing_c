@@ -50,7 +50,7 @@ const Login: React.FC = () => {
     <>
       {videoLoading && <Loader />}
       <video
-        className="fixed top-0 left-0 w-full h-full object-cover z-0"
+        className="fixed top-0 left-0 w-full h-full object-cover z-0 "
         src="https://s3groupsnackbae.s3.ap-south-1.amazonaws.com/1721141264218"
         autoPlay
         muted
