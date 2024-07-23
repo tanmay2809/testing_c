@@ -21,6 +21,9 @@ import ItemCard from "./ItemCard";
 import SubCategoryDeleteModal from "./SubCategoryDelete";
 import Switch from "./switch";
 
+// assets
+import Bussiness from "../../assets/Business Task list.png";
+
 interface Props {
   category:
     | { _id: string; name: string; subcategory: SubcategoryItem[] }[]
@@ -279,15 +282,30 @@ const SubCategoryDropdown: React.FC<Props> = ({
               </div>
               {/* Items cards */}
               {isOpen[subcategory._id] && (
-                <ItemCard
-                  items={filterItems(subcategory.menuItems)}
-                  showActive={showActive}
-                  setIsAddMenuOpen={setIsAddMenuOpen}
-                  setIsEditMenuOpen={setIsEditMenuOpen}
-                  setIsSubCategoryOpen={setIsSubCategoryOpen}
-                  setSelectedCard={setSelectedCard}
-                  editSubcategoryModal={editSubcategoryModal}
-                />
+                <>
+                  <ItemCard
+                    items={filterItems(subcategory.menuItems)}
+                    showActive={showActive}
+                    setIsAddMenuOpen={setIsAddMenuOpen}
+                    setIsEditMenuOpen={setIsEditMenuOpen}
+                    setIsSubCategoryOpen={setIsSubCategoryOpen}
+                    setSelectedCard={setSelectedCard}
+                    editSubcategoryModal={editSubcategoryModal}
+                  />
+                  {subcategory.menuItems.length === 0 && (
+                    <div className="w-full flex flex-col items-center gap-10 font-inter">
+                      <img src={Bussiness} className="w-[10%] h-auto" />
+                      <div className="flex flex-col gap-2 items-center">
+                        <h1 className="text-[1.4rem] text-[#4B4B4B] font-semibold">
+                          Subcategory successfully created
+                        </h1>
+                        <p className="text-[1.2rem] text-[#AAA5A5] font-semibold">
+                          Now Add Menu items
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           ))}

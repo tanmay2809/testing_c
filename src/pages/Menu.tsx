@@ -10,6 +10,7 @@ import SubCategoryDropdown from "../component/Menu/SubCategoryDropdown";
 import ItemCard from "../component/Menu/ItemCard";
 import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
 import Switch from "../component/Menu/switch";
+import CategoryDelete from "../component/Menu/CategoryDelete";
 
 //redux
 import { useSelector } from "react-redux";
@@ -27,7 +28,8 @@ import FoodMenu from "../assets/Food Menu.png";
 import Burger from "../assets/Burger.png";
 import Category from "../assets/category.png";
 import Bussiness from "../assets/Business Task list.png";
-import CategoryDelete from "../component/Menu/CategoryDelete";
+import nosearch from "../assets/search.jpg";
+import { AiOutlineClose } from "react-icons/ai";
 
 export interface SubcategoryItem {
   _id: string;
@@ -76,14 +78,9 @@ const Menu = () => {
       headers: {},
     };
 
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data.subcategories));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    axios.request(config).catch((error) => {
+      console.log(error);
+    });
   };
 
   //search bar
@@ -137,8 +134,6 @@ const Menu = () => {
     }
   }, [data, categories]);
 
-  console.log([categories[0]]);
-
   const filteredCategory = selectedCategoryId
     ? categories.filter((category) => category._id === selectedCategoryId)
     : categories.length > 0
@@ -160,16 +155,6 @@ const Menu = () => {
       return types && active;
     });
   };
-
-  // console.log(data);
-
-  // setSubCategory(data?.subcategory);
-
-  //console.log(data.category);
-
-  console.log(categories);
-  console.log(subcategory1);
-  console.log(selectedType);
 
   if (loading) {
     return (
@@ -243,7 +228,7 @@ const Menu = () => {
 
                 <div className="w-full h-fit flex items-center justify-between mt-5">
                   {/* Search result */}
-                  <div className="relative w-[35%]  flex items-center rounded-md border border-[#407fd1]  ">
+                  <div className="relative w-[35%] flex items-center rounded-md border border-[#407fd1]">
                     <input
                       className="w-full sm:py-2 py-3 px-8 rounded-lg"
                       type="text"
@@ -251,9 +236,17 @@ const Menu = () => {
                       onChange={handleSearch}
                       placeholder="Search menu ..."
                     />
-                    <CiSearch className="absolute text-[1.3rem] font-semibold ml-2 " />
+                    <CiSearch className="absolute text-[1.3rem] font-semibold ml-2" />
+                    {search && (
+                      <button
+                        type="button"
+                        className="absolute right-2 text-[1.3rem] font-semibold"
+                        onClick={() => setSearch("")}
+                      >
+                        <AiOutlineClose />
+                      </button>
+                    )}
                   </div>
-
                   <div className="flex items-center gap-5">
                     <div>
                       <select
@@ -374,6 +367,15 @@ const Menu = () => {
                   <div className="w-full flex flex-row items-center gap-2 h-fit ml-2 mb-4 mt-4 text-[1.5rem] font-semibold">
                     <BiSearchAlt2 className="text-[2rem] rotate-90 mt-1" />
                     <p className="text-[1.7rem] font-semibold">Search result</p>
+                  </div>
+                )}
+
+                {search && searchMenuItems?.length === 0 && (
+                  <div className="w-full h-fit flex flex-col items-center">
+                    <img src={nosearch} className="w-[250px]" />
+                    <p className="text-[2rem] font-semibold">
+                      No Results Found!
+                    </p>
                   </div>
                 )}
 

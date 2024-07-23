@@ -199,6 +199,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
       .then((response) => {
         console.log(JSON.stringify(response.data));
         setIsAddMenuOpen(false);
+        setImage([]);
         window.location.reload();
         toast.success("Menu Item Added");
       })
@@ -461,8 +462,12 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                     </div>
                   </div>
                   <MdOutlineTaskAlt
-                    onClick={() => handleAddone(index)}
-                    className="text-[#004AAD] bg-white text-[2.5rem] hover:cursor-pointer hover:bg-[#004AAD] hover:text-white transition-all mb-2 rounded-full w-fit h-fit"
+                    onClick={() => {
+                      handleAddone(index);
+                    }}
+                    className={`${
+                      addon.id && "hidden"
+                    } text-[#004AAD] bg-white text-[2.5rem] hover:cursor-pointer hover:bg-[#004AAD] hover:text-white transition-all mb-2 rounded-full w-fit h-fit`}
                   />
                   {addon.id && (
                     <MdOutlineDeleteOutline
@@ -481,7 +486,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                   Add New
                 </p>
               )}
-            </div>{" "}
+            </div>
           </div>
 
           {/* item description */}
