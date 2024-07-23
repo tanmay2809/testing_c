@@ -55,9 +55,13 @@ const Menu = () => {
 
   const [selectedCard, setSelectedCard] = useState<MenuItem | null>(null);
 
-  const [subCategoryToEdit, setSubCategoryToEdit] = useState<SubcategoryItem>();
+  const isAnyMenuOpen =
+    isAddMenuOpen ||
+    isSubCategoryOpen ||
+    isEditMenuOpen ||
+    editSubCategoryModal;
 
-  const [hoveredCategoryId, setHoveredCategoryId] = useState<string>();
+  const [subCategoryToEdit, setSubCategoryToEdit] = useState<SubcategoryItem>();
 
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [subcategory1, setSubCategory1] = useState<string[]>([]);
@@ -329,8 +333,6 @@ const Menu = () => {
                           : "bg-[#004AAD] text-white"
                       } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap relative`}
                       onClick={() => setSelectedCategoryId(item._id)}
-                      // onMouseEnter={() => setHoveredCategoryId(item._id)}
-                      // onMouseLeave={() => setHoveredCategoryId("")}
                     >
                       {item?.name}
                       {selectedCategoryId === item._id && (
@@ -406,56 +408,62 @@ const Menu = () => {
             </div>
 
             {/* right div */}
-            {(isAddMenuOpen ||
-              isSubCategoryOpen ||
-              isEditMenuOpen ||
-              editSubCategoryModal) && (
-              <div
-                className={`${
-                  isAddMenuOpen ||
-                  isSubCategoryOpen ||
-                  isEditMenuOpen ||
-                  editSubCategoryModal
-                    ? "flex bg-[#EEF5FF] flex-col z-[100] fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[100%] sm:w-[75%] md:w-[65%] lg:w-[35%] overflow-auto transition-transform transform translate-x-full md:translate-x-0"
-                    : "hidden"
-                } slide-in-right`}
-              >
-                {/* add menu item form */}
-                {isAddMenuOpen && (
-                  <AddMenuItem
-                    categories={filteredCategory}
-                    setIsAddMenuOpen={setIsAddMenuOpen}
-                  />
-                )}
+            <div className="">
+              {/* Overlay */}
+              {isAnyMenuOpen && (
+                <div className="fixed inset-0 bg-gray-500 w-full h-full lg:opacity-0 opacity-50 z-[99] transition-opacity duration-300" />
+              )}
+              {(isAddMenuOpen ||
+                isSubCategoryOpen ||
+                isEditMenuOpen ||
+                editSubCategoryModal) && (
+                <div
+                  className={`${
+                    isAddMenuOpen ||
+                    isSubCategoryOpen ||
+                    isEditMenuOpen ||
+                    editSubCategoryModal
+                      ? "flex bg-[#EEF5FF] flex-col z-[100] fixed top-0 lg:top-[70px] border-l-2 border-l-[#00000050] right-0 h-full lg:h-[calc(100%-70px)] w-[100%] sm:w-[75%] md:w-[65%] lg:w-[35%] overflow-auto transition-transform transform translate-x-full md:translate-x-0"
+                      : "hidden"
+                  } slide-in-right`}
+                >
+                  {/* add menu item form */}
+                  {isAddMenuOpen && (
+                    <AddMenuItem
+                      categories={filteredCategory}
+                      setIsAddMenuOpen={setIsAddMenuOpen}
+                    />
+                  )}
 
-                {/* add sub category form */}
-                {isSubCategoryOpen && (
-                  <AddSubCategory
-                    category={filteredCategory}
-                    setIsSubCategoryOpen={setIsSubCategoryOpen}
-                  />
-                )}
+                  {/* add sub category form */}
+                  {isSubCategoryOpen && (
+                    <AddSubCategory
+                      category={filteredCategory}
+                      setIsSubCategoryOpen={setIsSubCategoryOpen}
+                    />
+                  )}
 
-                {/* edit menu form */}
-                {isEditMenuOpen && selectedCard && (
-                  <EditMenuItem
-                    setIsEditMenu={setIsEditMenuOpen}
-                    item={selectedCard}
-                    categories={filteredCategory}
-                  />
-                )}
+                  {/* edit menu form */}
+                  {isEditMenuOpen && selectedCard && (
+                    <EditMenuItem
+                      setIsEditMenu={setIsEditMenuOpen}
+                      item={selectedCard}
+                      categories={filteredCategory}
+                    />
+                  )}
 
-                {/* edit subcategory form */}
-                {editSubCategoryModal && (
-                  <EditSubcategory
-                    activeCategory={filteredCategory}
-                    categories={categories}
-                    subcategoryToEdit={subCategoryToEdit}
-                    setModal={setEditSubCategoryModal}
-                  />
-                )}
-              </div>
-            )}
+                  {/* edit subcategory form */}
+                  {editSubCategoryModal && (
+                    <EditSubcategory
+                      activeCategory={filteredCategory}
+                      categories={categories}
+                      subcategoryToEdit={subCategoryToEdit}
+                      setModal={setEditSubCategoryModal}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
