@@ -3,6 +3,7 @@ import { MenuItem } from "./AddMenuItem";
 import { SubcategoryItem } from "../../pages/Menu";
 import axios from "axios";
 import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 // icons
 import { BiFoodTag } from "react-icons/bi";
@@ -11,9 +12,26 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline, MdOutlineTaskAlt } from "react-icons/md";
 
+export interface EditItem {
+  _id?: string;
+  name: string;
+  image: { url: string }[];
+  description: string;
+  price: string;
+  category: string;
+  subcategory: string;
+  serving: string;
+  tag: string;
+  active?: boolean;
+  categoryActive?: boolean;
+  clicks?: number;
+  addone: [{ name: string; additionalPrice: string }];
+  type: string;
+}
+
 interface EditMenuProps {
   setIsEditMenu: (isOpen: boolean) => void;
-  item: MenuItem;
+  item: EditItem;
   categories: { _id: string; name: string; subcategory: SubcategoryItem[] }[];
 }
 
@@ -22,8 +40,15 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
   item,
   categories,
 }) => {
+  console.log(item);
   const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string[]>([]);
+
+  const [addonDetails, setAddonDetails] = useState<
+    { name: string; additionalPrice: string }[]
+  >([{ name: "", additionalPrice: "" }]);
+
+  const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
@@ -54,16 +79,17 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
       addone: [],
       type: item.type,
     });
+    setImage([]);
     setImage((prevImages) => [...prevImages, ...item.image]);
-    console.log(image);
-    console.log(formData);
+    if (item.addone.length > 0) {
+      setAddonDetails(
+        item.addone.map((addon) => ({
+          name: addon.name,
+          additionalPrice: addon.price,
+        }))
+      );
+    }
   }, [item]);
-
-  const [addonDetails, setAddonDetails] = useState<
-    { name: string; additionalPrice: string }[]
-  >([{ name: "", additionalPrice: "" }]);
-
-  const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
 
   // remove image function
   const removeImage = (index: number) => {
@@ -207,6 +233,8 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
         console.log(JSON.stringify(response.data));
         setLoading(false);
         setIsEditMenu(false);
+        window.location.reload();
+        toast.success("Item updated");
       })
       .catch((error) => {
         console.log(error);

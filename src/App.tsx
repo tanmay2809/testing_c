@@ -25,6 +25,7 @@ import ManageCampaigns from "./pages/Marketing/ManageCampaigns";
 import WhatsAppSettings from "./pages/Marketing/WhatsAppSettings";
 import Campaigns from "./pages/Marketing/Campaigns";
 import CreateCampaigns from "./pages/Marketing/CreateCampaign";
+import Wallet from "./pages/Wallet";
 
 const App: React.FC = () => {
   console.log("App Component Rendered");
@@ -44,6 +45,7 @@ const App: React.FC = () => {
           <Route index element={<Dashboard />} />
           <Route path="/table" element={<Table />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path="/wallet" element={<Wallet />} />
           <Route path="/marketing" element={<Marketing />}>
             <Route index element={<CampaignLibrary />} />
             <Route path="manage" element={<ManageCampaigns />} />

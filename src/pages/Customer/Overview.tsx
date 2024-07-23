@@ -182,7 +182,7 @@ const Overview: React.FC = () => {
         </div>
 
         {/*Chart div */}
-        {/* <div className="border border-[#B5CEF0] mt-2 px-6 py-2 font-inter ">
+        <div className="border border-[#B5CEF0] mt-2 px-6 py-2 font-inter ">
           <div className="flex justify-between items-center ">
             <div className="text-xl font-semibold text-[#212B36]">
               New Customer vs Old Customer
@@ -200,10 +200,10 @@ const Overview: React.FC = () => {
                 ))}
               </select>
             </div>
-          </div> */}
+          </div>
 
         {/* Bottom section with color circles and labels */}
-        {/* <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#C0DBFF] rounded-full mr-2"></div>
               <span className="text-sm text-[#5E5E5E]">New Customer</span>
@@ -212,15 +212,15 @@ const Overview: React.FC = () => {
               <div className="w-4 h-4 bg-[#004AAD] rounded-full mr-2"></div>
               <span className="text-sm text-[#5E5E5E]">Old Customer</span>
             </div>
-          </div> */}
+          </div>
 
         {/*chart */}
-        {/* <div className="">
+         {/* <div className="">
             <BarChart data={data} options={options} width={500} height={150}/>
           </div> */}
         {/*Feedback div */}
         <Feedback />
-        {/* </div> */}
+        </div>
       </div>
     </div>
   );

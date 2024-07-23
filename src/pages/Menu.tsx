@@ -10,6 +10,7 @@ import SubCategoryDropdown from "../component/Menu/SubCategoryDropdown";
 import ItemCard from "../component/Menu/ItemCard";
 import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
 import Switch from "../component/Menu/switch";
+import CategoryDelete from "../component/Menu/CategoryDelete";
 
 //redux
 import { useSelector } from "react-redux";
@@ -27,7 +28,8 @@ import FoodMenu from "../assets/Food Menu.png";
 import Burger from "../assets/Burger.png";
 import Category from "../assets/category.png";
 import Bussiness from "../assets/Business Task list.png";
-import CategoryDelete from "../component/Menu/CategoryDelete";
+import nosearch from "../assets/search.jpg";
+import { AiOutlineClose } from "react-icons/ai";
 
 export interface SubcategoryItem {
   _id: string;
@@ -53,9 +55,13 @@ const Menu = () => {
 
   const [selectedCard, setSelectedCard] = useState<MenuItem | null>(null);
 
-  const [subCategoryToEdit, setSubCategoryToEdit] = useState<SubcategoryItem>();
+  const isAnyMenuOpen =
+    isAddMenuOpen ||
+    isSubCategoryOpen ||
+    isEditMenuOpen ||
+    editSubCategoryModal;
 
-  const [hoveredCategoryId, setHoveredCategoryId] = useState<string>();
+  const [subCategoryToEdit, setSubCategoryToEdit] = useState<SubcategoryItem>();
 
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [subcategory1, setSubCategory1] = useState<string[]>([]);
@@ -76,14 +82,9 @@ const Menu = () => {
       headers: {},
     };
 
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data.subcategories));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    axios.request(config).catch((error) => {
+      console.log(error);
+    });
   };
 
   //search bar
@@ -137,8 +138,6 @@ const Menu = () => {
     }
   }, [data, categories]);
 
-  console.log([categories[0]]);
-
   const filteredCategory = selectedCategoryId
     ? categories.filter((category) => category._id === selectedCategoryId)
     : categories.length > 0
@@ -160,16 +159,6 @@ const Menu = () => {
       return types && active;
     });
   };
-
-  // console.log(data);
-
-  // setSubCategory(data?.subcategory);
-
-  //console.log(data.category);
-
-  console.log(categories);
-  console.log(subcategory1);
-  console.log(selectedType);
 
   if (loading) {
     return (
@@ -243,7 +232,7 @@ const Menu = () => {
 
                 <div className="w-full h-fit flex items-center justify-between mt-5">
                   {/* Search result */}
-                  <div className="relative w-[35%]  flex items-center rounded-md border border-[#407fd1]  ">
+                  <div className="relative w-[35%] flex items-center rounded-md border border-[#407fd1]">
                     <input
                       className="w-full sm:py-2 py-3 px-8 rounded-lg"
                       type="text"
@@ -251,9 +240,17 @@ const Menu = () => {
                       onChange={handleSearch}
                       placeholder="Search menu ..."
                     />
-                    <CiSearch className="absolute text-[1.3rem] font-semibold ml-2 " />
+                    <CiSearch className="absolute text-[1.3rem] font-semibold ml-2" />
+                    {search && (
+                      <button
+                        type="button"
+                        className="absolute right-2 text-[1.3rem] font-semibold"
+                        onClick={() => setSearch("")}
+                      >
+                        <AiOutlineClose />
+                      </button>
+                    )}
                   </div>
-
                   <div className="flex items-center gap-5">
                     <div>
                       <select
@@ -336,8 +333,6 @@ const Menu = () => {
                           : "bg-[#004AAD] text-white"
                       } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap relative`}
                       onClick={() => setSelectedCategoryId(item._id)}
-                      // onMouseEnter={() => setHoveredCategoryId(item._id)}
-                      // onMouseLeave={() => setHoveredCategoryId("")}
                     >
                       {item?.name}
                       {selectedCategoryId === item._id && (
@@ -377,6 +372,15 @@ const Menu = () => {
                   </div>
                 )}
 
+                {search && searchMenuItems?.length === 0 && (
+                  <div className="w-full h-fit flex flex-col items-center">
+                    <img src={nosearch} className="w-[250px]" />
+                    <p className="text-[2rem] font-semibold">
+                      No Results Found!
+                    </p>
+                  </div>
+                )}
+
                 {search && searchMenuItems ? (
                   <ItemCard
                     setIsEditMenuOpen={setIsEditMenuOpen}
@@ -404,56 +408,62 @@ const Menu = () => {
             </div>
 
             {/* right div */}
-            {(isAddMenuOpen ||
-              isSubCategoryOpen ||
-              isEditMenuOpen ||
-              editSubCategoryModal) && (
-              <div
-                className={`${
-                  isAddMenuOpen ||
-                  isSubCategoryOpen ||
-                  isEditMenuOpen ||
-                  editSubCategoryModal
-                    ? "flex bg-[#EEF5FF] flex-col z-[100] fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-[calc(100%-70px)] w-[100%] sm:w-[75%] md:w-[65%] lg:w-[35%] overflow-auto transition-transform transform translate-x-full md:translate-x-0"
-                    : "hidden"
-                } slide-in-right`}
-              >
-                {/* add menu item form */}
-                {isAddMenuOpen && (
-                  <AddMenuItem
-                    categories={filteredCategory}
-                    setIsAddMenuOpen={setIsAddMenuOpen}
-                  />
-                )}
+            <div className="">
+              {/* Overlay */}
+              {isAnyMenuOpen && (
+                <div className="fixed inset-0 bg-gray-500 w-full h-full lg:opacity-0 opacity-50 z-[99] transition-opacity duration-300" />
+              )}
+              {(isAddMenuOpen ||
+                isSubCategoryOpen ||
+                isEditMenuOpen ||
+                editSubCategoryModal) && (
+                <div
+                  className={`${
+                    isAddMenuOpen ||
+                    isSubCategoryOpen ||
+                    isEditMenuOpen ||
+                    editSubCategoryModal
+                      ? "flex bg-[#EEF5FF] flex-col z-[100] fixed top-0 lg:top-[70px] border-l-2 border-l-[#00000050] right-0 h-full lg:h-[calc(100%-70px)] w-[100%] sm:w-[75%] md:w-[65%] lg:w-[35%] overflow-auto transition-transform transform translate-x-full md:translate-x-0"
+                      : "hidden"
+                  } slide-in-right`}
+                >
+                  {/* add menu item form */}
+                  {isAddMenuOpen && (
+                    <AddMenuItem
+                      categories={filteredCategory}
+                      setIsAddMenuOpen={setIsAddMenuOpen}
+                    />
+                  )}
 
-                {/* add sub category form */}
-                {isSubCategoryOpen && (
-                  <AddSubCategory
-                    category={filteredCategory}
-                    setIsSubCategoryOpen={setIsSubCategoryOpen}
-                  />
-                )}
+                  {/* add sub category form */}
+                  {isSubCategoryOpen && (
+                    <AddSubCategory
+                      category={filteredCategory}
+                      setIsSubCategoryOpen={setIsSubCategoryOpen}
+                    />
+                  )}
 
-                {/* edit menu form */}
-                {isEditMenuOpen && selectedCard && (
-                  <EditMenuItem
-                    setIsEditMenu={setIsEditMenuOpen}
-                    item={selectedCard}
-                    categories={filteredCategory}
-                  />
-                )}
+                  {/* edit menu form */}
+                  {isEditMenuOpen && selectedCard && (
+                    <EditMenuItem
+                      setIsEditMenu={setIsEditMenuOpen}
+                      item={selectedCard}
+                      categories={filteredCategory}
+                    />
+                  )}
 
-                {/* edit subcategory form */}
-                {editSubCategoryModal && (
-                  <EditSubcategory
-                    activeCategory={filteredCategory}
-                    categories={categories}
-                    subcategoryToEdit={subCategoryToEdit}
-                    setModal={setEditSubCategoryModal}
-                  />
-                )}
-              </div>
-            )}
+                  {/* edit subcategory form */}
+                  {editSubCategoryModal && (
+                    <EditSubcategory
+                      activeCategory={filteredCategory}
+                      categories={categories}
+                      subcategoryToEdit={subCategoryToEdit}
+                      setModal={setEditSubCategoryModal}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
