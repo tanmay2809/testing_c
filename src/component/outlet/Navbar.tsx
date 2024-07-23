@@ -3,6 +3,7 @@ import { IoMdWallet } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
 import logo1 from "../../assets/Group 1171278064 (1).png";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [fram, setfram] = useState<boolean>(false);
@@ -22,15 +23,18 @@ const Navbar = () => {
       <img
         src={icon}
         alt="logo"
-        className="h-[100%] ml-[1rem] aspect-auto  cursor-pointer  "
+        className="h-[100%] ml-[1rem] aspect-auto cursor-pointer"
       />
 
       <div className="flex items-center justify-evenly w-fit  ">
-        <div className="text-[#64748B] text-[1.1rem] font-bold flex items-center gap-5 bg-[#EFF6FF] px-6 py-2 rounded-xl ">
+        <Link
+          to="/wallet"
+          className="text-[#64748B] text-[1.1rem] font-bold flex items-center gap-5 bg-[#EFF6FF] px-6 py-2 rounded-xl "
+        >
           <IoMdWallet />
           <p>₹1000</p>
           <FaPlus className="bg-white rounded size-5 " />
-        </div>
+        </Link>
         <p className="w-[1.5px] bg-[#0000004F] h-10 ml-6  "></p>
 
         <img

@@ -111,6 +111,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        window.location.reload();
         toast.success("Subcategory toggle");
       })
       .catch((error) => {
