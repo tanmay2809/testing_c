@@ -10,7 +10,7 @@ import { FaUser } from "react-icons/fa6";
 import BarChart from "../../component/Customer/BarChart";
 
 //data for chart
-import { options, months } from "../../constants/index";
+import { dataForOverview, options, months } from "../../constants/index";
 // import { data, options, months } from "../../constants/index";
 import Feedback from "../../component/outlet/Feedback";
 
@@ -182,7 +182,7 @@ const Overview: React.FC = () => {
         </div>
 
         {/*Chart div */}
-        <div className="border border-[#B5CEF0] mt-2 px-6 py-2 font-inter ">
+        <div className="border border-[#B5CEF0] mt-2 px-6 py-2 font-inter flex flex-col">
           <div className="flex justify-between items-center ">
             <div className="text-xl font-semibold text-[#212B36]">
               New Customer vs Old Customer
@@ -202,8 +202,8 @@ const Overview: React.FC = () => {
             </div>
           </div>
 
-        {/* Bottom section with color circles and labels */}
-        <div className="flex items-center space-x-4">
+          {/* Bottom section with color circles and labels */}
+          <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#C0DBFF] rounded-full mr-2"></div>
               <span className="text-sm text-[#5E5E5E]">New Customer</span>
@@ -213,14 +213,13 @@ const Overview: React.FC = () => {
               <span className="text-sm text-[#5E5E5E]">Old Customer</span>
             </div>
           </div>
-
-        {/*chart */}
-         {/* <div className="">
-            <BarChart data={data} options={options} width={500} height={150}/>
-          </div> */}
+          {/*chart */}
+          <div className=" lg:h-[22rem] md:h-[13rem]">
+            <BarChart data={dataForOverview} options={options} width={500} height={150} />
+          </div>
+        </div>
         {/*Feedback div */}
         <Feedback />
-        </div>
       </div>
     </div>
   );

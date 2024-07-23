@@ -475,7 +475,7 @@ export const segmentationDetails: {
 // Generate labels for each day of the month
 const daysInMonth = Array.from({ length: 30 }, (_, i) => `${i + 1} July`);
 
-export const data: ChartData<"bar"> = {
+export const dataForOverview: ChartData<"bar"> = {
   labels: daysInMonth,
   datasets: [
     {
