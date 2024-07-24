@@ -96,15 +96,15 @@ const Overview: React.FC = () => {
 
   return (
     <div className="w-full h-fit relative ">
-      <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
+      <div className=" lg:w-[93%] h-fit px-[1.5rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         {/*Customer Snapshot div */}
-        <div className="p-2 bg-[#F1F7FF] font-inter">
+        <div className="px-[.9rem] py-[1.5rem] bg-[#F1F7FF] font-inter rounded-lg mb-[1rem]">
           {/* Top Section */}
           <div className="flex justify-between items-center p-2 ">
             {/* Left Section */}
             <div>
-              <h1 className="text-xl font-semibold mb-1">Customer Snapshot</h1>
-              <p className="text-gray-600 text-base ">
+              <h1 className="text-[1.5rem] font-semibold mb-1 text-[#3C3C3C] ">Customer Snapshot</h1>
+              <p className="text-gray-600 text-[.95rem] font-[400] ">
                 Explore how recently, how often your customer visit your
                 business
               </p>
@@ -152,15 +152,15 @@ const Overview: React.FC = () => {
           </div>
 
           {/* Bottom Section */}
-          <div className="lg:flex md:flex gap-4 font-inter lg:justify-evenly mb-1">
-            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-[9rem] flex flex-col justify-evenly">
+          <div className="lg:flex w-full md:flex gap-4 font-inter lg:justify-evenly my-[1rem]  mx-auto">
+            <div className="w-[33%] bg-white p-5 shadow-md rounded-md text-left  flex flex-col gap-5 justify-evenly">
               <div className="text-3xl font-bold text-[#505050]">30</div>
               <div className="flex justify-start gap-3 items-center">
                 <FaUser />
                 <p className="text-[#505050] text-lg">Total Customer</p>
               </div>
             </div>
-            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-[9rem] flex flex-col justify-evenly">
+            <div className="w-[33%] bg-white p-5 shadow-md rounded-md text-left gap-5 flex flex-col justify-evenly">
               <div className="text-3xl font-bold  text-[#505050]">
                 {newCustomers}
               </div>
@@ -169,7 +169,7 @@ const Overview: React.FC = () => {
                 <p className="text-[#505050] text-lg">New Customer</p>
               </div>
             </div>
-            <div className="lg:w-1/4 bg-white p-4 shadow-md rounded-md text-left h-[9rem] flex flex-col justify-evenly">
+            <div className="w-[33%] bg-white p-5 shadow-md rounded-md text-left gap-5 flex flex-col justify-evenly">
               <div className="text-3xl font-bold  text-[#505050]">
                 {regularCustomers}
               </div>
@@ -179,10 +179,11 @@ const Overview: React.FC = () => {
               </div>
             </div>
           </div>
+
         </div>
 
         {/*Chart div */}
-        <div className="border border-[#B5CEF0] mt-2 px-6 py-2 font-inter flex flex-col">
+        <div className="border border-[#B5CEF0] rounded-lg mt-2 px-6 py-2 font-inter flex flex-col">
           <div className="flex justify-between items-center ">
             <div className="text-xl font-semibold text-[#212B36]">
               New Customer vs Old Customer
@@ -206,15 +207,15 @@ const Overview: React.FC = () => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#C0DBFF] rounded-full mr-2"></div>
-              <span className="text-sm text-[#5E5E5E]">New Customer</span>
+              <span className="text-sm text-[#5E5E5E] font-[600] ">New Customer</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#004AAD] rounded-full mr-2"></div>
-              <span className="text-sm text-[#5E5E5E]">Old Customer</span>
+              <span className="text-sm text-[#5E5E5E] font-[600]">Old Customer</span>
             </div>
           </div>
           {/*chart */}
-          <div className=" lg:h-[22rem] md:h-[13rem]">
+          <div className=" lg:h-[21rem] md:h-[13rem] mt-6">
             <BarChart data={dataForOverview} options={options} width={500} height={150} />
           </div>
         </div>

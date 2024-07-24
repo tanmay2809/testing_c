@@ -1,9 +1,13 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 
 // icons
 import { LuAsterisk } from "react-icons/lu";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useSelector } from "react-redux";
+import { fetchRestaurantDetails } from "../../redux/restaurantData";
 
 interface FormData {
   companyName: string;
@@ -11,6 +15,8 @@ interface FormData {
   gstNumber: string;
   country: string;
   state: string;
+  city: string;
+  pincode: string;
   notRegisteredWithGST: boolean;
 }
 
@@ -23,8 +29,11 @@ const Billing = () => {
     gstNumber: "",
     country: "",
     state: "",
+    city: "",
+    pincode: "",
     notRegisteredWithGST: false,
   });
+  const [billingDetails, setBillingDetails] = useState<FormData>();
 
   const toggleModel = () => {
     setModel(!model);
@@ -59,6 +68,14 @@ const Billing = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
+
+  const resdata = useSelector((state: RootState) => state.resturantdata);
+
+  useEffect(() => {
+    setBillingDetails(resdata.data.billingDetails);
+  }, [resdata]);
+
+  // console.log(resdata.data.billingDetails);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -98,45 +115,55 @@ const Billing = () => {
                   Company Name
                 </p>
                 <h1 className="text-lg font-semibold">
-                  Foodoos Private Limited
+                  {billingDetails?.companyName}
                 </h1>
               </div>
               <div className="w-[12.4rem] flex flex-col">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   Country
                 </p>
-                <h1 className="text-lg font-semibold">India</h1>
+                <h1 className="text-lg font-semibold">
+                  {billingDetails?.country}
+                </h1>
               </div>
               <div className="w-[12.4rem] flex flex-col">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   State
                 </p>
-                <h1 className="text-lg font-semibold">West Bengal</h1>
+                <h1 className="text-lg font-semibold">
+                  {billingDetails?.state}
+                </h1>
               </div>
               <div className="w-[12.4rem] flex flex-col ">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   City
                 </p>
-                <h1 className="text-lg font-semibold">Kolkata</h1>
+                <h1 className="text-lg font-semibold">
+                  {billingDetails?.city}
+                </h1>
               </div>
               <div className="w-[12.4rem] flex flex-col ">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   Pincode
                 </p>
-                <h1 className="text-lg font-semibold">5412</h1>
+                <h1 className="text-lg font-semibold">
+                  {billingDetails?.pincode}
+                </h1>
               </div>
               <div className="w-[12.4rem] flex flex-col">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   GST number
                 </p>
-                <h1 className="text-lg font-semibold">897564876778896</h1>
+                <h1 className="text-lg font-semibold">
+                  {billingDetails?.gstNumber}
+                </h1>
               </div>
               <div className="w-[12.4rem] flex flex-col">
                 <p className="text-[1.125rem] text-[#616161] font-[400]">
                   Address
                 </p>
                 <h1 className="text-lg font-semibold">
-                  AG Block,Salt Lake sector 2 Kolkata-700091
+                  {billingDetails?.address}
                 </h1>
               </div>
             </div>
