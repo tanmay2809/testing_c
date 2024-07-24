@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { SketchPicker, ColorResult } from "react-color";
+import React from "react";
 
 //svg
 import emoji from "/emoji.svg";
@@ -33,12 +32,10 @@ const FormattingControls: React.FC<FormattingControlsProps> = ({
   styles,
   setStyles,
 }) => {
-  const [showColorPicker, setShowColorPicker] = useState<Section | null>(null);
-
-  const handleColorChange = (color: ColorResult) => {
+  const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStyles((prevStyles) => ({
       ...prevStyles,
-      [section]: { ...prevStyles[section], color: color.hex },
+      [section]: { ...prevStyles[section], color: event.target.value },
     }));
   };
 
@@ -66,36 +63,26 @@ const FormattingControls: React.FC<FormattingControlsProps> = ({
         {section === "body" && 1000}
         {section === "footer" && 200}
       </span>
+
       <div className="flex items-center gap-2 flex-wrap justify-center">
-        <button
-          onClick={() =>
-            setShowColorPicker(showColorPicker === section ? null : section)
-          }
-          className="border rounded w-8 h-8"
+        <input
+          className="text-center w-9 border-gray cursor-pointer border-slate-800 h-[2.5rem]"
+          type="color"
+          value={styles[section].color}
+          onChange={handleColorChange}
+        />
+        <div
+          className="color-display border-gray"
           style={{ backgroundColor: styles[section].color }}
-        ></button>
-        {showColorPicker === section && (
-          <div
-            className={`absolute ${
-              section === "header" && "z-10 top-[47rem]"
-            } ${section === "body" && "z-10 top-[59.5rem]"} ${
-              section === "footer" && "z-10 top-[72rem]"
-            }`}
-          >
-            <SketchPicker
-              color={styles[section].color}
-              onChange={(color) => handleColorChange(color)}
-            />
-          </div>
-        )}
+        ></div>
         <button className="border rounded p-1">
-          <img src={emoji}/>
+          <img src={emoji} />
         </button>
         <button className="border rounded p-1" onClick={toggleBold}>
-          <img src={bold}/>
+          <img src={bold} />
         </button>
         <button className="border rounded p-1" onClick={toggleItalic}>
-        <img src={italic}/>
+          <img src={italic} />
         </button>
       </div>
     </div>

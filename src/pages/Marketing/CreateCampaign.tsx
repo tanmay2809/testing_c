@@ -41,7 +41,6 @@ type SectionStyles = {
   color: string;
   bold: boolean;
   italic: boolean;
-
 };
 
 type StylesState = {
@@ -78,19 +77,16 @@ const CreateCampaigns: React.FC = () => {
       color: "#000000",
       bold: false,
       italic: false,
-
     },
     body: {
       color: "#000000",
       bold: false,
       italic: false,
-
     },
     footer: {
       color: "#000000",
       bold: false,
       italic: false,
-
     },
   });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -297,7 +293,7 @@ const CreateCampaigns: React.FC = () => {
             {/*main content div */}
             <div className="bg-[#F5F9FF] flex justify-between gap-10  lg:px-10 md:p-5 rounded-lg">
               {/*text div */}
-              <div className=" lg:w-[65%] md:w-[50%]">
+              <div className=" lg:w-[65%] md:w-[50%] sm:[w-50%]">
                 {!next && (
                   <div className="pb-20">
                     <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
@@ -339,7 +335,7 @@ const CreateCampaigns: React.FC = () => {
                           onChange={handleCreateCampaignCheckboxChange}
                         />
                         <div className="bg-[#FFCF27] p-4 rounded-lg">
-                          <img src={booking}/>
+                          <img src={booking} />
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold mb-2">
@@ -372,7 +368,7 @@ const CreateCampaigns: React.FC = () => {
                       <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
                         <div className="flex items-center gap-3">
                           <div className="bg-[#FFCF27] p-4 rounded-lg">
-                            <img src={booking}/>
+                            <img src={booking} />
                           </div>
                           <div>
                             <h3 className="text-xl font-semibold mb-2">
@@ -508,7 +504,6 @@ const CreateCampaigns: React.FC = () => {
                                   fontStyle: styles.header.italic
                                     ? "italic"
                                     : "",
-                                  
                                 }}
                               />
                             </h2>
@@ -554,7 +549,6 @@ const CreateCampaigns: React.FC = () => {
                                     ? "bold"
                                     : "normal",
                                   fontStyle: styles.body.italic ? "italic" : "",
-                                  
                                 }}
                               />
                             </h2>
@@ -601,7 +595,6 @@ const CreateCampaigns: React.FC = () => {
                                   fontStyle: styles.footer.italic
                                     ? "italic"
                                     : "",
-                                  
                                 }}
                               />
                             </h2>
@@ -855,7 +848,7 @@ const CreateCampaigns: React.FC = () => {
               </div>
 
               {/*screen div */}
-              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[12rem] md:right-11 md:top-52 sm:right-6 sm:top-56 h-fit">
+              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[12rem] md:right-11 md:top-56 sm:right-6 sm:top-56 h-fit">
                 <img
                   src={screen}
                   alt="Phone Screen"
@@ -863,7 +856,7 @@ const CreateCampaigns: React.FC = () => {
                 />
                 {next && (
                   <>
-                    <div className="  absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit lg:top-[4.5rem] lg:w-[13.9rem] lg:left-[2.8rem] md:top-[4.5rem] md:w-[15.3rem] md:left-[2.16rem]  sm:w-[13.9rem] sm:top-[4.5rem] sm:left-[2.8rem]">
+                    <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[4.5rem] w-[14rem] left-[2.83rem]">
                       <div className="bg-white  p-4 rounded-md  ">
                         {selectedImage && type === "Marketing" && (
                           <div className="w-[12rem]  h-[6rem]">
@@ -874,34 +867,31 @@ const CreateCampaigns: React.FC = () => {
                           </div>
                         )}
                         <p
-                          className="text-sm text-gray-600 mt-1"
+                          className="text-sm text-gray-600 mt-1 break-words"
                           style={{
                             color: styles.header.color,
                             fontWeight: styles.header.bold ? "bold" : "normal",
                             fontStyle: styles.header.italic ? "italic" : "",
-                            
                           }}
                         >
                           {header}
                         </p>
                         <p
-                          className="text-sm text-gray-600"
+                          className="text-sm text-gray-600 break-words"
                           style={{
                             color: styles.body.color,
                             fontWeight: styles.body.bold ? "bold" : "normal",
                             fontStyle: styles.body.italic ? "italic" : "",
-                            
                           }}
                         >
                           {body}
                         </p>
                         <p
-                          className="text-sm text-gray-600"
+                          className="text-sm text-gray-600 break-words"
                           style={{
                             color: styles.footer.color,
                             fontWeight: styles.footer.bold ? "bold" : "normal",
                             fontStyle: styles.footer.italic ? "italic" : "",
-                            
                           }}
                         >
                           {footer}
