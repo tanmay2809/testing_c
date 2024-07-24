@@ -7,6 +7,7 @@ import whatsapp from "../../assets/whatsapp.png";
 //svg
 import greenTick from "/greenTick.svg";
 import doubleArrow from "/doubleArrow.svg"
+import { Link } from "react-router-dom";
 
 
 const WhatsAppSettings: React.FC = () => {
@@ -79,10 +80,11 @@ const WhatsAppSettings: React.FC = () => {
                 <p className="text-lg font-medium ">
                   Want to connect your custom number?
                 </p>
+                <Link to="/connectNumber">
                 <button className="flex items-center lg:gap-2 bg-[#60D66A] text-white py-2 lg:px-3 md:px-1 rounded-lg">
                   <img src={whatsapp} className="w-7" />
                   Connect Number
-                </button>
+                </button></Link>
               </div>
             )}
           </div>

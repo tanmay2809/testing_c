@@ -442,7 +442,6 @@ const CustomerList: React.FC = () => {
           <div className="font-inter flex items-center justify-start gap-2 mb-4">
             <h2 className="font-bold text-base text-[#454545]">Filter</h2>
             {filterData.map((data: string, index: number) => {
-              
               return (
                 <div
                   key={index}
@@ -589,7 +588,7 @@ const CustomerList: React.FC = () => {
       <CustomerFilter
         isVisible={isFilterVisible}
         onClose={toggleFilter}
-        filterData={filterElementsAdd}
+        setFilterData={filterElementsAdd}
         customerData={customerData}
         setCustomerData={setCustomerData}
         originalData={data?.customerData}

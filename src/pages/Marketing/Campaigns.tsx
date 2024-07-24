@@ -753,10 +753,10 @@ const Campaigns: React.FC = () => {
                   className="lg:w-[88%] md:w-[90%] h-auto mx-auto -mt-7 sm:w-[88%]"
                 />
 
-                <div className="  absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit lg:top-[4.5rem] lg:w-[13.9rem] lg:left-[2.8rem] md:top-[4.5rem] md:w-[15.3rem] md:left-[2.16rem]  sm:w-[13.9rem] sm:top-[4.5rem] sm:left-[2.8rem]">
-                  <div className="bg-white  p-4 rounded-md  w-full ">
+                <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[4.5rem] w-[14rem] left-[2.83rem]">
+                  <div className="bg-white  p-4 rounded-md  w-full h-fit">
                     {selectedImage && type === "Marketing" && (
-                      <div className="w-[12rem]  h-[6rem]">
+                      <div className="w-full h-[6rem]">
                         <img
                           src={selectedImage}
                           className="w-full h-full object-cover rounded-lg"
@@ -764,7 +764,7 @@ const Campaigns: React.FC = () => {
                       </div>
                     )}
                     <p
-                      className="text-sm text-gray-600 mt-1 "
+                      className="text-sm text-gray-600 mt-1 break-words"
                       style={{
                         color: styles.header.color,
                         fontWeight: styles.header.bold ? "bold" : "normal",
@@ -775,7 +775,7 @@ const Campaigns: React.FC = () => {
                       {header}
                     </p>
                     <p
-                      className="text-sm text-gray-600"
+                      className="text-sm text-gray-600 break-words"
                       style={{
                         color: styles.body.color,
                         fontWeight: styles.body.bold ? "bold" : "normal",
@@ -786,7 +786,7 @@ const Campaigns: React.FC = () => {
                       {body}
                     </p>
                     <p
-                      className="text-sm text-gray-600"
+                      className="text-sm text-gray-600 break-words"
                       style={{
                         color: styles.footer.color,
                         fontWeight: styles.footer.bold ? "bold" : "normal",

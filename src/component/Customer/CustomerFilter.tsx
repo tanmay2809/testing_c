@@ -3,7 +3,7 @@ import React, { useState } from "react";
 interface FilterProps {
   isVisible: boolean;
   onClose: () => void;
-  filterData: (data: string[]) => void;
+  setFilterData: (data: string[]) => void;
   customerData: [
     {
       userId: {
@@ -37,14 +37,14 @@ interface FilterProps {
   setcustomDateNotVisit: (date: string) => void;
   gender: string[];
   segmentation: string[];
-  setGender: (data: string[]) => void;
-  setSegmentation: (data: string[]) => void;
+  setGender: (gender: string[]) => void;
+  setSegmentation: (segmentation: string[]) => void;
 }
 
 const CustomerFilter: React.FC<FilterProps> = ({
   isVisible,
   onClose,
-  filterData,
+  setFilterData,
   setCustomerData,
   originalData,
   customDateVisit,
@@ -58,10 +58,6 @@ const CustomerFilter: React.FC<FilterProps> = ({
 }) => {
   const [visitFilter, setVisitFilter] = useState<string>("");
   const [nonVisitFilter, setNonVisitFilter] = useState<string>("");
-  // const [segmentation, setSegmentation] = useState<string[]>([]);
-  // const [gender, setGender] = useState<string[]>([]);
-  // const [customDateVisit, setCustomDateVisit] = useState<string>("");
-  // const [customDateNotVisit, setCustomDateNotVisit] = useState<string>("");
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
   if (!isVisible) return null;
@@ -175,7 +171,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
       data.push(customDateNotVisit);
     }
 
-    filterData(data);
+    setFilterData(data);
     setCustomerData(filteredCustomers);
     onClose();
   };
