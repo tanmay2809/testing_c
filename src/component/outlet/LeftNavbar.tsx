@@ -46,10 +46,10 @@ const LeftNavbar = () => {
     },
   ];
 
+    const useAppDispatch = () => useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
   const { data } = useSelector((state: RootState) => state.resturantdata);
   console.log("restaurantData: ", data);
-  const useAppDispatch = () => useDispatch<AppDispatch>();
-  const dispatch = useAppDispatch();
 
   const id: string = "668857dc758bf97a4d1406ab";
 

@@ -1,7 +1,10 @@
-import { Store as StoreType } from "../../redux/storeSlice";
+import {
+  setStoreFromRestaurant,
+  Store as StoreType,
+} from "../../redux/storeSlice";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { useState, ChangeEvent } from "react";
+import { AppDispatch, RootState } from "../../redux/store";
+import { useState, ChangeEvent, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // icons
@@ -19,23 +22,27 @@ import google from "../../assets/Google-Review.png";
 
 //svg
 import premium from "/premium.svg";
+import { useDispatch } from "react-redux";
+import { fetchRestaurantDetails } from "../../redux/restaurantData";
+import axios from "axios";
+import { baseUrl } from "../../main";
 
 interface FormData {
   image: string | null;
-  outletName: string;
-  outletType: string;
-  outletMail: string;
-  outletLandmark: string;
-  outletCity: string;
-  outletState: string;
-  outletPincode: number;
-  managerName: string;
-  managerContact: string;
-  insta: string;
+  resName: string;
+  businessType: string;
+  email: string;
+  landmark: string;
+  city: string;
+  state: string;
+  pincode: number;
+  manager: string;
+  contact: string;
+  instagram: string;
   facebook: string;
   youtube: string;
-  googleReview: string;
-  zomatoReview: string;
+  google: string;
+  zomato: string;
 }
 
 const Stores = () => {
@@ -45,20 +52,20 @@ const Stores = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
     image: selectedImage,
-    outletName: "",
-    outletType: "",
-    outletMail: "",
-    outletLandmark: "",
-    outletCity: "",
-    outletState: "",
-    outletPincode: 9,
-    managerName: "",
-    managerContact: "",
-    insta: "",
+    resName: "",
+    businessType: "",
+    email: "",
+    landmark: "",
+    city: "",
+    state: "",
+    pincode: 9,
+    manager: "",
+    contact: "",
+    instagram: "",
     facebook: "",
     youtube: "",
-    googleReview: "",
-    zomatoReview: "",
+    google: "",
+    zomato: "",
   });
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -94,6 +101,27 @@ const Stores = () => {
     e.preventDefault();
     // Handle form submission logic here
     console.log("Form data:", formData);
+
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/updateRestaurantDetails/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     handleCloseModal();
   };
 
@@ -101,23 +129,44 @@ const Stores = () => {
     setSelectedImage(image);
     setFormData({
       image: image,
-      outletName: store.username,
-      outletType: store.type,
-      outletMail: store.email,
-      outletLandmark: store.landmark,
-      outletCity: store.city,
-      outletState: store.state,
-      outletPincode: store.pincode,
-      managerName: store.manager,
-      managerContact: store.contact,
-      insta: "", //store.insta,
-      facebook: "", //store.facebook,
-      youtube: "", //store.youtube,
-      googleReview: "", //store.googleReview,
-      zomatoReview: "", //store.zomatoReiew,
+      resName: store.name,
+      businessType: store.type,
+      email: store.email,
+      landmark: store.landmark,
+      city: store.city,
+      state: store.state,
+      pincode: store.pincode,
+      manager: store.manager,
+      contact: store.contact,
+      instagram: store.instagram,
+      facebook: store.facebook,
+      youtube: store.youtube,
+      google: store.google,
+      zomato: store.zomato,
     });
     toggleModal();
   };
+
+  const useAppDispatch = () => useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
+  const resdata = useSelector((state: RootState) => state.resturantdata);
+
+  const id = "668857dc758bf97a4d1406ab";
+  const storeIndex = 0;
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchRestaurantDetails({ id }) as any);
+    }
+  }, [dispatch, id]);
+
+  const restaurantData = resdata.data;
+
+  useEffect(() => {
+    if (restaurantData) {
+      dispatch(setStoreFromRestaurant({ index: storeIndex, restaurantData }));
+    }
+  }, [restaurantData, dispatch, storeIndex]);
 
   return (
     <div className="w-full h-fit relative">
@@ -147,7 +196,7 @@ const Stores = () => {
         <div className="w-full flex flex-col -mt-2">
           {stores.map((store: StoreType) => (
             <div
-              key={store.username}
+              key={store.name}
               className="w-full flex flex-col gap-4 rounded-xl px-[2rem] py-4 h-fit bg-[#F1F7FF]"
             >
               <div className="w-full flex flex-row justify-between">
@@ -159,7 +208,7 @@ const Stores = () => {
                   />
                   <div className="flex flex-col">
                     <h1 className="text-[1.5rem] font-semibold">
-                      {store.username}
+                      {store.name}
                     </h1>
                     <p className="text-[1.125rem] font-[400] text-[#616161]">
                       {store.email}
@@ -222,7 +271,7 @@ const Stores = () => {
                     Social Handles
                   </p>
                   <div className="w-full flex flex-row items-center gap-4 mt-2">
-                    {store.socials.map((social, index) => (
+                    {/* {store.socials?.map((social, index) => (
                       <div key={index}>
                         {social.name === "youtube" && (
                           <Link className="w-fit h-fit" to={social.link}>
@@ -240,7 +289,7 @@ const Stores = () => {
                           </Link>
                         )}
                       </div>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
                 <div className="w-[13rem] flex flex-col">
@@ -248,7 +297,7 @@ const Stores = () => {
                     Feedback Channels
                   </p>
                   <div className="w-full flex flex-row items-center gap-4 mt-2">
-                    {store.channels.map((channel, index) => (
+                    {/* {store.channels?.map((channel, index) => (
                       <div key={index}>
                         {channel.name === "zomato" && (
                           <Link className="w-fit h-fit" to={channel.link}>
@@ -261,7 +310,7 @@ const Stores = () => {
                           </Link>
                         )}
                       </div>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
                 <div className=" w-[13rem] flex flex-col">
@@ -354,16 +403,16 @@ const Stores = () => {
                     <div className="">
                       <label
                         className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="outletName"
+                        htmlFor="resName"
                       >
                         Outlet Name
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        id="outletName"
-                        name="outletName"
-                        value={formData.outletName}
+                        id="resName"
+                        name="resName"
+                        value={formData.resName}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
@@ -371,16 +420,16 @@ const Stores = () => {
                     <div className="">
                       <label
                         className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="outletType"
+                        htmlFor="businessType"
                       >
                         Outlet Type
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        id="outletType"
-                        name="outletType"
-                        value={formData.outletType}
+                        id="businessType"
+                        name="businessType"
+                        value={formData.businessType}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
@@ -388,16 +437,16 @@ const Stores = () => {
                     <div className="">
                       <label
                         className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="outletMail"
+                        htmlFor="email"
                       >
                         Outlet Mail
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="email"
-                        id="outletMail"
-                        name="outletMail"
-                        value={formData.outletMail}
+                        id="email"
+                        name="email"
+                        value={formData.email}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
@@ -405,16 +454,16 @@ const Stores = () => {
                     <div className="">
                       <label
                         className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="outletLandmark"
+                        htmlFor="landmark"
                       >
                         Outlet Landmark
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        id="outletLandmark"
-                        name="outletLandmark"
-                        value={formData.outletLandmark}
+                        id="landmark"
+                        name="landmark"
+                        value={formData.landmark}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
@@ -422,16 +471,16 @@ const Stores = () => {
                     <div className="">
                       <label
                         className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="outletCity"
+                        htmlFor="city"
                       >
                         Outlet City
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        id="outletCity"
-                        name="outletCity"
-                        value={formData.outletCity}
+                        id="city"
+                        name="city"
+                        value={formData.city}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
@@ -439,16 +488,16 @@ const Stores = () => {
                     <div className="">
                       <label
                         className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="outletState"
+                        htmlFor="state"
                       >
                         Outlet State
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        id="outletState"
-                        name="outletState"
-                        value={formData.outletState}
+                        id="state"
+                        name="state"
+                        value={formData.state}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
@@ -456,16 +505,16 @@ const Stores = () => {
                     <div className="">
                       <label
                         className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="outletPincode"
+                        htmlFor="pincode"
                       >
                         Outlet Pincode
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        id="outletPincode"
-                        name="outletPincode"
-                        value={formData.outletPincode}
+                        id="pincode"
+                        name="pincode"
+                        value={formData.pincode}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
@@ -573,7 +622,7 @@ const Stores = () => {
                             type="text"
                             name="insta"
                             placeholder="Instagram link"
-                            value={formData.insta}
+                            value={formData.instagram}
                             onChange={handleInputChange}
                             className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />
@@ -673,7 +722,7 @@ const Stores = () => {
                             type="text"
                             name="googleReview"
                             placeholder="Google review"
-                            value={formData.googleReview}
+                            value={formData.google}
                             onChange={handleInputChange}
                             className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />
@@ -684,7 +733,7 @@ const Stores = () => {
                             type="text"
                             placeholder="Zomato review"
                             name="zomatoReview"
-                            value={formData.zomatoReview}
+                            value={formData.zomato}
                             onChange={handleInputChange}
                             className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                           />
@@ -695,16 +744,16 @@ const Stores = () => {
                     <div className="">
                       <label
                         className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="managerName"
+                        htmlFor="manager"
                       >
                         Manager Name
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        id="managerName"
-                        name="managerName"
-                        value={formData.managerName}
+                        id="manager"
+                        name="manager"
+                        value={formData.manager}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
@@ -712,16 +761,16 @@ const Stores = () => {
                     <div className="">
                       <label
                         className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="managerContact"
+                        htmlFor="contact"
                       >
                         Manager Contact
                         <LuAsterisk className="text-sm text-[#C62828]" />
                       </label>
                       <input
                         type="text"
-                        id="managerContact"
-                        name="managerContact"
-                        value={formData.managerContact}
+                        id="contact"
+                        name="contact"
+                        value={formData.contact}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
