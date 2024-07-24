@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Frame from "./Frame";
 import Navbar from "./Navbar";
 
@@ -46,10 +46,8 @@ const LeftNavbar = () => {
     },
   ];
 
-  const { data } = useSelector(
-    (state: RootState) => state.resturantdata
-  );
-  console.log("restaurantData: ",data);
+  const { data } = useSelector((state: RootState) => state.resturantdata);
+  console.log("restaurantData: ", data);
   const useAppDispatch = () => useDispatch<AppDispatch>();
   const dispatch = useAppDispatch();
 
@@ -61,24 +59,147 @@ const LeftNavbar = () => {
     }
   }, [dispatch, id]);
 
-
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth", // Optional: Add smooth scrolling animation
     });
-  }
-
+  };
 
   return (
     <>
       <Navbar />
       <nav
         className={` fixed bg-white z-50  mt-[70px]  h-[calc(100vh-70px)] border-r  shadow-xl shadow-[#00000026] ${
-          isOpen ? "w-[15%] duration-100" : "w-[7%] duration-100"
+          isOpen ? "lg:w-[15%] duration-100" : "lg:w-[7%] duration-100"
         }`}
       >
-        <div className="relative w-full  flex flex-col justify-evenly items-center ">
+        {/* sidebar for small screens */}
+        <div className="lg:hidden block fixed bottom-2 px-3 w-[100%] h-fit z-[900]  ">
+          <div className="flex items-center justify-evenly gap-3 text-[#64748B] bg-white py-2 border rounded-md   ">
+            <div>
+              <Link
+                className={`${
+                  location.pathname === "/"
+                    ? "text-[#004AAD] bg-slate-100  "
+                    : "text-[#64748B]"
+                } flex gap-2 text-nowrap items-center hover:text-[#004AAD] rounded-xl ${
+                  isOpen ? "px-5 mx-3 py-2.5 " : " p-4 "
+                } `}
+                to="/"
+              >
+                <RiDashboardFill className="text-[2rem]" />
+                <span
+                  onClick={handleToggle}
+                  className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
+                >
+                  dashboard <span className=" text-transparent ">_______</span>
+                </span>
+              </Link>
+            </div>
+            <div>
+              <Link
+                className={`${
+                  location.pathname === "/menu"
+                    ? "text-[#004AAD] bg-slate-100  "
+                    : "text-[#64748B]"
+                } flex gap-2 text-nowrap items-center hover:text-[#004AAD] rounded-xl ${
+                  isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
+                } `}
+                to="/menu"
+              >
+                <FaConciergeBell className="text-[2rem]" />
+                <span
+                  onClick={handleToggle}
+                  className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
+                >
+                  menu{" "}
+                  <span className=" text-transparent">...__________..</span>
+                </span>
+              </Link>
+            </div>
+            <div>
+              <Link
+                className={`${
+                  location.pathname === "/marketing"
+                    ? "text-[#004AAD] bg-slate-100  "
+                    : "text-[#64748B]"
+                } flex gap-2 text-nowrap items-center hover:text-[#004AAD] rounded-xl ${
+                  isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
+                } `}
+                to="/marketing"
+              >
+                <HiOutlineSpeakerphone className="text-[2rem]" />
+                <span
+                  onClick={handleToggle}
+                  className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
+                >
+                  marketing <span className=" text-transparent ">_______</span>
+                </span>
+              </Link>
+            </div>
+            <div>
+              <Link
+                className={`${
+                  location.pathname === "/customer"
+                    ? "text-[#004AAD] bg-slate-100  "
+                    : "text-[#64748B]"
+                } flex gap-2 text-nowrap items-center hover:text-[#004AAD] rounded-xl ${
+                  isOpen ? "px-5 mx-3 py-2.5 " : " p-4 "
+                } `}
+                to="/customer"
+              >
+                <MdOutlinePerson3 className="text-[2rem]" />
+                <span
+                  onClick={handleToggle}
+                  className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
+                >
+                  customer <span className=" text-transparent ">______</span>
+                </span>
+              </Link>
+            </div>
+            <div>
+              <Link
+                className={`${
+                  location.pathname === "/setting"
+                    ? "text-[#004AAD] bg-slate-100  "
+                    : "text-[#64748B]"
+                } flex gap-2 text-nowrap  items-center hover:text-[#004AAD] rounded-xl ${
+                  isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
+                } `}
+                to="/setting"
+              >
+                <CiSettings className="text-[2rem]" />
+                <span
+                  onClick={handleToggle}
+                  className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
+                >
+                  setting <span className=" text-transparent ">_____</span>
+                </span>
+              </Link>
+            </div>
+            <div>
+              <Link
+                className={`flex items-center text-nowrap  gap-3 text-red-500 ${
+                  isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
+                }`}
+                to="/login"
+              >
+                <IoLogOutOutline className="text-[2rem]" />
+                <span
+                  onClick={handleToggle}
+                  className={` ${
+                    isOpen ? "block text-[.9rem] text-red-500" : " hidden"
+                  }`}
+                >
+                  Log Out
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden lg:flex relative w-full flex flex-col justify-evenly items-center">
           <img
             onClick={handleToggle}
             className={`absolute top-5 size-14 cursor-pointer -right-7 ${
@@ -127,8 +248,9 @@ const LeftNavbar = () => {
             }`}
           >
             <div className="flex flex-col  gap-1 ">
-              <div >
-                <Link onClick={handleScrollToTop}
+              <div>
+                <Link
+                  onClick={handleScrollToTop}
                   className={`${
                     location.pathname === "/"
                       ? "text-[#004AAD] bg-slate-100  "
@@ -149,7 +271,8 @@ const LeftNavbar = () => {
                 </Link>
               </div>
               <div>
-                <Link onClick={handleScrollToTop}
+                <Link
+                  onClick={handleScrollToTop}
                   className={`${
                     location.pathname === "/menu"
                       ? "text-[#004AAD] bg-slate-100  "
@@ -165,14 +288,13 @@ const LeftNavbar = () => {
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
                     menu{" "}
-                    <span className=" text-transparent">
-                      ...__________..
-                    </span>
+                    <span className=" text-transparent">...__________..</span>
                   </span>
                 </Link>
               </div>
               <div>
-                <Link onClick={handleScrollToTop}
+                <Link
+                  onClick={handleScrollToTop}
                   className={`${
                     location.pathname === "/marketing"
                       ? "text-[#004AAD] bg-slate-100  "
@@ -193,7 +315,8 @@ const LeftNavbar = () => {
                 </Link>
               </div>
               <div>
-                <Link onClick={handleScrollToTop}
+                <Link
+                  onClick={handleScrollToTop}
                   className={`${
                     location.pathname === "/customer"
                       ? "text-[#004AAD] bg-slate-100  "
@@ -208,14 +331,13 @@ const LeftNavbar = () => {
                     onClick={handleToggle}
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
-                    customer{" "}
-                    <span className=" text-transparent ">______</span>
+                    customer <span className=" text-transparent ">______</span>
                   </span>
                 </Link>
               </div>
             </div>
             <div
-              className={ ` w-[90%] py-3 font-semibold Poppins px-1 text-[.9rem] flex  items-center justify-center  flex-col gap-1 rounded-md bg-gradient-to-tl from-[#004AAD] to-[#EAABF0] mx-2  ${
+              className={` w-[90%] py-3 font-semibold Poppins px-1 text-[.9rem] flex  items-center justify-center  flex-col gap-1 rounded-md bg-gradient-to-tl from-[#004AAD] to-[#EAABF0] mx-2  ${
                 isOpen ? "block " : "hidden "
               } `}
             >
@@ -231,7 +353,8 @@ const LeftNavbar = () => {
             </div>
             <div className="flex flex-col text-[1.4rem] justify-between  ">
               <div>
-                <Link onClick={handleScrollToTop}
+                <Link
+                  onClick={handleScrollToTop}
                   className={`${
                     location.pathname === "/setting"
                       ? "text-[#004AAD] bg-slate-100  "
@@ -246,13 +369,12 @@ const LeftNavbar = () => {
                     onClick={handleToggle}
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
-                    setting{" "}
-                    <span className=" text-transparent ">_____</span>
+                    setting <span className=" text-transparent ">_____</span>
                   </span>
                 </Link>
               </div>
               <div>
-                <Link 
+                <Link
                   className={`flex items-center text-nowrap  gap-3 text-red-500 ${
                     isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
                   }`}

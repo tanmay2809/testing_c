@@ -126,9 +126,9 @@ const Wallet: React.FC = () => {
                 >
                   Recharge Wallet
                 </button>
-                <button className="w-[180px] h-fit border-[2px] border-[#004AAD] px-4 py-2 text-[#004AAD] rounded-[0.5rem] text-[0.9rem] font-semibold">
+                <Link to="/setting/billing" className="w-[180px] text-center h-fit border-[2px] border-[#004AAD] px-4 py-2 text-[#004AAD] rounded-[0.5rem] text-[0.9rem] font-semibold">
                   Manage Billing
-                </button>
+                </Link>
               </div>
             </div>
 

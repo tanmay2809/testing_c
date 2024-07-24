@@ -22,6 +22,8 @@ import { CiSearch } from "react-icons/ci";
 import { baseUrl } from "../main";
 import { MdDelete } from "react-icons/md";
 import { BiSearchAlt2 } from "react-icons/bi";
+import { AiOutlineClose } from "react-icons/ai";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 // assets
 import FoodMenu from "../assets/Food Menu.png";
@@ -29,7 +31,6 @@ import Burger from "../assets/Burger.png";
 import Category from "../assets/category.png";
 import Bussiness from "../assets/Business Task list.png";
 import nosearch from "../assets/search.jpg";
-import { AiOutlineClose } from "react-icons/ai";
 
 export interface SubcategoryItem {
   _id: string;
@@ -247,7 +248,7 @@ const Menu = () => {
                         className="absolute right-2 text-[1.3rem] font-semibold"
                         onClick={() => setSearch("")}
                       >
-                        <AiOutlineClose />
+                        <IoIosCloseCircleOutline className="text-[1.5rem]" />
                       </button>
                     )}
                   </div>
@@ -411,7 +412,7 @@ const Menu = () => {
             <div className="">
               {/* Overlay */}
               {isAnyMenuOpen && (
-                <div className="fixed inset-0 bg-gray-500 w-full h-full lg:opacity-0 opacity-50 z-[99] transition-opacity duration-300" />
+                <div className="fixed inset-0 lg:inset-auto bg-gray-500 w-full h-full lg:opacity-0 opacity-50 transition-opacity duration-300" />
               )}
               {(isAddMenuOpen ||
                 isSubCategoryOpen ||
@@ -423,7 +424,7 @@ const Menu = () => {
                     isSubCategoryOpen ||
                     isEditMenuOpen ||
                     editSubCategoryModal
-                      ? "flex bg-[#EEF5FF] flex-col z-[100] fixed top-0 lg:top-[70px] border-l-2 border-l-[#00000050] right-0 h-full lg:h-[calc(100%-70px)] w-[100%] sm:w-[75%] md:w-[65%] lg:w-[35%] overflow-auto transition-transform transform translate-x-full md:translate-x-0"
+                      ? "flex bg-[#EEF5FF] flex-col fixed top-[70px] border-l-2 border-l-[#00000050] right-0 h-full lg:h-[calc(100%-70px)] w-[100%] sm:w-[75%] md:w-[65%] lg:w-[35%] overflow-auto transition-transform transform translate-x-full md:translate-x-0"
                       : "hidden"
                   } slide-in-right`}
                 >

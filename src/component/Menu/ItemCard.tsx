@@ -1,13 +1,20 @@
-import { MdModeEditOutline } from "react-icons/md";
 import { MenuItem } from "./AddMenuItem";
-import Switch from "./switch";
-import { IoTrashOutline } from "react-icons/io5";
-import { BiFoodTag } from "react-icons/bi";
-import DeleteModal from "./DeleteModal";
 import { useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../../main";
 import { toast } from "react-toastify";
+
+// icons
+import { MdModeEditOutline } from "react-icons/md";
+import { IoTrashOutline } from "react-icons/io5";
+import { BiFoodTag } from "react-icons/bi";
+
+// assets
+import nosearch from "../../assets/search.jpg";
+
+// components
+import Switch from "./switch";
+import DeleteModal from "./DeleteModal";
 
 interface Props {
   items?: MenuItem[] | false;
@@ -105,6 +112,12 @@ const ItemCard: React.FC<Props> = ({
               </div>
             </div>
           ))}
+        {items && items?.length === 0 && (
+          <div className="w-full h-fit flex flex-col items-center">
+            <img src={nosearch} className="w-[150px]" />
+            <p className="text-[1.5rem] font-semibold">No Items!</p>
+          </div>
+        )}
       </div>
       {deleteModal && (
         <DeleteModal setModal={setDeleteModal} setSelectedCard={itemToDelete} />

@@ -13,11 +13,14 @@ import logo from "../../assets/logo.png";
 
 // components
 import Loader from "../../component/outlet/Loader";
+import axios from "axios";
+import { baseUrl } from "../../main";
 
 interface FormData {
   name: string;
   email: string;
-  password: string;
+  // password: string;
+  type: string;
 }
 
 const Register: React.FC = () => {
@@ -25,19 +28,23 @@ const Register: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
-    password: "",
+    // password: "",
+    type: "",
   });
 
   const [isAgree, setIsAgree] = useState<boolean>(false);
   const [agreeError, setAgreeError] = useState<string>("");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  // const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [videoLoading, setVideoLoading] = useState<boolean>(true);
 
-  function changeHandler(event: ChangeEvent<HTMLInputElement>) {
+  function changeHandler(
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
+    const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
-      [event.target.name]: event.target.value,
+      [name]: value,
     }));
   }
 
@@ -49,13 +56,46 @@ const Register: React.FC = () => {
     } else {
       setAgreeError("");
     }
-    toast.success("OTP Sent successfully");
-    navigate("/verify");
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
+
+    let data = JSON.stringify({
+      email: formData.email,
+      otpLength: 6,
+      channel: "EMAIL",
+      expiry: 180,
     });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://auth.otpless.app/auth/otp/v1/send",
+      headers: {
+        clientId: "I11NELHRNXTHQQEUGNVLQXS41T2L7UDZ",
+        clientSecret: "68g5e567j63kv3h7ahz976xj2sk7k46j",
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        toast.success("OTP Sent successfully");
+        localStorage.setItem("email", formData.email);
+        localStorage.setItem("name", formData.name);
+        localStorage.setItem("type", formData.type);
+        navigate("/verify");
+        setFormData({
+          name: "",
+          email: "",
+          // password: "",
+          type: "",
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     setLoading(true);
     console.log(formData);
   }
@@ -120,27 +160,19 @@ const Register: React.FC = () => {
                 />
               </div>
 
-              <div className="flex w-full h-[3.5rem] border rounded-[0.5rem] pl-[12px] items-center gap-3 relative">
+              <div className="flex w-full h-[3.5rem] border rounded-[0.5rem] pl-[12px] pr-5 items-center gap-3 relative">
                 <MdLockOutline className="text-[#64748B] size-[25px]" />
-                <input
+                <select
+                  className="w-full focus:outline-none p-2 text-[1rem] text-richblack-5 rounded-md"
+                  id="type"
+                  name="type"
                   required
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  name="password"
-                  value={formData.password}
+                  value={formData.type}
                   onChange={changeHandler}
-                  className="w-full h-full text-[1rem] text-richblack-5 outline-none"
-                />
-                <span
-                  className="absolute right-5 cursor-pointer"
-                  onClick={() => setShowPassword((prev) => !prev)}
                 >
-                  {showPassword ? (
-                    <PiEyeLight fontSize={24} />
-                  ) : (
-                    <PiEyeSlashLight fontSize={24} />
-                  )}
-                </span>
+                  <option value="">Bussiness Type</option>
+                  <option value="1">1</option>
+                </select>
               </div>
             </div>
 
