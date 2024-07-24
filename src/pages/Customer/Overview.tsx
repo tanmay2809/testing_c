@@ -215,7 +215,7 @@ const Overview: React.FC = () => {
             </div>
           </div>
           {/*chart */}
-          <div className=" lg:h-[21rem] md:h-[13rem] mt-6">
+          <div className=" lg:h-[24rem] md:h-[16rem] mt-6">
             <BarChart data={dataForOverview} options={options} width={500} height={150} />
           </div>
         </div>
