@@ -1,18 +1,14 @@
-import {
-  setStoreFromRestaurant,
-  Store as StoreType,
-} from "../../redux/storeSlice";
 import { useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
+import { RootState } from "../../redux/store";
 import { useState, ChangeEvent, useEffect } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { baseUrl } from "../../main";
 
 // icons
 import { FaPlus } from "react-icons/fa6";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
-import { FaYoutube, FaFacebook } from "react-icons/fa";
 
 // assets
 import image from "../../assets/Ellipse 2862.png";
@@ -22,10 +18,6 @@ import google from "../../assets/Google-Review.png";
 
 //svg
 import premium from "/premium.svg";
-import { useDispatch } from "react-redux";
-import { fetchRestaurantDetails } from "../../redux/restaurantData";
-import axios from "axios";
-import { baseUrl } from "../../main";
 
 interface FormData {
   image: string | null;
@@ -46,10 +38,13 @@ interface FormData {
 }
 
 const Stores = () => {
-  const { stores } = useSelector((state: RootState) => state.store);
   const [modal, setModal] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [store, setStore] = useState<FormData[]>();
+
+  const resdata = useSelector((state: RootState) => state.resturantdata);
+
   const [formData, setFormData] = useState<FormData>({
     image: selectedImage,
     resName: "",
@@ -99,13 +94,12 @@ const Stores = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log("Form data:", formData);
 
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${baseUrl}/api/updateRestaurantDetails/${id}`,
+      url: `${baseUrl}/api/updateRestaurantDetails/${resdata.data._id}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -125,12 +119,12 @@ const Stores = () => {
     handleCloseModal();
   };
 
-  const handleEditClick = (store: StoreType) => {
+  const handleEditClick = (store: FormData) => {
     setSelectedImage(image);
     setFormData({
       image: image,
-      resName: store.name,
-      businessType: store.type,
+      resName: store.resName,
+      businessType: store.businessType,
       email: store.email,
       landmark: store.landmark,
       city: store.city,
@@ -147,26 +141,9 @@ const Stores = () => {
     toggleModal();
   };
 
-  const useAppDispatch = () => useDispatch<AppDispatch>();
-  const dispatch = useAppDispatch();
-  const resdata = useSelector((state: RootState) => state.resturantdata);
-
-  const id = "668857dc758bf97a4d1406ab";
-  const storeIndex = 0;
-
   useEffect(() => {
-    if (id) {
-      dispatch(fetchRestaurantDetails({ id }) as any);
-    }
-  }, [dispatch, id]);
-
-  const restaurantData = resdata.data;
-
-  useEffect(() => {
-    if (restaurantData) {
-      dispatch(setStoreFromRestaurant({ index: storeIndex, restaurantData }));
-    }
-  }, [restaurantData, dispatch, storeIndex]);
+    setStore([resdata.data]);
+  }, [resdata]);
 
   return (
     <div className="w-full h-fit relative">
@@ -177,7 +154,7 @@ const Stores = () => {
             <p className="text-[1rem]">
               You have{" "}
               <span className="text-[#004AAD] font-bold">
-                {stores.length} active store
+                {store?.length} active store
               </span>
             </p>
           </div>
@@ -194,9 +171,9 @@ const Stores = () => {
         </div>
 
         <div className="w-full flex flex-col -mt-2">
-          {stores.map((store: StoreType) => (
+          {store?.map((store: FormData) => (
             <div
-              key={store.name}
+              key={store.resName}
               className="w-full flex flex-col gap-4 rounded-xl px-[2rem] py-4 h-fit bg-[#F1F7FF]"
             >
               <div className="w-full flex flex-row justify-between">
@@ -208,7 +185,7 @@ const Stores = () => {
                   />
                   <div className="flex flex-col">
                     <h1 className="text-[1.5rem] font-semibold">
-                      {store.name}
+                      {store.resName}
                     </h1>
                     <p className="text-[1.125rem] font-[400] text-[#616161]">
                       {store.email}
@@ -231,7 +208,7 @@ const Stores = () => {
                     Business Type
                   </p>
                   <h1 className="text-[1.125rem] font-semibold">
-                    {store.type}
+                    {store.businessType}
                   </h1>
                 </div>
                 <div className="w-[13rem] flex flex-col">

@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // components
 import PlansComp from "../../component/PlansComp";
 
 //svg
 import premium from "/premium.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+
+interface Plan {
+  type: string;
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+  trialUsed: boolean;
+}
 
 const MyPlans = () => {
   const [switchTab, setSwitchTab] = useState<string>("quarterly");
+  const [planDetails, setPlanDetails] = useState<Plan>();
+
+  const resdata = useSelector((state: RootState) => state.resturantdata);
+
+  useEffect(() => {
+    setPlanDetails(resdata.data.subscriptionDetails);
+  }, [resdata]);
 
   const scrollToElement = (id: string) => {
     const element = document.getElementById(id);
@@ -22,6 +39,15 @@ const MyPlans = () => {
     }
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const year = date.getUTCFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
+
   return (
     <>
       <div className="w-full h-fit relative font-inter">
@@ -29,7 +55,9 @@ const MyPlans = () => {
           <div className="w-full px-6 py-4 bg-[#F1F7FF]">
             <div className="w-full flex flex-row justify-between">
               <div className="flex flex-col">
-                <h1 className="text-[1.3rem] font-[600]">Free Trial</h1>
+                <h1 className="text-[1.3rem] font-[600]">
+                  {planDetails?.type}
+                </h1>
                 <p className="text-[1rem]">Current Plan</p>
               </div>
               <div className="w-fit h-fit">
@@ -50,15 +78,27 @@ const MyPlans = () => {
                 <p className=" text-[#616161] font-[400]">
                   Subscription Period
                 </p>
-                <h1 className="text-base font-semibold">15 Days</h1>
+                <h1 className="text-base font-semibold">
+                  {planDetails &&
+                    Math.floor(
+                      (new Date(planDetails.endDate).getTime() -
+                        new Date(planDetails.startDate).getTime()) /
+                        (1000 * 3600 * 24)
+                    )}{" "}
+                  Days
+                </h1>
               </div>
               <div className="flex flex-col">
                 <p className=" text-[#616161] font-[400]">Starting Date</p>
-                <h1 className="text-base font-semibold">01-03-2023</h1>
+                <h1 className="text-base font-semibold">
+                  {planDetails && formatDate(planDetails.startDate)}
+                </h1>
               </div>
               <div className="flex flex-col">
                 <p className=" text-[#616161] font-[400]">Next Billing Date</p>
-                <h1 className="text-base font-semibold">15-03-2023</h1>
+                <h1 className="text-base font-semibold">
+                  {planDetails && formatDate(planDetails.endDate)}
+                </h1>
               </div>
               <div className="flex flex-col">
                 <p className=" text-[#616161] font-[400]">Payment status</p>
@@ -67,7 +107,14 @@ const MyPlans = () => {
               <div className="flex flex-col">
                 <p className=" text-[#616161] font-[400]">Status</p>
                 <h1 className="text-base font-semibold">
-                  <span>Trial Period</span> (15 Days)
+                  <span>{planDetails?.type}</span> (
+                  {planDetails &&
+                    Math.floor(
+                      (new Date(planDetails.endDate).getTime() -
+                        new Date(planDetails.startDate).getTime()) /
+                        (1000 * 3600 * 24)
+                    )}{" "}
+                  Days)
                 </h1>
               </div>
             </div>

@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { fetchRestaurantDetails } from "../../redux/restaurantData";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 interface FormData {
   companyName: string;
@@ -23,6 +26,11 @@ interface FormData {
 const Billing = () => {
   const [model, setModel] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
+  const [billingDetails, setBillingDetails] = useState<FormData>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const resdata = useSelector((state: RootState) => state.resturantdata);
+
   const [formData, setFormData] = useState<FormData>({
     companyName: "",
     address: "",
@@ -33,9 +41,9 @@ const Billing = () => {
     pincode: "",
     notRegisteredWithGST: false,
   });
-  const [billingDetails, setBillingDetails] = useState<FormData>();
 
   const toggleModel = () => {
+    console.log(formData);
     setModel(!model);
   };
 
@@ -69,18 +77,46 @@ const Billing = () => {
     }
   };
 
-  const resdata = useSelector((state: RootState) => state.resturantdata);
-
   useEffect(() => {
     setBillingDetails(resdata.data.billingDetails);
+    setFormData({
+      companyName: resdata?.data.billingDetails?.companyName,
+      address: resdata?.data.billingDetails?.address,
+      gstNumber: resdata?.data.billingDetails?.gstNumber,
+      country: resdata?.data.billingDetails?.country,
+      state: resdata?.data.billingDetails?.state,
+      city: resdata?.data.billingDetails?.city,
+      pincode: resdata?.data.billingDetails?.pincode,
+      notRegisteredWithGST: false,
+    });
   }, [resdata]);
-
-  // console.log(resdata.data.billingDetails);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
-    console.log(formData);
-    handleCloseModal();
+    setLoading(true);
+
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/updateBillingDetails/${resdata.data._id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+        handleCloseModal();
+        window.location.reload();
+        toast.success("Billing Updated");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -262,46 +298,32 @@ const Billing = () => {
                       </div>
 
                       <div className="flex flex-col gap-1">
-                        <label
-                          htmlFor="country"
-                          className="flex flex-row items-center text-[0.875rem] font-[500]"
-                        >
+                        <label className="flex flex-row items-center text-[0.875rem] font-[500]">
                           Country
                           <LuAsterisk className="text-sm text-[#C62828]" />
                         </label>
-                        <select
-                          required
-                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem]"
-                          id="country"
+                        <input
+                          type="text"
+                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
+                          placeholder="Enter GST Number"
                           name="country"
                           value={formData.country}
                           onChange={changeHandler}
-                        >
-                          <option value="">Select Country</option>
-                          <option value="1">Country 1</option>
-                          <option value="2">Country 2</option>
-                        </select>
+                        />
                       </div>
                       <div className="flex flex-col gap-1">
-                        <label
-                          htmlFor="state"
-                          className="flex flex-row items-center text-[0.875rem] font-[500]"
-                        >
+                        <label className="flex flex-row items-center text-[0.875rem] font-[500]">
                           State
                           <LuAsterisk className="text-sm text-[#C62828]" />
                         </label>
-                        <select
-                          required
-                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem]"
-                          id="state"
+                        <input
+                          type="text"
+                          className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
+                          placeholder="Enter GST Number"
                           name="state"
                           value={formData.state}
                           onChange={changeHandler}
-                        >
-                          <option value="">Select State</option>
-                          <option value="1">State 1</option>
-                          <option value="2">State 2</option>
-                        </select>
+                        />
                       </div>
                       <div className="flex flex-col gap-1">
                         <label className="flex flex-row items-center text-[0.875rem] font-[500]">
@@ -314,7 +336,7 @@ const Billing = () => {
                           className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
                           placeholder="Enter City"
                           name="city"
-                          value={formData.companyName}
+                          value={formData.city}
                           onChange={changeHandler}
                         />
                       </div>
@@ -329,20 +351,26 @@ const Billing = () => {
                           className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
                           placeholder="Enter pincode"
                           name="pincode"
-                          value={formData.companyName}
+                          value={formData.pincode}
                           onChange={changeHandler}
                         />
                       </div>
                     </div>
                     <div className="flex flex-row gap-5 mt-3">
-                      <button
-                        className="w-[50%] text-[1.1rem] rounded-[0.5rem] border-2 font-bold text-richblack-900 px-[12px] py-2"
+                      <span
+                        className="w-[50%] text-[1.1rem] text-center rounded-[0.5rem] border-2 font-bold text-richblack-900 px-[12px] py-2 hover:cursor-pointer"
                         onClick={() => handleCloseModal()}
                       >
                         Cancel
-                      </button>
+                      </span>
                       <button className="w-[50%] bg-[#004AAD] text-[1.1rem] rounded-[0.5rem] text-white font-bold text-richblack-900 px-[12px] py-2">
-                        Save
+                        {loading ? (
+                          <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+                        ) : (
+                          <span className="text-[1.2rem] font-Roboto">
+                            Save
+                          </span>
+                        )}
                       </button>
                     </div>
                   </form>

@@ -1,9 +1,11 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import Charts from "../../component/Customer/Charts";
 
 //chartjs
 import { Doughnut } from "react-chartjs-2";
+import { BarChartc } from "../../component/Customer/Barchartc";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -449,7 +451,7 @@ const Analytics: React.FC = () => {
 
         {/*Customer visit weekends vs weekdays */}
         <div className="lg:flex gap-4 w-full h-fit  font-inter">
-          <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-x-hidden">
+          <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-x-hidde">
             <div className="w-full h-full">
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 Customer Visit
@@ -459,14 +461,14 @@ const Analytics: React.FC = () => {
                 >
                   <img src={i} />
                 </div>
-                <div className="absolute left-[21rem]">
+                <div className="absolute left-[12rem]">
                   {visitBox === "weekend" ? <VisitPopup type="weekend" /> : ""}
                 </div>
               </h3>
               <p className="text-base font-medium">Weekdays vs Weekends</p>
             </div>
-            <div className=" w-full h-fit flex absolute left-4 top-[5.6rem]  ">
-              <div className="w-full h-full ">
+            <div className=" w-full h-fit flex absolute left-4 top-[5.6rem]   ">
+              <div className="w-full h-full  ">
                 <BarChart
                   data={dataForBar}
                   options={optionsForBar}
@@ -488,7 +490,7 @@ const Analytics: React.FC = () => {
                 >
                   <img src={i} />
                 </div>
-                <div className="absolute right-0">
+                <div className="absolute ml-[11.5rem]">
                   {visitBox === "monthly" ? <VisitPopup type="monthly" /> : ""}
                 </div>
               </h3>
@@ -498,7 +500,9 @@ const Analytics: React.FC = () => {
               </p>
             </div>
             <div className="relative flex justify-center items-center mb-4">
-              <div className="w-full h-full"></div>
+              <div className="w-full h-full overflow-hidden ">
+                <BarChartc />
+              </div>
             </div>
           </div>
         </div>
@@ -506,17 +510,12 @@ const Analytics: React.FC = () => {
         {/*pie chart and customer related div */}
         <div className="lg:flex  gap-4 ">
           {/* Customer Gender Card */}
-          <div className="bg-[#F1F7FF] rounded-lg p-6 lg:w-1/3 flex flex-col justify-between mt-4">
+          <div className="bg-[#F1F7FF] overflow-hidden rounded-lg p-6 lg:w-1/3 flex flex-col justify-between mt-4">
             <h3 className="text-base font-bold mb-4">Customer Gender</h3>
             <div className="relative flex justify-center items-center mb-4">
               <div>
-                <div className="w-full h-full ">
-                  <Doughnut
-                    data={dataForDoughnut}
-                    options={optionsForDoughnut}
-                    height={150}
-                    width={250}
-                  />
+                <div className="w-full h-full ml-[12%] ">
+                <Charts male={100} female={50} other={50} />
                 </div>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-2xl font-bold">
