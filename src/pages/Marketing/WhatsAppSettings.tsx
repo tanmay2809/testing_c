@@ -6,9 +6,8 @@ import whatsapp from "../../assets/whatsapp.png";
 
 //svg
 import greenTick from "/greenTick.svg";
-import doubleArrow from "/doubleArrow.svg"
+import doubleArrow from "/doubleArrow.svg";
 import { Link } from "react-router-dom";
-
 
 const WhatsAppSettings: React.FC = () => {
   const [selectedCheckbox, setSelectedCheckbox] = useState<string | null>(null);
@@ -57,14 +56,20 @@ const WhatsAppSettings: React.FC = () => {
               </div>
             </div>
 
-            {selectedCheckbox==="Custom" && (
-              <div className=" flex justify-between bg-[#F1F7FF] p-6 rounded-2xl">
-                <p className="text-lg font-medium ">Manage WhatsApp Profile</p>
-                <img src={doubleArrow}/>
-              </div>
+            {selectedCheckbox === "Custom" && (
+              <Link to="/manager">
+                <button className="w-full">
+                  <div className=" flex justify-between bg-[#F1F7FF] p-6 rounded-2xl">
+                    <p className="text-lg font-medium ">
+                      Manage WhatsApp Profile
+                    </p>
+                    <img src={doubleArrow} />
+                  </div>
+                </button>
+              </Link>
             )}
             <div className="p-6 bg-[#F1F7FF] rounded-2xl gap-6 flex justify-between">
-              <img src={greenTick}/>
+              <img src={greenTick} />
               <div className="flex flex-col ">
                 <p className="">
                   Meta is solely responsible for providing Business Name and
@@ -75,16 +80,17 @@ const WhatsAppSettings: React.FC = () => {
                 </a>
               </div>
             </div>
-            {selectedCheckbox==="SnackBAE" && (
+            {selectedCheckbox === "SnackBAE" && (
               <div className=" flex justify-between items-center bg-[#F1F7FF] p-4 rounded-2xl">
                 <p className="text-lg font-medium ">
                   Want to connect your custom number?
                 </p>
                 <Link to="/connectNumber">
-                <button className="flex items-center lg:gap-2 bg-[#60D66A] text-white py-2 lg:px-3 md:px-1 rounded-lg">
-                  <img src={whatsapp} className="w-7" />
-                  Connect Number
-                </button></Link>
+                  <button className="flex items-center lg:gap-2 bg-[#60D66A] text-white py-2 lg:px-3 md:px-1 rounded-lg">
+                    <img src={whatsapp} className="w-7" />
+                    Connect Number
+                  </button>
+                </Link>
               </div>
             )}
           </div>
