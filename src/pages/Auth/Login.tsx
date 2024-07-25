@@ -40,7 +40,6 @@ const Login: React.FC = () => {
     setLoading(true);
     console.log(formData);
     console.log(rememberMe);
-    // simulate a network request
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -50,7 +49,7 @@ const Login: React.FC = () => {
     <>
       {videoLoading && <Loader />}
       <video
-        className="fixed top-0 left-0 w-full h-full object-cover z-0 "
+        className="fixed top-0 left-0 w-full h-full object-cover z-0 md:object-left-bottom"
         src="https://s3groupsnackbae.s3.ap-south-1.amazonaws.com/1721141264218"
         autoPlay
         muted
@@ -66,7 +65,7 @@ const Login: React.FC = () => {
           src={logo}
           className="absolute right-[70%] md:right-[75%] lg:right-[85%] bottom-[85%] w-[150px] h-auto"
         />
-        <div className="w-[430px] h-fit flex flex-col px-[2rem] py-[1.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
+        <div className="w-[430px] md:mb-[13rem] lg:mb-0 h-fit flex flex-col px-[2rem] py-[1.5rem] bg-white relative gap-4 justify-center items-center rounded-xl">
           <form
             onSubmit={submitHandler}
             className="w-full flex flex-col gap-y-3"

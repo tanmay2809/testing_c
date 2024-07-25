@@ -373,15 +373,6 @@ const Menu = () => {
                   </div>
                 )}
 
-                {search && searchMenuItems?.length === 0 && (
-                  <div className="w-full h-fit flex flex-col items-center">
-                    <img src={nosearch} className="w-[250px]" />
-                    <p className="text-[2rem] font-semibold">
-                      No Results Found!
-                    </p>
-                  </div>
-                )}
-
                 {search && searchMenuItems ? (
                   <ItemCard
                     setIsEditMenuOpen={setIsEditMenuOpen}
