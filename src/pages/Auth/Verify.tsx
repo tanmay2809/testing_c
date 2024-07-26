@@ -1,6 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 // icons
 import { MdLockOutline } from "react-icons/md";
@@ -11,9 +14,6 @@ import logo from "../../assets/logo.png";
 
 //components
 import Loader from "../../component/outlet/Loader";
-import axios from "axios";
-import { baseUrl } from "../../main";
-import { toast } from "react-toastify";
 
 interface FormData {
   otp: string;
@@ -74,7 +74,7 @@ const Verify = () => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        console.log(response.data)
+        console.log(response.data);
         setLoading(false);
         toast.success("OTP Verified");
         navigate("/newpassword");
@@ -94,8 +94,31 @@ const Verify = () => {
   }
 
   function handleResend() {
-    setTimer(20);
-    setResendOTP(false);
+    let data = JSON.stringify({
+      email: sessionStorage.getItem("email"),
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/sendOTP`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        toast.success("OTP Sent Successfully");
+        setTimer(20);
+        setResendOTP(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (
@@ -167,13 +190,13 @@ const Verify = () => {
                 </p>
               )}
             </div>
-              <button className="bg-[#004AAD] w-full h-13 flex items-center justify-center text-[1rem] rounded-[8px] text-white font-semibold text-richblack-900 px-[12px] tracking-wider py-[1rem] mt-6">
-                {loading ? (
-                  <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-                ) : (
-                  <span className="text-[1rem]">Verify</span>
-                )}
-              </button>
+            <button className="bg-[#004AAD] w-full h-13 flex items-center justify-center text-[1rem] rounded-[8px] text-white font-semibold text-richblack-900 px-[12px] tracking-wider py-[1rem] mt-6">
+              {loading ? (
+                <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+              ) : (
+                <span className="text-[1rem]">Verify</span>
+              )}
+            </button>
 
             <div className="flex gap-2 mt-2 justify-center items-center">
               <Link to="/register">

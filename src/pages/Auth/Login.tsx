@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // icons
 import { CiMail } from "react-icons/ci";
@@ -11,6 +11,8 @@ import logo from "../../assets/logo.png";
 
 // components
 import Loader from "../../component/outlet/Loader";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 interface FormData {
   email: string;
@@ -22,6 +24,7 @@ const Login: React.FC = () => {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -38,11 +41,30 @@ const Login: React.FC = () => {
   function submitHandler(event: FormEvent) {
     event.preventDefault();
     setLoading(true);
-    console.log(formData);
-    console.log(rememberMe);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://dolphin-app-fmayj.ondigitalocean.app/api/login",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        toast.success("Logged In");
+        setLoading(false);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("id", response.data.newData.details);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (

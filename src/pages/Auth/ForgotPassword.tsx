@@ -1,9 +1,11 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { baseUrl } from "../../main";
 
 // icons
 import { CiMail } from "react-icons/ci";
-// import { IoMdArrowRoundBack } from "react-icons/io";
 
 // assets
 import logo from "../../assets/logo.png";
@@ -21,6 +23,7 @@ const ForgotPassword = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [videoLoading, setVideoLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   function changeHandler(event: ChangeEvent<HTMLInputElement>) {
     setFormData((prevData) => ({
@@ -31,11 +34,32 @@ const ForgotPassword = () => {
 
   function submitHandler(event: FormEvent) {
     event.preventDefault();
-    setFormData({
-      email: "",
-    });
     setLoading(true);
-    console.log("Printing the formData ");
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/sendOTP`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: formData,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        sessionStorage.setItem("email", formData.email);
+        toast.success("OTP Sent Successfully");
+        setFormData({
+          email: "",
+        });
+        navigate("/verify");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     console.log(formData);
   }
 

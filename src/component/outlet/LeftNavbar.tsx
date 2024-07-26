@@ -1,4 +1,4 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Frame from "./Frame";
 import Navbar from "./Navbar";
@@ -19,9 +19,18 @@ import { HiChevronUpDown } from "react-icons/hi2";
 import { FiPlus } from "react-icons/fi";
 
 import right from "../../assets/right.png";
+import { toast } from "react-toastify";
 
 const LeftNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    toast.success("Successfully Logged Out");
+    navigate("/login");
+  };
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -46,23 +55,26 @@ const LeftNavbar = () => {
     },
   ];
 
-    const useAppDispatch = () => useDispatch<AppDispatch>();
-    const dispatch = useAppDispatch();
+  const useAppDispatch = () => useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { data } = useSelector((state: RootState) => state.resturantdata);
   console.log("restaurantData: ", data);
 
-  const id: string = "668857dc758bf97a4d1406ab";
+  const id: string | null = localStorage.getItem("id");
 
   useEffect(() => {
     if (id) {
       dispatch(fetchRestaurantDetails({ id }) as any);
+    }
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
     }
   }, [dispatch, id]);
 
   const handleScrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // Optional: Add smooth scrolling animation
+      behavior: "smooth",
     });
   };
 
@@ -179,22 +191,21 @@ const LeftNavbar = () => {
               </Link>
             </div>
             <div>
-              <Link
-                className={`flex items-center text-nowrap  gap-3 text-red-500 ${
+              <div
+                className={`flex items-center text-nowrap  gap-3 text-red-500 hover:cursor-pointer ${
                   isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
                 }`}
-                to="/login"
+                onClick={handleLogout}
               >
                 <IoLogOutOutline className="text-[2rem]" />
                 <span
-                  onClick={handleToggle}
                   className={` ${
                     isOpen ? "block text-[.9rem] text-red-500" : " hidden"
                   }`}
                 >
                   Log Out
                 </span>
-              </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -374,22 +385,21 @@ const LeftNavbar = () => {
                 </Link>
               </div>
               <div>
-                <Link
-                  className={`flex items-center text-nowrap  gap-3 text-red-500 ${
+                <div
+                  className={`flex items-center text-nowrap  gap-3 text-red-500 hover:cursor-pointer ${
                     isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
                   }`}
-                  to="/login"
+                  onClick={handleLogout}
                 >
                   <IoLogOutOutline />{" "}
                   <span
-                    onClick={handleToggle}
                     className={` ${
                       isOpen ? "block text-[.9rem] text-red-500" : " hidden"
                     }`}
                   >
                     Log Out
                   </span>
-                </Link>
+                </div>
               </div>
             </div>
           </div>

@@ -1,20 +1,18 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { baseUrl } from "../../main";
 
 // icons
 import { CiMail } from "react-icons/ci";
 import { MdLockOutline } from "react-icons/md";
-import { PiEyeSlashLight, PiEyeLight } from "react-icons/pi";
 
 // assets
 import logo from "../../assets/logo.png";
 
 // components
 import Loader from "../../component/outlet/Loader";
-import axios from "axios";
-import { baseUrl } from "../../main";
 
 interface FormData {
   name: string;

@@ -1,9 +1,11 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 // icons
 import { MdLockOutline } from "react-icons/md";
-// import { IoMdArrowRoundBack } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { FaCheck } from "react-icons/fa6";
 import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
@@ -13,9 +15,6 @@ import logo from "../../assets/logo.png";
 
 //components
 import Loader from "../../component/outlet/Loader";
-import axios from "axios";
-import { baseUrl } from "../../main";
-import { toast } from "react-toastify";
 
 interface FormData {
   password: string;
