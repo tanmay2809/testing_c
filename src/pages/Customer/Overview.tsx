@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import axios from "axios";
 // import {RestaurantState as RestaurantData} from '../../redux/restaurantData';
 
 //icons
@@ -11,12 +12,12 @@ import BarChart from "../../component/Customer/BarChart";
 
 //data for chart
 import { dataForOverview, options, months } from "../../constants/index";
-// import { data, options, months } from "../../constants/index";
+
 import Feedback from "../../component/outlet/Feedback";
 
 const Overview: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
-  // as { data: RestaurantData };
+
   console.log("resData: ", data);
 
   const [selectedDay, setSelectedDay] = useState<string>("Today");
@@ -25,6 +26,7 @@ const Overview: React.FC = () => {
   );
   const [newCustomers, setNewCustomers] = useState<number>(0);
   const [regularCustomers, setRegularCustomers] = useState<number>(0);
+  const [totalCustomers, setTotalCustomers] = useState<number>(0);
 
   const handleMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedMonth(e.target.value);
@@ -36,7 +38,7 @@ const Overview: React.FC = () => {
     year: number,
     monthIndex: number,
     data: any
-  ): { newCustomers: number; regularCustomers: number } => {
+  ): { newCustomers: number; regularCustomers: number,totalCustomers: number } => {
     const today = new Date();
 
     let startDate: Date;
@@ -73,9 +75,18 @@ const Overview: React.FC = () => {
       return totalVisits > 2 && recentVisit;
     }).length;
 
+    const totalCustomersCount = data?.reduce((total: number, customer: any) => {
+      const visitsInRange = customer.visits.filter((visit: string) => {
+        const visitDate = new Date(visit);
+        return isDateInRange(visitDate);
+      }).length;
+      return total + visitsInRange;
+    }, 0);
+
     return {
       newCustomers: newCustomersCount,
       regularCustomers: regularCustomersCount,
+      totalCustomers: totalCustomersCount,
     };
   };
 
@@ -84,7 +95,7 @@ const Overview: React.FC = () => {
     const currentYear = currentDate.getFullYear();
     const selectedMonthIndex = getMonthIndex(selectedMonth);
     console.log("selected month index : ", selectedMonthIndex);
-    const { newCustomers, regularCustomers } = filterCustomers(
+    const { newCustomers, regularCustomers,totalCustomers } = filterCustomers(
       currentYear,
       selectedMonthIndex,
       data?.customerData
@@ -92,10 +103,79 @@ const Overview: React.FC = () => {
 
     setNewCustomers(newCustomers);
     setRegularCustomers(regularCustomers);
+    setTotalCustomers(totalCustomers);
   }, [selectedDay, selectedMonth, data?.customerData]);
 
+
+  //barchart
+  const [monthForGraph, setMonthForGraph] = useState<string>(
+    months[new Date().getMonth()]
+  );
+
+  const handleMonthChangeForGraph = (e: ChangeEvent<HTMLSelectElement>) => {
+    setMonthForGraph(e.target.value);
+  };
+  const [dataForOverview, setDataForOverview] = useState({
+    labels: [],
+    datasets: []
+  });
+
+  const fetchDataForMonth = async (month) => {
+
+    const monthIndex = months.indexOf(month) + 1;
+    try {
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `https://dolphin-app-fmayj.ondigitalocean.app/api/customerCounts/${data._id}/${monthIndex}`,
+        headers: {}
+      };
+
+      axios.request(config)
+        .then((res) => {
+          console.log(JSON.stringify(res.data));
+          const response = res.data;
+          console.log(response);
+
+          const { newCustomersPerDay, regularCustomersPerDay } = response.data;
+          console.log("new " , newCustomersPerDay);
+          console.log("reg " ,regularCustomersPerDay);
+          const labels = Array.from({ length: newCustomersPerDay?.length }, (_, i) => `${i + 1} ${monthForGraph}`);
+
+          const newData = {
+            labels,
+            datasets: [
+              {
+                label: 'New Customer',
+                data: newCustomersPerDay,
+                backgroundColor: '#C0DBFF'
+              },
+              {
+                label: 'Old Customer',
+                data: regularCustomersPerDay,
+                backgroundColor: '#004AAD'
+              }
+            ]
+          };
+
+          setDataForOverview(newData);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDataForMonth(monthForGraph);
+  }, [monthForGraph]);
+
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative ">
       <div className=" lg:w-[93%] h-fit px-[1.5rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         {/*Customer Snapshot div */}
         <div className="px-[.9rem] py-[1.5rem] bg-[#F1F7FF] font-inter rounded-lg mb-[1rem]">
@@ -103,9 +183,7 @@ const Overview: React.FC = () => {
           <div className="flex justify-between items-center p-2 ">
             {/* Left Section */}
             <div>
-              <h1 className="text-[1.5rem] font-semibold mb-1 text-[#3C3C3C] ">
-                Customer Snapshot
-              </h1>
+              <h1 className="text-[1.5rem] font-semibold mb-1 text-[#3C3C3C] ">Customer Snapshot</h1>
               <p className="text-gray-600 text-[.95rem] font-[400] ">
                 Explore how recently, how often your customer visit your
                 business
@@ -115,21 +193,19 @@ const Overview: React.FC = () => {
             {/* Right Section */}
             <div className="lg:flex md:flex gap-2">
               <button
-                className={`${
-                  selectedDay === "Today"
+                className={`${selectedDay === "Today"
                     ? "bg-[#004AAD] text-white"
                     : "bg-white"
-                } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
+                  } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
                 onClick={() => setSelectedDay("Today")}
               >
                 Today
               </button>
               <button
-                className={`${
-                  selectedDay === "Weekly"
+                className={`${selectedDay === "Weekly"
                     ? "bg-[#004AAD] text-white"
                     : "bg-white"
-                } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
+                  } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
                 onClick={() => setSelectedDay("Weekly")}
               >
                 Weekly
@@ -156,7 +232,7 @@ const Overview: React.FC = () => {
           {/* Bottom Section */}
           <div className="lg:flex w-full md:flex gap-4 font-inter lg:justify-evenly my-[1rem]  mx-auto">
             <div className="w-[33%] bg-white p-5 shadow-md rounded-md text-left  flex flex-col gap-5 justify-evenly">
-              <div className="text-3xl font-bold text-[#505050]">30</div>
+              <div className="text-3xl font-bold text-[#505050]">{totalCustomers}</div>
               <div className="flex justify-start gap-3 items-center">
                 <FaUser />
                 <p className="text-[#505050] text-lg">Total Customer</p>
@@ -181,6 +257,7 @@ const Overview: React.FC = () => {
               </div>
             </div>
           </div>
+
         </div>
 
         {/*Chart div */}
@@ -193,6 +270,8 @@ const Overview: React.FC = () => {
               <select
                 id="month"
                 name="month"
+                value={monthForGraph}
+                onChange={handleMonthChangeForGraph}
                 className="font-inter px-2 py-2 text-base focus:outline-none sm:text-sm rounded-md border border-black mt-1"
               >
                 {months.map((month) => (
@@ -208,25 +287,16 @@ const Overview: React.FC = () => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#C0DBFF] rounded-full mr-2"></div>
-              <span className="text-sm text-[#5E5E5E] font-[600] ">
-                New Customer
-              </span>
+              <span className="text-sm text-[#5E5E5E] font-[600] ">New Customer</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#004AAD] rounded-full mr-2"></div>
-              <span className="text-sm text-[#5E5E5E] font-[600]">
-                Old Customer
-              </span>
+              <span className="text-sm text-[#5E5E5E] font-[600]">Old Customer</span>
             </div>
           </div>
           {/*chart */}
           <div className=" lg:h-[24rem] md:h-[16rem] mt-6">
-            <BarChart
-              data={dataForOverview}
-              options={options}
-              width={500}
-              height={150}
-            />
+            <BarChart data={dataForOverview} options={options} width={500} height={150} />
           </div>
         </div>
         {/*Feedback div */}
