@@ -515,7 +515,7 @@ const Analytics: React.FC = () => {
             <div className="relative flex justify-center items-center mb-4">
               <div>
                 <div className="w-full h-full ml-[12%] ">
-                <Charts male={100} female={50} other={50} />
+                  <Charts male={100} female={50} other={50} />
                 </div>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-2xl font-bold">

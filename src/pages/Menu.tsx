@@ -56,6 +56,8 @@ const Menu = () => {
 
   const [selectedCard, setSelectedCard] = useState<MenuItem | null>(null);
 
+  const resdata = useSelector((state: RootState) => state.resturantdata);
+
   const isAnyMenuOpen =
     isAddMenuOpen ||
     isSubCategoryOpen ||
@@ -65,7 +67,6 @@ const Menu = () => {
   const [subCategoryToEdit, setSubCategoryToEdit] = useState<SubcategoryItem>();
 
   const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [subcategory1, setSubCategory1] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string>("");
   const [showActive, setShowActive] = useState<boolean>(false);
 
@@ -75,18 +76,7 @@ const Menu = () => {
 
   const [categoryDelete, setCategoryDelete] = useState<boolean>(false);
 
-  const getSubcategories = () => {
-    let config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: `${baseUrl}/api/getsubcategory/6694e0b752c576ffb9881135`,
-      headers: {},
-    };
-
-    axios.request(config).catch((error) => {
-      console.log(error);
-    });
-  };
+  console.log();
 
   //search bar
   const [search, setSearch] = useState<string>("");
@@ -109,7 +99,7 @@ const Menu = () => {
       const config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: `${baseUrl}/api/searchMenuItems/668857dc758bf97a4d1406ab/${inputValue}`,
+        url: `${baseUrl}/api/searchMenuItems/${resdata.data._id}/${inputValue}`,
         headers: {},
       };
 
@@ -129,10 +119,8 @@ const Menu = () => {
   );
 
   useEffect(() => {
-    getSubcategories();
     if (data) {
       setCategories(data.category || []);
-      setSubCategory1(data.category?.subcategory || []);
     }
     if (categories.length > 0) {
       setSelectedCategoryId(categories[0]._id);
@@ -351,19 +339,20 @@ const Menu = () => {
                 </div>
 
                 {/* If no subcategory present */}
-                {filteredCategory[0]?.subcategory.length === 0 && (
-                  <div className="w-full flex flex-col items-center gap-10 font-inter">
-                    <img src={Bussiness} className="w-[15%] h-auto" />
-                    <div className="flex flex-col gap-2 items-center">
-                      <h1 className="text-[1.5rem] text-[#4B4B4B] font-semibold">
-                        Main Category successfully created
-                      </h1>
-                      <p className="text-[1.3rem] text-[#AAA5A5] font-semibold">
-                        Now Add sub category & Menu items
-                      </p>
+                {search === "" &&
+                  filteredCategory[0]?.subcategory.length === 0 && (
+                    <div className="w-full flex flex-col items-center gap-10 font-inter">
+                      <img src={Bussiness} className="w-[15%] h-auto" />
+                      <div className="flex flex-col gap-2 items-center">
+                        <h1 className="text-[1.5rem] text-[#4B4B4B] font-semibold">
+                          Main Category successfully created
+                        </h1>
+                        <p className="text-[1.3rem] text-[#AAA5A5] font-semibold">
+                          Now Add sub category & Menu items
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
                 {/* Search Results */}
                 {searchMenuItems && (
@@ -467,7 +456,7 @@ const Menu = () => {
           <CategoryDelete
             setModal={setCategoryDelete}
             categoryID={selectedCategoryId}
-            restaurantID="668857dc758bf97a4d1406ab"
+            restaurantID={resdata.data._id}
           />
         )}
       </div>

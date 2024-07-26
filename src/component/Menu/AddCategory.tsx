@@ -6,6 +6,8 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
 import { baseUrl } from "../../main";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 interface CategoryProps {
   isCategoryOpen: (isOpen: boolean) => void;
@@ -23,6 +25,8 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
     isPrimary: false,
   });
 
+  const resdata = useSelector((state: RootState) => state.resturantdata);
+
   // onchange handler
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prevData) => ({
@@ -38,7 +42,7 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
     const config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${baseUrl}/api/addCategory/668857dc758bf97a4d1406ab`,
+      url: `${baseUrl}/api/addCategory/${resdata.data._id}`,
       headers: {
         "Content-Type": "application/json",
       },

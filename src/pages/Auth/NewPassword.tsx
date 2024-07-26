@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 // icons
 import { MdLockOutline } from "react-icons/md";
@@ -13,6 +13,9 @@ import logo from "../../assets/logo.png";
 
 //components
 import Loader from "../../component/outlet/Loader";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 interface FormData {
   password: string;
@@ -33,6 +36,7 @@ const NewPassword = () => {
   const [hasUpperCase, setHasUpperCase] = useState<boolean>(false);
   const [hasNumber, setHasNumber] = useState<boolean>(false);
   const [hasSymbol, setHasSymbol] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const [videoLoading, setVideoLoading] = useState<boolean>(true);
 
@@ -54,18 +58,56 @@ const NewPassword = () => {
 
   function submitHandler(event: FormEvent) {
     event.preventDefault();
+    setLoading(true);
 
     if (!isMinLength || !hasUpperCase || !hasNumber || !hasSymbol) {
       return;
     }
 
+    let data = JSON.stringify({
+      resName: sessionStorage.getItem("name"),
+      email: sessionStorage.getItem("email"),
+      password: formData.password,
+      businessType: sessionStorage.getItem("type"),
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/createAccount`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+        sessionStorage.removeItem("email");
+        sessionStorage.removeItem("name");
+        sessionStorage.removeItem("type");
+        toast.success("Account created successfully");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     setFormData({
       password: "",
       confirmPassword: "",
     });
-    setLoading(true);
     console.log(formData);
   }
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("email")) {
+      navigate("/register");
+    }
+  });
 
   return (
     <>
@@ -198,15 +240,13 @@ const NewPassword = () => {
                   Password does not match
                 </p>
               )}
-            <Link to="/plans">
-              <button className="bg-[#004AAD] w-full tracking-wider h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-4">
-                {loading ? (
-                  <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-                ) : (
-                  <span>Continue</span>
-                )}
-              </button>
-            </Link>
+            <button className="bg-[#004AAD] w-full tracking-wider h-14 text-[1.1rem] rounded-[8px] text-white font-bold text-richblack-900 px-[12px] py-[1rem] mt-4">
+              {loading ? (
+                <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+              ) : (
+                <span>Continue</span>
+              )}
+            </button>
           </form>
         </div>
       </div>

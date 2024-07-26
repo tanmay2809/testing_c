@@ -5,7 +5,7 @@ import axios from "axios";
 import { baseUrl } from "../../main";
 
 // icons
-import { FaPlus } from "react-icons/fa6";
+import { FaFacebook, FaPlus, FaYoutube } from "react-icons/fa6";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
@@ -18,12 +18,14 @@ import google from "../../assets/Google-Review.png";
 
 //svg
 import premium from "/premium.svg";
+import { Link } from "react-router-dom";
 
 interface FormData {
   image: string | null;
   resName: string;
   businessType: string;
   email: string;
+  additionalDetails?: any;
   landmark: string;
   city: string;
   state: string;
@@ -124,19 +126,19 @@ const Stores = () => {
     setFormData({
       image: image,
       resName: store.resName,
-      businessType: store.businessType,
       email: store.email,
-      landmark: store.landmark,
-      city: store.city,
-      state: store.state,
-      pincode: store.pincode,
-      manager: store.manager,
-      contact: store.contact,
-      instagram: store.instagram,
-      facebook: store.facebook,
-      youtube: store.youtube,
-      google: store.google,
-      zomato: store.zomato,
+      businessType: store.additionalDetails?.businessType,
+      landmark: store.additionalDetails?.landmark,
+      city: store.additionalDetails?.city,
+      state: store.additionalDetails?.state,
+      pincode: store.additionalDetails?.pincode,
+      manager: store.additionalDetails?.manager,
+      contact: store.additionalDetails?.contact,
+      instagram: store.additionalDetails?.instagram,
+      facebook: store.additionalDetails?.facebook,
+      youtube: store.additionalDetails?.youtube,
+      google: store.additionalDetails?.google,
+      zomato: store.additionalDetails?.zomato,
     });
     toggleModal();
   };
@@ -208,7 +210,7 @@ const Stores = () => {
                     Business Type
                   </p>
                   <h1 className="text-[1.125rem] font-semibold">
-                    {store.businessType}
+                    {store.additionalDetails?.businessType}
                   </h1>
                 </div>
                 <div className="w-[13rem] flex flex-col">
@@ -216,7 +218,7 @@ const Stores = () => {
                     Business Landmark
                   </p>
                   <h1 className="text-[1.125rem] font-semibold">
-                    {store.landmark}
+                    {store.additionalDetails?.landmark}
                   </h1>
                 </div>
                 <div className="w-[13rem] flex flex-col">
@@ -224,7 +226,7 @@ const Stores = () => {
                     Business City
                   </p>
                   <h1 className="text-[1.125rem] font-semibold">
-                    {store.city}
+                    {store.additionalDetails?.city}
                   </h1>
                 </div>
                 <div className="w-[13rem] flex flex-col">
@@ -232,7 +234,7 @@ const Stores = () => {
                     State
                   </p>
                   <h1 className="text-[1.125rem] font-semibold">
-                    {store.state}
+                    {store.additionalDetails?.state}
                   </h1>
                 </div>
                 <div className="w-[13rem] flex flex-col">
@@ -240,7 +242,7 @@ const Stores = () => {
                     Pincode
                   </p>
                   <h1 className="text-[1.125rem] font-semibold">
-                    {store.pincode}
+                    {store.additionalDetails?.pincode}
                   </h1>
                 </div>
                 <div className="w-[13rem] flex flex-col">
@@ -248,25 +250,30 @@ const Stores = () => {
                     Social Handles
                   </p>
                   <div className="w-full flex flex-row items-center gap-4 mt-2">
-                    {/* {store.socials?.map((social, index) => (
-                      <div key={index}>
-                        {social.name === "youtube" && (
-                          <Link className="w-fit h-fit" to={social.link}>
-                            <FaYoutube className="text-3xl text-[#E90303]" />
-                          </Link>
-                        )}
-                        {social.name === "facebook" && (
-                          <Link className="w-fit h-fit" to={social.link}>
-                            <FaFacebook className="text-3xl text-[#004AAD]" />
-                          </Link>
-                        )}
-                        {social.name === "instagram" && (
-                          <Link className="w-fit h-fit" to={social.link}>
-                            <img src={instagram} className="w-7 h-auto" />
-                          </Link>
-                        )}
-                      </div>
-                    ))} */}
+                    {store.additionalDetails?.youtube && (
+                      <Link
+                        className="w-fit h-fit"
+                        to={store.additionalDetails?.youtube}
+                      >
+                        <FaYoutube className="text-3xl text-[#E90303]" />
+                      </Link>
+                    )}
+                    {store.additionalDetails?.facebook && (
+                      <Link
+                        className="w-fit h-fit"
+                        to={store.additionalDetails?.facebook}
+                      >
+                        <FaFacebook className="text-3xl text-[#004AAD]" />
+                      </Link>
+                    )}
+                    {store.additionalDetails?.instagram && (
+                      <Link
+                        className="w-fit h-fit"
+                        to={store.additionalDetails?.instagram}
+                      >
+                        <img src={instagram} className="w-7 h-auto" />
+                      </Link>
+                    )}
                   </div>
                 </div>
                 <div className="w-[13rem] flex flex-col">
@@ -274,33 +281,39 @@ const Stores = () => {
                     Feedback Channels
                   </p>
                   <div className="w-full flex flex-row items-center gap-4 mt-2">
-                    {/* {store.channels?.map((channel, index) => (
-                      <div key={index}>
-                        {channel.name === "zomato" && (
-                          <Link className="w-fit h-fit" to={channel.link}>
-                            <img src={zomato} className="w-16 h-auto" />
-                          </Link>
-                        )}
-                        {channel.name === "google" && (
-                          <Link className="w-fit h-fit" to={channel.link}>
-                            <img src={google} className="w-16 h-auto" />
-                          </Link>
-                        )}
-                      </div>
-                    ))} */}
+                    {store.additionalDetails?.zomato && (
+                      <Link
+                        className="w-fit h-fit"
+                        to={store.additionalDetails?.zomato}
+                      >
+                        <img src={zomato} className="w-16 h-auto" />
+                      </Link>
+                    )}
+                    {store.additionalDetails?.google && (
+                      <Link
+                        className="w-fit h-fit"
+                        to={store.additionalDetails?.google}
+                      >
+                        <img src={google} className="w-16 h-auto" />
+                      </Link>
+                    )}
                   </div>
                 </div>
                 <div className=" w-[13rem] flex flex-col">
                   <p className="text-lg text-[#616161] font-[400]">
                     Manager Name
                   </p>
-                  <h1 className="text-lg font-semibold">{store.manager}</h1>
+                  <h1 className="text-lg font-semibold">
+                    {store.additionalDetails?.manager}
+                  </h1>
                 </div>
                 <div className="w-[13rem] flex flex-col">
                   <p className="text-lg text-[#616161] font-[400]">
                     Manager Contact
                   </p>
-                  <h1 className="text-lg font-semibold">{store.contact}</h1>
+                  <h1 className="text-lg font-semibold">
+                    {store.additionalDetails?.contact}
+                  </h1>
                 </div>
               </div>
             </div>
@@ -597,7 +610,7 @@ const Stores = () => {
                           </svg>
                           <input
                             type="text"
-                            name="insta"
+                            name="instagram"
                             placeholder="Instagram link"
                             value={formData.instagram}
                             onChange={handleInputChange}
@@ -697,7 +710,7 @@ const Stores = () => {
                           <img src={google} width="29" height="29" />
                           <input
                             type="text"
-                            name="googleReview"
+                            name="google"
                             placeholder="Google review"
                             value={formData.google}
                             onChange={handleInputChange}
@@ -709,7 +722,7 @@ const Stores = () => {
                           <input
                             type="text"
                             placeholder="Zomato review"
-                            name="zomatoReview"
+                            name="zomato"
                             value={formData.zomato}
                             onChange={handleInputChange}
                             className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "

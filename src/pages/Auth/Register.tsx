@@ -19,7 +19,7 @@ import { baseUrl } from "../../main";
 interface FormData {
   name: string;
   email: string;
-  // password: string;
+
   type: string;
 }
 
@@ -28,13 +28,11 @@ const Register: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
-    // password: "",
     type: "",
   });
 
   const [isAgree, setIsAgree] = useState<boolean>(false);
   const [agreeError, setAgreeError] = useState<string>("");
-  // const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [videoLoading, setVideoLoading] = useState<boolean>(true);
 
@@ -50,6 +48,7 @@ const Register: React.FC = () => {
 
   function submitHandler(event: FormEvent) {
     event.preventDefault();
+    setLoading(true);
     if (!isAgree) {
       setAgreeError("Please Agree to privacy policy!");
       return;
@@ -59,18 +58,13 @@ const Register: React.FC = () => {
 
     let data = JSON.stringify({
       email: formData.email,
-      otpLength: 6,
-      channel: "EMAIL",
-      expiry: 180,
     });
 
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://auth.otpless.app/auth/otp/v1/send",
+      url: `${baseUrl}/api/sendOTP`,
       headers: {
-        clientId: "I11NELHRNXTHQQEUGNVLQXS41T2L7UDZ",
-        clientSecret: "68g5e567j63kv3h7ahz976xj2sk7k46j",
         "Content-Type": "application/json",
       },
       data: data,
@@ -81,14 +75,14 @@ const Register: React.FC = () => {
       .then((response) => {
         console.log(JSON.stringify(response.data));
         toast.success("OTP Sent successfully");
-        localStorage.setItem("email", formData.email);
-        localStorage.setItem("name", formData.name);
-        localStorage.setItem("type", formData.type);
+        sessionStorage.setItem("email", formData.email);
+        sessionStorage.setItem("name", formData.name);
+        sessionStorage.setItem("type", formData.type);
+        setLoading(false);
         navigate("/verify");
         setFormData({
           name: "",
           email: "",
-          // password: "",
           type: "",
         });
       })
@@ -96,7 +90,6 @@ const Register: React.FC = () => {
         console.log(error);
       });
 
-    setLoading(true);
     console.log(formData);
   }
 
@@ -171,7 +164,10 @@ const Register: React.FC = () => {
                   onChange={changeHandler}
                 >
                   <option value="">Bussiness Type</option>
-                  <option value="1">1</option>
+                  <option value="Cafe">Cafe</option>
+                  <option value="Restaurant">Restaurant</option>
+                  <option value="Fine Dining">Fine Dining</option>
+                  <option value="Quick Service">Quick Service</option>
                 </select>
               </div>
             </div>

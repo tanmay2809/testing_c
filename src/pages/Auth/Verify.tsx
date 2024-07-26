@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 // icons
@@ -11,6 +11,9 @@ import logo from "../../assets/logo.png";
 
 //components
 import Loader from "../../component/outlet/Loader";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 interface FormData {
   otp: string;
@@ -24,8 +27,14 @@ const Verify = () => {
   const [timer, setTimer] = useState<number>(20);
   const [resendOTP, setResendOTP] = useState<boolean>(false);
   const [videoLoading, setVideoLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
+
+  const email = sessionStorage.getItem("email");
 
   useEffect(() => {
+    if (!sessionStorage.getItem("email")) {
+      navigate("/register");
+    }
     if (timer > 0) {
       const intervalId = setInterval(() => {
         setTimer((prev) => prev - 1);
@@ -45,10 +54,42 @@ const Verify = () => {
 
   function submitHandler(event: FormEvent) {
     event.preventDefault();
+    setLoading(true);
+    let data = JSON.stringify({
+      email: email,
+      otp: formData.otp,
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/verifyOTP`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        console.log(response.data)
+        setLoading(false);
+        toast.success("OTP Verified");
+        navigate("/newpassword");
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          toast.error("Incorrect OTP!");
+          setLoading(false);
+        }
+        console.log(error);
+      });
+
     setFormData({
       otp: "",
     });
-    setLoading(true);
     console.log(formData);
   }
 
@@ -88,7 +129,7 @@ const Verify = () => {
             </div>
             <p className="text-[#64748B]  text-left text-[14px]">
               Verification mail has been sent to{" "}
-              <span className="font-bold">connect.foodoos@gmail.com</span>
+              <span className="font-bold">{email}</span>
             </p>
 
             <div className="flex flex-col gap-4 mt-2">
@@ -126,7 +167,6 @@ const Verify = () => {
                 </p>
               )}
             </div>
-            <Link to="/newpassword">
               <button className="bg-[#004AAD] w-full h-13 flex items-center justify-center text-[1rem] rounded-[8px] text-white font-semibold text-richblack-900 px-[12px] tracking-wider py-[1rem] mt-6">
                 {loading ? (
                   <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
@@ -134,7 +174,6 @@ const Verify = () => {
                   <span className="text-[1rem]">Verify</span>
                 )}
               </button>
-            </Link>
 
             <div className="flex gap-2 mt-2 justify-center items-center">
               <Link to="/register">
