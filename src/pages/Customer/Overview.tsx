@@ -11,7 +11,7 @@ import { FaUser } from "react-icons/fa6";
 import BarChart from "../../component/Customer/BarChart";
 
 //data for chart
-import { dataForOverview, options, months } from "../../constants/index";
+import { options, months } from "../../constants/index";
 
 import Feedback from "../../component/outlet/Feedback";
 
@@ -120,7 +120,7 @@ const Overview: React.FC = () => {
     datasets: []
   });
 
-  const fetchDataForMonth = async (month) => {
+  const fetchDataForMonth = async (month:string) => {
 
     const monthIndex = months.indexOf(month) + 1;
     try {
@@ -130,6 +130,7 @@ const Overview: React.FC = () => {
         url: `https://dolphin-app-fmayj.ondigitalocean.app/api/customerCounts/${data._id}/${monthIndex}`,
         headers: {}
       };
+      console.log(data._id,monthIndex)//data._id undefined
 
       axios.request(config)
         .then((res) => {
@@ -171,8 +172,8 @@ const Overview: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchDataForMonth(monthForGraph);
-  }, [monthForGraph]);
+    if(data) fetchDataForMonth(monthForGraph);
+  }, [data,monthForGraph]);
 
   return (
     <div className="w-full h-fit relative ">
