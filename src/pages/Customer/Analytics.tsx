@@ -7,6 +7,7 @@ import Charts from "../../component/Customer/Charts";
 
 import { BarChartc } from "../../component/Customer/Barchartc";
 
+
 //icons
 import { FaArrowUpLong, FaArrowDownLong } from "react-icons/fa6";
 
@@ -23,23 +24,6 @@ import Feedback from "../../component/outlet/Feedback";
 
 //svg
 import i from "/i.svg";
-
-//for customer visit graph
-const dataForBar = {
-  labels: ["Weekdays", "Weekends"],
-  datasets: [
-    {
-      label: "Customer Visits",
-      data: [12, 19],
-      backgroundColor: ["#FB7311", "#FFC700"],
-      barThickness: 70,
-      borderRadius: {
-        topLeft: 10,
-        topRight: 10,
-      },
-    },
-  ],
-};
 
 const optionsForBar = {
   scales: {
@@ -64,6 +48,8 @@ const optionsForBar = {
 const Analytics: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
   console.log("resData: ", data);
+
+ 
 
   //weekdays vs weekends
   const [weekMonth, setWeekMonth] = useState<string>(
@@ -122,6 +108,23 @@ const Analytics: React.FC = () => {
 
     console.log(weekendVisit, " ", weekdayVisit);
   }, [weekMonth, data?.customerData]);
+
+  const dataForBar = {
+    labels: ["Weekdays", "Weekends"],
+    datasets: [
+      {
+        label: "Customer Visits",
+        data: [weekdayVisit, weekendVisit],
+        backgroundColor: ["#FB7311", "#FFC700"],
+        barThickness: 70,
+        borderRadius: {
+          topLeft: 10,
+          topRight: 10,
+        },
+      },
+    ],
+  };
+
 
   //for celebration
   const [celebrationMonth, setCelebrationMonth] = useState<string>(
@@ -250,6 +253,7 @@ const Analytics: React.FC = () => {
     );
   }, [growthMonth, data?.customerData]);
 
+
   const [hoveredSegmentation, setHoveredSegmentation] = useState<
     string | number | null
   >(null);
@@ -265,8 +269,48 @@ const Analytics: React.FC = () => {
     setSelectedMonth(e.target.value);
   };
 
+  // const [visitBox, setVisitBox] = useState<string | null>(null);
+  const [dailyVisits, setDailyVisits] = useState<{ [key: string]: number }>({});
+
+  const countDailyVisits = (data: any) => {
+    const visitCounts: { [key: string]: number } = {};
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+  
+    // Initialize the visitCounts with all days of the current month
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    for (let day = 1; day <= daysInMonth; day++) {
+      const key = `${day} ${months[currentMonth]}`;
+      visitCounts[key] = 0;
+    }
+  
+    data?.forEach((customer: any) => {
+      customer.visits.forEach((visit: string) => {
+        const visitDate = new Date(visit);
+        if (
+          visitDate.getMonth() === currentMonth &&
+          visitDate.getFullYear() === currentYear
+        ) {
+          const day = visitDate.getDate();
+          const key = `${day} ${months[currentMonth]}`;
+          visitCounts[key]++;
+        }
+      });
+    });
+  
+    setDailyVisits(visitCounts);
+  };
+  
+
+  useEffect(() => {
+    countDailyVisits(data?.customerData);
+  }, [data?.customerData]);
+
+  
+  
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative ">
       <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         <div className="container mx-auto font-inter">
           <h1 className="text-xl font-semibold">Customer Segmentation</h1>
@@ -396,33 +440,28 @@ const Analytics: React.FC = () => {
           <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-x-hidde">
             <div className="w-full h-full flex justify-between">
               <div>
-                <h3 className="text-lg font-semibold flex items-center gap-2">
-                  Customer Visit
-                  <div
-                    onMouseEnter={() => setVisitBox("weekend")}
-                    onMouseLeave={() => setVisitBox(null)}
-                    className="z-[81]"
-                  >
-                    <img src={i} />
-                  </div>
-                  {visitBox === "weekend" && (
-                    <div>
-                      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[50] p-5"></div>{" "}
-                      <div className="relative ">
-                        <VisitPopup type="weekend" />
-                      </div>
-                    </div>
-                  )}
-                </h3>
-                <p className="text-base font-medium">Weekdays vs Weekends</p>
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                Customer Visit
+                <div
+                  onMouseEnter={() => setVisitBox("weekend")}
+                  onMouseLeave={() => setVisitBox(null)}
+                  
+                >
+                  <img src={i} />
+                </div>
+                <div className="absolute left-[12rem]">
+                  {visitBox === "weekend" ? <VisitPopup type="weekend" /> : ""}
+                </div>
+              </h3>
+              <p className="text-base font-medium">Weekdays vs Weekends</p>
               </div>
-              {/* Dropdown Button */}
+               {/* Dropdown Button */}
 
-              <select
+               <select
                 id="month"
                 name="month"
-                value={selectedMonth}
-                onChange={handleMonthChange}
+                value={weekMonth}
+                onChange={handleWeekMonthChange}
                 className="font-inter px-2 h-[40px] py-2 text-base focus:outline-none sm:text-sm rounded-md border border-black mt-1"
               >
                 {months.map((month) => (
@@ -431,6 +470,7 @@ const Analytics: React.FC = () => {
                   </option>
                 ))}
               </select>
+              
             </div>
             <div className=" w-full h-fit flex absolute left-4 top-[5.6rem]   ">
               <div className="w-full h-full  ">
@@ -445,25 +485,19 @@ const Analytics: React.FC = () => {
           </div>
 
           {/*customer visit monthly pattern */}
-          <div className="bg-[#F1F7FF] rounded-lg p-1 mt-4 lg:w-1/2 flex flex-col justify-evenly h-96">
+          {/* <div className="bg-[#F1F7FF] rounded-lg p-1 mt-4 lg:w-1/2 flex flex-col justify-evenly h-96">
             <div className="px-5 py-4">
               <h3 className="text-xl font-semibold flex items-center gap-2">
                 Customer Visit
                 <div
                   onMouseEnter={() => setVisitBox("monthly")}
                   onMouseLeave={() => setVisitBox(null)}
-                  className="z-[81]"
                 >
                   <img src={i} />
                 </div>
-                {visitBox === "monthly" && (
-                  <div>
-                    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[50] p-5"></div>{" "}
-                    <div className="relative ">
-                      <VisitPopup type="monthly" />
-                    </div>
-                  </div>
-                )}
+                <div className="absolute ml-[11.5rem]">
+                  {visitBox === "monthly" ? <VisitPopup type="monthly" /> : ""}
+                </div>
               </h3>
 
               <p className="text-base font-medium">
@@ -476,17 +510,45 @@ const Analytics: React.FC = () => {
               </div>
             </div>
           </div>
+        </div> */}
+        <div className="bg-[#F1F7FF] rounded-lg p-1 mt-4 lg:w-1/2 flex flex-col justify-evenly h-96">
+      <div className="px-5 py-4">
+        <h3 className="text-xl font-semibold flex items-center gap-2">
+          Customer Visit
+          <div
+            onMouseEnter={() => setVisitBox("monthly")}
+            onMouseLeave={() => setVisitBox(null)}
+          >
+            <img src={i} />
+          </div>
+          <div className="absolute ml-[11.5rem]">
+            {visitBox === "monthly" ? <VisitPopup type="monthly" /> : ""}
+          </div>
+        </h3>
+
+        <p className="text-base font-medium">
+          Monthly customer visiting pattern
+        </p>
+      </div>
+      <div className="relative flex justify-center items-center mb-4">
+        <div className="w-full h-full overflow-hidden ">
+          <BarChartc dailyVisits={dailyVisits} />
         </div>
+      </div>
+    </div>
+    </div>
 
         {/*pie chart and customer related div */}
-        <div className="lg:flex  gap-4 ">
+        <div className="lg:flex gap-4">
           {/* Customer Gender Card */}
           <div className="bg-[#F1F7FF] overflow-hidden rounded-lg p-6 lg:w-1/3 flex flex-col justify-between mt-4">
             <h3 className="text-base font-bold mb-4">Customer Gender</h3>
             <div className="relative flex justify-center items-center mb-4">
               <div>
                 <div className="w-full h-full ml-[12%] ">
-                  <Charts male={100} female={50} other={50} />
+                <Charts male={100} female={50} other={50} />
+                
+                
                 </div>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-2xl font-bold">
