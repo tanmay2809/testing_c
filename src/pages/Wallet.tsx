@@ -54,8 +54,8 @@ const Wallet: React.FC = () => {
 
 
   return (
-    <div className="w-full bg-[#EFF6FF] h-[100vh] relative">
-      <div className="w-full lg:w-[93%] h-fit flex items-center justify-center ml-[7%]">
+    <div className="w-full bg-[#EFF6FF] h-[100vh] relative md:mb-[140px] lg:mb-0">
+      <div className="w-full lg:w-[93%] h-fit flex items-center justify-center lg:ml-[7%]">
         <div className="w-full h-fit mt-[70px]">
           <div className="flex flex-row justify-between bg-white px-10 py-8">
             <div className="w-fit flex flex-col items-start font-Roboto">
@@ -65,7 +65,7 @@ const Wallet: React.FC = () => {
               </p>
             </div>
             <div className="w-fit">
-              <Link to="https://wa.me/917003876815?text=Hi%20">
+              <Link to="https://wa.me/917003876815?text=Hi%20" target="_blank">
                 <button className="w-[160px] flex flex-row items-center gap-2 px-4 py-2 border-2 text-[18px] font-[500] rounded-[8px]">
                   <img className="w-6 h-6" src={whatsapp} />
                   Contact Us
@@ -126,7 +126,10 @@ const Wallet: React.FC = () => {
                 >
                   Recharge Wallet
                 </button>
-                <Link to="/setting/billing" className="w-[180px] text-center h-fit border-[2px] border-[#004AAD] px-4 py-2 text-[#004AAD] rounded-[0.5rem] text-[0.9rem] font-semibold">
+                <Link
+                  to="/setting/billing"
+                  className="w-[180px] text-center h-fit border-[2px] border-[#004AAD] px-4 py-2 text-[#004AAD] rounded-[0.5rem] text-[0.9rem] font-semibold"
+                >
                   Manage Billing
                 </Link>
               </div>
@@ -137,7 +140,7 @@ const Wallet: React.FC = () => {
               <h1 className="text-[1.5rem] text-[#505050] font-semibold mb-[1rem] ml-2">
                 Wallet Activity
               </h1>
-              <div className="overflow-hidden rounded-[12px] border-[2px] border-[#DDDDDD] bg-[#FAFCFF]">
+              <div className="overflow-x-scroll no-scrollbar rounded-[12px] border-[2px] border-[#DDDDDD] bg-[#FAFCFF]">
                 <table className="w-full text-base mt-4">
                   <thead>
                     <tr className="w-full text-center text-[#858687]">
@@ -153,7 +156,7 @@ const Wallet: React.FC = () => {
                     {data?.map((data) => (
                       <tr
                         key={data.id}
-                        className=" border-t-[2px] border-t-[#DDDDDD] text-base text-center"
+                        className="w-full border-t-[2px] border-t-[#DDDDDD] text-base text-center"
                       >
                         <td className="py-3 px-6">{data.id}</td>
                         <td className="py-3 px-6">{data.cycle}</td>
