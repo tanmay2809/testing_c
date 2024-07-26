@@ -1,14 +1,13 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Frame from "./Frame";
-import Navbar from "./Navbar";
+import { toast } from "react-toastify";
 
 //redux
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRestaurantDetails } from "../../redux/restaurantData";
 import type { RootState, AppDispatch } from "../../redux/store";
 
-//icon
+//icons
 import { RiDashboardFill } from "react-icons/ri";
 import { FaConciergeBell } from "react-icons/fa";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
@@ -18,8 +17,12 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { HiChevronUpDown } from "react-icons/hi2";
 import { FiPlus } from "react-icons/fi";
 
+// assets
 import right from "../../assets/right.png";
-import { toast } from "react-toastify";
+
+// components
+import Frame from "./Frame";
+import Navbar from "./Navbar";
 
 const LeftNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +31,7 @@ const LeftNavbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("id");
     localStorage.removeItem("token");
-    toast.success("Successfully Logged Out");
+    toast.error("Successfully Logged Out");
     navigate("/login");
   };
 

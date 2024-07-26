@@ -63,6 +63,10 @@ const Login: React.FC = () => {
         navigate("/");
       })
       .catch((error) => {
+        if (error.response.status === 400) {
+          toast.error(error.response.data.message);
+          setLoading(false);
+        }
         console.log(error);
       });
   }
