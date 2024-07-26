@@ -7,7 +7,6 @@ import Charts from "../../component/Customer/Charts";
 
 import { BarChartc } from "../../component/Customer/Barchartc";
 
-
 //icons
 import { FaArrowUpLong, FaArrowDownLong } from "react-icons/fa6";
 
@@ -24,12 +23,6 @@ import Feedback from "../../component/outlet/Feedback";
 
 //svg
 import i from "/i.svg";
-
-
-
-
-
-
 
 //for customer visit graph
 const dataForBar = {
@@ -71,8 +64,6 @@ const optionsForBar = {
 const Analytics: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
   console.log("resData: ", data);
-
- 
 
   //weekdays vs weekends
   const [weekMonth, setWeekMonth] = useState<string>(
@@ -273,7 +264,6 @@ const Analytics: React.FC = () => {
   const handleMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedMonth(e.target.value);
   };
-  
 
   return (
     <div className="w-full h-fit relative mb-[80px]">
@@ -406,24 +396,29 @@ const Analytics: React.FC = () => {
           <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-x-hidde">
             <div className="w-full h-full flex justify-between">
               <div>
-              <h3 className="text-lg font-semibold flex items-center gap-2">
-                Customer Visit
-                <div
-                  onMouseEnter={() => setVisitBox("weekend")}
-                  onMouseLeave={() => setVisitBox(null)}
-                  
-                >
-                  <img src={i} />
-                </div>
-                <div className="absolute left-[12rem]">
-                  {visitBox === "weekend" ? <VisitPopup type="weekend" /> : ""}
-                </div>
-              </h3>
-              <p className="text-base font-medium">Weekdays vs Weekends</p>
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  Customer Visit
+                  <div
+                    onMouseEnter={() => setVisitBox("weekend")}
+                    onMouseLeave={() => setVisitBox(null)}
+                    className="z-[81]"
+                  >
+                    <img src={i} />
+                  </div>
+                  {visitBox === "weekend" && (
+                    <div>
+                      <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[50] p-5"></div>{" "}
+                      <div className="relative ">
+                        <VisitPopup type="weekend" />
+                      </div>
+                    </div>
+                  )}
+                </h3>
+                <p className="text-base font-medium">Weekdays vs Weekends</p>
               </div>
-               {/* Dropdown Button */}
+              {/* Dropdown Button */}
 
-               <select
+              <select
                 id="month"
                 name="month"
                 value={selectedMonth}
@@ -436,7 +431,6 @@ const Analytics: React.FC = () => {
                   </option>
                 ))}
               </select>
-              
             </div>
             <div className=" w-full h-fit flex absolute left-4 top-[5.6rem]   ">
               <div className="w-full h-full  ">
@@ -458,12 +452,18 @@ const Analytics: React.FC = () => {
                 <div
                   onMouseEnter={() => setVisitBox("monthly")}
                   onMouseLeave={() => setVisitBox(null)}
+                  className="z-[81]"
                 >
                   <img src={i} />
                 </div>
-                <div className="absolute ml-[11.5rem]">
-                  {visitBox === "monthly" ? <VisitPopup type="monthly" /> : ""}
-                </div>
+                {visitBox === "monthly" && (
+                  <div>
+                    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-[50] p-5"></div>{" "}
+                    <div className="relative ">
+                      <VisitPopup type="monthly" />
+                    </div>
+                  </div>
+                )}
               </h3>
 
               <p className="text-base font-medium">
@@ -486,9 +486,7 @@ const Analytics: React.FC = () => {
             <div className="relative flex justify-center items-center mb-4">
               <div>
                 <div className="w-full h-full ml-[12%] ">
-                <Charts male={100} female={50} other={50} />
-                
-                
+                  <Charts male={100} female={50} other={50} />
                 </div>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-2xl font-bold">

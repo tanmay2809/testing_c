@@ -10,7 +10,8 @@ import doubleArrow from "/doubleArrow.svg";
 import { Link } from "react-router-dom";
 
 const WhatsAppSettings: React.FC = () => {
-  const [selectedCheckbox, setSelectedCheckbox] = useState<string | null>(null);
+  const [selectedCheckbox, setSelectedCheckbox] = useState<string | null>("SnackBAE");
+  // const [metaVerified,setMetaVerified]=useState<boolean>(false)
 
   const handleCheckboxChange = (checkboxName: string) => {
     setSelectedCheckbox(

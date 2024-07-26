@@ -41,7 +41,7 @@ type SectionStyles = {
   color: string;
   bold: boolean;
   italic: boolean;
-
+  emoji: string | null;
 };
 
 type StylesState = {
@@ -61,7 +61,6 @@ const Campaigns: React.FC = () => {
   const [target, setTarget] = useState<string | null>(null);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const [filterData, setFilterData] = useState<string[]>([]);
-  const [templateCheck, setTemplateCheck] = useState<string>("");
   const [header, setHeader] = useState<string>("Bon Appétit!");
   const [body, setBody] = useState<string>(
     "Hey Customer's Name enjoy our exclusive deals on this weekend."
@@ -74,22 +73,35 @@ const Campaigns: React.FC = () => {
       color: "#000000",
       bold: false,
       italic: false,
-
+      emoji: null,
     },
     body: {
       color: "#000000",
       bold: false,
       italic: false,
-
+      emoji: null,
     },
     footer: {
       color: "#000000",
       bold: false,
       italic: false,
+      emoji: null,
     },
   });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [customDate, setCustomDate] = useState<string | null>(null);
 
+  const handleOptionChange = (value: string) => {
+    setSelectedOption(value);
+    if (value !== "customDate") {
+      setCustomDate(null);
+    }
+  };
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomDate(event.target.value);
+  };
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -147,10 +159,6 @@ const Campaigns: React.FC = () => {
       desc: "On customer anniversaries",
     },
   ];
-
-  const handleTemplateRadioChange = (value: string) => {
-    setTemplateCheck(value);
-  };
 
   //filter
   const toggleFilter = () => {
@@ -227,7 +235,7 @@ const Campaigns: React.FC = () => {
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
           <div className="bg-white rounded-lg p-1 w-full ">
             {!Confirmation && (
-              <div className="bg-white sticky pt-[1.6rem] top-[4rem] ">
+              <div className="bg-white sticky pt-[1.6rem] top-[4rem] z-10">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold mb-1">
                     Template Preview
@@ -410,6 +418,7 @@ const Campaigns: React.FC = () => {
                             section="header"
                             styles={styles}
                             setStyles={setStyles}
+                            setContent={setHeader}
                           />
                         </div>
 
@@ -455,6 +464,7 @@ const Campaigns: React.FC = () => {
                             section="body"
                             styles={styles}
                             setStyles={setStyles}
+                            setContent={setBody}
                           />
                         </div>
 
@@ -474,6 +484,7 @@ const Campaigns: React.FC = () => {
                                 placeholder="Enter the footer"
                                 className="bg-[#F5F9FF]  h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
                                 rows={2}
+                                value={footer}
                                 ref={textareaRef}
                                 onChange={(
                                   event: ChangeEvent<HTMLTextAreaElement>
@@ -501,6 +512,7 @@ const Campaigns: React.FC = () => {
                             section="footer"
                             styles={styles}
                             setStyles={setStyles}
+                            setContent={setFooter}
                           />
                         </div>
 
@@ -708,28 +720,39 @@ const Campaigns: React.FC = () => {
                         >
                           <div className=" rounded-md w-full flex flex-col gap-1">
                             {options.map((option) => (
-                              <div
-                                key={option.value}
-                                className=" rounded-md w-full p-4 flex items-center gap-3 bg-white"
-                              >
-                                <input
-                                  type="checkbox"
-                                  id={option.value}
-                                  checked={templateCheck === option.value}
-                                  onChange={() =>
-                                    handleTemplateRadioChange(option.value)
-                                  }
-                                  className="h-4 w-4 text-[#004AAD]"
-                                />
-                                <div className="flex flex-col justify-center items-start">
-                                  <label
-                                    htmlFor="allCustomers"
-                                    className="text-lg font-[500]"
-                                  >
-                                    {option.label}
-                                  </label>
-                                  <p className="text-sm">{option.desc}</p>
+                              <div key={option.value}>
+                                <div className="rounded-md w-full p-4 flex items-center gap-3 bg-white">
+                                  <input
+                                    type="checkbox"
+                                    id={option.value}
+                                    checked={selectedOption === option.value}
+                                    onChange={() =>
+                                      handleOptionChange(option.value)
+                                    }
+                                    className="h-4 w-4 text-[#004AAD]"
+                                  />
+                                  <div className="flex flex-col justify-center items-start">
+                                    <label
+                                      htmlFor={option.value}
+                                      className="text-lg font-[500]"
+                                    >
+                                      {option.label}
+                                    </label>
+                                    <p className="text-sm">{option.desc}</p>
+                                  </div>
                                 </div>
+                                {selectedOption === "customDate" &&
+                                  option.value === "customDate" && (
+                                    <div className="">
+                                      <input
+                                        type="date"
+                                        id="customDateInput"
+                                        value={customDate || ""}
+                                        onChange={handleDateChange}
+                                        className=" mt-1 "
+                                      />
+                                    </div>
+                                  )}
                               </div>
                             ))}
                           </div>
@@ -743,14 +766,14 @@ const Campaigns: React.FC = () => {
                 )}
               </div>
 
-              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[11rem] md:right-11 md:top-48 sm:right-6 sm:top-56 h-fit">
+              <div className="ml-20 fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[3rem] lg:mt-10 md:right-12 md:top-[15rem] sm:right-6  h-fit">
                 <img
                   src={screen}
                   alt="Phone Screen"
-                  className="lg:w-[88%] md:w-[90%] h-auto mx-auto -mt-7 sm:w-[88%]"
+                  className="lg:w-[88%] md:w-[90%] h-auto mx-auto  sm:w-[88%]"
                 />
 
-                <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[4.5rem] w-[14rem] left-[2.83rem]">
+                <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[6rem] lg:w-[14rem] lg:left-[2.83rem]  md:w-[15.6rem] md:left-[2rem]">
                   <div className="bg-white  p-4 rounded-md  w-full h-fit">
                     {selectedImage && type === "Marketing" && (
                       <div className="w-full h-[6rem]">
