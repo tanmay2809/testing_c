@@ -20,10 +20,10 @@ import { MdOutlineNavigateNext } from "react-icons/md";
 import { RxDotFilled } from "react-icons/rx";
 import { MdRefresh } from "react-icons/md";
 import { MdNavigateNext } from "react-icons/md";
-
-
+//assets
 import icon from '../../assets/Visit.png'
 import icon1 from '../../assets/Regular Visitor.png'
+import notfound from '../../assets/No data found.png'
 
 import Chart1 from '../../component/dashboard/Chart1';
 
@@ -75,9 +75,9 @@ const Dashboard = () => {
   
  
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative lg:mb-0 md:mb-[80px]">
       <div className=" lg:w-[93%] h-fit px-[1rem] py-[1rem] flex flex-col items-center justify-center  lg:ml-[7%] ">
-        <div className="w-full  h-fit flex flex-col items-center gap-2 mt-[80px] mb-[2rem] mx-[1.5rem]  ">
+        <div className="w-full  h-fit flex flex-col items-center gap-2 mt-[80px]  mb-[2rem] mx-[1.5rem]  ">
           <div className="w-full h-fit flex items-center justify-between bg-[#D7E8FF] font-inter font-[400] text-[.9rem] text-black px-4 py-2  rounded-xl ">
             <div className="flex items-center gap-2">
               <BiSolidError className="size-5 text-[#004AADC9] " />
@@ -129,12 +129,16 @@ const Dashboard = () => {
                     <p>together</p>
                   </div>
 
+                  <div className="lg:mt-0 md:mt-[60px]">
                   <DotLottieReact
                     src="https://lottie.host/a3f808d0-ea12-443d-940e-1f07bb25e67e/xLVE06Ex60.json"
                     autoplay
                     loop
                     style={{ width: "200px", height: "200px" }}
                   />
+                  </div>
+
+                  
                 </div>
                 <div>
                   <p className="font-inter font-[600] text-[2.4rem] text-black">
@@ -168,53 +172,61 @@ const Dashboard = () => {
                       <p className="font-[600] text-[.95rem] text-nowrap">
                         Complete Business Profile
                       </p>
-                      <p className="font-[400] text-[.85rem] text-nowrap">
+                      <p className="font-[400] text-[.85rem] ">
                         Complete Business Profile for maximum branding
                       </p>
                     </div>
-                    <button className="bg-[#FFCF27] px-[2rem] my-1  rounded-lg text-[.98rem] text-black">
+                    <div className="flex items-center justify-end">
+                    <button className="bg-[#FFCF27] px-[2rem] py-[.65rem] my-1  rounded-lg text-[.98rem] text-black">
                       Completed
                     </button>
+                    </div>
                   </div>
                   <div className="w-full h-fit flex hover:bg-[#004AAD] hover:text-white  gap-4 bg-[#D7E8FF] py-3 px-6 rounded-xl justify-between">
                     <div className="font-inter leading-[1.5rem]">
                       <p className="font-[600] text-[.95rem] text-nowrap">
                         Create Digital Menu
                       </p>
-                      <p className="font-[400] text-[.85rem] text-nowrap">
+                      <p className="font-[400] text-[.85rem]">
                         Create digital menu for better customer interaction
                       </p>
                     </div>
                     {status == 2 ? (
-                      <button className="bg-[#FFCF27] px-[2rem] my-1  rounded-lg text-[.98rem] text-black">
+                      <div className="flex items-center justify-end">
+                      <button className="bg-[#FFCF27] px-[2rem] py-[.65rem] my-1  rounded-lg text-[.98rem] text-black">
                         Completed
                       </button>
+                      </div>
                     ) : (
+                      <div className="flex items-center justify-end">
                       <Link
                         to="/menu"
                         onClick={handleScrollToTop}
-                        className="bg-white px-[2rem] my-1 flex items-center  rounded-lg text-[.98rem] text-black"
+                        className="bg-white px-[2rem] py-[.65rem] my-1 flex items-center  text-nowrap rounded-lg text-[.98rem] text-black"
                       >
                         Start Now
                       </Link>
+                      </div>
                     )}
                   </div>
                   <div className="w-full h-fit flex hover:bg-[#004AAD] hover:text-white  gap-4 bg-[#D7E8FF] py-3 px-6 rounded-xl justify-between">
-                    <div className="font-inter leading-[1.5rem]">
+                    <div className="font-inter  leading-[1.5rem]">
                       <p className="font-[600] text-[.95rem] text-nowrap">
                         Automate Campaigns
                       </p>
-                      <p className="font-[400] text-[.85rem] text-nowrap">
+                      <p className="font-[400] text-[.85rem] ">
                         Automate Campaign for better customer engagement{" "}
                       </p>
                     </div>
-
+                    <div className="flex items-center justify-end">
                     <Link
                       to="/marketing"
-                      className="bg-white px-[2rem] my-1 flex items-center  rounded-lg text-[.98rem] text-black"
+                      className="bg-white px-[2rem] py-[.65rem] my-1 flex items-center  rounded-lg text-[.98rem] text-nowrap text-black"
                     >
                       Start Now
                     </Link>
+                    </div>
+                    
                   </div>
                 </div>
               </div>
@@ -338,11 +350,11 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Campaign Overview1 1 */}
+          {/* Customer Overview1 1 */}
           <div className="bg-[#F1F7FF] w-full h-fit flex flex-col mt-[.8rem] py-[1.5rem] font-inter px-[2.5rem] rounded-lg">
             <div className="flex w-full justify-between items-center">
               <p className="text-[#505050] font-semibold w-[700] text-[1.6rem] ">
-                Campaign Overview
+                Customer Overview
               </p>
               <div className="flex items-center justify-center gap-4">
                 {/* Dropdown */}
@@ -414,7 +426,8 @@ const Dashboard = () => {
           </div>
 
           {/* menu performance */}
-          <div className=" w-full grid md:grid-cols-2 grid-cols-1  gap-4 h-fit font-inter   rounded-lg">
+          <div className=" w-full grid lg:grid-cols-2 md:grid-cols-1  gap-4 h-fit font-inter   rounded-lg">
+            {/* left part */}
             <div className=" w-full h-fit flex flex-col  my-[1rem]  bg-[#F1F7FF] rounded-lg ">
               <div className="flex justify-between items-center font-inter border-b px-[1rem] border-[#00000099] py-4">
                 <p className="font-[700] text-[1.6rem] text-[#505050]">
@@ -429,9 +442,10 @@ const Dashboard = () => {
                 </Link>
               </div>
 
-              <div className="w-full h-fit flex flex-col px-[1.5rem] mb-[2rem]  font-inter">
+              {
+                top3menu.length >1 ?  <div className="w-full h-fit flex flex-col px-[1.5rem] mb-[2rem]  font-inter">
                 <p className="text-[#505050] font-[500] text-[1.2rem] text-nowrap py-[1rem]">
-                  Top 3 Menu item on customer preferance
+                  Top 4 Menu item on customer preferance
                 </p>
 
                 {top3menu.map((item, index) => (
@@ -459,9 +473,28 @@ const Dashboard = () => {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
 
+              </div> :
+              <div className="w-full h-fit flex items-center text-center justify-between flex-col px-[1.5rem] mb-[2rem]  font-inter">
+                <p className="text-[#505050] font-[500] text-[1.2rem] text-nowrap py-[1rem]">
+                Top Menu item on basis of customer interaction
+                </p>
+                <img src={notfound} alt="found" className="h-[300px] aspect-auto" />
+                <div className="font-inter font-[600] text-[.7rem] text-black">
+                  <p>No data to display. Once customers starts visiting this will look </p>
+                  <p>a lot more exciting.</p>
+                </div>
+               
+
+              </div>
+              }
+
+             
+
+              
+
+            </div>
+              {/* right part */}
             <div className=" w-full h-fit flex flex-col   my-[1rem] gap-3 ">
               <div className="w-full h-fit flex font-[500] flex-col px-[1.5rem]  font-roboto bg-[#F1F7FF] py-[1rem] rounded-lg text-[#000000]">
                 <p className=" text-[1.5rem] text-nowrap">
