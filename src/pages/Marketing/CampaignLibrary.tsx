@@ -33,7 +33,7 @@ const CampaignLibrary: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-fit relative">
+    <div className="w-full h-fit relative mb-[80px]">
       <div className="lg:w-[93%] h-fit px-[2rem] py-[1rem] gap-10 lg:ml-[7%]">
         <div className="font-inter">
           {/* reach out your customer */}

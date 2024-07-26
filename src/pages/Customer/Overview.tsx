@@ -95,7 +95,7 @@ const Overview: React.FC = () => {
   }, [selectedDay, selectedMonth, data?.customerData]);
 
   return (
-    <div className="w-full h-fit relative ">
+    <div className="w-full h-fit relative mb-[80px]">
       <div className=" lg:w-[93%] h-fit px-[1.5rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         {/*Customer Snapshot div */}
         <div className="px-[.9rem] py-[1.5rem] bg-[#F1F7FF] font-inter rounded-lg mb-[1rem]">
@@ -103,7 +103,9 @@ const Overview: React.FC = () => {
           <div className="flex justify-between items-center p-2 ">
             {/* Left Section */}
             <div>
-              <h1 className="text-[1.5rem] font-semibold mb-1 text-[#3C3C3C] ">Customer Snapshot</h1>
+              <h1 className="text-[1.5rem] font-semibold mb-1 text-[#3C3C3C] ">
+                Customer Snapshot
+              </h1>
               <p className="text-gray-600 text-[.95rem] font-[400] ">
                 Explore how recently, how often your customer visit your
                 business
@@ -179,7 +181,6 @@ const Overview: React.FC = () => {
               </div>
             </div>
           </div>
-
         </div>
 
         {/*Chart div */}
@@ -207,16 +208,25 @@ const Overview: React.FC = () => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#C0DBFF] rounded-full mr-2"></div>
-              <span className="text-sm text-[#5E5E5E] font-[600] ">New Customer</span>
+              <span className="text-sm text-[#5E5E5E] font-[600] ">
+                New Customer
+              </span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#004AAD] rounded-full mr-2"></div>
-              <span className="text-sm text-[#5E5E5E] font-[600]">Old Customer</span>
+              <span className="text-sm text-[#5E5E5E] font-[600]">
+                Old Customer
+              </span>
             </div>
           </div>
           {/*chart */}
           <div className=" lg:h-[24rem] md:h-[16rem] mt-6">
-            <BarChart data={dataForOverview} options={options} width={500} height={150} />
+            <BarChart
+              data={dataForOverview}
+              options={options}
+              width={500}
+              height={150}
+            />
           </div>
         </div>
         {/*Feedback div */}

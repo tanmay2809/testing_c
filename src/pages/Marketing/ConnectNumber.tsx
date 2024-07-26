@@ -42,7 +42,7 @@ const ConnectNumber: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-fit relative">
+    <div className="w-full h-fit relative mb-[80px]">
       <div className="lg:w-[93%]  lg:px-[2rem] py-[1rem] gap-10 lg:ml-[7%] h-[100vh]">
         <div className="w-full flex flex-row justify-between mt-[60px] font-inter h-fit">
           <div className="flex p-8 md:p-3 w-full rounded-md ">
@@ -61,18 +61,21 @@ const ConnectNumber: React.FC = () => {
                 <li className="flex items-center justify-center gap-14">
                   <img src={messages} />
                   <span className="w-64">
-                  Respond to unlimited customer initiated conversations with auto replies & chatflows
+                    Respond to unlimited customer initiated conversations with
+                    auto replies & chatflows
                   </span>
                 </li>
                 <li className="flex items-center justify-center gap-14">
                   <img src={announcement} />
                   <span className="w-64">
-                  Start sending bulk WhatsApp Campaigns to your customers                  </span>
+                    Start sending bulk WhatsApp Campaigns to your customers{" "}
+                  </span>
                 </li>
                 <li className="flex items-center justify-center gap-14">
                   <img src={shop} />
                   <span className="w-64">
-                  Create & connect your menu and delivery links to your WhatsApp Business Number
+                    Create & connect your menu and delivery links to your
+                    WhatsApp Business Number
                   </span>
                 </li>
               </ul>
@@ -101,7 +104,8 @@ const ConnectNumber: React.FC = () => {
                       apps while you use the number with Snackbae.
                     </li>
                     <li className="-indent-5">
-                    Due to WhatsApp’s rules, going back to WhatsApp apps from Snackbae is a time taking process & not guaranteed
+                      Due to WhatsApp’s rules, going back to WhatsApp apps from
+                      Snackbae is a time taking process & not guaranteed
                     </li>
                     <li className="-indent-5">
                       Old chats on your number’s WhatsApp account will get

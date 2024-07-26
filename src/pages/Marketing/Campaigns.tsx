@@ -222,7 +222,7 @@ const Campaigns: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-fit relative">
+    <div className="w-full h-fit relative mb-[80px]">
       <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
           <div className="bg-white rounded-lg p-1 w-full ">
@@ -265,7 +265,7 @@ const Campaigns: React.FC = () => {
                       <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
                         <div className="flex items-center gap-3">
                           <div className="bg-[#FFCF27] p-4 rounded-lg">
-                           <img src={booking}/>
+                            <img src={booking} />
                           </div>
                           <div>
                             <h3 className="text-xl font-semibold mb-2">
@@ -281,7 +281,7 @@ const Campaigns: React.FC = () => {
                       <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
                         <div className="flex items-center gap-3">
                           <div className="bg-[#FFA858] p-4 rounded-lg">
-                            <img src={utility}/>
+                            <img src={utility} />
                           </div>
                           <div>
                             <h3 className="text-xl font-semibold mb-2">
@@ -401,7 +401,6 @@ const Campaigns: React.FC = () => {
                                   fontStyle: styles.header.italic
                                     ? "italic"
                                     : "",
-                                  
                                 }}
                               />
                             </h2>
@@ -447,7 +446,6 @@ const Campaigns: React.FC = () => {
                                     ? "bold"
                                     : "normal",
                                   fontStyle: styles.body.italic ? "italic" : "",
-                                  
                                 }}
                               />
                             </h2>
@@ -494,7 +492,6 @@ const Campaigns: React.FC = () => {
                                   fontStyle: styles.footer.italic
                                     ? "italic"
                                     : "",
-                                  
                                 }}
                               />
                             </h2>
@@ -769,7 +766,6 @@ const Campaigns: React.FC = () => {
                         color: styles.header.color,
                         fontWeight: styles.header.bold ? "bold" : "normal",
                         fontStyle: styles.header.italic ? "italic" : "",
-                        
                       }}
                     >
                       {header}
@@ -780,7 +776,6 @@ const Campaigns: React.FC = () => {
                         color: styles.body.color,
                         fontWeight: styles.body.bold ? "bold" : "normal",
                         fontStyle: styles.body.italic ? "italic" : "",
-                        
                       }}
                     >
                       {body}
@@ -791,7 +786,6 @@ const Campaigns: React.FC = () => {
                         color: styles.footer.color,
                         fontWeight: styles.footer.bold ? "bold" : "normal",
                         fontStyle: styles.footer.italic ? "italic" : "",
-                        
                       }}
                     >
                       {footer}

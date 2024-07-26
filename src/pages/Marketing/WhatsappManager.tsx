@@ -46,7 +46,7 @@ const WhatsAppManager: React.FC = () => {
   ];
 
   return (
-    <div className="w-full h-fit relative">
+    <div className="w-full h-fit relative mb-[80px]">
       <div className="lg:w-[93%]  lg:px-[2rem] py-[1rem] gap-10 lg:ml-[7%]">
         <div className="w-full flex flex-row justify-between mt-[60px] font-inter">
           <div className="w-full p-6 bg-[#F1F7FF] max-h-[110vh]">

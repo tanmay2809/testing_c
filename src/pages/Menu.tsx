@@ -165,7 +165,7 @@ const Menu = () => {
     );
   }
   return (
-    <div className="w-full h-fit relative ">
+    <div className="w-full h-fit relative mb-[80px]">
       <div className="w-full lg:w-[93%]  h-fit flex items-center justify-center lg:ml-[7%]  ">
         <div className="w-full h-fit flex mt-[70px] ">
           {/* left div */}

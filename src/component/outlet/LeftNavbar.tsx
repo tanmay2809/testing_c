@@ -85,13 +85,13 @@ const LeftNavbar = () => {
     <>
       <Navbar />
       <nav
-        className={` fixed bg-white z-50  mt-[70px]  h-[calc(100vh-70px)] border-r  shadow-xl shadow-[#00000026] ${
+        className={`fixed bg-white z-50 mt-[70px] h-[calc(100vh-70px)] border-r shadow-xl shadow-[#00000026] ${
           isOpen ? "lg:w-[15%] duration-100" : "lg:w-[7%] duration-100"
         }`}
       >
         {/* sidebar for small screens */}
-        <div className="lg:hidden block fixed bottom-2 px-3 w-[100%] h-fit z-[900]  ">
-          <div className="flex items-center justify-evenly gap-3 text-[#64748B] bg-white py-2 border rounded-md   ">
+        <div className="lg:hidden block fixed bottom-2 px-3 w-[100%] h-fit z-[900]">
+          <div className="flex items-center justify-evenly gap-3 text-[#64748B] bg-white py-2 border rounded-md">
             <div>
               <Link
                 className={`${

@@ -276,7 +276,7 @@ const Analytics: React.FC = () => {
   
 
   return (
-    <div className="w-full h-fit relative ">
+    <div className="w-full h-fit relative mb-[80px]">
       <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         <div className="container mx-auto font-inter">
           <h1 className="text-xl font-semibold">Customer Segmentation</h1>
