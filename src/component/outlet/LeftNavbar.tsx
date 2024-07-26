@@ -93,7 +93,7 @@ const LeftNavbar = () => {
                   onClick={handleToggle}
                   className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                 >
-                  dashboard <span className=" text-transparent ">_______</span>
+                  Dashboard <span className=" text-transparent ">_______</span>
                 </span>
               </Link>
             </div>
@@ -113,7 +113,7 @@ const LeftNavbar = () => {
                   onClick={handleToggle}
                   className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                 >
-                  menu{" "}
+                  Menu{" "}
                   <span className=" text-transparent">...__________..</span>
                 </span>
               </Link>
@@ -134,7 +134,7 @@ const LeftNavbar = () => {
                   onClick={handleToggle}
                   className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                 >
-                  marketing <span className=" text-transparent ">_______</span>
+                  Marketing <span className=" text-transparent ">_______</span>
                 </span>
               </Link>
             </div>
@@ -154,7 +154,7 @@ const LeftNavbar = () => {
                   onClick={handleToggle}
                   className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                 >
-                  customer <span className=" text-transparent ">______</span>
+                  Customer <span className=" text-transparent ">______</span>
                 </span>
               </Link>
             </div>
@@ -174,7 +174,7 @@ const LeftNavbar = () => {
                   onClick={handleToggle}
                   className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                 >
-                  setting <span className=" text-transparent ">_____</span>
+                  Setting <span className=" text-transparent ">_____</span>
                 </span>
               </Link>
             </div>
@@ -265,7 +265,7 @@ const LeftNavbar = () => {
                     onClick={handleToggle}
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
-                    dashboard{" "}
+                    Dashboard{" "}
                     <span className=" text-transparent ">_______</span>
                   </span>
                 </Link>
@@ -287,7 +287,7 @@ const LeftNavbar = () => {
                     onClick={handleToggle}
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
-                    menu{" "}
+                    Menu{" "}
                     <span className=" text-transparent">...__________..</span>
                   </span>
                 </Link>
@@ -309,7 +309,7 @@ const LeftNavbar = () => {
                     onClick={handleToggle}
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
-                    marketing{" "}
+                    Marketing{" "}
                     <span className=" text-transparent ">_______</span>
                   </span>
                 </Link>
@@ -331,7 +331,7 @@ const LeftNavbar = () => {
                     onClick={handleToggle}
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
-                    customer <span className=" text-transparent ">______</span>
+                    Customer <span className=" text-transparent ">______</span>
                   </span>
                 </Link>
               </div>
@@ -369,7 +369,7 @@ const LeftNavbar = () => {
                     onClick={handleToggle}
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
                   >
-                    setting <span className=" text-transparent ">_____</span>
+                    Setting <span className=" text-transparent ">_____</span>
                   </span>
                 </Link>
               </div>

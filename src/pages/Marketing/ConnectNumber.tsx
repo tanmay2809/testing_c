@@ -43,13 +43,13 @@ const ConnectNumber: React.FC = () => {
 
   return (
     <div className="w-full h-fit relative">
-      <div className="lg:w-[93%] h-fit lg:px-[2rem] py-[1rem] gap-10 lg:ml-[7%]">
-        <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
-          <div className="flex p-8 md:p-3 w-full rounded-md">
+      <div className="lg:w-[93%]  lg:px-[2rem] py-[1rem] gap-10 lg:ml-[7%] h-[100vh]">
+        <div className="w-full flex flex-row justify-between mt-[60px] font-inter h-fit">
+          <div className="flex p-8 md:p-3 w-full rounded-md ">
             {/* Left section */}
-            <div className="lg:w-2/5 w-full p-4 flex flex-col justify-evenly items-center h-[38rem]">
+            <div className="lg:w-2/5 w-full p-4 flex flex-col justify-evenly items-center h-[33rem]">
               <DotLottieReact
-                src="https://lottiefiles.com/animations/whatsapp-3d-icon-rotation-lottie-json-animation-b6azaabZl9"
+                src=""
                 autoplay
                 loop
                 style={{ width: "300px", height: "200px" }}
@@ -61,71 +61,127 @@ const ConnectNumber: React.FC = () => {
                 <li className="flex items-center justify-center gap-14">
                   <img src={messages} />
                   <span className="w-64">
-                    Respond to unlimited customer initiated conversations with
-                    auto replies & chatflows
+                  Respond to unlimited customer initiated conversations with auto replies & chatflows
                   </span>
                 </li>
                 <li className="flex items-center justify-center gap-14">
                   <img src={announcement} />
                   <span className="w-64">
-                    Start sending bulk WhatsApp Campaigns to your customers
-                  </span>
+                  Start sending bulk WhatsApp Campaigns to your customers                  </span>
                 </li>
                 <li className="flex items-center justify-center gap-14">
                   <img src={shop} />
                   <span className="w-64">
-                    Create & connect your menu and delivery links to your
-                    WhatsApp Business Number
+                  Create & connect your menu and delivery links to your WhatsApp Business Number
                   </span>
                 </li>
               </ul>
             </div>
             {/* Right section */}
-            <div className="lg:w-3/5 bg-[#F1F7FF] py-10 px-16 rounded-md ">
-              <h2 className="text-lg font-semibold w-full text-center mb-8">
+            <div className="lg:w-3/5 bg-[#F1F7FF] py-3 px-16 rounded-md h-fit min-h-[33rem] flex flex-col justify-evenly">
+              <h2 className="text-lg font-semibold w-full text-center mb-2">
                 Connect a Number for your WhatsApp Business API Account
               </h2>
-              <div className="bg-white p-6 rounded-lg">
+              <div
+                className="bg-white p-3 rounded-lg text-sm h-[22rem] overflow-y-auto"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
                 <div>
                   <h3 className="text-base font-semibold flex justify-start gap-6">
                     <span>01 </span> Before using a number which is already on
                     WhatsApp
                   </h3>
-                  <ul className="list-disc list-inside mt-2 space-y-1 ml-12">
-                    <li className="-indent-6">
+                  <ul className="list-disc list-inside mt-1 space-y-1 ml-12">
+                    <li className="-indent-5">
                       You will have to delete the WhatsApp account on the
                       number.
                     </li>
-                    <li className="-indent-6">
+                    <li className="-indent-5">
                       You can't use the number on WhatsApp Personal / Business
                       apps while you use the number with Snackbae.
                     </li>
-                    <li className="-indent-6">
-                      Due to WhatsApp’s rules, going back to WhatsApp apps from
-                      Snackbae is a time-taking process & not guaranteed.
+                    <li className="-indent-5">
+                    Due to WhatsApp’s rules, going back to WhatsApp apps from Snackbae is a time taking process & not guaranteed
                     </li>
-                    <li className="-indent-6">
+                    <li className="-indent-5">
                       Old chats on your number’s WhatsApp account will get
                       deleted and won’t show up on Snackbae.
                     </li>
-                    <li className="-indent-6">
+                    <li className="-indent-5">
                       Hence, we recommend using a new number for your WhatsApp
                       Business API account, unless you are absolutely confident
                       of using your current WhatsApp number.
                     </li>
                   </ul>
                 </div>
-                <div className="mt-4">
+                <div className="mt-2">
                   <h3 className="text-base font-semibold flex justify-start gap-6">
                     <span>02</span> WhatsApp Business API vs Normal WhatsApp
                   </h3>
-                  <p className="ml-11 mt-2">
+                  <p className="ml-11 mt-1">
                     Read below to know what all can be done in WhatsApp API but
                     not in Normal WhatsApp & vice versa.
                   </p>
                 </div>
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  {/* WhatsApp API column */}
+                  <div className="border rounded-lg  border-black">
+                    <div className="flex items-center flex-col  border-b border-black p-4">
+                      <span>WhatsApp API ✅</span>
+                      <span>Normal WhatsApp ❌</span>
+                    </div>
+                    <ul className="list-disc list-inside px-4 ml-5 py-4">
+                      <li className="-indent-5">Send bulk campaigns</li>
+                      <li className="-indent-5">Send automated campaigns</li>
+                      <li className="-indent-5">
+                        Target customers, add fields for customers
+                      </li>
+                      <li className="-indent-5">
+                        Send auto-replies and build catelogues
+                      </li>
+                    </ul>
+                  </div>
+                  {/* Normal WhatsApp column */}
+                  <div className="border rounded-lg  border-black">
+                    <div className="flex items-center flex-col  border-b border-black p-4">
+                      <span>Normal WhatsApp ✅</span>
+                      <span>WhatsApp API ❌</span>
+                    </div>
+                    <ul className="list-disc list-inside px-4 ml-5 py-4">
+                      <li className="-indent-5">
+                        Message a customer 24 hours after the customer’s last
+                        reply without using an Approved Template
+                      </li>
+                      <li className="-indent-5">Be part of WhatsApp groups</li>
+                      <li className="-indent-5">
+                        Can put up WhatsApp statuses
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <h3 className="text-base font-semibold flex justify-start gap-6">
+                    <span>03</span> Keep the following ready before connecting
+                    the number
+                  </h3>
+                  <ul className="list-disc list-inside ml-11 space-y-1">
+                    <li className="-indent-5">
+                      Access to your Facebook Business Manager
+                    </li>
+                    <li className="-indent-5">
+                      Your company legal name and address
+                    </li>
+                    <li className="-indent-5">
+                      A phone number which you will use for your WhatsApp
+                      Business API account and can recieve an OTP on.
+                    </li>
+                    <li className="-indent-5">
+                      An active website of your business.
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="mt-4 flex items-center justify-center">
+              <div className="mt-2 flex items-center justify-center">
                 <input
                   checked={readCondMain}
                   onChange={handleCheckboxChangeMain}
@@ -143,11 +199,11 @@ const ConnectNumber: React.FC = () => {
                     setReadCondMain(false);
                   }
                 }}
-                className="mt-4 w-full bg-[#004AAD] text-white py-2 rounded-md"
+                className="mt-2 w-full bg-[#004AAD] text-white py-2 rounded-md"
               >
                 Continue
               </button>
-              <div className="mt-4 text-center text-[#004AAD]">
+              <div className="mt-2 text-center text-[#004AAD]">
                 <p className="font-semibold ">Need help? Contact us</p>
               </div>
             </div>

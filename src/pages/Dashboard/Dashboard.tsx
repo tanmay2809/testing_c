@@ -1,5 +1,5 @@
 
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Link } from "react-router-dom";
@@ -78,9 +78,7 @@ const Dashboard = () => {
 
     <div className="w-full h-fit relative ">
       
-      {/* frame */}
-
-      <div className=" w-[93%] h-fit flex flex-col items-center justify-center ml-[7%] px-[1rem]  ">
+      <div className=" lg:w-[93%] h-fit px-[1rem] py-[1rem] flex flex-col items-center justify-center  lg:ml-[7%] ">
         <div className="w-full  h-fit flex flex-col items-center gap-2 mt-[80px] mb-[2rem] mx-[1.5rem]  ">
 
           <div className="w-full h-fit flex items-center justify-between bg-[#D7E8FF] font-inter font-[400] text-[.9rem] text-black px-4 py-2  rounded-xl ">
@@ -113,7 +111,7 @@ const Dashboard = () => {
            {/* Hellow Foodoos */}
 
            {
-              status!=3 &&  <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex py-[1.5rem] px-[2.5rem] rounded-lg ">
+              status<=3 ?  <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex py-[1.5rem] px-[2.5rem] rounded-lg ">
               <div className="w-[40%] h-fit">
                 <p className="flex items-center gap-4 font-Sen font-[700] text-[2rem] text-nowrap text-[#505050] tracking-tight">Hello Foodoos <span><PiHandWaving  className=" text-black -rotate-[10deg]" /></span></p>
                 <div>
@@ -140,7 +138,7 @@ const Dashboard = () => {
               </div>
 
               <div className="w-[60%] h-fit flex items-end flex-col  font-inter py-[1rem] ">
-                 <button className="bg-white flex items-center py-2  border border-[#000000CC] rounded-lg text-nowrap justify-center  px-5 font-[500] text-[1.1rem]  gap-2 left-0"> <RiWhatsappFill className="text-green-500 size-6" /> Contact Us </button>
+                 <Link to="https://wa.me/917003876815?text=Hi%20" className="bg-white flex items-center py-2  border border-[#000000CC] rounded-lg text-nowrap justify-center  px-5 font-[500] text-[1.1rem]  gap-2 left-0"> <RiWhatsappFill className="text-green-500 size-6" /> Contact Us </Link>
                  <div className="w-full h-fit flex flex-col gap-4 mt-[5rem]">
                     <div className="w-full h-fit flex hover:bg-[#004AAD] hover:text-white  gap-4 bg-[#D7E8FF] py-3 px-6 rounded-xl justify-between">
                         <div className="font-inter leading-[1.5rem]">
@@ -165,10 +163,9 @@ const Dashboard = () => {
                           <p className="font-[600] text-[.95rem] text-nowrap">Automate Campaigns</p>
                           <p className="font-[400] text-[.85rem] text-nowrap">Automate Campaign for better customer engagement </p>
                         </div>
-                        {
-                          (status!=2) ? <button className="bg-[#FFCF27] px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Completed</button>:
-                          <button className="bg-white px-[2rem] my-1  rounded-lg text-[.98rem] text-black">Start Now</button>
-                        }
+                    
+                        <Link to='/marketing' className="bg-white px-[2rem] my-1 flex items-center  rounded-lg text-[.98rem] text-black">Start Now</Link>
+                        
                     </div>
                  </div>
                  
@@ -177,14 +174,25 @@ const Dashboard = () => {
               <div>
 
               </div>
-          </div>
+                 </div>:
+                 <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex justify-between items-center py-[1.2rem] px-[2.5rem] rounded-lg ">
+                  <div className=" leading-[2.5rem]">
+                  <p className="flex items-center gap-4 font-Sen font-[700] text-[2rem] text-nowrap text-[#505050] tracking-tight">Hello Foodoos <span><PiHandWaving  className=" text-black -rotate-[10deg]" /></span></p>
+                  <p className="text-[1.2rem] font-Sen font-[700] leading-[1.6rem] mt-1 text-black">Lets build your success story together</p>
+                  </div>
+                  <div>
+                  <Link to="https://wa.me/917003876815?text=Hi%20" className="bg-white flex items-center py-2  border border-[#000000CC] rounded-lg text-nowrap justify-center  px-5 font-[500] text-[1.1rem]  gap-2 left-0"> <RiWhatsappFill className="text-green-500 size-6" /> Contact Us </Link>
+
+                  </div>
+                 
+                 </div>
            }
           
 
           {/* Campaign Overview */}
           <div className="bg-[#F1F7FF] w-full h-fit flex flex-col  py-[1.5rem] font-inter px-[2.5rem] rounded-lg">
             <div className="flex w-full justify-between items-center">
-              <p className='text-[#505050] font-semibold w-[700] text-[1.8rem] '>Campaign Overview</p>
+              <p className='text-[#505050] font-semibold w-[700] text-[1.6rem] '>Campaign Overview</p>
               <div className='flex items-center justify-center gap-4'>
                 {/* Dropdown */}
 
@@ -248,7 +256,7 @@ const Dashboard = () => {
           {/* Campaign Overview1 1 */}
           <div className="bg-[#F1F7FF] w-full h-fit flex flex-col mt-[.8rem] py-[1.5rem] font-inter px-[2.5rem] rounded-lg">
             <div className="flex w-full justify-between items-center">
-              <p className='text-[#505050] font-semibold w-[700] text-[1.8rem] '>Campaign Overview</p>
+              <p className='text-[#505050] font-semibold w-[700] text-[1.6rem] '>Campaign Overview</p>
               <div className='flex items-center justify-center gap-4'>
                 {/* Dropdown */}
 
@@ -296,7 +304,7 @@ const Dashboard = () => {
           </div>
 
           {/* menu performance */}
-          <div className=" w-full grid grid-cols-2 gap-4 h-fit font-inter   rounded-lg">
+          <div className=" w-full grid md:grid-cols-2 grid-cols-1  gap-4 h-fit font-inter   rounded-lg">
 
             <div className=' w-full h-fit flex flex-col  my-[1rem]  bg-[#F1F7FF] rounded-lg '>
               <div className='flex justify-between items-center font-inter border-b px-[1rem] border-[#00000099] py-4'>

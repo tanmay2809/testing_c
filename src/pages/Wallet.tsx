@@ -59,7 +59,7 @@ const Wallet: React.FC = () => {
         <div className="w-full h-fit mt-[70px]">
           <div className="flex flex-row justify-between bg-white px-10 py-8">
             <div className="w-fit flex flex-col items-start font-Roboto">
-              <h1 className="text-[1.5rem] font-semibold">Wallet</h1>
+              <h1 className="text-[1.6rem] font-bold">Wallet</h1>
               <p className="text-[1rem]">
                 Pay as you use campaigns with easy wallet recharge
               </p>
@@ -73,7 +73,7 @@ const Wallet: React.FC = () => {
               </Link>
             </div>
           </div>
-          <div className=" font-inter px-10 py-8">
+          <div className=" font-inter px-10 py-8 bg-[#F5F9FF]">
             <div className="w-fit h-fit flex flex-col gap-10 rounded-xl border-[2px] border-[#DDDDDD] bg-[#FAFCFF] p-5">
               <div className="flex flex-row justify-center">
                 <div className="w-1/2 flex flex-col items-center border-r-2 border-r-black">
@@ -134,7 +134,7 @@ const Wallet: React.FC = () => {
 
             {/* Activity Table */}
             <div className="mt-8">
-              <h1 className="text-[1.8rem] text-[#505050] font-semibold">
+              <h1 className="text-[1.5rem] text-[#505050] font-semibold mb-[1rem] ml-2">
                 Wallet Activity
               </h1>
               <div className="overflow-hidden rounded-[12px] border-[2px] border-[#DDDDDD] bg-[#FAFCFF]">
@@ -153,7 +153,7 @@ const Wallet: React.FC = () => {
                     {data?.map((data) => (
                       <tr
                         key={data.id}
-                        className="border-t border-t-[2px] border-t-[#DDDDDD] text-base text-center"
+                        className=" border-t-[2px] border-t-[#DDDDDD] text-base text-center"
                       >
                         <td className="py-3 px-6">{data.id}</td>
                         <td className="py-3 px-6">{data.cycle}</td>

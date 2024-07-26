@@ -4,16 +4,9 @@ import { RootState } from "../../redux/store";
 import Charts from "../../component/Customer/Charts";
 
 //chartjs
-import { Doughnut } from "react-chartjs-2";
+
 import { BarChartc } from "../../component/Customer/Barchartc";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  ChartOptions,
-  ChartData,
-} from "chart.js";
+
 
 //icons
 import { FaArrowUpLong, FaArrowDownLong } from "react-icons/fa6";
@@ -32,55 +25,11 @@ import Feedback from "../../component/outlet/Feedback";
 //svg
 import i from "/i.svg";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
 
-//for gender graph
-const dataForDoughnut: ChartData<"doughnut"> = {
-  labels: ["Female", "Male", "Others"],
-  datasets: [
-    {
-      label: "Customer Gender",
-      data: [],
-      backgroundColor: ["#34C759", "#F9AB35", "#F93535"],
-      borderColor: ["#34C759", "#F9AB35", "#F93535"],
-      borderWidth: 1,
-    },
-  ],
-};
 
-// interface CustomerData {
-//   userId: {
-//     _id: string;
-//     name: string;
-//     gender: string;
-//     phone: string;
-//     birthday?: string;
-//     anniversary?: string;
-//   };
-//   resId: string;
-//   visits: string[];
-//   __v: number;
-// }
 
-const optionsForDoughnut: ChartOptions<"doughnut"> = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false, // Hides the legend
-    },
-    // tooltip: {
-    //   callbacks: {
-    //     label: function (tooltipItem) {
-    //       const dataset = tooltipItem.dataset;
-    //       const total = dataset.data.reduce((acc: number, value: number) => acc + value, 0);
-    //       const currentValue = dataset.data[tooltipItem.dataIndex] as number;
-    //       const percentage = ((currentValue / total) * 100).toFixed(2);
-    //       return `Count: ${currentValue} (${percentage}%)`;
-    //     },
-    //   },
-    // },
-  },
-};
+
+
 
 //for customer visit graph
 const dataForBar = {
@@ -123,12 +72,7 @@ const Analytics: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
   console.log("resData: ", data);
 
-  //for gender
-  dataForDoughnut.datasets[0].data = [
-    data?.femaleVisitors,
-    data?.maleVisitors,
-    data?.otherVisitors,
-  ];
+ 
 
   //weekdays vs weekends
   const [weekMonth, setWeekMonth] = useState<string>(
@@ -323,6 +267,14 @@ const Analytics: React.FC = () => {
   const [visitBox, setVisitBox] = useState<string | null>(null);
   console.log(segmentationVisible);
 
+  const [selectedMonth, setSelectedMonth] = useState<string>(
+    months[new Date().getMonth()]
+  );
+  const handleMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMonth(e.target.value);
+  };
+  
+
   return (
     <div className="w-full h-fit relative ">
       <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
@@ -452,12 +404,14 @@ const Analytics: React.FC = () => {
         {/*Customer visit weekends vs weekdays */}
         <div className="lg:flex gap-4 w-full h-fit  font-inter">
           <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-x-hidde">
-            <div className="w-full h-full">
+            <div className="w-full h-full flex justify-between">
+              <div>
               <h3 className="text-lg font-semibold flex items-center gap-2">
                 Customer Visit
                 <div
                   onMouseEnter={() => setVisitBox("weekend")}
                   onMouseLeave={() => setVisitBox(null)}
+                  
                 >
                   <img src={i} />
                 </div>
@@ -466,6 +420,23 @@ const Analytics: React.FC = () => {
                 </div>
               </h3>
               <p className="text-base font-medium">Weekdays vs Weekends</p>
+              </div>
+               {/* Dropdown Button */}
+
+               <select
+                id="month"
+                name="month"
+                value={selectedMonth}
+                onChange={handleMonthChange}
+                className="font-inter px-2 h-[40px] py-2 text-base focus:outline-none sm:text-sm rounded-md border border-black mt-1"
+              >
+                {months.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+              
             </div>
             <div className=" w-full h-fit flex absolute left-4 top-[5.6rem]   ">
               <div className="w-full h-full  ">
@@ -480,8 +451,8 @@ const Analytics: React.FC = () => {
           </div>
 
           {/*customer visit monthly pattern */}
-          <div className="bg-[#F1F7FF] rounded-lg p-6 mt-4 lg:w-1/2 flex flex-col justify-evenly h-96">
-            <div>
+          <div className="bg-[#F1F7FF] rounded-lg p-1 mt-4 lg:w-1/2 flex flex-col justify-evenly h-96">
+            <div className="px-5 py-4">
               <h3 className="text-xl font-semibold flex items-center gap-2">
                 Customer Visit
                 <div
@@ -515,7 +486,9 @@ const Analytics: React.FC = () => {
             <div className="relative flex justify-center items-center mb-4">
               <div>
                 <div className="w-full h-full ml-[12%] ">
-                  <Charts male={100} female={50} other={50} />
+                <Charts male={100} female={50} other={50} />
+                
+                
                 </div>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-2xl font-bold">
