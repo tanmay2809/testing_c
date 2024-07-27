@@ -15,7 +15,7 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import CallingButton from "../../component/Marketing/CallingButton";
 import WebsiteButton from "../../component/Marketing/WebsiteButton";
 import FeedbackButton from "../../component/Marketing/FeedbackButton";
-import CustomerFilter from "../../component/Customer/CustomerFilter";
+// import CustomerFilter from "../../component/Customer/CustomerFilter";
 import ConfirmCampaign from "./ConfirmCampaign";
 
 //toastify
@@ -61,7 +61,7 @@ const CreateCampaigns: React.FC = () => {
   const [buttons, setButtons] = useState<{ id: number; type: string }[]>([]);
   const [target, setTarget] = useState<string | null>(null);
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
-  const [filterData, setFilterData] = useState<string[]>([]);
+  // const [filterData, setFilterData] = useState<string[]>([]);
   const [header, setHeader] = useState<string>("Bon Appétit!");
   const [body, setBody] = useState<string>(
     "Hey Customer's Name enjoy our exclusive deals on this weekend."
@@ -178,10 +178,10 @@ const CreateCampaigns: React.FC = () => {
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
-  const filterElementsAdd = (data: string[]) => {
-    setFilterData(data);
-    console.log(filterData);
-  };
+  // const filterElementsAdd = (data: string[]) => {
+  //   setFilterData(data);
+  //   console.log(filterData);
+  // };
 
   const handleCheckboxChange = (value: string) => {
     if (value === "advanceFilter" && target !== "advanceFilter") {

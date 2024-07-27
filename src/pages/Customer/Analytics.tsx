@@ -263,12 +263,12 @@ const Analytics: React.FC = () => {
   const [visitBox, setVisitBox] = useState<string | null>(null);
   console.log(segmentationVisible);
 
-  const [selectedMonth, setSelectedMonth] = useState<string>(
-    months[new Date().getMonth()]
-  );
-  const handleMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedMonth(e.target.value);
-  };
+  // const [selectedMonth, setSelectedMonth] = useState<string>(
+  //   months[new Date().getMonth()]
+  // );
+  // const handleMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectedMonth(e.target.value);
+  // };
 
   // const [visitBox, setVisitBox] = useState<string | null>(null);
   const [dailyVisits, setDailyVisits] = useState<{ [key: string]: number }>({});

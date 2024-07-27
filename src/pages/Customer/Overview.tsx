@@ -18,6 +18,15 @@ import noDataFound from "../../assets/undraw_no_data_re_kwbl 1.png";
 
 import Feedback from "../../component/outlet/Feedback";
 
+interface ChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];  // Assuming data is an array of numbers
+    backgroundColor: string;
+  }[];
+}
+
 const Overview: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
 
@@ -121,7 +130,7 @@ const Overview: React.FC = () => {
   const handleMonthChangeForGraph = (e: ChangeEvent<HTMLSelectElement>) => {
     setMonthForGraph(e.target.value);
   };
-  const [dataForOverview, setDataForOverview] = useState({
+  const [dataForOverview, setDataForOverview] = useState<ChartData>({
     labels: [],
     datasets: [],
   });
@@ -152,7 +161,7 @@ const Overview: React.FC = () => {
             (_, i) => `${i + 1} ${monthForGraph}`
           );
 
-          const newData = {
+          const newData:ChartData = {
             labels,
             datasets: [
               {

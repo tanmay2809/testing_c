@@ -10,7 +10,7 @@ interface Customer {
   // segmentation: "New" | "Regular" | "Risk" | "Loyal";
   userId:{
     name:string;
-    email:string;
+    // email:string;
     phone:string;
     birthday ?: string;
     gender:string;

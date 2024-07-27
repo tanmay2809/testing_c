@@ -315,7 +315,9 @@ const CustomerList: React.FC = () => {
     return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
   };
 
-  const getCustomerSegment = (visits: string[]): string => {
+  const getCustomerSegment = (
+    visits: string[]
+  ): "New" | "Regular" | "Risk" | "Loyal" => {
     const now = new Date();
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(now.getDate() - 30);
@@ -592,7 +594,7 @@ const CustomerList: React.FC = () => {
       <CustomerDetail
         customer={selectedCustomer}
         isVisible={!!selectedCustomer}
-        segmentation={getCustomerSegment(selectedCustomer?.visits)}
+        segmentation={getCustomerSegment(selectedCustomer?.visits||[])}
         onClose={closeModal}
       />
       <CustomerFilter
