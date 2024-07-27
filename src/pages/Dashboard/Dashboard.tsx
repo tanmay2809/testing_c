@@ -75,7 +75,7 @@ const Dashboard = () => {
   
  
   return (
-    <div className="w-full h-fit relative lg:mb-0 md:mb-[80px]">
+    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className=" lg:w-[93%] h-fit px-[1rem] py-[1rem] flex flex-col items-center justify-center  lg:ml-[7%] ">
         <div className="w-full  h-fit flex flex-col items-center gap-2 mt-[80px]  mb-[2rem] mx-[1.5rem]  ">
           <div className="w-full h-fit flex items-center justify-between bg-[#D7E8FF] font-inter font-[400] text-[.9rem] text-black px-4 py-2  rounded-xl ">
@@ -113,7 +113,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-
           {/* Hellow Foodoos */}
           {status <= 3 ? (
             <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex py-[1.5rem] px-[2.5rem] rounded-lg ">
@@ -131,15 +130,13 @@ const Dashboard = () => {
                   </div>
 
                   <div className="lg:mt-0 md:mt-[60px]">
-                  <DotLottieReact
-                    src="https://lottie.host/a3f808d0-ea12-443d-940e-1f07bb25e67e/xLVE06Ex60.json"
-                    autoplay
-                    loop
-                    style={{ width: "200px", height: "200px" }}
-                  />
+                    <DotLottieReact
+                      src="https://lottie.host/a3f808d0-ea12-443d-940e-1f07bb25e67e/xLVE06Ex60.json"
+                      autoplay
+                      loop
+                      style={{ width: "200px", height: "200px" }}
+                    />
                   </div>
-
-                  
                 </div>
                 <div>
                   <p className="font-inter font-[600] text-[2.4rem] text-black">
@@ -178,9 +175,9 @@ const Dashboard = () => {
                       </p>
                     </div>
                     <div className="flex items-center justify-end">
-                    <button className="bg-[#FFCF27] px-[2rem] py-[.65rem] my-1  rounded-lg text-[.98rem] text-black">
-                      Completed
-                    </button>
+                      <button className="bg-[#FFCF27] px-[2rem] py-[.65rem] my-1  rounded-lg text-[.98rem] text-black">
+                        Completed
+                      </button>
                     </div>
                   </div>
                   <div className="w-full h-fit flex hover:bg-[#004AAD] hover:text-white  gap-4 bg-[#D7E8FF] py-3 px-6 rounded-xl justify-between">
@@ -194,19 +191,19 @@ const Dashboard = () => {
                     </div>
                     {status == 2 ? (
                       <div className="flex items-center justify-end">
-                      <button className="bg-[#FFCF27] px-[2rem] py-[.65rem] my-1  rounded-lg text-[.98rem] text-black">
-                        Completed
-                      </button>
+                        <button className="bg-[#FFCF27] px-[2rem] py-[.65rem] my-1  rounded-lg text-[.98rem] text-black">
+                          Completed
+                        </button>
                       </div>
                     ) : (
                       <div className="flex items-center justify-end">
-                      <Link
-                        to="/menu"
-                        onClick={handleScrollToTop}
-                        className="bg-white px-[2rem] py-[.65rem] my-1 flex items-center  text-nowrap rounded-lg text-[.98rem] text-black"
-                      >
-                        Start Now
-                      </Link>
+                        <Link
+                          to="/menu"
+                          onClick={handleScrollToTop}
+                          className="bg-white px-[2rem] py-[.65rem] my-1 flex items-center  text-nowrap rounded-lg text-[.98rem] text-black"
+                        >
+                          Start Now
+                        </Link>
                       </div>
                     )}
                   </div>
@@ -220,14 +217,13 @@ const Dashboard = () => {
                       </p>
                     </div>
                     <div className="flex items-center justify-end">
-                    <Link
-                      to="/marketing"
-                      className="bg-white px-[2rem] py-[.65rem] my-1 flex items-center  rounded-lg text-[.98rem] text-nowrap text-black"
-                    >
-                      Start Now
-                    </Link>
+                      <Link
+                        to="/marketing"
+                        className="bg-white px-[2rem] py-[.65rem] my-1 flex items-center  rounded-lg text-[.98rem] text-nowrap text-black"
+                      >
+                        Start Now
+                      </Link>
                     </div>
-                    
                   </div>
                 </div>
               </div>
@@ -410,7 +406,7 @@ const Dashboard = () => {
                     <span>
                       <img src={icon} className="size-5 " alt="icon" />
                     </span>
-                     Customer Captured
+                    Customer Captured
                   </p>
                 </div>
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
@@ -443,59 +439,59 @@ const Dashboard = () => {
                 </Link>
               </div>
 
-              {
-                top3menu.length >1 ?  <div className="w-full h-fit flex flex-col px-[1.5rem] mb-[2rem]  font-inter">
-                <p className="text-[#505050] font-[500] text-[1.2rem] text-nowrap py-[1rem]">
-                  Top 4 Menu item on customer preferance
-                </p>
+              {top3menu.length > 1 ? (
+                <div className="w-full h-fit flex flex-col px-[1.5rem] mb-[2rem]  font-inter">
+                  <p className="text-[#505050] font-[500] text-[1.2rem] text-nowrap py-[1rem]">
+                    Top 4 Menu item on customer preferance
+                  </p>
 
-                {top3menu.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex justify-between my-[.5rem] items-center bg-white rounded-lg px-[2rem] py-[.3rem] text-black"
-                  >
-                    <div className="font-inter ">
-                      <p className="text-[1.3rem] font-[500] ">{item.name}</p>
-                      <p className="flex gap-2 items-center font-[700] text-[1.rem] text-[#464646]">
-                        burger <RxDotFilled className="size-6" />{" "}
-                        <span>₹ 199</span>
-                      </p>
+                  {top3menu.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between my-[.5rem] items-center bg-white rounded-lg px-[2rem] py-[.3rem] text-black"
+                    >
+                      <div className="font-inter ">
+                        <p className="text-[1.3rem] font-[500] ">{item.name}</p>
+                        <p className="flex gap-2 items-center font-[700] text-[1.rem] text-[#464646]">
+                          burger <RxDotFilled className="size-6" />{" "}
+                          <span>₹ 199</span>
+                        </p>
+                      </div>
+                      <div>
+                        <p className="flex gap-3 text-[1.4rem] font-[500] items-center">
+                          2431{" "}
+                          <span>
+                            <IoIosHeart className="text-red-500 size-6" />
+                          </span>
+                        </p>
+                        <p className="font-[500] text-[1.rem]">
+                          Customer live this
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="flex gap-3 text-[1.4rem] font-[500] items-center">
-                        2431{" "}
-                        <span>
-                          <IoIosHeart className="text-red-500 size-6" />
-                        </span>
-                      </p>
-                      <p className="font-[500] text-[1.rem]">
-                        Customer live this
-                      </p>
-                    </div>
-                  </div>
-                ))}
-
-              </div> :
-              <div className="w-full h-fit flex items-center text-center justify-between flex-col px-[1.5rem] mb-[2rem]  font-inter">
-                <p className="text-[#505050] font-[500] text-[1.2rem] text-nowrap py-[1rem]">
-                Top Menu item on basis of customer interaction
-                </p>
-                <img src={notfound} alt="found" className="h-[300px] aspect-auto" />
-                <div className="font-inter font-[600] text-[.7rem] text-black">
-                  <p>No data to display. Once customers starts visiting this will look </p>
-                  <p>a lot more exciting.</p>
+                  ))}
                 </div>
-               
-
-              </div>
-              }
-
-             
-
-              
-
+              ) : (
+                <div className="w-full h-fit flex items-center text-center justify-between flex-col px-[1.5rem] mb-[2rem]  font-inter">
+                  <p className="text-[#505050] font-[500] text-[1.2rem] text-nowrap py-[1rem]">
+                    Top Menu item on basis of customer interaction
+                  </p>
+                  <img
+                    src={notfound}
+                    alt="found"
+                    className="h-[300px] aspect-auto"
+                  />
+                  <div className="font-inter font-[600] text-[.7rem] text-black">
+                    <p>
+                      No data to display. Once customers starts visiting this
+                      will look{" "}
+                    </p>
+                    <p>a lot more exciting.</p>
+                  </div>
+                </div>
+              )}
             </div>
-              {/* right part */}
+            {/* right part */}
             <div className=" w-full h-fit flex flex-col   my-[1rem] gap-3 ">
               <div className="w-full h-fit flex font-[500] flex-col px-[1.5rem]  font-roboto bg-[#F1F7FF] py-[1rem] rounded-lg text-[#000000]">
                 <p className=" text-[1.5rem] text-nowrap">

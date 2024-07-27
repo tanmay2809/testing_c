@@ -230,7 +230,7 @@ const Campaigns: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
           <div className="bg-white rounded-lg p-1 w-full ">

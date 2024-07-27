@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 
 // components
-import EditMenuItem from "../component/Menu/EditMenu";
+import EditMenuItem, { EditItem } from "../component/Menu/EditMenu";
 import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
@@ -20,17 +20,18 @@ import type { RootState } from "../redux/store";
 import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 import { baseUrl } from "../main";
-import { MdDelete } from "react-icons/md";
 import { BiSearchAlt2 } from "react-icons/bi";
-import { AiOutlineClose } from "react-icons/ai";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { MdModeEditOutline } from "react-icons/md";
+import { FiTrash2 } from "react-icons/fi";
 
 // assets
 import FoodMenu from "../assets/Food Menu.png";
 import Burger from "../assets/Burger.png";
 import Category from "../assets/category.png";
 import Bussiness from "../assets/Business Task list.png";
-import nosearch from "../assets/search.jpg";
+import EditCategory from "../component/Menu/EditCategory";
+import { toast } from "react-toastify";
 
 export interface SubcategoryItem {
   _id: string;
@@ -44,6 +45,7 @@ export interface CategoryItem {
   _id: string;
   name: string;
   subcategory: any[];
+  active: boolean;
 }
 
 const Menu = () => {
@@ -51,10 +53,15 @@ const Menu = () => {
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
   const [isEditMenuOpen, setIsEditMenuOpen] = useState<boolean>(false);
   const [categoryModal, setCategoryModal] = useState<boolean>(false);
+  const [editCategoryModal, setEditCategoryModal] = useState<boolean>(false);
   const [editSubCategoryModal, setEditSubCategoryModal] =
     useState<boolean>(false);
 
-  const [selectedCard, setSelectedCard] = useState<MenuItem | null>(null);
+  const [selectedCard, setSelectedCard] = useState<MenuItem | EditItem | null>(
+    null
+  );
+
+  const [categoryName, setCategoryName] = useState<string>("");
 
   const resdata = useSelector((state: RootState) => state.resturantdata);
 
@@ -75,8 +82,6 @@ const Menu = () => {
   );
 
   const [categoryDelete, setCategoryDelete] = useState<boolean>(false);
-
-  console.log();
 
   //search bar
   const [search, setSearch] = useState<string>("");
@@ -149,6 +154,26 @@ const Menu = () => {
     });
   };
 
+  const handleToggleCategory = (id: string) => {
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/toggleCategory/${id}`,
+      headers: {},
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        toast.success("Category Toggled");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -165,7 +190,7 @@ const Menu = () => {
     );
   }
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="w-full lg:w-[93%]  h-fit flex items-center justify-center lg:ml-[7%]  ">
         <div className="w-full h-fit flex mt-[70px] ">
           {/* left div */}
@@ -325,17 +350,30 @@ const Menu = () => {
                     >
                       {item?.name}
                       {selectedCategoryId === item._id && (
-                        <MdDelete
-                          className="bg-white outline-1 outline-white rounded-md absolute text-[1.7rem] -top-3 -right-3 text-red-500"
+                        <FiTrash2
+                          className="bg-white outline-1 outline-white rounded-md absolute text-[1.6rem] -top-3 -right-3 text-[#BE1D3A]"
                           onClick={() => setCategoryDelete(true)}
                         />
                       )}
+                      <Switch
+                        onclick={() => handleToggleCategory(item._id)}
+                        isActive={item.active}
+                      />
+                      <MdModeEditOutline
+                        className="text-[1.2rem]"
+                        onClick={() => {
+                          setEditCategoryModal(true);
+                          setCategoryName(item.name);
+                        }}
+                      />
                     </button>
                   ))}
-                  <FiPlus
-                    className="text-[2.4rem] rounded-full p-2 bg-[#F0F0F0] text-[#004AAD] hover:cursor-pointer"
-                    onClick={() => setCategoryModal(true)}
-                  />
+                  {categories.length > 0 && (
+                    <FiPlus
+                      className="text-[2.4rem] rounded-full p-2 bg-[#F0F0F0] text-[#004AAD] hover:cursor-pointer"
+                      onClick={() => setCategoryModal(true)}
+                    />
+                  )}
                 </div>
 
                 {/* If no subcategory present */}
@@ -428,7 +466,7 @@ const Menu = () => {
                   {isEditMenuOpen && selectedCard && (
                     <EditMenuItem
                       setIsEditMenu={setIsEditMenuOpen}
-                      item={selectedCard}
+                      item={selectedCard as EditItem}
                       categories={filteredCategory}
                     />
                   )}
@@ -450,6 +488,15 @@ const Menu = () => {
 
         {/* category modal */}
         {categoryModal && <AddCategory isCategoryOpen={setCategoryModal} />}
+
+        {/* edit category modal */}
+        {editCategoryModal && (
+          <EditCategory
+            categoryID={selectedCategoryId}
+            categoryName={categoryName}
+            isCategoryOpen={setEditCategoryModal}
+          />
+        )}
 
         {/* category delete modal */}
         {categoryDelete && (

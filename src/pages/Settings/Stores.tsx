@@ -11,7 +11,6 @@ import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
 
 // assets
-import image from "../../assets/Ellipse 2862.png";
 import instagram from "../../assets/instagram.svg";
 import zomato from "../../assets/image 159.png";
 import google from "../../assets/Google-Review.png";
@@ -21,7 +20,7 @@ import premium from "/premium.svg";
 import { Link } from "react-router-dom";
 
 interface FormData {
-  image: string | null;
+  image: string;
   resName: string;
   businessType: string;
   email: string;
@@ -42,7 +41,7 @@ interface FormData {
 const Stores = () => {
   const [modal, setModal] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>("");
   const [store, setStore] = useState<FormData[]>();
 
   const resdata = useSelector((state: RootState) => state.resturantdata);
@@ -65,15 +64,44 @@ const Stores = () => {
     zomato: "",
   });
 
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(URL.createObjectURL(file));
+  // const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     setSelectedImage(URL.createObjectURL(file));
+  //   }
+  //   console.log(image)
+  // };
+
+  const handleImageChange = async (file: File) => {
+    const imageFormData = new FormData();
+    imageFormData.append("file", file);
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/fileUpload`,
+      data: imageFormData,
+    };
+
+    try {
+      const response = await axios.request(config);
+      console.log(response);
+      if (response.data.status && response.data.data) {
+        const url = response.data.data[0].url;
+        console.log(url);
+        setSelectedImage(url);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          image: url,
+        }));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const handleImageClick = () => {
-    setSelectedImage(null);
+    setSelectedImage("");
   };
 
   const toggleModal = () => {
@@ -122,9 +150,9 @@ const Stores = () => {
   };
 
   const handleEditClick = (store: FormData) => {
-    setSelectedImage(image);
+    setSelectedImage(store.additionalDetails.image);
     setFormData({
-      image: image,
+      image: store.additionalDetails.image,
       resName: store.resName,
       email: store.email,
       businessType: store.additionalDetails?.businessType,
@@ -181,8 +209,7 @@ const Stores = () => {
               <div className="w-full flex flex-row justify-between">
                 <div className="flex flex-row gap-4">
                   <img
-                    //when image comes from store the src={store.image}
-                    src={image}
+                    src={store.additionalDetails?.image}
                     className="w-[3.75rem] h-[3.75rem] object-cover"
                   />
                   <div className="flex flex-col">
@@ -382,8 +409,12 @@ const Stores = () => {
                         <input
                           type="file"
                           id="imageInput"
+                          name="image"
                           className="hidden"
-                          onChange={handleImageChange}
+                          onChange={(e) => {
+                            if (e.target.files && e.target.files[0])
+                              handleImageChange(e.target.files[0]);
+                          }}
                         />
                       </label>
                     )}

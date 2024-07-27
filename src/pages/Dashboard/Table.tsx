@@ -57,7 +57,7 @@ const Table = () => {
     ]
 
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className=" lg:w-[93%] h-fit px-[1rem] py-[1rem] flex flex-col items-center justify-center  lg:ml-[7%] ">
         <div className="w-full  h-fit flex flex-col items-center gap-2 mt-[80px] mx-[1.5rem]  ">
           <div className="w-full h-fit flex items-center justify-between bg-[#D7E8FF] font-inter font-[400] text-[.9rem] text-black px-[1rem] py-[.5rem]  rounded-xl ">

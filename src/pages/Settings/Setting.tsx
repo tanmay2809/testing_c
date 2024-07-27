@@ -7,7 +7,7 @@ const Setting = () => {
   const location = useLocation();
 
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="bg-white sticky top-0 z-20 lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px]">
           <div className="flex flex-col">
@@ -15,9 +15,7 @@ const Setting = () => {
             <p className="text-[18px]">Manage your account settings here</p>
           </div>
           <div className="">
-            <Link
-              to="https://wa.me/917003876815?text=Hi%20"
-            >
+            <Link to="https://wa.me/917003876815?text=Hi%20">
               <button className="w-[160px] flex flex-row items-center gap-2 px-4 py-2 border-2 text-[18px] font-[500] rounded-[8px]">
                 <img className="w-6 h-6" src={whatsapp} />
                 Contact Us

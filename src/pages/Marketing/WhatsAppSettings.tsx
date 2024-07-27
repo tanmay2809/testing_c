@@ -19,7 +19,7 @@ const WhatsAppSettings: React.FC = () => {
     );
   };
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%]">
         <div className="flex gap-6 mb-6 font-inter">
           <div className=" w-1/2 flex flex-col justify-start gap-6">
