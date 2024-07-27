@@ -123,7 +123,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
     if (category && category.length > 0 && category[0].subcategory.length > 0) {
       setIsOpen({ [category[0].subcategory[0]._id]: true });
     }
-  }, [category, ]);
+  }, [category]);
 
   return (
     <div className="space-y-2">
