@@ -21,8 +21,8 @@ import { Customer, segmentationColors } from "../../constants/index";
 import { baseUrl } from "../../main";
 
 //svg
-import exportIcon from "/exportIcon.svg";
-import premium from "/premium.svg";
+// import exportIcon from "/exportIcon.svg";
+// import premium from "/premium.svg";
 import doubleArrow from "/doubleArrow.svg";
 
 const CustomerList: React.FC = () => {
@@ -60,10 +60,10 @@ const CustomerList: React.FC = () => {
   }, [data]);
 
   //calculate the indices of first and last customer
-  // const indexOfLastItem = currentPage * itemsPerPage;
-  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // const currentItems = customers.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(resData?.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = customerData?.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(customerData?.length / itemsPerPage);
 
   const handleFilter = () => {
     const egData = data?.customerData;
@@ -471,9 +471,9 @@ const CustomerList: React.FC = () => {
                 <th className="py-3 px-6">Action</th>
               </tr>
             </thead>
-            <tbody>
-              {customerData ? (
-                customerData.map((customer: any, index: any) => (
+            {customerData ? (
+              <tbody className="">
+                {currentItems?.map((customer: any, index: any) => (
                   <tr key={index} className="border-t text-base text-center">
                     <td className="py-3 px-6">{customer?.userId?.name}</td>
                     <td className="py-3 px-6">
@@ -534,13 +534,23 @@ const CustomerList: React.FC = () => {
                       </div>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <div className="flex justify-center">
-                  <img src={noData} className="w-full text-center" />
-                </div>
-              )}
-            </tbody>
+                ))}
+              </tbody>
+            ) : (
+              <tbody>
+                <tr>
+                  <td colSpan={6}>
+                    <div className="w-full flex flex-col items-center justify-center gap-4 h-60">
+                      <img src={noData} className="w-40 h-auto" />
+                      <p className="w-full text-center">
+                        No data to display. Once customers starts visiting this
+                        will look a lot more exciting.
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            )}
           </table>
         </div>
         {/*Bottom part */}
