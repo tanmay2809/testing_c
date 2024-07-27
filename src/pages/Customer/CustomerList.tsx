@@ -421,11 +421,11 @@ const CustomerList: React.FC = () => {
               <FaFilter className="mr-2" />
               Filter Customer
             </button>
-            <button className="bg-[#004AAD] text-white rounded-lg px-2 py-1 flex items-center text-base">
+            {/* <button className="bg-[#004AAD] text-white rounded-lg px-2 py-1 flex items-center text-base">
               <img src={exportIcon} />
               Export
               <img src={premium} className="relative -top-5 -right-5" />
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="mb-4">

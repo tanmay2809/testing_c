@@ -250,7 +250,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
 
   return (
     <div className="overflow-y-scroll no-scrollbar">
-      <form onSubmit={handleSubmit} className="bg-[#EEF5FF] ">
+      <form onSubmit={handleSubmit} className="bg-[#EEF5FF]  ">
         {/* save and cancel buttons */}
         <div className="w-full flex flex-row fixed z-[100] bg-white border-b-2 border-b-[#00000050] py-4 px-5 items-center justify-between">
           <p className="w-[57%] text-[#0F172A] text-[1.4rem] font-semibold font-inter">
@@ -611,7 +611,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
           </div>
 
           {/* dish tag */}
-          <div className="mb-4">
+          <div className=" lg:mb-4 mb-[200px]">
             <label
               htmlFor="dish"
               className="block text-gray-700 text-[1.2rem] font-inter mb-2"
