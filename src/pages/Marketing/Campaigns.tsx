@@ -766,14 +766,14 @@ const Campaigns: React.FC = () => {
                 )}
               </div>
 
-              <div className="ml-20 fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[3rem] lg:mt-10 md:right-12 md:top-[15rem] sm:right-6  h-fit">
+              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[10rem] md:right-11 md:top-44 sm:right-12 sm:top-56 h-fit">
+                {" "}
                 <img
                   src={screen}
                   alt="Phone Screen"
-                  className="lg:w-[88%] md:w-[90%] h-auto mx-auto  sm:w-[88%]"
+                  className="lg:w-[88%] md:w-[90%] h-auto mx-auto  sm:w-[88%] ml-10"
                 />
-
-                <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[6rem] lg:w-[14rem] lg:left-[2.83rem]  md:w-[15.6rem] md:left-[2rem]">
+                <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[6rem] w-[14.4rem] left-[4rem]">
                   <div className="bg-white  p-4 rounded-md  w-full h-fit">
                     {selectedImage && type === "Marketing" && (
                       <div className="w-full h-[6rem]">

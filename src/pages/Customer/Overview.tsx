@@ -13,6 +13,9 @@ import BarChart from "../../component/Customer/BarChart";
 //data for chart
 import { options, months } from "../../constants/index";
 
+//images
+import noDataFound from "../../assets/undraw_no_data_re_kwbl 1.png";
+
 import Feedback from "../../component/outlet/Feedback";
 
 const Overview: React.FC = () => {
@@ -38,7 +41,11 @@ const Overview: React.FC = () => {
     year: number,
     monthIndex: number,
     data: any
-  ): { newCustomers: number; regularCustomers: number,totalCustomers: number } => {
+  ): {
+    newCustomers: number;
+    regularCustomers: number;
+    totalCustomers: number;
+  } => {
     const today = new Date();
 
     let startDate: Date;
@@ -95,7 +102,7 @@ const Overview: React.FC = () => {
     const currentYear = currentDate.getFullYear();
     const selectedMonthIndex = getMonthIndex(selectedMonth);
     console.log("selected month index : ", selectedMonthIndex);
-    const { newCustomers, regularCustomers,totalCustomers } = filterCustomers(
+    const { newCustomers, regularCustomers, totalCustomers } = filterCustomers(
       currentYear,
       selectedMonthIndex,
       data?.customerData
@@ -105,7 +112,6 @@ const Overview: React.FC = () => {
     setRegularCustomers(regularCustomers);
     setTotalCustomers(totalCustomers);
   }, [selectedDay, selectedMonth, data?.customerData]);
-
 
   //barchart
   const [monthForGraph, setMonthForGraph] = useState<string>(
@@ -117,63 +123,63 @@ const Overview: React.FC = () => {
   };
   const [dataForOverview, setDataForOverview] = useState({
     labels: [],
-    datasets: []
+    datasets: [],
   });
 
-  const fetchDataForMonth = async (month:string) => {
-
+  const fetchDataForMonth = async (month: string) => {
     const monthIndex = months.indexOf(month) + 1;
     try {
       let config = {
-        method: 'get',
+        method: "get",
         maxBodyLength: Infinity,
         url: `https://dolphin-app-fmayj.ondigitalocean.app/api/customerCounts/${data._id}/${monthIndex}`,
-        headers: {}
+        headers: {},
       };
-      console.log(data._id,monthIndex)//data._id undefined
+      console.log(data._id, monthIndex); //data._id undefined
 
-      axios.request(config)
+      axios
+        .request(config)
         .then((res) => {
           console.log(JSON.stringify(res.data));
           const response = res.data;
           console.log(response);
 
           const { newCustomersPerDay, regularCustomersPerDay } = response.data;
-          console.log("new " , newCustomersPerDay);
-          console.log("reg " ,regularCustomersPerDay);
-          const labels = Array.from({ length: newCustomersPerDay?.length }, (_, i) => `${i + 1} ${monthForGraph}`);
+          console.log("new ", newCustomersPerDay);
+          console.log("reg ", regularCustomersPerDay);
+          const labels = Array.from(
+            { length: newCustomersPerDay?.length },
+            (_, i) => `${i + 1} ${monthForGraph}`
+          );
 
           const newData = {
             labels,
             datasets: [
               {
-                label: 'New Customer',
+                label: "New Customer",
                 data: newCustomersPerDay,
-                backgroundColor: '#C0DBFF'
+                backgroundColor: "#C0DBFF",
               },
               {
-                label: 'Old Customer',
+                label: "Old Customer",
                 data: regularCustomersPerDay,
-                backgroundColor: '#004AAD'
-              }
-            ]
+                backgroundColor: "#004AAD",
+              },
+            ],
           };
-
           setDataForOverview(newData);
         })
         .catch((error) => {
           console.log(error);
         });
-
-      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    if(data) fetchDataForMonth(monthForGraph);
-  }, [data,monthForGraph]);
+    if (data) fetchDataForMonth(monthForGraph);
+  }, [data, monthForGraph]);
 
   return (
     <div className="w-full h-fit relative ">
@@ -184,7 +190,9 @@ const Overview: React.FC = () => {
           <div className="flex justify-between items-center p-2 ">
             {/* Left Section */}
             <div>
-              <h1 className="text-[1.5rem] font-semibold mb-1 text-[#3C3C3C] ">Customer Snapshot</h1>
+              <h1 className="text-[1.5rem] font-semibold mb-1 text-[#3C3C3C] ">
+                Customer Snapshot
+              </h1>
               <p className="text-gray-600 text-[.95rem] font-[400] ">
                 Explore how recently, how often your customer visit your
                 business
@@ -194,19 +202,21 @@ const Overview: React.FC = () => {
             {/* Right Section */}
             <div className="lg:flex md:flex gap-2">
               <button
-                className={`${selectedDay === "Today"
+                className={`${
+                  selectedDay === "Today"
                     ? "bg-[#004AAD] text-white"
                     : "bg-white"
-                  } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
+                } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
                 onClick={() => setSelectedDay("Today")}
               >
                 Today
               </button>
               <button
-                className={`${selectedDay === "Weekly"
+                className={`${
+                  selectedDay === "Weekly"
                     ? "bg-[#004AAD] text-white"
                     : "bg-white"
-                  } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
+                } rounded-lg px-6 py-2 flex items-center text-sm font-Roboto font-semibold`}
                 onClick={() => setSelectedDay("Weekly")}
               >
                 Weekly
@@ -233,7 +243,9 @@ const Overview: React.FC = () => {
           {/* Bottom Section */}
           <div className="lg:flex w-full md:flex gap-4 font-inter lg:justify-evenly my-[1rem]  mx-auto">
             <div className="w-[33%] bg-white p-5 shadow-md rounded-md text-left  flex flex-col gap-5 justify-evenly">
-              <div className="text-3xl font-bold text-[#505050]">{totalCustomers}</div>
+              <div className="text-3xl font-bold text-[#505050]">
+                {totalCustomers}
+              </div>
               <div className="flex justify-start gap-3 items-center">
                 <FaUser />
                 <p className="text-[#505050] text-lg">Total Customer</p>
@@ -258,7 +270,6 @@ const Overview: React.FC = () => {
               </div>
             </div>
           </div>
-
         </div>
 
         {/*Chart div */}
@@ -288,17 +299,37 @@ const Overview: React.FC = () => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#C0DBFF] rounded-full mr-2"></div>
-              <span className="text-sm text-[#5E5E5E] font-[600] ">New Customer</span>
+              <span className="text-sm text-[#5E5E5E] font-[600] ">
+                New Customer
+              </span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-[#004AAD] rounded-full mr-2"></div>
-              <span className="text-sm text-[#5E5E5E] font-[600]">Old Customer</span>
+              <span className="text-sm text-[#5E5E5E] font-[600]">
+                Old Customer
+              </span>
             </div>
           </div>
           {/*chart */}
-          <div className=" lg:h-[24rem] md:h-[16rem] mt-6">
-            <BarChart data={dataForOverview} options={options} width={500} height={150} />
-          </div>
+
+          {dataForOverview.datasets.length === 0 ? (
+            <div className="w-full flex flex-col items-center justify-start gap-4">
+              <img src={noDataFound} className="w-60 h-auto" />
+              <p className="w-full text-center">
+                No data to display. Once customers starts visiting this will
+                look a lot more exciting.
+              </p>
+            </div>
+          ) : (
+            <div className=" lg:h-[24rem] md:h-[16rem] mt-6">
+              <BarChart
+                data={dataForOverview}
+                options={options}
+                width={500}
+                height={150}
+              />
+            </div>
+          )}
         </div>
         {/*Feedback div */}
         <Feedback />
