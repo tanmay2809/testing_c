@@ -23,7 +23,7 @@ interface FormData {
   image: string;
   resName: string;
   businessType: string;
-  email: string;
+  email?: string;
   additionalDetails?: any;
   landmark: string;
   city: string;
@@ -50,7 +50,6 @@ const Stores = () => {
     image: selectedImage,
     resName: "",
     businessType: "",
-    email: "",
     landmark: "",
     city: "",
     state: "",
@@ -154,7 +153,6 @@ const Stores = () => {
     setFormData({
       image: store.additionalDetails.image,
       resName: store.resName,
-      email: store.email,
       businessType: store.additionalDetails?.businessType,
       landmark: store.additionalDetails?.landmark,
       city: store.additionalDetails?.city,
@@ -451,23 +449,6 @@ const Stores = () => {
                         id="businessType"
                         name="businessType"
                         value={formData.businessType}
-                        onChange={handleInputChange}
-                        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
-                      />
-                    </div>
-                    <div className="">
-                      <label
-                        className="flex text-gray-700 text-sm font-bold mb-2"
-                        htmlFor="email"
-                      >
-                        Outlet Mail
-                        <LuAsterisk className="text-sm text-[#C62828]" />
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
                         onChange={handleInputChange}
                         className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 "
                       />
