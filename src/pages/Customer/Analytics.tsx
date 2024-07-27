@@ -300,6 +300,8 @@ const Analytics: React.FC = () => {
     countDailyVisits(data?.customerData);
   }, [data?.customerData]);
 
+  
+
   return (
     <div className="w-full h-fit relative ">
       <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
@@ -424,7 +426,7 @@ const Analytics: React.FC = () => {
 
         {/*Customer visit weekends vs weekdays */}
         <div className="lg:flex gap-4 w-full h-fit  font-inter">
-          <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-x-hidde">
+          <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-x-hidden">
             <div className="w-full h-full flex justify-between">
               <div>
                 <h3 className="text-lg font-semibold flex items-center gap-2">
@@ -464,13 +466,21 @@ const Analytics: React.FC = () => {
                 ))}
               </select>
             </div>
-            <div className=" w-full h-fit flex absolute left-4 top-[5.6rem]   ">
-              <div className="w-full h-full  ">
+            <div className=" w-full h-fit flex absolute left-4 lg:top-[5rem] md:top-[6rem]  ">
+              <div className="w-full h-full lg:block hidden ">
                 <BarChart
                   data={dataForBar}
                   options={optionsForBar}
                   width={160}
                   height={80}
+                />
+              </div>
+              <div className="w-full h-full lg:hidden block ">
+                <BarChart
+                  data={dataForBar}
+                  options={optionsForBar}
+                  width={160}
+                  height={60}
                 />
               </div>
             </div>

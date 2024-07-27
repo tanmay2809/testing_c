@@ -602,7 +602,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
           </div>
 
           {/* dish tag */}
-          <div className="mb-4">
+          <div className="lg:mb-4 mb-[200px]">
             <label
               htmlFor="dish"
               className="block text-gray-700 text-[1.2rem] font-inter mb-2"

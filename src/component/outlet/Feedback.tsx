@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 //images
 import feedback from "../../assets/undraw_feedback_re_urmj 1.png";
@@ -16,7 +17,7 @@ const Feedback: React.FC = () => {
           Help us to make snackBAE better by adding a feedback or request
           features that are best for your business
         </p>
-        <p className="text-[#004AAD] text-base font-bold">Give Feedback</p>
+        <Link to="https://forms.gle/GpTK9nF19Uggv6WBA" className="text-[#004AAD] text-base font-bold">Give Feedback</Link>
       </div>
     </div>
   );

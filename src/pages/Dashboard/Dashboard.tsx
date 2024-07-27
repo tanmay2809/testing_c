@@ -112,8 +112,9 @@ const Dashboard = () => {
               />
             </div>
           </div>
-          {/* Hellow Foodoos */}
 
+
+          {/* Hellow Foodoos */}
           {status <= 3 ? (
             <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex py-[1.5rem] px-[2.5rem] rounded-lg ">
               <div className="w-[40%] h-fit">
@@ -409,7 +410,7 @@ const Dashboard = () => {
                     <span>
                       <img src={icon} className="size-5 " alt="icon" />
                     </span>
-                    Total Customer Captured
+                     Customer Captured
                   </p>
                 </div>
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
