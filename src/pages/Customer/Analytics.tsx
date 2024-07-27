@@ -135,25 +135,24 @@ const Analytics: React.FC = () => {
     const monthIndex = months.indexOf(celebrationMonth);
     console.log("mi : ", monthIndex);
 
-    const filteredBirthdays: number = data?.customerData?.filter(
-      (customer: any) => {
-        const [birthDay, birthMonth, birthYear] = customer?.userId?.birthday
-          .split("/")
-          .map(Number);
-        console.log(birthDay, birthMonth, birthYear);
-        return birthMonth - 1 === monthIndex;
+    const filteredBirthdays: number = data?.customerData?.filter((customer: any) => {
+      if (!customer?.userId?.birthday) {
+        return false; 
       }
-    )?.length;
+      const [birthDay, birthMonth, birthYear] = customer.userId.birthday.split("/").map(Number);
+      console.log(birthDay, birthMonth, birthYear);
+      return birthMonth - 1 === monthIndex;
+    })?.length ?? 0;
 
-    const filteredAnniversaries: number = data?.customerData?.filter(
-      (customer: any) => {
-        const [annDay, annMonth, annYear] = customer?.userId?.anniversary
-          .split("/")
-          .map(Number);
-        console.log(annDay, annMonth, annYear);
-        return annMonth - 1 === monthIndex;
+    const filteredAnniversaries: number = data?.customerData?.filter((customer: any) => {
+      if (!customer?.userId?.anniversary) {
+        return false;
       }
-    )?.length;
+    
+      const [annDay, annMonth, annYear] = customer.userId.anniversary.split("/").map(Number);
+      console.log(annDay, annMonth, annYear);
+      return annMonth - 1 === monthIndex;
+    })?.length ?? 0;
 
     setBirthdays(filteredBirthdays);
     setAnniversaries(filteredAnniversaries);
@@ -230,22 +229,22 @@ const Analytics: React.FC = () => {
     setNewCustomersDiff(
       prevMonthData.newCustomers && newCustomers
         ? ((newCustomers - prevMonthData?.newCustomers) /
-            prevMonthData?.newCustomers) *
-            100
+          prevMonthData?.newCustomers) *
+        100
         : prevMonthData.newCustomers == 0 && newCustomers
-        ? 100
-        : 0
+          ? 100
+          : 0
     );
 
     setRegularCustomersDiff(
       prevMonthData?.regularCustomers && regularCustomers
         ? ((currentMonthData?.regularCustomers -
-            prevMonthData?.regularCustomers) /
-            prevMonthData?.regularCustomers) *
-            100
+          prevMonthData?.regularCustomers) /
+          prevMonthData?.regularCustomers) *
+        100
         : prevMonthData.regularCustomers == 0 && regularCustomers
-        ? 100
-        : 0
+          ? 100
+          : 0
     );
   }, [growthMonth, data?.customerData]);
 
@@ -316,9 +315,8 @@ const Analytics: React.FC = () => {
           </div>
           <div className="lg:flex md:flex lg:text-left text-[#505050] sm:text-sm ">
             <div
-              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  sm:h-40 sm:w-1/4 ${
-                hoveredSegmentation === 1 && "z-[90]"
-              }`}
+              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  sm:h-40 sm:w-1/4 ${hoveredSegmentation === 1 && "z-[90]"
+                }`}
               onMouseEnter={() => setHoveredSegmentation(1)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
@@ -356,9 +354,8 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
-                hoveredSegmentation === 3 && "z-[90]"
-              }`}
+              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${hoveredSegmentation === 3 && "z-[90]"
+                }`}
               onMouseEnter={() => setHoveredSegmentation(3)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
@@ -396,9 +393,8 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
-                hoveredSegmentation === 2 && "z-[90]"
-              }`}
+              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${hoveredSegmentation === 2 && "z-[90]"
+                }`}
               onMouseEnter={() => setHoveredSegmentation(2)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
@@ -411,9 +407,8 @@ const Analytics: React.FC = () => {
             </div>
 
             <div
-              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
-                hoveredSegmentation === 4 && "z-[90]"
-              }`}
+              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${hoveredSegmentation === 4 && "z-[90]"
+                }`}
               onMouseEnter={() => setHoveredSegmentation(4)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
