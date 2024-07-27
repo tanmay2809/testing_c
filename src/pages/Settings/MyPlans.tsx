@@ -79,13 +79,13 @@ const MyPlans = () => {
                   Subscription Period
                 </p>
                 <h1 className="text-base font-semibold">
-                  {planDetails &&
-                    Math.floor(
-                      (new Date(planDetails.endDate).getTime() -
-                        new Date(planDetails.startDate).getTime()) /
-                        (1000 * 3600 * 24)
-                    )}{" "}
-                  Days
+                  {planDetails && (
+                    <>
+                      Math.floor( (new Date(planDetails.endDate).getTime() - new
+                      Date(planDetails.startDate).getTime()) / (1000 * 3600 *
+                      24) )<span> Days</span>
+                    </>
+                  )}
                 </h1>
               </div>
               <div className="flex flex-col">
@@ -107,14 +107,14 @@ const MyPlans = () => {
               <div className="flex flex-col">
                 <p className=" text-[#616161] font-[400]">Status</p>
                 <h1 className="text-base font-semibold">
-                  <span>{planDetails?.type}</span> (
-                  {planDetails &&
-                    Math.floor(
-                      (new Date(planDetails.endDate).getTime() -
-                        new Date(planDetails.startDate).getTime()) /
-                        (1000 * 3600 * 24)
-                    )}{" "}
-                  Days)
+                  <span>{planDetails?.type}</span>
+                  {planDetails && (
+                    <>
+                      Math.floor( (new Date(planDetails.endDate).getTime() - new
+                      Date(planDetails.startDate).getTime()) / (1000 * 3600 *
+                      24))<span> Days</span>
+                    </>
+                  )}
                 </h1>
               </div>
             </div>

@@ -1,16 +1,16 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // icons
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
 import { baseUrl } from "../../main";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 
 interface CategoryProps {
   isCategoryOpen: (isOpen: boolean) => void;
+  categoryID: string | null;
+  categoryName: string;
 }
 
 export interface Category {
@@ -18,14 +18,16 @@ export interface Category {
   isPrimary: boolean;
 }
 
-const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
+const EditCategory: React.FC<CategoryProps> = ({
+  isCategoryOpen,
+  categoryID,
+  categoryName,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<Category>({
     name: "",
     isPrimary: false,
   });
-
-  const resdata = useSelector((state: RootState) => state.resturantdata);
 
   // onchange handler
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,29 +41,38 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
   const handleSubmit = (e: React.FormEvent) => {
     setLoading(true);
     e.preventDefault();
-    const config = {
-      method: "post",
+
+    let config = {
+      method: "put",
       maxBodyLength: Infinity,
-      url: `${baseUrl}/api/addCategory/${resdata.data._id}`,
+      url: `${baseUrl}/api/editCategory/${categoryID}`,
       headers: {
         "Content-Type": "application/json",
       },
       data: formData,
     };
-
     axios
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
         setLoading(false);
         isCategoryOpen(false);
-        // window.location.reload();
-        toast.success("Category Added");
+        window.location.reload();
+        toast.success("Category saved");
       })
       .catch((error) => {
         console.log(error);
       });
+
+    console.log(formData);
   };
+
+  useEffect(() => {
+    setFormData({
+      name: categoryName,
+      isPrimary: false,
+    });
+  }, [categoryName, categoryID]);
 
   return (
     <div
@@ -143,4 +154,4 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
   );
 };
 
-export default AddCategory;
+export default EditCategory;

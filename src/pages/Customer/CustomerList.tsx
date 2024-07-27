@@ -368,7 +368,7 @@ const CustomerList: React.FC = () => {
 
   console.log(segmentationVisible);
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         {/*Top div */}
         <div className="mb-4 flex justify-between items-center font-inter">

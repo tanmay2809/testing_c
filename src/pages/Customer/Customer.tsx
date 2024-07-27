@@ -8,7 +8,7 @@ const Customer: React.FC = () => {
   console.log("Current Location:", location.pathname);
 
   return (
-    <div className="w-full h-fit relative mb-[80px]">
+    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className=" relative lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px]">
           <div className="flex flex-col ">
