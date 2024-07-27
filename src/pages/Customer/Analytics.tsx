@@ -20,6 +20,7 @@ import { months } from "../../constants/index";
 //images
 import VisitPopup from "../../component/Customer/VisitPopup";
 import Feedback from "../../component/outlet/Feedback";
+import noDataFound from "../../assets/No data found.png";
 
 //svg
 import i from "/i.svg";
@@ -135,24 +136,30 @@ const Analytics: React.FC = () => {
     const monthIndex = months.indexOf(celebrationMonth);
     console.log("mi : ", monthIndex);
 
-    const filteredBirthdays: number = data?.customerData?.filter((customer: any) => {
-      if (!customer?.userId?.birthday) {
-        return false; 
-      }
-      const [birthDay, birthMonth, birthYear] = customer.userId.birthday.split("/").map(Number);
-      console.log(birthDay, birthMonth, birthYear);
-      return birthMonth - 1 === monthIndex;
-    })?.length ?? 0;
+    const filteredBirthdays: number =
+      data?.customerData?.filter((customer: any) => {
+        if (!customer?.userId?.birthday) {
+          return false;
+        }
+        const [birthDay, birthMonth, birthYear] = customer.userId.birthday
+          .split("/")
+          .map(Number);
+        console.log(birthDay, birthMonth, birthYear);
+        return birthMonth - 1 === monthIndex;
+      })?.length ?? 0;
 
-    const filteredAnniversaries: number = data?.customerData?.filter((customer: any) => {
-      if (!customer?.userId?.anniversary) {
-        return false;
-      }
-    
-      const [annDay, annMonth, annYear] = customer.userId.anniversary.split("/").map(Number);
-      console.log(annDay, annMonth, annYear);
-      return annMonth - 1 === monthIndex;
-    })?.length ?? 0;
+    const filteredAnniversaries: number =
+      data?.customerData?.filter((customer: any) => {
+        if (!customer?.userId?.anniversary) {
+          return false;
+        }
+
+        const [annDay, annMonth, annYear] = customer.userId.anniversary
+          .split("/")
+          .map(Number);
+        console.log(annDay, annMonth, annYear);
+        return annMonth - 1 === monthIndex;
+      })?.length ?? 0;
 
     setBirthdays(filteredBirthdays);
     setAnniversaries(filteredAnniversaries);
@@ -229,22 +236,22 @@ const Analytics: React.FC = () => {
     setNewCustomersDiff(
       prevMonthData.newCustomers && newCustomers
         ? ((newCustomers - prevMonthData?.newCustomers) /
-          prevMonthData?.newCustomers) *
-        100
+            prevMonthData?.newCustomers) *
+            100
         : prevMonthData.newCustomers == 0 && newCustomers
-          ? 100
-          : 0
+        ? 100
+        : 0
     );
 
     setRegularCustomersDiff(
       prevMonthData?.regularCustomers && regularCustomers
         ? ((currentMonthData?.regularCustomers -
-          prevMonthData?.regularCustomers) /
-          prevMonthData?.regularCustomers) *
-        100
+            prevMonthData?.regularCustomers) /
+            prevMonthData?.regularCustomers) *
+            100
         : prevMonthData.regularCustomers == 0 && regularCustomers
-          ? 100
-          : 0
+        ? 100
+        : 0
     );
   }, [growthMonth, data?.customerData]);
 
@@ -265,7 +272,6 @@ const Analytics: React.FC = () => {
 
   // const [visitBox, setVisitBox] = useState<string | null>(null);
   const [dailyVisits, setDailyVisits] = useState<{ [key: string]: number }>({});
-
   const countDailyVisits = (data: any) => {
     const visitCounts: { [key: string]: number } = {};
     const currentDate = new Date();
@@ -300,8 +306,8 @@ const Analytics: React.FC = () => {
     countDailyVisits(data?.customerData);
   }, [data?.customerData]);
 
-  
-
+  const isEmpty = Object.keys(dailyVisits).length === 0;
+  console.log(data === undefined);
   return (
     <div className="w-full h-fit relative ">
       <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
@@ -317,16 +323,21 @@ const Analytics: React.FC = () => {
           </div>
           <div className="lg:flex md:flex lg:text-left text-[#505050] sm:text-sm ">
             <div
-              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  sm:h-40 sm:w-1/4 ${hoveredSegmentation === 1 && "z-[90]"
-                }`}
+              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  sm:h-40 sm:w-1/4 ${
+                hoveredSegmentation === 1 && "z-[90]"
+              }`}
               onMouseEnter={() => setHoveredSegmentation(1)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">New Customers</p>
-              <h2 className="text-3xl font-bold">{data?.newCustomers}%</h2>
+              <h2 className="text-3xl font-bold">
+                {data && data.length === 0
+                  ? "0%"
+                  : `${data?.newCustomers || 0}%`}
+              </h2>
               <p className="font-bold">
-                {(data?.newCustomers / 100) * data?.customerData?.length}{" "}
-                customers
+              {data && data.length === 0 ? "0":((data?.newCustomers / 100) * data?.customerData?.length)}{" "}
+              customers
               </p>
             </div>
             {hoveredSegmentation === 1 && (
@@ -356,16 +367,22 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${hoveredSegmentation === 3 && "z-[90]"
-                }`}
+              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
+                hoveredSegmentation === 3 && "z-[90]"
+              }`}
               onMouseEnter={() => setHoveredSegmentation(3)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Regular Customers</p>
-              <h2 className="text-3xl font-bold">{data?.regularCustomers}%</h2>
+              <h2 className="text-3xl font-bold">
+                {" "}
+                {data && data.length === 0
+                  ? "0%"
+                  : `${data?.regularCustomers || 0}%`}
+              </h2>
               <p className="font-bold">
-                {(data?.regularCustomers / 100) * data?.customerData?.length}{" "}
-                customers
+              {data && data.length === 0 ? "0":((data?.regularCustomers / 100) * data?.customerData?.length)}{" "}
+              customers
               </p>
             </div>
             {hoveredSegmentation === 3 && (
@@ -395,30 +412,42 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${hoveredSegmentation === 2 && "z-[90]"
-                }`}
+              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
+                hoveredSegmentation === 2 && "z-[90]"
+              }`}
               onMouseEnter={() => setHoveredSegmentation(2)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Loyal Customers</p>
-              <h2 className="text-3xl font-bold">{data?.loyalCustomers}%</h2>
+              <h2 className="text-3xl font-bold">
+                {" "}
+                {data && data.length === 0
+                  ? "0%"
+                  : `${data?.loyalCustomers || 0}%`}
+              </h2>
               <p className="font-bold">
-                {(data?.loyalCustomers / 100) * data?.customerData?.length}{" "}
+                {data && data.length === 0 ? "0":((data?.loyalCustomers / 100) * data?.customerData?.length)}{" "}
                 customers
               </p>
             </div>
 
             <div
-              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${hoveredSegmentation === 4 && "z-[90]"
-                }`}
+              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
+                hoveredSegmentation === 4 && "z-[90]"
+              }`}
               onMouseEnter={() => setHoveredSegmentation(4)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
               <p className="">Customers at risk</p>
-              <h2 className="text-3xl font-bold">{data?.riskCustomers}%</h2>
+              <h2 className="text-3xl font-bold">
+                {" "}
+                {data && data.length === 0
+                  ? "0%"
+                  : `${data?.riskCustomers || 0}%`}
+              </h2>
               <p className="font-bold">
-                {(data?.riskCustomers / 100) * data?.customerData?.length}{" "}
-                customers
+              {data && data.length === 0 ? "0":((data?.riskCustomers / 100) * data?.customerData?.length)}{" "}
+              customers
               </p>
             </div>
           </div>
@@ -435,7 +464,6 @@ const Analytics: React.FC = () => {
                     onMouseEnter={() => setVisitBox("weekend")}
                     onMouseLeave={() => setVisitBox(null)}
                     className="z-[81]"
-
                   >
                     <img src={i} />
                   </div>
@@ -466,24 +494,34 @@ const Analytics: React.FC = () => {
                 ))}
               </select>
             </div>
-            <div className=" w-full h-fit flex absolute left-4 lg:top-[5rem] md:top-[6rem]  ">
-              <div className="w-full h-full lg:block hidden ">
-                <BarChart
-                  data={dataForBar}
-                  options={optionsForBar}
-                  width={160}
-                  height={80}
-                />
+            {weekdayVisit === 0 ? (
+              <div className="w-full flex flex-col items-center justify-start">
+                <img src={noDataFound} className="w-60 h-auto" />
+                <p className="w-full text-center">
+                  No data to display. Once customers starts visiting this will
+                  look a lot more exciting.
+                </p>
               </div>
-              <div className="w-full h-full lg:hidden block ">
-                <BarChart
-                  data={dataForBar}
-                  options={optionsForBar}
-                  width={160}
-                  height={60}
-                />
+            ) : (
+              <div className=" w-full h-fit flex absolute left-4 lg:top-[5rem] md:top-[6rem]  ">
+                <div className="w-full h-full lg:block hidden ">
+                  <BarChart
+                    data={dataForBar}
+                    options={optionsForBar}
+                    width={160}
+                    height={80}
+                  />
+                </div>
+                <div className="w-full h-full lg:hidden block ">
+                  <BarChart
+                    data={dataForBar}
+                    options={optionsForBar}
+                    width={160}
+                    height={60}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/*customer visit monthly pattern */}
@@ -543,11 +581,21 @@ const Analytics: React.FC = () => {
                 Monthly customer visiting pattern
               </p>
             </div>
-            <div className="relative flex justify-center items-center mb-4">
-              <div className="w-full h-full overflow-hidden ">
-                <BarChartc dailyVisits={dailyVisits} />
+            {isEmpty ? (
+              <div className="w-full flex flex-col items-center justify-start">
+                <img src={noDataFound} className="w-60 h-auto" />
+                <p className="w-full text-center">
+                  No data to display. Once customers starts visiting this will
+                  look a lot more exciting.
+                </p>
               </div>
-            </div>
+            ) : (
+              <div className="relative flex justify-center items-center mb-4">
+                <div className="w-full h-full overflow-hidden ">
+                  <BarChartc dailyVisits={dailyVisits} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
