@@ -121,13 +121,20 @@ const Overview: React.FC = () => {
       }
     }).length;
 
-    const totalCustomersCount = data?.reduce((total: number, customer: any) => {
-      const visitsInRange = customer.visits.filter((visit: string) => {
+    // const totalCustomersCount = data?.reduce((total: number, customer: any) => {
+    //   const visitsInRange = customer.visits.filter((visit: string) => {
+    //     const visitDate = new Date(visit);
+    //     return isDateInRange(visitDate);
+    //   }).length;
+    //   return total + visitsInRange;
+    // }, 0);
+
+    const totalCustomersCount = data?.filter((customer: any) => {
+      return customer?.visits?.some((visit: string) => {
         const visitDate = new Date(visit);
         return isDateInRange(visitDate);
-      }).length;
-      return total + visitsInRange;
-    }, 0);
+      });
+    }).length;
 
     return {
       newCustomers: newCustomersCount,
