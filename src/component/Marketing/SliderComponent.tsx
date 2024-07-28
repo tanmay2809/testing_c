@@ -25,9 +25,17 @@ interface SliderComponentProps {
 const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
   const navigate = useNavigate();
 
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Optional: Add smooth scrolling animation
+    });
+  }
+  
   const sendToCampaign = (type: string) => {
     console.log(type)
     navigate(`/campaign/${type}`);
+    handleScrollToTop()
   };
   return (
     <div className="mx-auto w-full ">

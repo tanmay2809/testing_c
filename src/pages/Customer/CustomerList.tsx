@@ -54,10 +54,12 @@ const CustomerList: React.FC = () => {
   const [gender, setGender] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log("Inside useEffect");
-    console.log("data: ", data);
     setCustomerData(data?.customerData);
   }, [data]);
+  useEffect(() => {
+    // Only call handleFilter if filterData has been set
+    handleFilter();
+  }, [filterData]);
 
   //calculate the indices of first and last customer
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -66,70 +68,136 @@ const CustomerList: React.FC = () => {
   const totalPages = Math.ceil(customerData?.length / itemsPerPage);
 
   const handleFilter = () => {
-    const egData = data?.customerData;
-    const filteredCustomers = egData.filter((customer: Customer) => {
-      const customerSegment = getCustomerSegment(customer.visits);
-      console.log(customerSegment);
-      // Filter by visitFilter
-      const now = new Date();
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(now.getDate() - 30);
-      const sixtyDaysAgo = new Date();
-      sixtyDaysAgo.setDate(now.getDate() - 60);
-      const customDateVisitObj = new Date(customDateVisit);
-      const customDateNotVisitObj = new Date(customDateNotVisit);
+    console.log(filterData);
+    let filteredCustomers: Customer[] = [];
+    let mainData = data?.customerData;
+    let genderFiltered: Customer[] = [];
+    let segmentationFiltered: Customer[] = [];
+    let visitFiltered: Customer[] = [];
+    let nonVisitFiltered: Customer[] = [];
 
-      let visitCondition;
-      {
-        filterData.map((visitFilter) => {
-          visitCondition =
-            (visitFilter === "Visited in Last 30 days" &&
-              customer.visits.some(
-                (visit: string) => new Date(visit) >= thirtyDaysAgo
-              )) ||
-            (visitFilter === "Visited in Last 60 days" &&
-              customer.visits.some(
-                (visit: string) => new Date(visit) >= sixtyDaysAgo
-              )) ||
-            (visitFilter === "Custom" &&
-              customer.visits.some(
-                (visit: string) => new Date(visit) >= customDateVisitObj
-              ));
-        });
-      }
+    const now = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(now.getDate() - 30);
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(now.getDate() - 60);
+    const customDateVisitObj = new Date(customDateVisit);
+    const customDateNotVisitObj = new Date(customDateNotVisit);
 
-      let nonVisitCondition;
-      {
-        filterData.map((nonVisitFilter) => {
-          nonVisitCondition =
-            (nonVisitFilter === "Not visited in Last 30 days" &&
-              customer.visits.every(
-                (visit: string) => new Date(visit) < thirtyDaysAgo
-              )) ||
-            (nonVisitFilter === "Not visited in Last 60 days" &&
-              customer.visits.every(
-                (visit: string) => new Date(visit) < sixtyDaysAgo
-              )) ||
-            (nonVisitFilter === "Custom" &&
-              customer.visits.some(
-                (visit: string) => new Date(visit) >= customDateNotVisitObj
-              ));
-        });
-      }
+    if (filterData.length > 0) {
+      // Filter by visit dates
+      visitFiltered = mainData.filter((customer: Customer) => {
+        let visitCondition;
+        {
+          filterData.map((visitFilter) => {
+            visitCondition =
+              (visitFilter === "Visited in Last 30 days" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) >= thirtyDaysAgo
+                )) ||
+              (visitFilter === "Visited in Last 60 days" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) >= sixtyDaysAgo
+                )) ||
+              (visitFilter === "Custom" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) >= customDateVisitObj
+                ));
+          });
+          return visitCondition;
+        }
+      });
+      console.log("After visit: ", visitFiltered);
 
-      const segmentCondition =
-        segmentation.length === 0 || segmentation.includes(customerSegment);
-      console.log(segmentCondition);
-      const genderCondition =
-        gender.length === 0 || gender.includes(customer.userId.gender);
+      // Filter by not visit dates
+      nonVisitFiltered = mainData.filter((customer: Customer) => {
+        let nonVisitCondition;
+        {
+          filterData.map((visitFilter) => {
+            nonVisitCondition =
+              (visitFilter === "Not visited in Last 30 days" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) >= thirtyDaysAgo
+                )) ||
+              (visitFilter === "Not visited in Last 60 days" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) >= sixtyDaysAgo
+                )) ||
+              (visitFilter === "Custom" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) >= customDateNotVisitObj
+                ));
+          });
+          return nonVisitCondition;
+        }
+      });
+      console.log("After not visit: ", nonVisitFiltered);
 
-      return (
-        (true || visitCondition) &&
-        (true || nonVisitCondition) &&
-        segmentCondition &&
-        genderCondition
+      // Filter by gender
+      genderFiltered = mainData.filter((customer: Customer) => {
+        return filterData.includes(customer.userId?.gender);
+      });
+      console.log("After gender: ", genderFiltered);
+
+      // Filter by customer segmentation
+      segmentationFiltered = mainData.filter((customer: Customer) => {
+        const customerSegment = getCustomerSegment(customer.visits);
+        console.log(customerSegment);
+        return filterData.includes(customerSegment);
+      });
+      console.log("After segmentation: ", segmentationFiltered);
+      const filteredArrays = [
+        genderFiltered,
+        segmentationFiltered,
+        visitFiltered,
+        nonVisitFiltered,
+      ];
+      const nonEmptyFilteredArrays = filteredArrays.filter(
+        (array) => array.length > 0
       );
-    });
+
+      if (nonEmptyFilteredArrays.length > 1) {
+        // Find the intersection of all non-empty filtered arrays
+        filteredCustomers = nonEmptyFilteredArrays.reduce((acc, curr) => {
+          return acc.filter((customer: Customer) => curr.includes(customer));
+        });
+      } else if (nonEmptyFilteredArrays.length === 1) {
+        // If only one filtered array is non-empty, use it
+        filteredCustomers = nonEmptyFilteredArrays[0];
+      }
+
+      // If both filters are non-empty, find the intersection
+      // if (
+      //   genderFiltered.length > 0 &&
+      //   segmentationFiltered.length > 0 &&
+      //   visitFiltered.length > 0 &&
+      //   nonVisitFiltered.length > 0
+      // ) {
+      //   filteredCustomers = segmentationFiltered
+      //     .filter((customer: Customer) => genderFiltered.includes(customer))
+      //     .filter((customer: Customer) => visitFiltered.includes(customer))
+      //     .filter((customer: Customer) => nonVisitFiltered.includes(customer));
+      // } else if (
+      //   genderFiltered.length > 0 &&
+      //   segmentationFiltered.length > 0 &&
+      //   visitFiltered.length > 0
+      // ) {
+      //   filteredCustomers = segmentationFiltered
+      //     .filter((customer: Customer) => genderFiltered.includes(customer))
+      //     .filter((customer: Customer) => visitFiltered.includes(customer));
+      // } else {
+      //   filteredCustomers.push(...genderFiltered);
+      //   console.log("gender added: ", filteredCustomers);
+      //   filteredCustomers.push(...segmentationFiltered);
+      //   console.log("segmentation added: ", filteredCustomers);
+      //   filteredCustomers.push(...visitFiltered);
+      //   console.log("segmentation added: ", visitFiltered);
+      // }
+      console.log("Final result: ", filteredCustomers);
+    } else {
+      //if filter data is empty then filtered customers=all customers
+      filteredCustomers = data?.customerData;
+    }
     setCustomerData(filteredCustomers);
   };
 
@@ -238,13 +306,11 @@ const CustomerList: React.FC = () => {
   const handleFilterDataRemove = (data: string) => {
     let newData: string[] = filterData.filter((el: string) => el !== data);
     setFilterData(newData);
-    handleFilter();
   };
 
   //sort
   const handleSortChange = (criteria: string) => {
     setSort(false);
-    console.log(criteria);
     //the sorting logic goes here
     const sortedData = [...customerData];
 
@@ -368,7 +434,7 @@ const CustomerList: React.FC = () => {
     }
   };
 
-  console.log(segmentationVisible);
+  console.log("Segmentation visible: ", segmentationVisible);
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
@@ -529,7 +595,7 @@ const CustomerList: React.FC = () => {
                         className="flex justify-center items-center gap-2 cursor-pointer"
                         onClick={() => handleViewDetails(customer)}
                       >
-                        <button className="text-base font-inter font-medium">
+                        <button className="text-base font-inter font-medium lg:block md:hidden">
                           View Details
                         </button>
                         <img src={doubleArrow} />
@@ -594,16 +660,16 @@ const CustomerList: React.FC = () => {
       <CustomerDetail
         customer={selectedCustomer}
         isVisible={!!selectedCustomer}
-        segmentation={getCustomerSegment(selectedCustomer?.visits||[])}
+        segmentation={getCustomerSegment(selectedCustomer?.visits || [])}
         onClose={closeModal}
       />
       <CustomerFilter
         isVisible={isFilterVisible}
         onClose={toggleFilter}
         setFilterData={filterElementsAdd}
-        customerData={customerData}
-        setCustomerData={setCustomerData}
-        originalData={data?.customerData}
+        // customerData={customerData}
+        // setCustomerData={setCustomerData}
+        // originalData={data?.customerData}
         customDateVisit={customDateVisit}
         customDateNotVisit={customDateNotVisit}
         setcustomDateVisit={setCustomDateVisit}

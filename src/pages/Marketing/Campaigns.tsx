@@ -237,7 +237,7 @@ const Campaigns: React.FC = () => {
             {!Confirmation && (
               <div className="bg-white sticky pt-[1.6rem] top-[4rem] z-10">
                 <div className="flex justify-between w-full">
-                  <h2 className="text-xl font-semibold mb-1">
+                  <h2 className="text-xl font-semibold ">
                     Template Preview
                   </h2>
                   <div className="flex gap-6">
@@ -263,7 +263,7 @@ const Campaigns: React.FC = () => {
             )}
 
             {/*main content div */}
-            <div className="bg-[#F5F9FF] flex justify-between gap-10 lg:py-5 lg:px-10 md:p-5 rounded-lg">
+            <div className="bg-[#F5F9FF] flex justify-between gap-10 lg:py-5 lg:px-10 md:p-5 rounded-lg mt-2">
               {/*text div */}
               <div className=" lg:w-[65%] md:w-[50%] sm:w-[48%]">
                 {/*booking */}
@@ -766,7 +766,7 @@ const Campaigns: React.FC = () => {
                 )}
               </div>
 
-              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[10rem] md:right-11 md:top-44 sm:right-12 sm:top-56 h-fit">
+              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[11rem] md:right-12 md:top-44 sm:right-12 sm:top-56 h-fit">
                 {" "}
                 <img
                   src={screen}

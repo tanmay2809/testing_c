@@ -20,6 +20,14 @@ const Marketing = () => {
   const togglePricing = () => {
     setIsPricingVisible(!isPricingVisible);
   };
+
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Optional: Add smooth scrolling animation
+    });
+  };
+
   return (
     <div className="w-full h-fit ">
       <div className="lg:w-[93%]  h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
@@ -36,10 +44,13 @@ const Marketing = () => {
               onClick={togglePricing}
             >
               Pricing
-              <img src={doubleArrow}/>
+              <img src={doubleArrow} />
             </button>
             <button
-              onClick={() => navigate("/createcampaign")}
+              onClick={() => {
+                navigate("/createcampaign");
+                handleScrollToTop();
+              }}
               className="w-[10.5rem] flex justify-center items-center gap-1 bg-[white] text-[#004AAD] px-2 py-2 text-base font-[500] rounded-md border border-[#E2E8F0]"
             >
               <FaPlus className="text-base" />
@@ -53,6 +64,7 @@ const Marketing = () => {
           <Link
             className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
             to="/marketing"
+            onClick={handleScrollToTop}
           >
             Campaign Library
             <span
@@ -64,6 +76,7 @@ const Marketing = () => {
           <Link
             className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
             to="/marketing/manage"
+            onClick={handleScrollToTop}
           >
             Manage Campaigns
             <span
@@ -77,6 +90,7 @@ const Marketing = () => {
           <Link
             className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
             to="/marketing/whatsappsetting"
+            onClick={handleScrollToTop}
           >
             WhatsApp Settings
             <span

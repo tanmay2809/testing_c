@@ -158,8 +158,8 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                   {plan.validity}
                 </p>
                 <div className="w-full sm:h-[15.625rem] flex flex-col gap-3 mt-2">
-                  {plan.features.map((feature) => (
-                    <p className="flex flex-row items-center text-[0.9375rem]">
+                  {plan.features.map((feature,index) => (
+                    <p key={index} className="flex flex-row items-center text-[0.9375rem]">
                       <GrFormCheckmark className="text-[1.25rem]" />
                       {feature}
                     </p>

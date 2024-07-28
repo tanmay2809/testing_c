@@ -8,15 +8,15 @@ import whatsapp from "../../assets/whatsapp.png";
 
 interface Customer {
   // segmentation: "New" | "Regular" | "Risk" | "Loyal";
-  userId:{
-    name:string;
+  userId: {
+    name: string;
     // email:string;
-    phone:string;
-    birthday ?: string;
-    gender:string;
-    anniversary?:string;
+    phone: string;
+    birthday?: string;
+    gender: string;
+    anniversary?: string;
   };
-  visits:string[];
+  visits: string[];
 }
 
 interface CustomerDetailsProps {
@@ -35,13 +35,17 @@ const segmentationColors: Record<string, string> = {
 
 const formatDate = (visits: string[]): string => {
   const date = new Date(visits[0]);
-  const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
-  return date.toLocaleDateString('en-US', options);
+  const options: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
 };
 
 const daysSinceFirstVisit = (visits: string[]): number => {
   if (!visits || visits.length === 0) {
-    return -1; 
+    return -1;
   }
 
   const firstVisitDate = new Date(visits[0]);
@@ -67,18 +71,29 @@ const getLastVisitDisplay = (visits: string[]): string => {
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
 
-  if (lastVisitDate === currentDate && lastVisitMonth === currentMonth && lastVisitYear === currentYear) {
+  if (
+    lastVisitDate === currentDate &&
+    lastVisitMonth === currentMonth &&
+    lastVisitYear === currentYear
+  ) {
     return "Today";
   }
 
   const yesterday = new Date();
   yesterday.setDate(currentDate - 1);
-  if (lastVisitDate === yesterday.getDate() && lastVisitMonth === yesterday.getMonth() && lastVisitYear === yesterday.getFullYear()) {
+  if (
+    lastVisitDate === yesterday.getDate() &&
+    lastVisitMonth === yesterday.getMonth() &&
+    lastVisitYear === yesterday.getFullYear()
+  ) {
     return "1 day ago";
   }
 
-  if(lastVisitMonth === yesterday.getMonth() && lastVisitYear === yesterday.getFullYear() && currentDate - lastVisitDate<=7)
-  {
+  if (
+    lastVisitMonth === yesterday.getMonth() &&
+    lastVisitYear === yesterday.getFullYear() &&
+    currentDate - lastVisitDate <= 7
+  ) {
     const diff = currentDate - lastVisitDate;
     return `${diff} days ago`;
   }
@@ -98,18 +113,29 @@ const getFirstVisitDisplay = (visits: string[]): string => {
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
 
-  if (lastVisitDate === currentDate && lastVisitMonth === currentMonth && lastVisitYear === currentYear) {
+  if (
+    lastVisitDate === currentDate &&
+    lastVisitMonth === currentMonth &&
+    lastVisitYear === currentYear
+  ) {
     return "Today";
   }
 
   const yesterday = new Date();
   yesterday.setDate(currentDate - 1);
-  if (lastVisitDate === yesterday.getDate() && lastVisitMonth === yesterday.getMonth() && lastVisitYear === yesterday.getFullYear()) {
+  if (
+    lastVisitDate === yesterday.getDate() &&
+    lastVisitMonth === yesterday.getMonth() &&
+    lastVisitYear === yesterday.getFullYear()
+  ) {
     return "1 day ago";
   }
 
-  if(lastVisitMonth === yesterday.getMonth() && lastVisitYear === yesterday.getFullYear() && currentDate - lastVisitDate<=7)
-  {
+  if (
+    lastVisitMonth === yesterday.getMonth() &&
+    lastVisitYear === yesterday.getFullYear() &&
+    currentDate - lastVisitDate <= 7
+  ) {
     const diff = currentDate - lastVisitDate;
     return `${diff} days ago`;
   }
@@ -166,9 +192,7 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
               <h3 className="text-lg font-bold flex items-center">
                 {customer?.userId?.name}
                 <span
-                  className={`ml-2 py-1 px-3 rounded-full text-sm ${
-                    segmentationColors[segmentation]
-                  }`}
+                  className={`ml-2 py-1 px-3 rounded-full text-sm ${segmentationColors[segmentation]}`}
                 >
                   {segmentation}
                 </span>
@@ -193,7 +217,12 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="font-semibold">Customer Name</p>
-                <p>{customer?.userId?.name}</p>
+                <div className="flex gap-3">
+                  <p>{customer?.userId?.name}</p>
+                  <p className="bg-white rounded-xl px-2">
+                    {customer?.userId?.gender}
+                  </p>
+                </div>
               </div>
               <div>
                 <p className="font-semibold">Customer Phone Number</p>

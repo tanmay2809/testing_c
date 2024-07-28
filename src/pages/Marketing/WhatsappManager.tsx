@@ -45,6 +45,13 @@ const WhatsAppManager: React.FC = () => {
     { name: "Bookings", icon: managerBookings, coming: true },
   ];
 
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Optional: Add smooth scrolling animation
+    });
+  };
+
   return (
     <div className="w-full h-fit relative ">
       <div className="lg:w-[93%]  lg:px-[2rem] py-[1rem] gap-10 lg:ml-[7%]">
@@ -91,7 +98,10 @@ const WhatsAppManager: React.FC = () => {
                 {menuItems.map((item) => (
                   <div
                     key={item.name}
-                    onClick={() => handleClick(item.name)}
+                    onClick={() => {
+                      handleClick(item.name);
+                      handleScrollToTop();
+                    }}
                     className={`flex justify-center items-center gap-3 cursor-pointer p-2 ${
                       selected === item.name
                         ? "bg-[#EDF5FF] text-[#004AAD]"

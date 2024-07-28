@@ -10,7 +10,9 @@ import doubleArrow from "/doubleArrow.svg";
 import { Link } from "react-router-dom";
 
 const WhatsAppSettings: React.FC = () => {
-  const [selectedCheckbox, setSelectedCheckbox] = useState<string | null>("SnackBAE");
+  const [selectedCheckbox, setSelectedCheckbox] = useState<string | null>(
+    "SnackBAE"
+  );
   // const [metaVerified,setMetaVerified]=useState<boolean>(false)
 
   const handleCheckboxChange = (checkboxName: string) => {
@@ -18,6 +20,13 @@ const WhatsAppSettings: React.FC = () => {
       checkboxName === selectedCheckbox ? null : checkboxName
     );
   };
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Optional: Add smooth scrolling animation
+    });
+  };
+
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%]">
@@ -58,7 +67,7 @@ const WhatsAppSettings: React.FC = () => {
             </div>
 
             {selectedCheckbox === "Custom" && (
-              <Link to="/manager">
+              <Link to="/manager" onClick={handleScrollToTop}>
                 <button className="w-full">
                   <div className=" flex justify-between bg-[#F1F7FF] p-6 rounded-2xl">
                     <p className="text-lg font-medium ">
@@ -86,7 +95,7 @@ const WhatsAppSettings: React.FC = () => {
                 <p className="text-lg font-medium ">
                   Want to connect your custom number?
                 </p>
-                <Link to="/connectNumber">
+                <Link to="/connectNumber" onClick={handleScrollToTop}>
                   <button className="flex items-center lg:gap-2 bg-[#60D66A] text-white py-2 lg:px-3 md:px-1 rounded-lg">
                     <img src={whatsapp} className="w-7" />
                     Connect Number

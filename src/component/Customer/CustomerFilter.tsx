@@ -4,33 +4,33 @@ interface FilterProps {
   isVisible: boolean;
   onClose: () => void;
   setFilterData: (data: string[]) => void;
-  customerData: [
-    {
-      userId: {
-        name: string;
-        email: string;
-        phone: string;
-        birthday?: string;
-        gender: string;
-        anniversary?: string;
-      };
-      visits: string[];
-    }
-  ];
-  setCustomerData: (data: any) => void;
-  originalData: [
-    {
-      userId: {
-        name: string;
-        email: string;
-        phone: string;
-        birthday?: string;
-        gender: string;
-        anniversary?: string;
-      };
-      visits: string[];
-    }
-  ];
+  // customerData: [
+  //   {
+  //     userId: {
+  //       name: string;
+  //       email: string;
+  //       phone: string;
+  //       birthday?: string;
+  //       gender: string;
+  //       anniversary?: string;
+  //     };
+  //     visits: string[];
+  //   }
+  // ];
+  // setCustomerData: (data: any) => void;
+  // originalData: [
+  //   {
+  //     userId: {
+  //       name: string;
+  //       email: string;
+  //       phone: string;
+  //       birthday?: string;
+  //       gender: string;
+  //       anniversary?: string;
+  //     };
+  //     visits: string[];
+  //   }
+  // ];
   customDateVisit: string;
   customDateNotVisit: string;
   setcustomDateVisit: (date: string) => void;
@@ -45,8 +45,8 @@ const CustomerFilter: React.FC<FilterProps> = ({
   isVisible,
   onClose,
   setFilterData,
-  setCustomerData,
-  originalData,
+  // setCustomerData,
+  // originalData,
   customDateVisit,
   customDateNotVisit,
   setcustomDateVisit,
@@ -61,7 +61,6 @@ const CustomerFilter: React.FC<FilterProps> = ({
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
   if (!isVisible) return null;
-  console.log(originalData);
 
   //add or remove segment
   const toggleSegment = (segment: string) => {
@@ -79,78 +78,77 @@ const CustomerFilter: React.FC<FilterProps> = ({
     setGender(updatedGender);
   };
 
-  const getCustomerSegment = (visits: string[]): string => {
-    const now = new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(now.getDate() - 30);
-    const sixtyDaysAgo = new Date();
-    sixtyDaysAgo.setDate(now.getDate() - 60);
+  // const getCustomerSegment = (visits: string[]): string => {
+  //   const now = new Date();
+  //   const thirtyDaysAgo = new Date();
+  //   thirtyDaysAgo.setDate(now.getDate() - 30);
+  //   const sixtyDaysAgo = new Date();
+  //   sixtyDaysAgo.setDate(now.getDate() - 60);
 
-    const visitsWithin30Days = visits?.filter(
-      (visit) => new Date(visit) >= thirtyDaysAgo
-    );
-    const visitsWithin60Days = visits?.filter(
-      (visit) => new Date(visit) >= sixtyDaysAgo
-    );
+  //   const visitsWithin30Days = visits?.filter(
+  //     (visit) => new Date(visit) >= thirtyDaysAgo
+  //   );
+  //   const visitsWithin60Days = visits?.filter(
+  //     (visit) => new Date(visit) >= sixtyDaysAgo
+  //   );
 
-    if (visitsWithin30Days?.length === 1) {
-      return "New";
-    } else if (visitsWithin30Days?.length >= 3) {
-      return "Regular";
-    } else if (visitsWithin60Days?.length > 5) {
-      return "Loyal";
-    } else {
-      return "Risk";
-    }
-  };
+  //   if (visitsWithin30Days?.length === 1) {
+  //     return "New";
+  //   } else if (visitsWithin30Days?.length >= 3) {
+  //     return "Regular";
+  //   } else if (visitsWithin60Days?.length > 5) {
+  //     return "Loyal";
+  //   } else {
+  //     return "Risk";
+  //   }
+  // };
 
   //apply
   const handleApply = () => {
-    console.log(originalData);
-    const filteredCustomers = originalData?.filter((customer) => {
-      const customerSegment = getCustomerSegment(customer.visits);
-      // Filter by visitFilter
-      const now = new Date();
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(now.getDate() - 30);
-      const sixtyDaysAgo = new Date();
-      sixtyDaysAgo.setDate(now.getDate() - 60);
-      const customDateVisitObj = new Date(customDateVisit);
-      const customDateNotVisitObj = new Date(customDateNotVisit);
+    // const filteredCustomers = originalData?.filter((customer) => {
+    //   const customerSegment = getCustomerSegment(customer.visits);
+    //   // Filter by visitFilter
+    //   const now = new Date();
+    //   const thirtyDaysAgo = new Date();
+    //   thirtyDaysAgo.setDate(now.getDate() - 30);
+    //   const sixtyDaysAgo = new Date();
+    //   sixtyDaysAgo.setDate(now.getDate() - 60);
+    //   const customDateVisitObj = new Date(customDateVisit);
+    //   const customDateNotVisitObj = new Date(customDateNotVisit);
 
-      const visitCondition =
-        (visitFilter === "Visited in Last 30 days" &&
-          customer.visits.some((visit) => new Date(visit) >= thirtyDaysAgo)) ||
-        (visitFilter === "Visited in Last 60 days" &&
-          customer.visits.some((visit) => new Date(visit) >= sixtyDaysAgo)) ||
-        (visitFilter === "Custom" &&
-          customer.visits.some(
-            (visit) => new Date(visit) >= customDateVisitObj
-          ));
+    //   const visitCondition =
+    //     (visitFilter === "Visited in Last 30 days" &&
+    //       customer.visits.some((visit) => new Date(visit) >= thirtyDaysAgo)) ||
+    //     (visitFilter === "Visited in Last 60 days" &&
+    //       customer.visits.some((visit) => new Date(visit) >= sixtyDaysAgo)) ||
+    //     (visitFilter === "Custom" &&
+    //       customer.visits.some(
+    //         (visit) => new Date(visit) >= customDateVisitObj
+    //       ));
 
-      const nonVisitCondition =
-        (nonVisitFilter === "Not visited in Last 30 days" &&
-          customer.visits.every((visit) => new Date(visit) < thirtyDaysAgo)) ||
-        (nonVisitFilter === "Not visited in Last 60 days" &&
-          customer.visits.every((visit) => new Date(visit) < sixtyDaysAgo)) ||
-        (nonVisitFilter === "Custom" &&
-          customer.visits.every(
-            (visit) => new Date(visit) < customDateNotVisitObj
-          ));
+    //   const nonVisitCondition =
+    //     (nonVisitFilter === "Not visited in Last 30 days" &&
+    //       customer.visits.every((visit) => new Date(visit) < thirtyDaysAgo)) ||
+    //     (nonVisitFilter === "Not visited in Last 60 days" &&
+    //       customer.visits.every((visit) => new Date(visit) < sixtyDaysAgo)) ||
+    //     (nonVisitFilter === "Custom" &&
+    //       customer.visits.every(
+    //         (visit) => new Date(visit) < customDateNotVisitObj
+    //       ));
 
-      const segmentCondition =
-        segmentation.length === 0 || segmentation.includes(customerSegment);
+    //   const segmentCondition =
+    //     segmentation.length === 0 || segmentation.includes(customerSegment);
 
-      const genderCondition =
-        gender.length === 0 || gender.includes(customer.userId.gender);
+    //     const genderCondition =
+    //     gender.length === 0 || gender.includes(customer.userId?.gender);
 
-      return (
-        (!visitFilter || visitCondition) &&
-        (!nonVisitFilter || nonVisitCondition) &&
-        segmentCondition &&
-        genderCondition
-      );
-    });
+    //   return (
+    //     (!visitFilter || visitCondition) &&
+    //     (!nonVisitFilter || nonVisitCondition) &&
+    //     segmentCondition &&
+    //     genderCondition
+    //   );
+    // });
     const data: string[] = [];
     if (visitFilter && visitFilter !== "Custom") {
       data.push(visitFilter);
@@ -172,7 +170,7 @@ const CustomerFilter: React.FC<FilterProps> = ({
     }
 
     setFilterData(data);
-    setCustomerData(filteredCustomers);
+    // setCustomerData(filteredCustomers);
     onClose();
   };
 
