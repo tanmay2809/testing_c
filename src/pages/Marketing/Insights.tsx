@@ -9,13 +9,7 @@ import edit from "/edit.svg";
 import foodos from "../../assets/Ellipse 2862.png";
 
 const Insights: React.FC = () => {
-  const handleScrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // Optional: Add smooth scrolling animation
-    });
-  }
-  
+
   return (
     <div className="w-[75%] mx-auto bg-white p-6  rounded-br-lg ">
       <section className="grid grid-cols-3 gap-6 mb-6 text-[#505050]">
