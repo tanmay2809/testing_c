@@ -3,9 +3,13 @@ import { CiSettings } from "react-icons/ci";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { IoLogOutOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const frame = () => {
   const navigate = useNavigate();
+
+  const { data } = useSelector((state: RootState) => state.resturantdata);
 
   const handlefram = () => {
     document.getElementById("frame")!.style.display = "none";
@@ -26,9 +30,7 @@ const frame = () => {
         className="hidden fixed right-6 z-[900]  md:w-fit lg:w-[23%] w-[60%] bg-white  h-fit mt-[70px] rounded-lg sm:px-[30px] px-[15px] py-2 border-b shadow-lg border-[#D1C8C899]"
       >
         <div className="flex  flex-col   p-1 border-b border-[#00000080]">
-          <p className="text-[1.15rem] font-bold text-nowrap">
-            Foodoos - Salt Lake
-          </p>
+          <p className="text-[1.15rem] font-bold text-nowrap">{data.resName}</p>
 
           <Link
             to="/setting"
@@ -81,7 +83,7 @@ const frame = () => {
           <p className="font-semibold">Contact Us</p>
         </div>
         <div
-          className={`flex items-center text-nowrap px-2 gap-3 text-red-500 hover:cursor-pointer`}
+          className={`flex lg:hidden items-center text-nowrap px-2 gap-3 text-red-500 hover:cursor-pointer`}
           onClick={handleLogout}
         >
           <IoLogOutOutline className="text-[1.5rem]" />

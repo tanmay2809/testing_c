@@ -28,6 +28,13 @@ const LeftNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    toast.error("Successfully Logged Out");
+    navigate("/login");
+  };
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
@@ -363,6 +370,23 @@ const LeftNavbar = () => {
                     Setting <span className=" text-transparent ">_____</span>
                   </span>
                 </Link>
+              </div>
+              <div className="hidden lg:block">
+                <div
+                  className={`flex items-center text-nowrap  gap-3 text-red-500 hover:cursor-pointer ${
+                    isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
+                  }`}
+                  onClick={handleLogout}
+                >
+                  <IoLogOutOutline />{" "}
+                  <span
+                    className={` ${
+                      isOpen ? "block text-[.9rem] text-red-500" : " hidden"
+                    }`}
+                  >
+                    Log Out
+                  </span>
+                </div>
               </div>
             </div>
           </div>

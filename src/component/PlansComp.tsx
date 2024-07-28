@@ -83,7 +83,9 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
           PlansData.quarterly.map((plan, index) => (
             <div
               key={index}
-              className="group w-[22rem] h-[36rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all justify-between"
+              className={`group ${
+                index === 2 ? "w-full h-fit" : "w-[20rem] h-[36rem]"
+              } lg:w-[22rem] lg:h-[36rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all justify-between`}
             >
               <div className="flex flex-col gap-3">
                 <div className="flex items-center flex-wrap justify-between">
@@ -105,7 +107,13 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                   </span>{" "}
                   {plan.validity}
                 </p>
-                <div className="w-full sm:h-[15.625rem] flex flex-col gap-3 mt-2">
+                <div
+                  className={`w-full ${
+                    index === 2
+                      ? "h-[7rem] grid grid-cols-2"
+                      : "h-[15.625rem] flex flex-col"
+                  }  lg:h-[15.625rem]  lg:flex lg:flex-col gap-3 mt-2`}
+                >
                   {plan.features.map((feature, index) => (
                     <p
                       key={index}
@@ -135,7 +143,9 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
           PlansData.annually.map((plan, index) => (
             <div
               key={index}
-              className="group w-[22rem] h-[36rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all justify-between"
+              className={`group ${
+                index === 2 ? "w-full h-fit" : "w-[20rem] h-[36rem]"
+              } lg:w-[22rem] lg:h-[36rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all justify-between`}
             >
               <div className="flex flex-col gap-3">
                 <div className="flex items-center flex-wrap justify-between">
@@ -157,9 +167,18 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                   </span>{" "}
                   {plan.validity}
                 </p>
-                <div className="w-full sm:h-[15.625rem] flex flex-col gap-3 mt-2">
-                  {plan.features.map((feature,index) => (
-                    <p key={index} className="flex flex-row items-center text-[0.9375rem]">
+                <div
+                  className={`w-full ${
+                    index === 2
+                      ? "h-[7rem] grid grid-cols-2"
+                      : "h-[15.625rem] flex flex-col"
+                  }  lg:h-[15.625rem]  lg:flex lg:flex-col gap-3 mt-2`}
+                >
+                  {plan.features.map((feature, index) => (
+                    <p
+                      key={index}
+                      className="flex flex-row items-center text-[0.9375rem]"
+                    >
                       <GrFormCheckmark className="text-[1.25rem]" />
                       {feature}
                     </p>
