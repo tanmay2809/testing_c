@@ -20,7 +20,7 @@ export interface MenuItem {
   price: string;
   category: string;
   subcategory: string;
-  serving: string;
+  serves: string;
   tag: string;
   active?: boolean;
   categoryActive?: boolean;
@@ -47,7 +47,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
     price: "",
     category: categories[0]?._id,
     subcategory: "",
-    serving: "",
+    serves: "",
     tag: "",
     addone: [],
     type: "",
@@ -590,7 +590,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
             </label>
             <div className="bg-white px-5 py-4 mt-4 rounded-lg border border-[#E2E8F0]">
               <label
-                htmlFor="serving"
+                htmlFor="serves"
                 className="block text-gray-700 text-[1rem] font-[400] mb-2"
               >
                 Serving info, select no. of people
@@ -598,14 +598,22 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
 
               <select
                 className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
-                id="serving"
-                name="serving"
-                value={formData.serving}
+                id="serves"
+                name="serves"
+                value={formData.serves}
                 onChange={handleChange}
               >
                 <option value="">Serves</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
               </select>
             </div>
           </div>

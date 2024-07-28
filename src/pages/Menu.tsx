@@ -360,7 +360,6 @@ const Menu = () => {
                         } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap`}
                         onClick={() => {
                           setSelectedCategoryId(item._id);
-                          setDropdownVisible(item._id);
                         }}
                       >
                         {item?.name}
@@ -383,22 +382,11 @@ const Menu = () => {
                                 handleActionClick(e);
                               }}
                             >
-                              Toggle
+                              Status
                               <Switch
                                 onclick={() => handleToggleCategory(item._id)}
                                 isActive={item.active}
                               />
-                            </button>
-                            <button
-                              className="flex flex-row justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                              onClick={(e) => {
-                                setCategoryDelete(true);
-                                setDropdownVisible("");
-                                handleActionClick(e);
-                              }}
-                            >
-                              Delete
-                              <FiTrash2 className="bg-white text-[1.4rem] -top-3 -right-3 text-[#BE1D3A]" />
                             </button>
                             <button
                               className="flex flex-row justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
@@ -411,6 +399,17 @@ const Menu = () => {
                             >
                               Edit
                               <MdModeEditOutline className="text-[1.2rem] text-[#004AAD]" />
+                            </button>
+                            <button
+                              className="flex flex-row justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                              onClick={(e) => {
+                                setCategoryDelete(true);
+                                setDropdownVisible("");
+                                handleActionClick(e);
+                              }}
+                            >
+                              Delete
+                              <FiTrash2 className="bg-white text-[1.4rem] -top-3 -right-3 text-[#BE1D3A]" />
                             </button>
                           </div>
                         )}

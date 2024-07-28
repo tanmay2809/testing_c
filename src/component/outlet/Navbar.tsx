@@ -1,9 +1,10 @@
 import icon from "../../assets/icon.png";
 import { IoMdWallet } from "react-icons/io";
 import { FaPlus } from "react-icons/fa6";
-import logo1 from "../../assets/Group 1171278064 (1).png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const Navbar = () => {
   const [fram, setfram] = useState<boolean>(false);
@@ -16,6 +17,8 @@ const Navbar = () => {
       document.getElementById("frame")!.style.display = "block";
     }
   };
+
+  const { data } = useSelector((state: RootState) => state.resturantdata);
 
   return (
     <div className=" fixed bg-white  z-50 w-full h-[70px] flex justify-between items-center px-[1rem] border-b shadow-xl py-[.5rem] shadow-[#00000026]">
@@ -39,8 +42,8 @@ const Navbar = () => {
 
         <img
           onClick={handlefram}
-          src={logo1}
-          className="size-24  object-cover cursor-pointer"
+          src={data.additionalDetails?.image}
+          className="size-[3rem] ml-5 object-cover rounded-full cursor-pointer"
           alt="logo1"
         />
       </div>

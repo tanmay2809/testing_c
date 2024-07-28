@@ -20,7 +20,7 @@ export interface EditItem {
   price: string;
   category: string;
   subcategory: string;
-  serving: string;
+  serves: string;
   tag: string;
   active?: boolean;
   categoryActive?: boolean;
@@ -40,13 +40,12 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
   item,
   categories,
 }) => {
-  console.log(item);
   const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string[]>([]);
 
   const [addonDetails, setAddonDetails] = useState<
-    { name: string; additionalPrice: string }[]
-  >([{ name: "", additionalPrice: "" }]);
+    { name: string; additionalPrice: string; id: string }[]
+  >([{ name: "", additionalPrice: "", id: "" }]);
 
   const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
 
@@ -57,7 +56,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
     price: "",
     category: item.category,
     subcategory: "",
-    serving: "",
+    serves: "",
     tag: "",
     addone: [],
     type: "",
@@ -71,7 +70,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
       price: item.price,
       category: item.category,
       subcategory: item.subcategory,
-      serving: item.serving,
+      serves: item.serves,
       tag: item.tag,
       active: item.active,
       categoryActive: item.categoryActive,
@@ -86,6 +85,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
         item.addone.map((addon) => ({
           name: addon.name,
           additionalPrice: addon.price,
+          id: addon.id,
         }))
       );
     }
@@ -100,20 +100,23 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
     }));
   };
 
-  // addon functions
+  // addone functions
+  const removeAddOn = (index: number) => {
+    const addOnId = addonDetails[index].id;
+    if (addOnId) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        addone: prevFormData.addone.filter((id) => id !== addOnId),
+      }));
+    }
+    setAddonDetails((prevDetails) => prevDetails.filter((_, i) => i !== index));
+  };
+
   const addAddOn = () => {
     setAddonDetails((prevDetails) => [
       ...prevDetails,
-      { name: "", additionalPrice: "" },
+      { name: "", additionalPrice: "", id: "" },
     ]);
-  };
-
-  const removeAddOn = (index: number) => {
-    setAddonDetails((prevDetails) => prevDetails.filter((_, i) => i !== index));
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      addone: prevFormData.addone.filter((_, i) => i !== index),
-    }));
   };
 
   const handleChange = (
@@ -154,7 +157,6 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
 
       try {
         const response = await axios.request(config);
-        console.log(response.data);
         if (response.data.status && response.data.data) {
           const urls = response.data.data.map(
             (item: { url: string }) => item.url
@@ -205,7 +207,9 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
           addone: [...prevFormData.addone, newAddOnId],
         }));
         setAddonDetails((prevDetails) =>
-          prevDetails.filter((_, i) => i !== index)
+          prevDetails.map((addon, i) =>
+            i === index ? { ...addon, id: newAddOnId } : addon
+          )
         );
         setShowAddNewButton(true);
       }
@@ -290,7 +294,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
 
             <div className="w-1/2 mb-4">
               <label
-                htmlFor="category"
+                htmlFor="subcategory"
                 className="block text-gray-700 text-[1.2rem] font-inter mb-2"
               >
                 Add Sub Category <span className="text-[#ED4F4F]">*</span>
@@ -298,14 +302,14 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
               {categories?.map((category) => (
                 <select
                   className="w-full focus:outline-none p-2 border  border-gray-300 rounded-md"
-                  id="category"
-                  name="category"
+                  id="subcategory"
+                  name="subcategory"
                   value={formData.subcategory}
                   onChange={handleChange}
                 >
                   <option value="">Select</option>
                   {category.subcategory.map((subcategory) => (
-                    <option value={subcategory.name} key={subcategory._id}>
+                    <option value={subcategory._id} key={subcategory._id}>
                       {subcategory.name}
                     </option>
                   ))}
@@ -462,13 +466,19 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
                     </div>
                   </div>
                   <MdOutlineTaskAlt
-                    onClick={() => handleAddone(index)}
-                    className="text-[#004AAD] bg-white text-[2.5rem] hover:cursor-pointer hover:bg-[#004AAD] hover:text-white transition-all mb-2 rounded-full w-fit h-fit"
+                    onClick={() => {
+                      handleAddone(index);
+                    }}
+                    className={`${
+                      addon.id && "hidden"
+                    } text-[#004AAD] bg-white text-[2.5rem] hover:cursor-pointer hover:bg-[#004AAD] hover:text-white transition-all mb-2 rounded-full w-fit h-fit`}
                   />
-                  <MdOutlineDeleteOutline
-                    onClick={() => removeAddOn(index)}
-                    className="text-red-500 text-[2.5rem] mb-1 hover:cursor-pointer"
-                  />
+                  {addon.id && (
+                    <MdOutlineDeleteOutline
+                      onClick={() => removeAddOn(index)}
+                      className="text-red-500 text-[2.5rem] mb-1 hover:cursor-pointer"
+                    />
+                  )}
                 </div>
               ))}
               {showAddNewButton && (
@@ -581,7 +591,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
             </label>
             <div className="bg-white px-5 py-4 mt-4 rounded-lg border border-[#E2E8F0]">
               <label
-                htmlFor="serving"
+                htmlFor="serves"
                 className="block text-gray-700 text-[1rem] font-[400] mb-2"
               >
                 Serving info, select no. of people
@@ -589,14 +599,22 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
 
               <select
                 className="w-full focus:outline-none p-2 border border-gray-300 rounded-md"
-                id="serving"
-                name="serving"
-                value={formData.serving}
+                id="serves"
+                name="serves"
+                value={formData.serves}
                 onChange={handleChange}
               >
                 <option value="">Serves</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
               </select>
             </div>
           </div>

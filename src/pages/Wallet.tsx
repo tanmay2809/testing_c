@@ -41,17 +41,27 @@ const data = [
 
 const Wallet: React.FC = () => {
   const [popupVisible, setPopupVisible] = useState<boolean>(false);
-    const [rechargeModal, setRechargeModal] = useState<boolean>(false);
-    const [inputValue, setInputValue] = useState<string>("");
+  const [rechargeModal, setRechargeModal] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [balance, setBalance] = useState<string>("1000");
+  const [credits, setCredits] = useState<string>("0");
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleReload = () => {
-    window.location.reload();
-    };
-    
-    const handleAmountClick = (amount: string) => {
-      setInputValue(amount);
-    };
+  const handleAmountClick = (amount: string) => {
+    setInputValue(amount);
+  };
 
+  const handleReload = async () => {
+    setLoading(true);
+    const newBalance = await fetchBalance();
+    setBalance(newBalance[0]);
+    setCredits(newBalance[1]);
+    setLoading(false);
+  };
+
+  const fetchBalance = async () => {
+    return ["1200", "0"];
+  };
 
   return (
     <div className="w-full bg-[#EFF6FF] h-[100vh] relative md:mb-[140px] lg:mb-0">
@@ -78,7 +88,7 @@ const Wallet: React.FC = () => {
               <div className="flex flex-row justify-center">
                 <div className="w-1/2 flex flex-col items-center border-r-2 border-r-black">
                   <p className="text-[2.2rem] text-[#004AAD] font-semibold">
-                    ₹1000
+                    ₹{balance}
                   </p>
                   <p className="text-[1rem] text-[#6B6B6B] font-semibold">
                     Wallet Balance
@@ -86,7 +96,7 @@ const Wallet: React.FC = () => {
                 </div>
                 <div className="w-1/2 flex flex-row items-between justify-between px-5">
                   <div className="flex flex-col justify-start relative">
-                    <p className="text-[2.2rem] font-semibold">₹0</p>
+                    <p className="text-[2.2rem] font-semibold">₹{credits}</p>
                     <p className="text-[1rem] text-[#6B6B6B] font-semibold flex flex-row items-center gap-1">
                       Credits
                       <span
@@ -113,10 +123,14 @@ const Wallet: React.FC = () => {
                       </span>
                     </p>
                   </div>
-                  <RxReload
-                    className="text-[1.5rem] hover:cursor-pointer"
-                    onClick={() => handleReload()}
-                  />
+                  {loading ? (
+                    <div className="inline-block  h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+                  ) : (
+                    <RxReload
+                      className="text-[1.5rem] hover:cursor-pointer"
+                      onClick={() => handleReload()}
+                    />
+                  )}
                 </div>
               </div>
               <div className="flex flex-row gap-4">
@@ -143,7 +157,7 @@ const Wallet: React.FC = () => {
               <div className="overflow-x-scroll no-scrollbar rounded-[12px] border-[2px] border-[#DDDDDD] bg-[#FAFCFF]">
                 <table className="w-full text-base mt-4">
                   <thead>
-                    <tr className="w-full text-center text-[#858687]">
+                    <tr className="w-full text-center text-[#858687] text-nowrap">
                       <th className="py-3 px-6">Reference ID</th>
                       <th className="py-3 px-6">Billing cycle</th>
                       <th className="py-3 px-6">Status</th>
@@ -156,7 +170,7 @@ const Wallet: React.FC = () => {
                     {data?.map((data) => (
                       <tr
                         key={data.id}
-                        className="w-full border-t-[2px] border-t-[#DDDDDD] text-base text-center"
+                        className="w-full border-t-[2px] border-t-[#DDDDDD] text-base text-center text-nowrap"
                       >
                         <td className="py-3 px-6">{data.id}</td>
                         <td className="py-3 px-6">{data.cycle}</td>
@@ -186,7 +200,6 @@ const Wallet: React.FC = () => {
                             className="flex flex-row items-center gap-2 justify-center"
                           >
                             <BsDownload />
-                            Download
                           </Link>
                         </td>
                       </tr>

@@ -1,10 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CiSettings } from "react-icons/ci";
 import { IoLogoWhatsapp } from "react-icons/io";
+import { IoLogOutOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 const frame = () => {
+  const navigate = useNavigate();
+
   const handlefram = () => {
     document.getElementById("frame")!.style.display = "none";
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    toast.error("Successfully Logged Out");
+    navigate("/login");
   };
 
   return (
@@ -68,6 +79,13 @@ const frame = () => {
         >
           <IoLogoWhatsapp className="text-green-500 size-6" />
           <p className="font-semibold">Contact Us</p>
+        </div>
+        <div
+          className={`flex items-center text-nowrap px-2 gap-3 text-red-500 hover:cursor-pointer`}
+          onClick={handleLogout}
+        >
+          <IoLogOutOutline className="text-[1.5rem]" />
+          <span className={`block text-[1.1rem] text-red-500`}>Log Out</span>
         </div>
       </div>
     </div>
