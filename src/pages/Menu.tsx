@@ -207,6 +207,7 @@ const Menu = () => {
             {/* top */}
             <div className="w-full h-fit flex flex-col px-10 py-5  border-b  ">
               <div className="w-full h-fit flex flex-col py-5  border-b  ">
+
                 <div className="w-full h-fit flex  items-center justify-between">
                   <div className="w-[50%]">
                     <p className="text-[1.7rem] font-bold text-[#000000]">
@@ -416,10 +417,10 @@ const Menu = () => {
                     setIsEditMenuOpen={setIsEditMenuOpen}
                     setIsSubCategoryOpen={setIsSubCategoryOpen}
                     setSelectedCard={setSelectedCard}
-                    category={filteredCategory}
                     subcategoryToEdit={setSubCategoryToEdit}
                     editSubcategoryModal={setEditSubCategoryModal}
                     selectedType={selectedType}
+                    category={filteredCategory}
                     showActive={showActive}
                   />
                 )}
