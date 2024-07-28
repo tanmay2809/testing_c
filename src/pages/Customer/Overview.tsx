@@ -72,23 +72,53 @@ const Overview: React.FC = () => {
 
     const isDateInRange = (date: Date) => date >= startDate && date < endDate;
 
+    // const newCustomersCount = data?.filter((customer: any) => {
+    //   const firstVisitDate = new Date(customer?.visits[0]);
+    //   return isDateInRange(firstVisitDate);
+    // }).length;
+
     const newCustomersCount = data?.filter((customer: any) => {
       const firstVisitDate = new Date(customer?.visits[0]);
-      return isDateInRange(firstVisitDate);
+      const secondVisitDate = customer.visits.length==2 && customer.visits[1] ? new Date(customer?.visits[1]) : null;
+      return isDateInRange(firstVisitDate) || (secondVisitDate && isDateInRange(secondVisitDate));
     }).length;
 
-    const regularCustomersCount = data?.filter((customer: any) => {
-      const totalVisits = customer.visits.filter((visit: string) => {
-        const visitDate = new Date(visit);
-        return visitDate <= endDate;
-      }).length;
+    // const regularCustomersCount = data?.filter((customer: any) => {
+    //   const totalVisits = customer.visits.filter((visit: string) => {
+    //     const visitDate = new Date(visit);
+    //     return visitDate <= endDate;
+    //   }).length;
 
-      const recentVisit = customer.visits.some((visit: string) => {
+    //   const recentVisit = customer.visits.some((visit: string) => {
+    //     const visitDate = new Date(visit);
+    //     return isDateInRange(visitDate);
+    //   });
+
+    //   return totalVisits > 2 && recentVisit;
+    // }).length;
+
+    const regularCustomersCount = data?.filter((customer: any) => {
+      const totalVisitsInMonth = customer?.visits?.filter((visit: string) => {
+        const visitDate = new Date(visit);
+        return visitDate.getMonth() === monthIndex && visitDate.getFullYear() === year;
+      }).length;
+    
+      const visitsInRange = customer.visits.filter((visit: string) => {
         const visitDate = new Date(visit);
         return isDateInRange(visitDate);
-      });
-
-      return totalVisits > 2 && recentVisit;
+      }).length;
+    
+      if (selectedDay === "Today") {
+        const visitsToday = customer.visits.filter((visit: string) => {
+          const visitDate = new Date(visit);
+          return visitDate.getDate() === today.getDate() &&
+                 visitDate.getMonth() === monthIndex &&
+                 visitDate.getFullYear() === year;
+        }).length;
+        return visitsToday >= 1 && totalVisitsInMonth >= 3;
+      } else if (selectedDay === "Weekly") {
+        return visitsInRange >= 1 && totalVisitsInMonth >= 3;
+      }
     }).length;
 
     const totalCustomersCount = data?.reduce((total: number, customer: any) => {
