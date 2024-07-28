@@ -17,11 +17,11 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 
 //icons
-import { FiPlus } from "react-icons/fi";
+import { FiMoreHorizontal, FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 import { baseUrl } from "../main";
 import { BiSearchAlt2 } from "react-icons/bi";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoIosCloseCircleOutline, IoMdMore } from "react-icons/io";
 import { MdModeEditOutline } from "react-icons/md";
 import { FiTrash2 } from "react-icons/fi";
 
@@ -83,6 +83,8 @@ const Menu = () => {
 
   const [categoryDelete, setCategoryDelete] = useState<boolean>(false);
 
+  const [dropdownVisible, setDropdownVisible] = useState<string>("");
+
   //search bar
   const [search, setSearch] = useState<string>("");
   const [searchMenuItems, setSearchMenuItems] = useState<
@@ -122,6 +124,16 @@ const Menu = () => {
   const { data, loading, error } = useSelector(
     (state: RootState) => state.resturantdata
   );
+
+  // more button of category
+  const handleMoreClick = (categoryId: string) => {
+    setDropdownVisible(dropdownVisible === categoryId ? "" : categoryId);
+  };
+
+  const handleActionClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDropdownVisible("");
+  };
 
   useEffect(() => {
     if (data) {
@@ -207,7 +219,6 @@ const Menu = () => {
             {/* top */}
             <div className="w-full h-fit flex flex-col px-10 py-5  border-b  ">
               <div className="w-full h-fit flex flex-col py-5  border-b  ">
-
                 <div className="w-full h-fit flex  items-center justify-between">
                   <div className="w-[50%]">
                     <p className="text-[1.7rem] font-bold text-[#000000]">
@@ -340,34 +351,71 @@ const Menu = () => {
                 {/* Main category buttons */}
                 <div className="flex flex-row flex-wrap items-center gap-4 py-5">
                   {categories.map((item) => (
-                    <button
-                      key={item._id}
-                      className={`${
-                        item._id === selectedCategoryId
-                          ? "bg-white text-[#004AAD]"
-                          : "bg-[#004AAD] text-white"
-                      } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap relative`}
-                      onClick={() => setSelectedCategoryId(item._id)}
-                    >
-                      {item?.name}
-                      {selectedCategoryId === item._id && (
-                        <FiTrash2
-                          className="bg-white outline-1 outline-white rounded-md absolute text-[1.6rem] -top-3 -right-3 text-[#BE1D3A]"
-                          onClick={() => setCategoryDelete(true)}
-                        />
-                      )}
-                      <Switch
-                        onclick={() => handleToggleCategory(item._id)}
-                        isActive={item.active}
-                      />
-                      <MdModeEditOutline
-                        className="text-[1.2rem]"
+                    <div key={item._id} className="relative">
+                      <button
+                        className={`${
+                          item._id === selectedCategoryId
+                            ? "bg-white text-[#004AAD]"
+                            : "bg-[#004AAD] text-white"
+                        } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap`}
                         onClick={() => {
-                          setEditCategoryModal(true);
-                          setCategoryName(item.name);
+                          setSelectedCategoryId(item._id);
+                          setDropdownVisible(item._id);
                         }}
-                      />
-                    </button>
+                      >
+                        {item?.name}
+                        <div
+                          className="text-[1.2rem] ml-auto cursor-pointer"
+                          onClick={(e) => {
+                            handleActionClick(e);
+                            handleMoreClick(item._id);
+                          }}
+                        >
+                          <IoMdMore className="text-[1.5rem]" />
+                        </div>
+                        {dropdownVisible === item._id && (
+                          <div className="absolute w-fit z-[100] right-0 top-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg">
+                            <button
+                              className="flex flex-row gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                              onClick={(e) => {
+                                setDropdownVisible("");
+                                handleToggleCategory(item._id);
+                                handleActionClick(e);
+                              }}
+                            >
+                              Toggle
+                              <Switch
+                                onclick={() => handleToggleCategory(item._id)}
+                                isActive={item.active}
+                              />
+                            </button>
+                            <button
+                              className="flex flex-row justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                              onClick={(e) => {
+                                setCategoryDelete(true);
+                                setDropdownVisible("");
+                                handleActionClick(e);
+                              }}
+                            >
+                              Delete
+                              <FiTrash2 className="bg-white text-[1.4rem] -top-3 -right-3 text-[#BE1D3A]" />
+                            </button>
+                            <button
+                              className="flex flex-row justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                              onClick={(e) => {
+                                setDropdownVisible("");
+                                setEditCategoryModal(true);
+                                setCategoryName(item.name);
+                                handleActionClick(e);
+                              }}
+                            >
+                              Edit
+                              <MdModeEditOutline className="text-[1.2rem] text-[#004AAD]" />
+                            </button>
+                          </div>
+                        )}
+                      </button>
+                    </div>
                   ))}
                   {categories.length > 0 && (
                     <FiPlus
