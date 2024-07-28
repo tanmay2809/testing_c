@@ -331,9 +331,9 @@ const CustomerList: React.FC = () => {
       (visit) => new Date(visit) >= sixtyDaysAgo
     );
 
-    if (visitsWithin30Days?.length === 1) {
+    if (visitsWithin30Days?.length === 1 || visitsWithin30Days?.length === 2) {
       return "New";
-    } else if (visitsWithin30Days?.length >= 3) {
+    } else if (visitsWithin30Days?.length >= 3 || (visitsWithin60Days?.length > 3 && visitsWithin60Days?.length <= 5)) {
       return "Regular";
     } else if (visitsWithin60Days?.length > 5) {
       return "Loyal";
@@ -434,7 +434,7 @@ const CustomerList: React.FC = () => {
           <span className="text-base">
             Total Customer Database:{" "}
             <strong className="text-[#004AAD]">
-              {data?.customerData?.length} Record
+              {customerData?.length} Record
             </strong>
           </span>
         </div>
