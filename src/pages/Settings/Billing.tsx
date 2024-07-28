@@ -305,7 +305,7 @@ const Billing = () => {
                         <input
                           type="text"
                           className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
-                          placeholder="Enter GST Number"
+                          placeholder="Enter Country"
                           name="country"
                           value={formData.country}
                           onChange={changeHandler}
@@ -319,7 +319,7 @@ const Billing = () => {
                         <input
                           type="text"
                           className="w-full p-2 border-2 border-[#00000033] rounded-[0.5rem] text-[1.125rem]"
-                          placeholder="Enter GST Number"
+                          placeholder="Enter State"
                           name="state"
                           value={formData.state}
                           onChange={changeHandler}
@@ -342,7 +342,7 @@ const Billing = () => {
                       </div>
                       <div className="flex flex-col gap-1">
                         <label className="flex flex-row items-center text-[0.875rem] font-[500]">
-                          Pin-code
+                          Pincode
                           <LuAsterisk className="text-sm text-[#C62828]" />
                         </label>
                         <input

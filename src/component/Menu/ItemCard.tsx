@@ -65,7 +65,7 @@ const ItemCard: React.FC<Props> = ({
           items?.map((item) => (
             <div
               key={item._id}
-              className="w-[240px] h-[180px] p-4 border-2 rounded-[0.3rem] flex flex-col font-Roboto gap-8"
+              className="w-[210px] lg:w-[220px] h-[180px] p-4 border-2 rounded-[0.3rem] flex flex-col font-Roboto gap-8"
             >
               <div className="flex flex-row justify-between">
                 <p className="text-[1.1rem] font-semibold break-all text-wrap">

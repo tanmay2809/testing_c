@@ -273,7 +273,7 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                     <th className="border-2 p-4">
                       <p className="text-[0.875rem] text-[#797878]">
                         <span className="text-[1.625rem] text-[#1B223C] font-[700]">
-                          ₹679
+                          ₹465
                         </span>{" "}
                         /Month
                       </p>
@@ -284,7 +284,7 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
                     <th className="border-2 p-4">
                       <p className="text-[0.875rem] text-[#797878]">
                         <span className="text-[1.625rem] text-[#1B223C] font-[700]">
-                          ₹1049
+                          ₹845
                         </span>{" "}
                         /Month
                       </p>
