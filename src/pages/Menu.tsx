@@ -32,6 +32,7 @@ import Category from "../assets/category.png";
 import Bussiness from "../assets/Business Task list.png";
 import EditCategory from "../component/Menu/EditCategory";
 import { toast } from "react-toastify";
+import Loaging from "../component/Loaging";
 
 export interface SubcategoryItem {
   _id: string;
@@ -190,7 +191,7 @@ const Menu = () => {
     return (
       <div className="w-full h-screen flex justify-center items-center">
         {/* <Loader /> */}
-        loading.....
+        <Loaging />
       </div>
     );
   }
