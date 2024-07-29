@@ -13,7 +13,7 @@ const Plans = () => {
         <div className="w-full h-fit py-[1rem] px-[1rem] md:px-[5rem] flex flex-row justify-start">
           <img src={logo} className="w-[130px] h-auto" />
         </div>
-        <div className="md:px-[5rem] w-full mt-5 flex flex-row flex-wrap">
+        <div className="px-[3rem] lg:px-[5rem] w-full mt-5 flex flex-row flex-wrap">
           <div className="w-full flex flex-row justify-between items-center">
             <div className="flex flex-col">
               {/* <Link className="w-fit h-fit" to="/login">
@@ -25,7 +25,7 @@ const Plans = () => {
                 Plans that are carefully crafted to suit your business.
               </p>
             </div>
-            <div className="px-[1rem] md:px-[5rem] w-full flex flex-row flex-wrap">
+            <div className="px-[1rem] lg:px-[5rem] w-full flex flex-row flex-wrap">
               <div className="w-full flex flex-row justify-center items-center">
                 <div className="w-fit h-fit flex flex-row rounded-[40px] border border-1 border-[#000000CC]">
                   <button

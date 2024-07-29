@@ -84,7 +84,7 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
             <div
               key={index}
               className={`group ${
-                index === 2 ? "w-full h-fit" : "w-[20rem] h-[36rem]"
+                index === 2 ? "w-[41.2rem] h-fit" : "w-[20rem] h-[36rem]"
               } lg:w-[22rem] lg:h-[36rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all justify-between`}
             >
               <div className="flex flex-col gap-3">
@@ -144,7 +144,7 @@ const PlansComp: React.FC<PlansProps> = ({ switch: initialSwitchTab }) => {
             <div
               key={index}
               className={`group ${
-                index === 2 ? "w-full h-fit" : "w-[20rem] h-[36rem]"
+                index === 2 ? "w-[41.2rem] h-fit" : "w-[20rem] h-[36rem]"
               } lg:w-[22rem] lg:h-[36rem] flex flex-col gap-3 shadow-2xl border rounded-3xl p-[1.5rem] hover:bg-[#004AAD] hover:text-white transition-all justify-between`}
             >
               <div className="flex flex-col gap-3">
