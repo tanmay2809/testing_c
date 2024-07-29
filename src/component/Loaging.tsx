@@ -1,10 +1,10 @@
 
-import { FadeLoader } from'react-spinners'
+import { BounceLoader } from'react-spinners'
 
 const Loaging = () => {
   return (
-    <div className='w-full h-screen flex items-center justify-center'>
-        <FadeLoader className='size-[100px] text-blue-600' color='#004AAD' loading={true} />
+    <div className='w-full h-screen flex items-center justify-center bg-orange-300 bg-opacity-25 z-[200]'>
+        <BounceLoader color="#004AAD" loading size={100} speedMultiplier={4} />
 
     </div>
   )
