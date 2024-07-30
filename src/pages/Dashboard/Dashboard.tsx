@@ -106,7 +106,7 @@ const Dashboard = () => {
               </p>
             </div>
 
-            <div className=" absolute right-[5rem] -top-[.1rem] rotate-[13deg] ">
+            <div className=" absolute lg:right-[10rem] md:right-[6rem] -top-[.1rem] rotate-[13deg] ">
               <DotLottieReact
                 src="https://lottie.host/d4be8719-9a6c-4ad1-8cb8-46b28c108c50/b2zAzWhAdV.json"
                 autoplay
