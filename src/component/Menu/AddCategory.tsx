@@ -1,13 +1,20 @@
 import axios from "axios";
 import { useState } from "react";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 // icons
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
-import { baseUrl } from "../../main";
-import { toast } from "react-toastify";
+
+// assets
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useDispatch } from "react-redux";
 
 interface CategoryProps {
   isCategoryOpen: (isOpen: boolean) => void;
@@ -25,7 +32,8 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
     isPrimary: false,
   });
 
-  const resdata = useSelector((state: RootState) => state.resturantdata);
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
 
   // onchange handler
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +50,7 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
     const config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `${baseUrl}/api/addCategory/${resdata.data._id}`,
+      url: `${baseUrl}/api/addCategory/${resData.data._id}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -53,9 +61,9 @@ const AddCategory: React.FC<CategoryProps> = ({ isCategoryOpen }) => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         setLoading(false);
         isCategoryOpen(false);
-        window.location.reload();
         toast.success("Category Added");
       })
       .catch((error) => {

@@ -12,6 +12,15 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline, MdOutlineTaskAlt } from "react-icons/md";
 
+// redux
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+
 export interface EditItem {
   _id?: string;
   name: string;
@@ -48,6 +57,9 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
   >([{ name: "", additionalPrice: "", id: "" }]);
 
   const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
+
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
 
   const [formData, setFormData] = useState<MenuItem>({
     name: "",
@@ -235,9 +247,9 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         setLoading(false);
         setIsEditMenu(false);
-        window.location.reload();
         toast.success("Item updated");
       })
       .catch((error) => {

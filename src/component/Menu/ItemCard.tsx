@@ -16,6 +16,15 @@ import nosearch from "../../assets/search.jpg";
 import Switch from "./switch";
 import DeleteModal from "./DeleteModal";
 
+// redux
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+
 interface Props {
   items?: MenuItem[] | false;
   setIsEditMenuOpen: (isOpen: boolean) => void;
@@ -33,10 +42,12 @@ const ItemCard: React.FC<Props> = ({
   setIsSubCategoryOpen,
   setIsAddMenuOpen,
   editSubcategoryModal,
-  showActive,
 }) => {
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<MenuItem>();
+
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
 
   const toggleMenuItem = (item: MenuItem) => {
     let config = {
@@ -50,7 +61,7 @@ const ItemCard: React.FC<Props> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        window.location.reload();
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         toast.success("Menu item toggle");
       })
       .catch((error) => {
@@ -60,7 +71,9 @@ const ItemCard: React.FC<Props> = ({
 
   return (
     <>
-      <div className={`lg:flex flex-wrap  px-2 py-4 gap-x-4 gap-y-4 md:grid  md:grid-cols-3 items-center `}>
+      <div
+        className={`lg:flex flex-wrap  px-2 py-4 gap-x-4 gap-y-4 md:grid  md:grid-cols-3 items-center `}
+      >
         {items &&
           items?.map((item) => (
             <div

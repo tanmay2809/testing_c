@@ -12,6 +12,15 @@ import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { MdOutlineTaskAlt } from "react-icons/md";
 
+// redux
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+
 export interface MenuItem {
   _id?: string;
   name: string;
@@ -60,6 +69,9 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
   const [showAddNewButton, setShowAddNewButton] = useState<boolean>(false);
 
   const [error, setError] = useState<string>("");
+
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
 
   // remove image function
   const removeImage = (index: number) => {
@@ -198,9 +210,9 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         setIsAddMenuOpen(false);
         setImage([]);
-        window.location.reload();
         toast.success("Menu Item Added");
       })
       .catch((error) => {

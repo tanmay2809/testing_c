@@ -1,35 +1,37 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { baseUrl } from '../main'
-import axios from 'axios'
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import type { AnyAction, PayloadAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { baseUrl } from "../main";
+import axios from "axios";
+import { RootState } from "./store";
 
 export interface RestaurantState {
-  data: any | null,
-  loading: boolean,
-  error: string | null
+  data: any | null;
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: RestaurantState = {
   data: [],
   loading: false,
-  error: null
-}
+  error: null,
+};
 
-export const fetchRestaurantDetails = createAsyncThunk<any, { id: string }, { rejectValue: any }>(
-    'restaurant/fetchRestaurantDetails',
-    async ({ id }, thunkAPI) => {
-      try {
-        const response = await axios.get(`${baseUrl}/api/details/${id}`)
-        // console.log(response.data)
-        return response.data
-      } catch (error: any) {
-        return thunkAPI.rejectWithValue(error.response.data)
-      }
-    }
-  )
+export const fetchRestaurantDetails = createAsyncThunk<
+  any,
+  { id: string },
+  { rejectValue: any }
+>("restaurant/fetchRestaurantDetails", async ({ id }, thunkAPI) => {
+  try {
+    const response = await axios.get(`${baseUrl}/api/details/${id}`);
+    // console.log(response.data)
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
 
 export const restaurantSlice = createSlice({
-  name: 'restaurant',
+  name: "restaurant",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -37,19 +39,24 @@ export const restaurantSlice = createSlice({
       .addCase(fetchRestaurantDetails.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchRestaurantDetails.fulfilled, (state, action: PayloadAction<any>) => {
-        state.data = action.payload;
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(fetchRestaurantDetails.rejected, (state, action: PayloadAction<any>) => {
-        state.data = null;
-        state.loading = false;
-        state.error = action.payload;
-      })
+      .addCase(
+        fetchRestaurantDetails.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.data = action.payload;
+          state.loading = false;
+          state.error = null;
+        }
+      )
+      .addCase(
+        fetchRestaurantDetails.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.data = null;
+          state.loading = false;
+          state.error = action.payload;
+        }
+      );
   },
-})
+});
 
-
-
-export default restaurantSlice.reducer
+export default restaurantSlice.reducer;
+export type AppThunkDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
