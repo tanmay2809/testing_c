@@ -218,7 +218,7 @@ const CustomerList: React.FC = () => {
       </button>
     );
     // If the total pages are more than the max visible buttons, add dots
-    if (totalPages > maxVisibleButtons ) {
+    if (totalPages+1 > maxVisibleButtons ) {
       // Show the dots after the first page
       if (currentPage > maxVisibleButtons) {
         buttons.push(
