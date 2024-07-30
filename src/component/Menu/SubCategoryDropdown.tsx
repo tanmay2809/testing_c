@@ -30,6 +30,9 @@ interface Props {
   showActive: boolean;
 }
 
+
+const id = localStorage.getItem("id");
+console.log(id)
 const SubCategoryDropdown: React.FC<Props> = ({
   category,
   setIsEditMenuOpen,
@@ -99,40 +102,49 @@ const SubCategoryDropdown: React.FC<Props> = ({
   }, [category]);
 
   const [category1, setCategory] = useState(category);
+  console.log(category?.[0]?.subcategory);
+  console.log(category?.[0]?._id)
+  
 
-  function handleDragEnd(result: DropResult) {
-    const { destination, source, draggableId } = result;
-
-    if (!destination) {
-      return;
-    }
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    const updatedCategory = [...(category1 || [])];
-    const sourceCategory = updatedCategory.find(
-      (cat) => `subcategory-${cat._id}` === source.droppableId
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    console.log(result);
+    let updatedCategories = Array.from(category?.[0]?.subcategory || []);
+  
+    const [reorderedCategory] = updatedCategories.splice(
+      result.source.index,
+      1
     );
-    const destinationCategory = updatedCategory.find(
-      (cat) => `subcategory-${cat._id}` === destination.droppableId
-    );
+    updatedCategories.splice(result.destination.index, 0, reorderedCategory);
+    console.log(updatedCategories);
 
-    if (sourceCategory && destinationCategory) {
-      const [reorderedItem] = sourceCategory.subcategory.splice(source.index, 1);
-      destinationCategory.subcategory.splice(destination.index, 0, reorderedItem);
-
-      setCategory(updatedCategory);
-
-      // Implement this function to update the order on the server
-      //updateSubcategoryOrder(updatedCategory);
-    }
-  }
-
+  
+    // if (category && category[0]) {
+    //   const updatedCategory = { ...category[0], subcategory: updatedCategories };
+    //   setCategory([updatedCategory]);
+    // }
+  
+    let config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/api/order/${id}/${category?.[0]?._id}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: updatedCategories,
+    };
+  
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        window.location.reload(); 
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
   return (
     <div className="space-y-2">
       <div>
