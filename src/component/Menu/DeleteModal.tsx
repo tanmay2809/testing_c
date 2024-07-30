@@ -1,9 +1,20 @@
 import axios from "axios";
-import deleted from "../../assets/deleted.png";
 import { MenuItem } from "./AddMenuItem";
 import { baseUrl } from "../../main";
 import { useState } from "react";
 import { toast } from "react-toastify";
+
+// assets
+import deleted from "../../assets/deleted.png";
+
+// redux
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 interface DeleteProps {
   setModal: (isOpen: boolean) => void;
@@ -12,7 +23,9 @@ interface DeleteProps {
 
 const DeleteModal: React.FC<DeleteProps> = ({ setModal, setSelectedCard }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  console.log(setSelectedCard);
+
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
 
   const handleDelete = () => {
     setLoading(true);
@@ -27,9 +40,9 @@ const DeleteModal: React.FC<DeleteProps> = ({ setModal, setSelectedCard }) => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         setLoading(false);
         setModal(false);
-        window.location.reload();
         toast.error("Item Deleted");
       })
       .catch((error) => {

@@ -1,5 +1,7 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { baseUrl } from "../main";
+import { toast } from "react-toastify";
 
 // components
 import EditMenuItem, { EditItem } from "../component/Menu/EditMenu";
@@ -11,15 +13,21 @@ import ItemCard from "../component/Menu/ItemCard";
 import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
 import Switch from "../component/Menu/switch";
 import CategoryDelete from "../component/Menu/CategoryDelete";
+import EditCategory from "../component/Menu/EditCategory";
+import Loaging from "../component/Loaging";
 
 //redux
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../redux/restaurantData";
+import { useDispatch } from "react-redux";
 
 //icons
-import { FiMoreHorizontal, FiPlus } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
-import { baseUrl } from "../main";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { IoIosCloseCircleOutline, IoMdMore } from "react-icons/io";
 import { MdModeEditOutline } from "react-icons/md";
@@ -30,9 +38,6 @@ import FoodMenu from "../assets/Food Menu.png";
 import Burger from "../assets/Burger.png";
 import Category from "../assets/category.png";
 import Bussiness from "../assets/Business Task list.png";
-import EditCategory from "../component/Menu/EditCategory";
-import { toast } from "react-toastify";
-import Loaging from "../component/Loaging";
 
 export interface SubcategoryItem {
   _id: string;
@@ -86,6 +91,8 @@ const Menu = () => {
 
   const [dropdownVisible, setDropdownVisible] = useState<string>("");
 
+  const isFirstLoad = useRef(true);
+
   //search bar
   const [search, setSearch] = useState<string>("");
   const [searchMenuItems, setSearchMenuItems] = useState<
@@ -122,6 +129,7 @@ const Menu = () => {
     }
   };
 
+  const dispatch: AppThunkDispatch = useDispatch();
   const { data, loading, error } = useSelector(
     (state: RootState) => state.resturantdata
   );
@@ -140,8 +148,9 @@ const Menu = () => {
     if (data) {
       setCategories(data.category || []);
     }
-    if (categories.length > 0) {
+    if (isFirstLoad.current && categories.length > 0) {
       setSelectedCategoryId(categories[0]._id);
+      isFirstLoad.current = false;
     }
   }, [data, categories]);
 
@@ -179,8 +188,8 @@ const Menu = () => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        dispatch(fetchRestaurantDetails({ id: data._id }));
         toast.success("Category Toggled");
-        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -385,7 +394,7 @@ const Menu = () => {
                             >
                               Status
                               <Switch
-                                onclick={() => handleToggleCategory(item._id)}
+                                onclick={() => {}}
                                 isActive={item.active}
                               />
                             </button>

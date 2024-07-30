@@ -1,12 +1,21 @@
 import { useState } from "react";
-
-// icons
-import { IoIosCloseCircleOutline } from "react-icons/io";
 import { CategoryItem, SubcategoryItem } from "../../pages/Menu";
 import axios from "axios";
 import { baseUrl } from "../../main";
-import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
+
+// icons
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
+
+// redux
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 interface EditSubCategoryProps {
   setModal: (isOpen: boolean) => void;
@@ -25,7 +34,6 @@ interface EditSubCategory {
 const EditSubcategory: React.FC<EditSubCategoryProps> = ({
   setModal,
   subcategoryToEdit,
-  categories,
   activeCategory,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -110,6 +118,9 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
     }
   };
 
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
+
   // form submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,10 +139,10 @@ const EditSubcategory: React.FC<EditSubCategoryProps> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         setLoading(false);
         setModal(false);
         toast.success("Subcategory Edit successful");
-        window.location.reload();
       })
       .catch((error) => {
         console.log(error);

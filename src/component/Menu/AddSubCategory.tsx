@@ -1,10 +1,21 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
 import { baseUrl } from "../../main";
 import { CategoryItem } from "../../pages/Menu";
-import { toast } from "react-toastify";
+
+// icons
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoCloseCircle, IoCloudUploadOutline } from "react-icons/io5";
+
+// redux
+import { useDispatch } from "react-redux";
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 interface SubCategory {
   name: string;
@@ -102,6 +113,9 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
     });
   };
 
+  const dispatch: AppThunkDispatch = useDispatch();
+  const { data } = useSelector((state: RootState) => state.resturantdata);
+
   // form submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,9 +134,9 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        dispatch(fetchRestaurantDetails({ id: data._id }));
         setLoading(false);
         setIsSubCategoryOpen(false);
-        window.location.reload();
         toast.success("Subcategory Added");
       })
       .catch((error) => {

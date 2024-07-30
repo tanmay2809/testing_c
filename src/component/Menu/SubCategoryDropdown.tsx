@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
 import axios from "axios";
 import { baseUrl } from "../../main";
 import { toast } from "react-toastify";
@@ -16,6 +21,15 @@ import ItemCard from "./ItemCard";
 import SubCategoryDeleteModal from "./SubCategoryDelete";
 import Switch from "./switch";
 
+// redux
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+
 interface Props {
   category:
     | { _id: string; name: string; subcategory: SubcategoryItem[] }[]
@@ -30,9 +44,8 @@ interface Props {
   showActive: boolean;
 }
 
-
 const id = localStorage.getItem("id");
-console.log(id)
+console.log(id);
 const SubCategoryDropdown: React.FC<Props> = ({
   category,
   setIsEditMenuOpen,
@@ -46,8 +59,12 @@ const SubCategoryDropdown: React.FC<Props> = ({
 }) => {
   const [isOpen, setIsOpen] = useState<{ [key: string]: boolean }>({});
   const [subDeleteModal, setSubDeleteModal] = useState<boolean>(false);
-  const [subcategoryToDelete, setSubcategoryToDelete] = useState<SubcategoryItem>();
+  const [subcategoryToDelete, setSubcategoryToDelete] =
+    useState<SubcategoryItem>();
   const [categoryID, setCategoryID] = useState<string>("");
+
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
 
   const handleToggle = (id: string) => {
     setIsOpen((prevState) => ({
@@ -87,7 +104,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        window.location.reload();
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         toast.success("Subcategory toggle");
       })
       .catch((error) => {
@@ -101,16 +118,11 @@ const SubCategoryDropdown: React.FC<Props> = ({
     }
   }, [category]);
 
-  const [category1, setCategory] = useState(category);
-  console.log(category?.[0]?.subcategory);
-  console.log(category?.[0]?._id)
-  
-
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     console.log(result);
     let updatedCategories = Array.from(category?.[0]?.subcategory || []);
-  
+
     const [reorderedCategory] = updatedCategories.splice(
       result.source.index,
       1
@@ -118,12 +130,11 @@ const SubCategoryDropdown: React.FC<Props> = ({
     updatedCategories.splice(result.destination.index, 0, reorderedCategory);
     console.log(updatedCategories);
 
-  
     // if (category && category[0]) {
     //   const updatedCategory = { ...category[0], subcategory: updatedCategories };
     //   setCategory([updatedCategory]);
     // }
-  
+
     let config = {
       method: "put",
       maxBodyLength: Infinity,
@@ -133,26 +144,32 @@ const SubCategoryDropdown: React.FC<Props> = ({
       },
       data: updatedCategories,
     };
-  
+
     axios
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        window.location.reload(); 
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
+
   return (
     <div className="space-y-2">
       <div>
         <DragDropContext onDragEnd={handleDragEnd}>
           {category?.map((cat) => (
-            <Droppable droppableId={`subcategory-${cat._id}`} direction="vertical" type="subcategory" key={cat._id}>
+            <Droppable
+              droppableId={`subcategory-${cat._id}`}
+              direction="vertical"
+              type="subcategory"
+              key={cat._id}
+            >
               {(provided) => (
-                <div className="flex flex-col gap-4"
+                <div
+                  className="flex flex-col gap-4"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
@@ -160,13 +177,15 @@ const SubCategoryDropdown: React.FC<Props> = ({
                     <Draggable
                       key={subcategory._id}
                       draggableId={subcategory._id}
-                      index={index}>
+                      index={index}
+                    >
                       {(provided) => (
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          id={subcategory._id}>
+                          id={subcategory._id}
+                        >
                           <div>
                             <div
                               className="w-full h-fit px-4 py-3 border-2 rounded-[0.5rem] flex flex-row justify-between items-center font-Roboto"
@@ -176,19 +195,28 @@ const SubCategoryDropdown: React.FC<Props> = ({
                                 <MdDragIndicator />
                                 <IoMdArrowDropdown
                                   className={`text-[#004AAD] ${
-                                    isOpen[subcategory._id] ? "transform" : "-rotate-90"
+                                    isOpen[subcategory._id]
+                                      ? "transform"
+                                      : "-rotate-90"
                                   }`}
                                   onClick={() => handleToggle(subcategory._id)}
                                 />
-                                <img src={subcategory.image} alt="Pizza" className="w-10" />
+                                <img
+                                  src={subcategory.image}
+                                  alt="Pizza"
+                                  className="w-10"
+                                />
                                 <p className="text-[1.2rem] font-semibold">
-                                  {subcategory.name} ({subcategory.menuItems.length})
+                                  {subcategory.name} (
+                                  {subcategory.menuItems.length})
                                 </p>
                               </div>
                               <div className="w-fit flex flex-row items-center text-[1.5rem] gap-4 text-[#004AAD]">
                                 <Switch
                                   isActive={subcategory.active}
-                                  onclick={() => handleSubcategoryToggle(subcategory._id)}
+                                  onclick={() =>
+                                    handleSubcategoryToggle(subcategory._id)
+                                  }
                                 />
                                 <IoTrashOutline
                                   onClick={() => {

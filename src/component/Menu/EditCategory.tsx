@@ -1,11 +1,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 // icons
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
-import { baseUrl } from "../../main";
-import { toast } from "react-toastify";
+
+// redux
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 interface CategoryProps {
   isCategoryOpen: (isOpen: boolean) => void;
@@ -28,6 +37,9 @@ const EditCategory: React.FC<CategoryProps> = ({
     name: "",
     isPrimary: false,
   });
+
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
 
   // onchange handler
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,9 +67,9 @@ const EditCategory: React.FC<CategoryProps> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         setLoading(false);
         isCategoryOpen(false);
-        window.location.reload();
         toast.success("Category saved");
       })
       .catch((error) => {
