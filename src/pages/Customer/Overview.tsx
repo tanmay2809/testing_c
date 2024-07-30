@@ -227,9 +227,14 @@ const Overview: React.FC = () => {
     if (data) fetchDataForMonth(monthForGraph);
   }, [data, monthForGraph]);
 
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
+
   return (
     <div className="w-full h-fit relative ">
-      <div className=" lg:w-[93%] h-fit px-[1.5rem] py-[1rem]  gap-10 lg:ml-[7%] ">
+      <div onClick={handlefram} className=" lg:w-[93%] h-fit px-[1.5rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         {/*Customer Snapshot div */}
         <div className="px-[.9rem] py-[1.5rem] bg-[#F1F7FF] font-inter rounded-lg mb-[1rem]">
           {/* Top Section */}

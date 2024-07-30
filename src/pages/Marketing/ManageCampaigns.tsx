@@ -10,9 +10,15 @@ const ManageCampaigns: React.FC = () => {
     setIsToggled(!isToggled);
   };
 
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
+
+
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
-      <div className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%]">
+      <div onClick={handlefram} className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%]">
         <div className="flex items-center justify-between p-4 -mt-2">
           {/* Buttons div */}
           <div className=" flex items-center gap-3">

@@ -27,9 +27,14 @@ const WhatsAppSettings: React.FC = () => {
     });
   };
 
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
+
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
-      <div className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%]">
+      <div onClick={handlefram} className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%]">
         <div className="flex gap-6 mb-6 font-inter">
           <div className=" w-1/2 flex flex-col justify-start gap-6">
             <div className="bg-[#F1F7FF] p-6 rounded-2xl flex flex-col justify-between h-fit">

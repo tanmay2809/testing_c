@@ -196,6 +196,12 @@ const Menu = () => {
       });
   };
 
+
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
+
   if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -214,7 +220,7 @@ const Menu = () => {
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="w-full lg:w-[93%]  h-fit flex items-center justify-center lg:ml-[7%]  ">
-        <div className="w-full h-fit flex mt-[70px] ">
+        <div onClick={handlefram} className="w-full h-fit flex mt-[70px]  ">
           {/* left div */}
           <div
             className={` flex flex-col h-fit ${

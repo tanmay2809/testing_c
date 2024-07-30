@@ -308,9 +308,15 @@ const Analytics: React.FC = () => {
 
   const isEmpty = Object.keys(dailyVisits).length === 0;
   console.log(data === undefined);
+
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
+
   return (
     <div className="w-full h-fit relative ">
-      <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
+      <div onClick={handlefram} className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         <div className="container mx-auto font-inter">
           <h1 className="text-xl font-semibold">Customer Segmentation</h1>
           <div className="mb-2">

@@ -27,10 +27,15 @@ const Invoice = () => {
     }, 500);
   };
 
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
+
   return (
     <>
       <div className="w-full h-fit relative">
-        <div className="lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%]">
+        <div onClick={handlefram} className="lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%]">
           <div className="w-full flex flex-col gap-2">
             <div className="flex flex-col -mt-4">
               <h1 className="text-[1.5rem] text-[#4D4D4D] font-[500]">

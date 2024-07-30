@@ -433,9 +433,15 @@ const CustomerList: React.FC = () => {
   };
 
   console.log("Segmentation visible: ", segmentationVisible);
+
+
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
-      <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
+      <div onClick={handlefram} className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
         {/*Top div */}
         <div className="mb-4 flex justify-between items-center font-inter">
           <div className="relative flex items-center w-[410px]">

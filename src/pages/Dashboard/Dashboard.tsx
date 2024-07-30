@@ -72,12 +72,15 @@ const Dashboard = () => {
       }
   }, []);
 
-  
+  // navbar fram
+  const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
  
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className=" lg:w-[93%] h-fit px-[1rem] py-[1rem] flex flex-col items-center justify-center  lg:ml-[7%] ">
-        <div className="w-full  h-fit flex flex-col items-center gap-2 mt-[80px]  mb-[2rem] mx-[1.5rem]  ">
+        <div onClick={handlefram} className="w-full  h-fit flex flex-col items-center gap-2 mt-[80px]  mb-[2rem] mx-[1.5rem]  ">
           <div className="w-full h-fit flex items-center justify-between bg-[#D7E8FF] font-inter font-[400] text-[.9rem] text-black px-4 py-2  rounded-xl ">
             <div className="flex items-center gap-2">
               <BiSolidError className="size-5 text-[#004AADC9] " />
