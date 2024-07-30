@@ -171,7 +171,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
               name="name"
               value={formData.name}
               onChange={handleChange}
-              // required
+              required
               className="w-full focus:outline-none p-2 border border-gray-300 rounded-md font-inter"
             />
           </div>
@@ -182,7 +182,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
               htmlFor="category"
               className="block text-gray-700 text-[1.2rem] font-Roboto mb-2"
             >
-              Sub-Category icon{" "}
+              Sub Category icon{" "}
               <p className=" font-Roboto text-[.8rem] m-1">
                 one image at a time allowed
               </p>
@@ -204,6 +204,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
                         type="file"
                         className="hidden"
                         accept="image/*"
+                        required
                         onChange={(e) => {
                           if (e.target.files && e.target.files[0])
                             handleImageChange(e.target.files[0]);
@@ -225,7 +226,7 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
               </div>
               <div className="w-1/2 flex flex-col items-start justify-center font-inter">
                 <p className="flex flex-row gap-2 text-[0.9rem] font-bold">
-                  sub-category icon
+                  Sub Category icon
                   <span className="text-[#ED4F4F]">*</span>
                 </p>
                 <p className="flex flex-row text-[0.8rem] gap-2">

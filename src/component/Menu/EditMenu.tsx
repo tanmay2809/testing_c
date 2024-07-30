@@ -306,6 +306,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
                   name="subcategory"
                   value={formData.subcategory}
                   onChange={handleChange}
+                  required
                 >
                   <option value="">Select</option>
                   {category.subcategory.map((subcategory) => (
@@ -343,6 +344,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
                   name="price"
                   value={formData.price}
                   onChange={handleChange}
+                  required
                   className="w-full pl-6 focus:outline-none p-2 border border-gray-300 rounded-md"
                 />
               </div>
@@ -548,7 +550,6 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
                 <div className="w-1/2 flex flex-col items-start justify-center">
                   <p className="flex flex-row gap-2 text-[0.9rem] font-bold">
                     Item Image
-                    <span className="text-[#ED4F4F]">*</span>
                   </p>
                   <p className="flex flex-row text-[0.8rem] gap-2">
                     Image format .jpg, .jpeg, .png and minimum size 300x300

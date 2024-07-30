@@ -306,6 +306,7 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                   value={formData.subcategory}
                   onChange={handleChange}
                   key={category._id}
+                  required
                 >
                   <option value="">Select</option>
                   {category.subcategory.map((subcategory) => (
@@ -544,7 +545,6 @@ const AddMenuItem: React.FC<AddMenuProps> = ({
                 <div className="w-1/2 flex flex-col items-start justify-center">
                   <p className="flex flex-row gap-2 text-[0.9rem] font-bold">
                     Item Image
-                    <span className="text-[#ED4F4F]">*</span>
                   </p>
                   <p className="flex flex-row text-[0.8rem] gap-2">
                     Image format .jpg, .jpeg, .png and minimum size 300x300
