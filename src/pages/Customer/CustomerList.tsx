@@ -205,7 +205,6 @@ const CustomerList: React.FC = () => {
   const getPaginationButtons = () => {
     const buttons = [];
     const maxVisibleButtons = 3;
-
     // Add the first page
     buttons.push(
       <button
@@ -218,9 +217,8 @@ const CustomerList: React.FC = () => {
         1
       </button>
     );
-
     // If the total pages are more than the max visible buttons, add dots
-    if (totalPages > maxVisibleButtons + 2) {
+    if (totalPages > maxVisibleButtons ) {
       // Show the dots after the first page
       if (currentPage > maxVisibleButtons) {
         buttons.push(
