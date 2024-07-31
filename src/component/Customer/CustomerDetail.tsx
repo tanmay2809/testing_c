@@ -64,6 +64,9 @@ const getLastVisitDisplay = (visits: string[]): string => {
   const lastVisit = new Date(visits[visits.length - 1]);
   const now = new Date();
 
+  lastVisit.setHours(0, 0, 0, 0);
+  now.setHours(0, 0, 0, 0);
+
   const timeDifference = now.getTime() - lastVisit.getTime();
   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
@@ -84,6 +87,9 @@ const getFirstVisitDisplay = (visits: string[]): string => {
   const firstVisit = new Date(visits[0]);
   const now = new Date();
 
+  firstVisit.setHours(0, 0, 0, 0);
+  now.setHours(0, 0, 0, 0);
+
   const timeDifference = now.getTime() - firstVisit.getTime();
   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
@@ -97,6 +103,7 @@ const getFirstVisitDisplay = (visits: string[]): string => {
     return firstVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
   }
 };
+
 
 const CustomerDetails: React.FC<CustomerDetailsProps> = ({
   customer,
@@ -118,9 +125,8 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5">
       <div
-        className={`bg-white w-[31.25rem] h-full p-7 shadow-lg overflow-y-auto rounded-xl ${
-          isClosing ? "slide-out-right" : "slide-in-right"
-        }`}
+        className={`bg-white w-[31.25rem] h-full p-7 shadow-lg overflow-y-auto rounded-xl ${isClosing ? "slide-out-right" : "slide-in-right"
+          }`}
       >
         {/*top div*/}
         <div className="flex justify-between items-center pb-7 border-black border-b">
