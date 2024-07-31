@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { baseUrl } from "../../main";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // icons
 import { FaFacebook, FaPlus, FaYoutube } from "react-icons/fa6";
@@ -17,7 +19,13 @@ import google from "../../assets/Google-Review.png";
 
 //svg
 import premium from "/premium.svg";
-import { Link } from "react-router-dom";
+
+// redux
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
+import { useDispatch } from "react-redux";
 
 interface FormData {
   image: string;
@@ -44,7 +52,8 @@ const Stores = () => {
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [store, setStore] = useState<FormData[]>();
 
-  const resdata = useSelector((state: RootState) => state.resturantdata);
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
 
   const [formData, setFormData] = useState<FormData>({
     image: selectedImage,
@@ -128,7 +137,7 @@ const Stores = () => {
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${baseUrl}/api/updateRestaurantDetails/${resdata.data._id}`,
+      url: `${baseUrl}/api/updateRestaurantDetails/${resData.data._id}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -139,7 +148,8 @@ const Stores = () => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        window.location.reload();
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
+        toast.success("Store Details Saved");
       })
       .catch((error) => {
         console.log(error);
@@ -170,8 +180,8 @@ const Stores = () => {
   };
 
   useEffect(() => {
-    setStore([resdata.data]);
-  }, [resdata]);
+    setStore([resData.data]);
+  }, [resData]);
 
   return (
     <div className="w-full h-fit relative">

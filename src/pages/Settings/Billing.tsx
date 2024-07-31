@@ -1,16 +1,21 @@
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import axios from "axios";
+import { baseUrl } from "../../main";
+import { toast } from "react-toastify";
 
 // icons
 import { LuAsterisk } from "react-icons/lu";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdCloseCircle } from "react-icons/io";
+
+// redux
 import { useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "../../redux/store";
+import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
-import { fetchRestaurantDetails } from "../../redux/restaurantData";
-import axios from "axios";
-import { baseUrl } from "../../main";
-import { toast } from "react-toastify";
+import {
+  AppThunkDispatch,
+  fetchRestaurantDetails,
+} from "../../redux/restaurantData";
 
 interface FormData {
   companyName: string;
@@ -29,7 +34,8 @@ const Billing = () => {
   const [billingDetails, setBillingDetails] = useState<FormData>();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const resdata = useSelector((state: RootState) => state.resturantdata);
+  const dispatch: AppThunkDispatch = useDispatch();
+  const resData = useSelector((state: RootState) => state.resturantdata);
 
   const [formData, setFormData] = useState<FormData>({
     companyName: "",
@@ -78,18 +84,18 @@ const Billing = () => {
   };
 
   useEffect(() => {
-    setBillingDetails(resdata.data.billingDetails);
+    setBillingDetails(resData.data.billingDetails);
     setFormData({
-      companyName: resdata?.data.billingDetails?.companyName,
-      address: resdata?.data.billingDetails?.address,
-      gstNumber: resdata?.data.billingDetails?.gstNumber,
-      country: resdata?.data.billingDetails?.country,
-      state: resdata?.data.billingDetails?.state,
-      city: resdata?.data.billingDetails?.city,
-      pincode: resdata?.data.billingDetails?.pincode,
+      companyName: resData?.data.billingDetails?.companyName,
+      address: resData?.data.billingDetails?.address,
+      gstNumber: resData?.data.billingDetails?.gstNumber,
+      country: resData?.data.billingDetails?.country,
+      state: resData?.data.billingDetails?.state,
+      city: resData?.data.billingDetails?.city,
+      pincode: resData?.data.billingDetails?.pincode,
       notRegisteredWithGST: false,
     });
-  }, [resdata]);
+  }, [resData]);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -98,7 +104,7 @@ const Billing = () => {
     let config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `${baseUrl}/api/updateBillingDetails/${resdata.data._id}`,
+      url: `${baseUrl}/api/updateBillingDetails/${resData.data._id}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -109,9 +115,9 @@ const Billing = () => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         setLoading(false);
         handleCloseModal();
-        window.location.reload();
         toast.success("Billing Updated");
       })
       .catch((error) => {
