@@ -194,6 +194,7 @@ const CustomerList: React.FC = () => {
       //   filteredCustomers.push(...visitFiltered);
       //   console.log("segmentation added: ", visitFiltered);
       // }
+
       console.log("Final result: ", filteredCustomers);
     } else {
       //if filter data is empty then filtered customers=all customers
@@ -336,11 +337,35 @@ const CustomerList: React.FC = () => {
     setCustomerData(sortedData);
   };
 
-  const getLastVisitDisplay = (visits: string[]): string => {
+//   const getLastVisitDisplay = (visits: string[]): string => {
+//   if (visits.length === 0) return "No visits";
+
+//   const lastVisit = new Date(visits[visits.length - 1]);
+//   const now = new Date();
+
+//   const timeDifference = now.getTime() - lastVisit.getTime();
+//   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+//   if (daysDifference === 0) {
+//     return "Today";
+//   } else if (daysDifference === 1) {
+//     return "1 day ago";
+//   } else if (daysDifference <= 7) {
+//     return `${daysDifference} days ago`;
+//   } else {
+//     return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
+//   }
+// };
+
+const getLastVisitDisplay = (visits: string[]): string => {
   if (visits.length === 0) return "No visits";
 
   const lastVisit = new Date(visits[visits.length - 1]);
   const now = new Date();
+
+  // Set time components to 0 to only compare dates
+  lastVisit.setHours(0, 0, 0, 0);
+  now.setHours(0, 0, 0, 0);
 
   const timeDifference = now.getTime() - lastVisit.getTime();
   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
