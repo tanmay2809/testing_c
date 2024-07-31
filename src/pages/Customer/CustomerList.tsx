@@ -69,6 +69,7 @@ const CustomerList: React.FC = () => {
 
   const handleFilter = () => {
     console.log(filterData);
+    setCurrentPage(1);
     let filteredCustomers: Customer[] = [];
     let mainData = data?.customerData;
     let genderFiltered: Customer[] = [];
