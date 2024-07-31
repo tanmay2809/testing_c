@@ -14,7 +14,7 @@ import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
 import Switch from "../component/Menu/switch";
 import CategoryDelete from "../component/Menu/CategoryDelete";
 import EditCategory from "../component/Menu/EditCategory";
-import Loaging from "../component/Loaging";
+import Loaging from "../component/outlet/Loader1/Loaging";
 
 //redux
 import { useSelector } from "react-redux";

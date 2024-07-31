@@ -78,19 +78,19 @@ const ItemCard: React.FC<Props> = ({
           items?.map((item) => (
             <div
               key={item._id}
-              className="w-[220px] lg:w-[210px] h-full p-4 border-2 rounded-[0.3rem] relative flex flex-col font-Roboto gap-8"
+              className="w-[220px] lg:w-[210px] h-full py-4 px-2 border-2 rounded-[0.3rem] relative flex flex-col font-Roboto gap-8"
             >
-              <div className="flex flex-row items-center justify-between">
-                <p className="text-[1.1rem] font-semibold break-all text-wrap">
+              <div className="flex w-full h-fit flex-row  items-center justify-between">
+                <p className="text-[1.1rem] w-[85%] font-semibold break-all text-wrap">
                   {item.name}
                 </p>
                 <BiFoodTag
-                  className={`text-[1.5rem] size-[30px] m-2 ${
+                  className={`text-[1.5rem] w-[15%] flex items-center justify-center size-[30px] m-2 ${
                     item.type === "veg" && "text-[#67CE67]"
                   } ${item.type === "egg" && "text-[#F7C02B]"} ${
                     item.type === "nonveg" && "text-[#ED4F4F]"
                   }
-              } `}
+                } `}
                 />
               </div>
               <button className="bg-[#004AAD] text-white text-[1rem] w-fit px-[1rem] py-1 rounded-md">

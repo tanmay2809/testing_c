@@ -1,8 +1,13 @@
 
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+//redus
+
+import { useDispatch, useSelector } from "react-redux";
+import {fetchMostRecommandItemsDetails} from "../../redux/mostrecommandslice";
+import type { RootState, AppDispatch } from "../../redux/store";
+
 import { Link } from "react-router-dom";
+
 
 import Feedback from "../../component/outlet/Feedback";
 
@@ -26,29 +31,30 @@ import icon1 from '../../assets/Regular Visitor.png'
 import notfound from '../../assets/No data found.png'
 
 import Chart1 from '../../component/dashboard/Chart1';
+import { MenuItem } from '../../component/Menu/AddMenuItem';
+import tag from '/tag.svg';
 
 
 
 const Dashboard = () => {
 
-  const top3menu = [
-    {
-      name: "Cheese Burder",
-      price:"1150",
-    },
-    {
-      name: "Cheese Burder",
-      price:"1150",
-    },
-    {
-      name: "Cheese Burder",
-      price:"1150",
-    },
-    {
-      name: "Cheese Burder",
-      price:"1150",
-    },
-  ];
+  const { data } = useSelector((state: RootState) => state.resturantdata);
+  console.log("restaurantData: ", data);
+  
+  const useAppDispatch = () => useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
+  const id: string | null = localStorage.getItem("id");
+  console.log("id: ", id);
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchMostRecommandItemsDetails({ id }) as any);
+    }
+  }, [dispatch, id]);
+
+  const top4menu = useSelector((state: RootState) => state.mostRecommand);
+  console.log("topmenu: ",top4menu?.data?.menuItems);
+
+
 
   const handleScrollToTop = () => {
     window.scrollTo({
@@ -57,11 +63,7 @@ const Dashboard = () => {
     });
   }
 
-  const { data } = useSelector(
-    (state: RootState) => state.resturantdata
-  );
-  // as { data: RestaurantData };
-  console.log("resData: ", data);
+
 
   const [status,setstatus] = useState(1);
 
@@ -290,7 +292,7 @@ const Dashboard = () => {
             <div className="w-full h-fit mt-[2rem] mb-[1rem] flex flex-col gap-4 ">
               <div className="w-full h-fit flex gap-2 justify-between">
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-                  <p className="font-[700] text-[1.8rem]">1000</p>
+                  <p className="font-[700] text-[1.8rem]">0</p>
                   <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2 ">
                     <span>
                       <IoPeopleSharp className="size-5" />
@@ -299,7 +301,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-                  <p className="font-[700] text-[1.8rem]">30</p>
+                  <p className="font-[700] text-[1.8rem]">0</p>
                   <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2 ">
                     <span>
                       {" "}
@@ -309,7 +311,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-                  <p className="font-[700] text-[1.8rem]">9%</p>
+                  <p className="font-[700] text-[1.8rem]">0%</p>
                   <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2 ">
                     <span>
                       <img src={icon1} className="size-5 " alt="icon" />
@@ -320,7 +322,7 @@ const Dashboard = () => {
               </div>
               <div className="w-full h-fit flex gap-2 justify-between">
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-                  <p className="font-[700] text-[1.8rem]">₹ 200</p>
+                  <p className="font-[700] text-[1.8rem]">₹ 0</p>
                   <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2 ">
                     <span>
                       <IoPeopleSharp className="size-5" />
@@ -329,7 +331,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-                  <p className="font-[700] text-[1.8rem]">₹ 500</p>
+                  <p className="font-[700] text-[1.8rem]">₹ 0</p>
                   <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2 ">
                     <span>
                       <img src={icon} className="size-5 " alt="icon" />
@@ -338,7 +340,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-                  <p className="font-[700] text-[1.8rem]">₹ 700</p>
+                  <p className="font-[700] text-[1.8rem]">₹ 0</p>
                   <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2 ">
                     <span>
                       <img src={icon1} className="size-5 " alt="icon" />
@@ -442,13 +444,13 @@ const Dashboard = () => {
                 </Link>
               </div>
 
-              {top3menu.length > 1 ? (
+              {top4menu?.data?.menuItems?.length > 0 ? (
                 <div className="w-full h-fit flex flex-col px-[1.5rem] mb-[2rem]  font-inter">
                   <p className="text-[#505050] font-[500] text-[1.2rem] text-nowrap py-[1rem]">
                     Top 4 Menu item on customer preferance
                   </p>
 
-                  {top3menu.map((item, index) => (
+                  {top4menu?.data?.menuItems.slice(0, 4).map((item: any, index: number) => (
                     <div
                       key={index}
                       className="flex justify-between my-[.5rem] items-center bg-white rounded-lg px-[2rem] py-[.3rem] text-black"
@@ -456,13 +458,13 @@ const Dashboard = () => {
                       <div className="font-inter ">
                         <p className="text-[1.3rem] font-[500] ">{item.name}</p>
                         <p className="flex gap-2 items-center font-[700] text-[1.rem] text-[#464646]">
-                          burger <RxDotFilled className="size-6" />{" "}
-                          <span>₹ 199</span>
+                          {item.tag} <RxDotFilled className="size-6" />{" "}
+                          <span>₹{item.price}</span>
                         </p>
                       </div>
                       <div>
                         <p className="flex gap-3 text-[1.4rem] font-[500] items-center">
-                          2431{" "}
+                          {item.likedBy.length}
                           <span>
                             <IoIosHeart className="text-red-500 size-6" />
                           </span>
@@ -513,7 +515,7 @@ const Dashboard = () => {
                       Your Menu Score is{" "}
                       <span className="font-[700] text-[#ED9510]">Average</span>
                     </p>
-                    <p className=" text-[1rem]">Last Updated on 19/02/2023</p>
+                    <p className=" text-[1rem]">Last Updated on 19/06/2024</p>
                   </div>
                   <div className="flex items-center">
                     <button className="text-[1rem] w-fit border-2 flex items-center gap-2 font-[700] text-[#64748B] px-5  py-[.3rem]  bg-white rounded-lg">
