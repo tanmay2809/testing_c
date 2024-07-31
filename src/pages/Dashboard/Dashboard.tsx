@@ -485,7 +485,7 @@ const Dashboard = () => {
                       className="flex justify-between my-[.5rem] items-center bg-white rounded-lg px-[2rem] py-[.3rem] text-black"
                     >
                       <div className="font-inter ">
-                        <p className="text-[1.3rem] font-[500] ">{item.name}</p>
+                        <p className="text-[1.2rem] font-[500] ">{item.name}</p>
                         <p className="flex gap-2 items-center font-[700] text-[1.rem] text-[#464646]">
                           {item.tag} <RxDotFilled className="size-6" />{" "}
                           <span>₹{item.price}</span>
@@ -499,7 +499,7 @@ const Dashboard = () => {
                           </span>
                         </p>
                         <p className="font-[500] text-[1.rem]">
-                          Customer live this
+                          Customer love this
                         </p>
                       </div>
                     </div>
