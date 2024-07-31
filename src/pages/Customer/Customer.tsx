@@ -7,10 +7,15 @@ const Customer: React.FC = () => {
   console.log("Customer Component Rendered");
   console.log("Current Location:", location.pathname);
 
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
+
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className=" relative lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
-        <div className="w-full flex flex-row justify-between mt-[70px]">
+        <div onClick={handlefram} className="w-full flex flex-row justify-between mt-[70px]">
           <div className="flex flex-col ">
             <h1 className="text-[28px] font-semibold">Customers</h1>
             <p className="text-[18px]">

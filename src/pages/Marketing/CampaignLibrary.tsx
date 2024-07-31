@@ -32,9 +32,14 @@ const CampaignLibrary: React.FC = () => {
     }
   };
 
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
+
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
-      <div className="lg:w-[93%] h-fit px-[2rem] py-[1rem] gap-10 lg:ml-[7%]">
+      <div onClick={handlefram} className="lg:w-[93%] h-fit px-[2rem] py-[1rem] gap-10 lg:ml-[7%]">
         <div className="font-inter">
           {/* reach out your customer */}
           <div className="w-full h-fit flex relative mt-[.5rem] py-[1.5rem] px-[2.5rem] bg-[#FFCF27] rounded-md">

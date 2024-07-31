@@ -132,38 +132,91 @@ const Analytics: React.FC = () => {
   const handleCelebMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setCelebrationMonth(e.target.value);
   };
+
+  const parseDate = (dateString:string) => {
+    let day, month, year;
+  
+    if (dateString.includes("/")) {
+      // "DD/MM/YYYY" format
+      [day, month, year] = dateString.split("/").map(Number);
+    } else if (dateString.includes("-")) {
+      // "YYYY-MM-DD" format
+      [year, month, day] = dateString.split("-").map(Number);
+    } else {
+      return null;
+    }
+  
+    return { day, month: month - 1, year }; // Adjust month to 0-based index
+  };
+
   useEffect(() => {
     const monthIndex = months.indexOf(celebrationMonth);
     console.log("mi : ", monthIndex);
 
-    const filteredBirthdays: number =
-      data?.customerData?.filter((customer: any) => {
-        if (!customer?.userId?.birthday) {
-          return false;
-        }
-        const [birthDay, birthMonth, birthYear] = customer.userId.birthday
-          .split("/")
-          .map(Number);
-        console.log(birthDay, birthMonth, birthYear);
-        return birthMonth - 1 === monthIndex;
-      })?.length ?? 0;
+    
+    // const filteredBirthdays: number =
+    //   data?.customerData?.filter((customer: any) => {
+    //     if (!customer?.userId?.birthday) {
+    //       return false;
+    //     }
 
-    const filteredAnniversaries: number =
-      data?.customerData?.filter((customer: any) => {
-        if (!customer?.userId?.anniversary) {
-          return false;
-        }
+    //     const [birthDay, birthMonth, birthYear] = customer?.userId?.birthday
+    //       .split("/")
+    //       .map(Number);
+        
+    //     console.log(birthDay, birthMonth, birthYear);
+    //     return birthMonth - 1 === monthIndex;
+    //   })?.length ?? 0;
 
-        const [annDay, annMonth, annYear] = customer.userId.anniversary
-          .split("/")
-          .map(Number);
-        console.log(annDay, annMonth, annYear);
-        return annMonth - 1 === monthIndex;
-      })?.length ?? 0;
+    // const filteredAnniversaries: number =
+    //   data?.customerData?.filter((customer: any) => {
+    //     if (!customer?.userId?.anniversary) {
+    //       return false;
+    //     }
+
+    //     const [annDay, annMonth, annYear] = customer?.userId?.anniversary
+    //       .split("/")
+    //       .map(Number);
+    //     console.log(annDay, annMonth, annYear);
+    //     return annMonth - 1 === monthIndex;
+    //   })?.length ?? 0;
+
+    const filteredBirthdays = data?.customerData?.filter((customer) => {
+      const birthday = customer?.userId?.birthday;
+      if (!birthday) {
+        return false;
+      }
+    
+      const parsedDate = parseDate(birthday);
+      if (!parsedDate) {
+        return false;
+      }
+    
+      const { month } = parsedDate;
+      // console.log(parsedDate.day, month + 1, parsedDate.year);
+      return month === monthIndex;
+    })?.length ?? 0;
+    
+    const filteredAnniversaries = data?.customerData?.filter((customer) => {
+      const anniversary = customer?.userId?.anniversary;
+      if (!anniversary) {
+        return false;
+      }
+    
+      const parsedDate = parseDate(anniversary);
+      if (!parsedDate) {
+        return false;
+      }
+    
+      const { month } = parsedDate;
+      // console.log(parsedDate.day, month + 1, parsedDate.year);
+      return month === monthIndex;
+    })?.length ?? 0;
+    
 
     setBirthdays(filteredBirthdays);
     setAnniversaries(filteredAnniversaries);
-    // console.log(birthdays,"  ",anniversaries);
+
   }, [celebrationMonth, data.customerData]);
 
   //for growth rate
@@ -336,7 +389,7 @@ const Analytics: React.FC = () => {
                   : `${data?.newCustomers || 0}%`}
               </h2>
               <p className="font-bold">
-              {data && data.length === 0 ? "0":((data?.newCustomers / 100) * data?.customerData?.length)}{" "}
+              {data && data.length === 0 ? "0":Math.floor((data?.newCustomers / 100) * data?.customerData?.length)}{" "}
               customers
               </p>
             </div>
@@ -381,7 +434,7 @@ const Analytics: React.FC = () => {
                   : `${data?.regularCustomers || 0}%`}
               </h2>
               <p className="font-bold">
-              {data && data.length === 0 ? "0":((data?.regularCustomers / 100) * data?.customerData?.length)}{" "}
+              {data && data.length === 0 ? "0": Math.floor((data?.regularCustomers / 100) * data?.customerData?.length)}{" "}
               customers
               </p>
             </div>
@@ -426,7 +479,7 @@ const Analytics: React.FC = () => {
                   : `${data?.loyalCustomers || 0}%`}
               </h2>
               <p className="font-bold">
-                {data && data.length === 0 ? "0":((data?.loyalCustomers / 100) * data?.customerData?.length)}{" "}
+                {data && data.length === 0 ? "0":Math.floor((data?.loyalCustomers / 100) * data?.customerData?.length)}{" "}
                 customers
               </p>
             </div>
@@ -446,7 +499,7 @@ const Analytics: React.FC = () => {
                   : `${data?.riskCustomers || 0}%`}
               </h2>
               <p className="font-bold">
-              {data && data.length === 0 ? "0":((data?.riskCustomers / 100) * data?.customerData?.length)}{" "}
+              {data && data.length === 0 ? "0":Math.floor((data?.riskCustomers / 100) * data?.customerData?.length)}{" "}
               customers
               </p>
             </div>

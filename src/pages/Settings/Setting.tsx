@@ -6,8 +6,13 @@ import whatsapp from "../../assets/whatsapp.png";
 const Setting = () => {
   const location = useLocation();
 
+   // navbar fram
+   const handlefram = () => {
+    document.getElementById("frame")!.style.display = "none";
+  };
+
   return (
-    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
+    <div onClick={handlefram} className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="bg-white sticky top-0 z-20 lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px]">
           <div className="flex flex-col">
