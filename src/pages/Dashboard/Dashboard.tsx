@@ -38,13 +38,14 @@ import tag from '/tag.svg';
 
 const Dashboard = () => {
 
-  const { data } = useSelector((state: RootState) => state.resturantdata);
+  const  {data}  = useSelector((state: RootState) => state.resturantdata);
+ 
   console.log("restaurantData: ", data);
   
   const useAppDispatch = () => useDispatch<AppDispatch>();
   const dispatch = useAppDispatch();
   const id: string | null = localStorage.getItem("id");
-  console.log("id: ", id);
+  // console.log("id: ", id);
   useEffect(() => {
     if (id) {
       dispatch(fetchMostRecommandItemsDetails({ id }) as any);
@@ -52,7 +53,7 @@ const Dashboard = () => {
   }, [dispatch, id]);
 
   const top4menu = useSelector((state: RootState) => state.mostRecommand);
-  console.log("topmenu: ",top4menu?.data?.menuItems);
+  // console.log("topmenu: ",top4menu?.data?.menuItems);
 
 
 
@@ -66,13 +67,29 @@ const Dashboard = () => {
 
 
   const [status,setstatus] = useState(1);
+  console.log(data)
+  console.log(data?.additionalDetails);
+  console.log(data?.category);
 
+  const [marketing,setmarketing]=useState(false);
+
+  
   useEffect(() => {
-    if(data?.category )
-      {
-        setstatus(2);
+    if (data?.category && data.category.length > 0) {
+      if (data.additionalDetails) {
+        if (marketing) {
+          setstatus(3);
+        } else {
+          setstatus(2);
+        }
+      } else {
+        setstatus(1);
       }
-  }, []);
+    }
+  }, [data, marketing]);
+  
+
+
 
   // navbar fram
   const handlefram = () => {
@@ -119,7 +136,7 @@ const Dashboard = () => {
           </div>
 
           {/* Hellow Foodoos */}
-          {status <= 3 ? (
+          {status < 3 ? (
             <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex py-[1.5rem] px-[2.5rem] rounded-lg ">
               <div className="w-[40%] h-fit">
                 <p className="flex items-center gap-4 font-Sen font-[700] text-[2rem] text-nowrap text-[#505050] tracking-tight">
@@ -179,11 +196,23 @@ const Dashboard = () => {
                         Complete Business Profile for maximum branding
                       </p>
                     </div>
-                    <div className="flex items-center justify-end">
-                      <button className="bg-[#FFCF27] px-[2rem] py-[.65rem] my-1  rounded-lg text-[.98rem] text-black">
-                        Completed
-                      </button>
-                    </div>
+                    {status >= 1 ? (
+                      <div className="flex items-center justify-end">
+                        <button className="bg-[#FFCF27] px-[2rem] py-[.65rem] my-1  rounded-lg text-[.98rem] text-black">
+                          Completed
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-end">
+                        <Link
+                          to="/setting"
+                          onClick={handleScrollToTop}
+                          className="bg-white px-[2rem] py-[.65rem] my-1 flex items-center  text-nowrap rounded-lg text-[.98rem] text-black"
+                        >
+                          Start Now
+                        </Link>
+                      </div>
+                    )}
                   </div>
                   <div className="w-full h-fit flex hover:bg-[#004AAD] hover:text-white  gap-4 bg-[#D7E8FF] py-3 px-6 rounded-xl justify-between">
                     <div className="font-inter leading-[1.5rem]">
@@ -194,7 +223,7 @@ const Dashboard = () => {
                         Create digital menu for better customer interaction
                       </p>
                     </div>
-                    {status == 2 ? (
+                    {status >= 2 ? (
                       <div className="flex items-center justify-end">
                         <button className="bg-[#FFCF27] px-[2rem] py-[.65rem] my-1  rounded-lg text-[.98rem] text-black">
                           Completed
