@@ -61,21 +61,33 @@ const Overview: React.FC = () => {
     let endDate: Date;
 
     if (selectedDay === "Today") {
+      // Show data for the same date in the selected month
       startDate = new Date(year, monthIndex, today.getDate());
       endDate = new Date(year, monthIndex, today.getDate() + 1);
     } else if (selectedDay === "Weekly") {
+      // Calculate the start of the current week in the selected month
       const dayOfWeek = today.getDay();
       const startOfWeek = today.getDate() - dayOfWeek;
       startDate = new Date(year, monthIndex, startOfWeek);
-      endDate = new Date(year, monthIndex, startOfWeek + 7);
+      
+      // Ensure startDate is within the selected month
+      if (startDate.getMonth() !== monthIndex) {
+        startDate = new Date(year, monthIndex, 1);
+      }
+  
+      // Calculate endDate as 7 days after startDate
+      endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 7);
+  
+      // Ensure endDate does not exceed the selected month
+      if (endDate.getMonth() !== monthIndex) {
+        endDate = new Date(year, monthIndex + 1, 0); // Last day of the selected month
+      }
     }
 
-    const isDateInRange = (date: Date) => date >= startDate && date < endDate;
+    // console.log(selectedDay," - ",startDate," : ",endDate);
 
-    // const newCustomersCount = data?.filter((customer: any) => {
-    //   const firstVisitDate = new Date(customer?.visits[0]);
-    //   return isDateInRange(firstVisitDate);
-    // }).length;
+    const isDateInRange = (date: Date) => date >= startDate && date < endDate;
 
     const newCustomersCount = data?.filter((customer: any) => {
       const firstVisitDate = new Date(customer?.visits[0]);
@@ -83,19 +95,6 @@ const Overview: React.FC = () => {
       return isDateInRange(firstVisitDate) || (secondVisitDate && isDateInRange(secondVisitDate));
     }).length;
 
-    // const regularCustomersCount = data?.filter((customer: any) => {
-    //   const totalVisits = customer.visits.filter((visit: string) => {
-    //     const visitDate = new Date(visit);
-    //     return visitDate <= endDate;
-    //   }).length;
-
-    //   const recentVisit = customer.visits.some((visit: string) => {
-    //     const visitDate = new Date(visit);
-    //     return isDateInRange(visitDate);
-    //   });
-
-    //   return totalVisits > 2 && recentVisit;
-    // }).length;
 
     const regularCustomersCount = data?.filter((customer: any) => {
       const totalVisitsInMonth = customer?.visits?.filter((visit: string) => {
@@ -120,14 +119,6 @@ const Overview: React.FC = () => {
         return visitsInRange >= 1 && totalVisitsInMonth >= 3;
       }
     }).length;
-
-    // const totalCustomersCount = data?.reduce((total: number, customer: any) => {
-    //   const visitsInRange = customer.visits.filter((visit: string) => {
-    //     const visitDate = new Date(visit);
-    //     return isDateInRange(visitDate);
-    //   }).length;
-    //   return total + visitsInRange;
-    // }, 0);
 
     const totalCustomersCount = data?.filter((customer: any) => {
       return customer?.visits?.some((visit: string) => {
