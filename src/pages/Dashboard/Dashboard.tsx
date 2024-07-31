@@ -89,7 +89,64 @@ const Dashboard = () => {
   }, [data, marketing]);
   
 
+  //overview
+  const [selectedDays, setSelectedDays] = useState(7); // Default to "Last 7 Days"
+  const [totalVisits, setTotalVisits] = useState(0);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [returningCustomers, setReturningCustomers] = useState(0);
 
+  const handleSelectChange = (event) => {
+    setSelectedDays(parseInt(event.target.value));
+  };
+
+  const getFilteredData = (data:any) => {
+    const days = selectedDays;
+    const now = new Date();
+    const startDate = new Date(now);
+    startDate.setDate(now.getDate() - days);
+  
+    let totalVisits = 0;
+    let totalCustomers = 0;
+    let returningCustomers = 0;
+  
+    data.forEach((customer) => {
+      const visitsInTimeFrame = customer?.visits?.filter((visit: string) => {
+        const visitDate = new Date(visit);
+        return visitDate >= startDate && visitDate <= now;
+      });
+  
+      if (visitsInTimeFrame.length > 0) {
+        totalVisits += visitsInTimeFrame.length;
+        totalCustomers++;
+  
+        if (visitsInTimeFrame.length >= 3) {
+          returningCustomers++;
+        }
+      }
+    });
+  
+    return {
+      totalVisits,
+      totalCustomers,
+      returningCustomers
+    };
+  };
+
+  useEffect(()=>{
+
+    // const { totalVisits, totalCustomers, returningCustomers } = getFilteredData(data?.customerData);
+    // setTotalVisits(totalVisits);
+    // setTotalCustomers(totalCustomers);  
+    // setReturningCustomers(returningCustomers);
+
+    if (data?.customerData) {
+      const { totalVisits, totalCustomers, returningCustomers } = getFilteredData(data.customerData);
+      setTotalVisits(totalVisits);
+      setTotalCustomers(totalCustomers);
+      setReturningCustomers(returningCustomers);
+    }
+
+  },[selectedDays,data]);
 
   // navbar fram
   const handlefram = () => {
@@ -393,6 +450,8 @@ const Dashboard = () => {
                 <select
                   id="date"
                   name="date"
+                  value={selectedDays} 
+                  onChange={handleSelectChange}
                   className="font-inter px-2 py-3  sm:text-sm rounded-lg  font-semibold"
                 >
                   <option value="7">Last 7 Days</option>
@@ -426,7 +485,7 @@ const Dashboard = () => {
             <div className="w-full h-fit mt-[2rem] mb-[1rem] flex flex-col gap-4 ">
               <div className="w-full h-fit flex gap-2 justify-between">
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-                  <p className="font-[700] text-[1.8rem]">300</p>
+                  <p className="font-[700] text-[1.8rem]">{totalVisits}</p>
                   <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2 ">
                     <span>
                       <IoPeopleSharp className="size-5" />
@@ -435,7 +494,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-                  <p className="font-[700] text-[1.8rem]">500</p>
+                  <p className="font-[700] text-[1.8rem]">{totalCustomers}</p>
                   <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2 ">
                     <span>
                       <img src={icon} className="size-5 " alt="icon" />
@@ -444,7 +503,7 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-                  <p className="font-[700] text-[1.8rem]">100</p>
+                  <p className="font-[700] text-[1.8rem]">{returningCustomers}</p>
                   <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2 ">
                     <span>
                       <img src={icon1} className="size-5 " alt="icon" />
