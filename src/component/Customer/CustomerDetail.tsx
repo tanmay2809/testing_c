@@ -60,86 +60,42 @@ const daysSinceFirstVisit = (visits: string[]): number => {
 
 const getLastVisitDisplay = (visits: string[]): string => {
   if (visits.length === 0) return "No visits";
+
   const lastVisit = new Date(visits[visits.length - 1]);
   const now = new Date();
 
-  const lastVisitDate = lastVisit.getDate();
-  const lastVisitMonth = lastVisit.getMonth();
-  const lastVisitYear = lastVisit.getFullYear();
+  const timeDifference = now.getTime() - lastVisit.getTime();
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-  const currentDate = now.getDate();
-  const currentMonth = now.getMonth();
-  const currentYear = now.getFullYear();
-
-  if (
-    lastVisitDate === currentDate &&
-    lastVisitMonth === currentMonth &&
-    lastVisitYear === currentYear
-  ) {
+  if (daysDifference === 0) {
     return "Today";
-  }
-
-  const yesterday = new Date();
-  yesterday.setDate(currentDate - 1);
-  if (
-    lastVisitDate === yesterday.getDate() &&
-    lastVisitMonth === yesterday.getMonth() &&
-    lastVisitYear === yesterday.getFullYear()
-  ) {
+  } else if (daysDifference === 1) {
     return "1 day ago";
+  } else if (daysDifference <= 7) {
+    return `${daysDifference} days ago`;
+  } else {
+    return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
   }
-
-  if (
-    lastVisitMonth === yesterday.getMonth() &&
-    lastVisitYear === yesterday.getFullYear() &&
-    currentDate - lastVisitDate <= 7
-  ) {
-    const diff = currentDate - lastVisitDate;
-    return `${diff} days ago`;
-  }
-  return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
 };
 
 const getFirstVisitDisplay = (visits: string[]): string => {
   if (visits.length === 0) return "No visits";
-  const lastVisit = new Date(visits[0]);
+
+  const firstVisit = new Date(visits[0]);
   const now = new Date();
 
-  const lastVisitDate = lastVisit.getDate();
-  const lastVisitMonth = lastVisit.getMonth();
-  const lastVisitYear = lastVisit.getFullYear();
+  const timeDifference = now.getTime() - firstVisit.getTime();
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-  const currentDate = now.getDate();
-  const currentMonth = now.getMonth();
-  const currentYear = now.getFullYear();
-
-  if (
-    lastVisitDate === currentDate &&
-    lastVisitMonth === currentMonth &&
-    lastVisitYear === currentYear
-  ) {
+  if (daysDifference === 0) {
     return "Today";
-  }
-
-  const yesterday = new Date();
-  yesterday.setDate(currentDate - 1);
-  if (
-    lastVisitDate === yesterday.getDate() &&
-    lastVisitMonth === yesterday.getMonth() &&
-    lastVisitYear === yesterday.getFullYear()
-  ) {
+  } else if (daysDifference === 1) {
     return "1 day ago";
+  } else if (daysDifference <= 7) {
+    return `${daysDifference} days ago`;
+  } else {
+    return firstVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
   }
-
-  if (
-    lastVisitMonth === yesterday.getMonth() &&
-    lastVisitYear === yesterday.getFullYear() &&
-    currentDate - lastVisitDate <= 7
-  ) {
-    const diff = currentDate - lastVisitDate;
-    return `${diff} days ago`;
-  }
-  return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
 };
 
 const CustomerDetails: React.FC<CustomerDetailsProps> = ({
