@@ -382,6 +382,7 @@ const Menu = () => {
                         <div
                           className="text-[1.2rem] ml-auto cursor-pointer"
                           onClick={(e) => {
+                            setSelectedCategoryId(item._id);
                             handleActionClick(e);
                             handleMoreClick(item._id);
                           }}
@@ -425,7 +426,7 @@ const Menu = () => {
                               }}
                             >
                               Delete
-                              <FiTrash2 className="bg-white text-[1.4rem] -top-3 -right-3 text-[#BE1D3A]" />
+                              <FiTrash2 className="bg-transparent text-[1.4rem] -top-3 -right-3 text-[#BE1D3A]" />
                             </button>
                           </div>
                         )}
