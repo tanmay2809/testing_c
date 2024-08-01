@@ -206,19 +206,18 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
                 {image === null ? (
                   <div className="size-[90px] flex items-center justify-center w-full">
                     <label
-                      htmlFor="dropzone-file"
+                      htmlFor="image"
                       className="flex flex-col border border-[#004AAD] items-center justify-center w-full h-full rounded-lg cursor-pointer hover:bg-gray-100 "
                     >
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
                         <IoCloudUploadOutline className="text-[#004AAD] text-2xl" />
                       </div>
                       <input
-                        id="dropzone-file"
+                        id="image"
                         name="image"
                         type="file"
                         className="hidden"
                         accept="image/*"
-                        required
                         onChange={(e) => {
                           if (e.target.files && e.target.files[0])
                             handleImageChange(e.target.files[0]);
@@ -241,7 +240,6 @@ const AddSubCategory: React.FC<SubCategoryProps> = ({
               <div className="w-1/2 flex flex-col items-start justify-center font-inter">
                 <p className="flex flex-row gap-2 text-[0.9rem] font-bold">
                   Sub Category icon
-                  <span className="text-[#ED4F4F]">*</span>
                 </p>
                 <p className="flex flex-row text-[0.8rem] gap-2">
                   Image format .jpg, .jpeg, .png and minimum size 300x300

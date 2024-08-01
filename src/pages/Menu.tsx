@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "../main";
 import { toast } from "react-toastify";
@@ -83,15 +83,12 @@ const Menu = () => {
   const [selectedType, setSelectedType] = useState<string>("");
   const [showActive, setShowActive] = useState<boolean>(false);
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
-    categories[0]?._id
-  );
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>();
+  // categories[0]?._id
 
   const [categoryDelete, setCategoryDelete] = useState<boolean>(false);
 
   const [dropdownVisible, setDropdownVisible] = useState<string>("");
-
-  const isFirstLoad = useRef(true);
 
   //search bar
   const [search, setSearch] = useState<string>("");
@@ -148,16 +145,14 @@ const Menu = () => {
     if (data) {
       setCategories(data.category || []);
     }
-    if (isFirstLoad.current && categories.length > 0) {
-      setSelectedCategoryId(categories[0]._id);
-      isFirstLoad.current = false;
-    }
+    // if (isFirstLoad.current && categories.length > 0) {
+    //   setSelectedCategoryId(categories[0]._id);
+    //   isFirstLoad.current = false;
+    // }
   }, [data, categories]);
 
   const filteredCategory = selectedCategoryId
     ? categories.filter((category) => category._id === selectedCategoryId)
-    : categories.length > 0
-    ? [categories[0]]
     : [];
 
   const handleSelectedType = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -196,9 +191,8 @@ const Menu = () => {
       });
   };
 
-
-   // navbar fram
-   const handlefram = () => {
+  // navbar fram
+  const handlefram = () => {
     document.getElementById("frame")!.style.display = "none";
   };
 

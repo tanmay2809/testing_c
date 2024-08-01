@@ -17,7 +17,7 @@ import { RootState } from "../../redux/store";
 
 interface DeleteProps {
   setModal: (isOpen: boolean) => void;
-  categoryID: string | null;
+  categoryID: string | null | undefined;
   restaurantID: string | null;
 }
 

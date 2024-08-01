@@ -18,7 +18,7 @@ import { RootState } from "../../redux/store";
 
 interface CategoryProps {
   isCategoryOpen: (isOpen: boolean) => void;
-  categoryID: string | null;
+  categoryID: string | null | undefined;
   categoryName: string;
 }
 
