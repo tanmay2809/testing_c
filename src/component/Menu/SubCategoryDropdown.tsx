@@ -45,7 +45,7 @@ interface Props {
 }
 
 const id = localStorage.getItem("id");
-console.log(id);
+
 const SubCategoryDropdown: React.FC<Props> = ({
   category,
   setIsEditMenuOpen,
@@ -112,23 +112,24 @@ const SubCategoryDropdown: React.FC<Props> = ({
       });
   };
 
+  const [subcategory, setSubcategory] = useState<SubcategoryItem[]>();
+
+  let updatedCategories = Array.from(category?.[0]?.subcategory || []);
+
   useEffect(() => {
     if (category && category.length > 0 && category[0].subcategory.length > 0) {
-      setIsOpen({ [category[0].subcategory[0]._id]: true });
+      setSubcategory(category[0]?.subcategory);
     }
   }, [category]);
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
-    console.log(result);
-    let updatedCategories = Array.from(category?.[0]?.subcategory || []);
 
     const [reorderedCategory] = updatedCategories.splice(
       result.source.index,
       1
     );
     updatedCategories.splice(result.destination.index, 0, reorderedCategory);
-    console.log(updatedCategories);
 
     // if (category && category[0]) {
     //   const updatedCategory = { ...category[0], subcategory: updatedCategories };
@@ -159,7 +160,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
   return (
     <div className="space-y-2">
       <div>
-        <DragDropContext onDragEnd={handleDragEnd}>
+        <DragDropContext onDragEnd={() => handleDragEnd}>
           {category?.map((cat) => (
             <Droppable
               droppableId={`subcategory-${cat._id}`}
@@ -173,7 +174,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  {cat.subcategory.map((subcategory, index) => (
+                  {subcategory?.map((subcategory, index) => (
                     <Draggable
                       key={subcategory._id}
                       draggableId={subcategory._id}
