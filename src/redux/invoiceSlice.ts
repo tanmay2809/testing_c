@@ -16,15 +16,15 @@ interface InvoiceState {
 
 const initialState: InvoiceState = {
   invoices: [
-    {
-      number: "#12345",
-      name: "Foodoos Private Limited",
-      date: "12-05-2022",
-      amount: 5500,
-      charges: 550,
-      mode: "UPI",
-      period: "12 Months",
-    },
+    // {
+    //   number: "#12345",
+    //   name: "Foodoos Private Limited",
+    //   date: "12-05-2022",
+    //   amount: 5500,
+    //   charges: 550,
+    //   mode: "UPI",
+    //   period: "12 Months",
+    // },
   ],
 };
 

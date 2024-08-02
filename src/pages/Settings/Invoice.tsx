@@ -27,15 +27,18 @@ const Invoice = () => {
     }, 500);
   };
 
-   // navbar fram
-   const handlefram = () => {
+  // navbar fram
+  const handlefram = () => {
     document.getElementById("frame")!.style.display = "none";
   };
 
   return (
     <>
       <div className="w-full h-fit relative">
-        <div onClick={handlefram} className="lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%]">
+        <div
+          onClick={handlefram}
+          className="lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%]"
+        >
           <div className="w-full flex flex-col gap-2">
             <div className="flex flex-col -mt-4">
               <h1 className="text-[1.5rem] text-[#4D4D4D] font-[500]">
@@ -49,6 +52,11 @@ const Invoice = () => {
               </p>
             </div>
             <div className="flex flex-col">
+              {invoices.length === 0 && (
+                <h1 className="text-[1.8rem] text-[#4D4D4D] text-center font-semibold">
+                  No Invoice Found!
+                </h1>
+              )}
               {invoices.map((invoice: InvoiceType) => (
                 <div
                   key={invoice.number}
