@@ -236,7 +236,7 @@ const Dashboard = () => {
 
               <div className="w-[60%] h-fit flex items-end flex-col  font-inter py-[1rem] ">
                 <Link
-                  to="https://wa.me/917003876815?text=Hi%20"
+                  to="https://wa.me/917044292143?text=Hi%20"
                   className="bg-white flex items-center py-2  border border-[#000000CC] rounded-lg text-nowrap justify-center  px-5 font-[500] text-[1.1rem]  gap-2 left-0"
                 >
                   {" "}
@@ -336,7 +336,7 @@ const Dashboard = () => {
               </div>
               <div>
                 <Link
-                  to="https://wa.me/917003876815?text=Hi%20"
+                  to="https://wa.me/917044292143?text=Hi%20"
                   className="bg-white flex items-center py-2  border border-[#000000CC] rounded-lg text-nowrap justify-center  px-5 font-[500] text-[1.1rem]  gap-2 left-0"
                 >
                   {" "}
@@ -368,10 +368,10 @@ const Dashboard = () => {
                   <option value="365">Last 12 Months</option>
                 </select>
 
-                <button className="flex items-center gap-2 bg-white rounded-lg px-5 py-2">
+                <Link to="/wallet" className="flex items-center gap-2 bg-white rounded-lg px-5 py-2">
                   {" "}
                   <BsPlus className="size-6" /> Refill Credit
-                </button>
+                </Link>
               </div>
             </div>
 

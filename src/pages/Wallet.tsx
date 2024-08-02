@@ -75,7 +75,7 @@ const Wallet: React.FC = () => {
               </p>
             </div>
             <div className="w-fit">
-              <Link to="https://wa.me/917003876815?text=Hi%20" target="_blank">
+              <Link to="https://wa.me/917044292143?text=Hi%20" target="_blank">
                 <button className="w-[160px] flex flex-row items-center gap-2 px-4 py-2 border-2 text-[18px] font-[500] rounded-[8px]">
                   <img className="w-6 h-6" src={whatsapp} />
                   Contact Us
