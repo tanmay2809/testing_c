@@ -3,7 +3,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { BsDownload } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import whatsapp from "../assets/whatsapp.png";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoCloseCircle } from "react-icons/io5";
 import recharge from "../assets/recharge.png";
 
@@ -242,7 +242,7 @@ const Wallet: React.FC = () => {
                   />
                 </div>
                 <div className="w-full relative font-inter">
-                  <span className="absolute text-[1.5rem] text-[#494949] font-semibold left-4 top-1/2 transform -translate-y-1/2 font-bold">
+                  <span className="absolute text-[1.5rem] text-[#494949] font-semibold left-4 top-1/2 transform -translate-y-1/2 ">
                     ₹
                   </span>
                   <input

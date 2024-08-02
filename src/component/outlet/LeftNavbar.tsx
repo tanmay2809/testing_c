@@ -196,7 +196,7 @@ const LeftNavbar = () => {
           </div>
         </div>
 
-        <div className="hidden lg:flex relative w-full flex flex-col justify-evenly items-center">
+        <div className="md:hidden lg:flex relative w-full flex flex-col justify-evenly items-center">
           <img
             onClick={handleToggle}
             className={`absolute top-5 size-14 cursor-pointer -right-7 ${

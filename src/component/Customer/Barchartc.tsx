@@ -76,7 +76,7 @@ export const BarChartc: React.FC<BarChartcProps> = ({ dailyVisits }) => {
   });
 
   sortedDates.forEach((date) => {
-    data.push([date, dailyVisits[date]]);
+    data.push([date, dailyVisits[date].toString()]);
   });
 
   const options: GoogleChartOptions = {
