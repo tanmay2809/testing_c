@@ -38,9 +38,26 @@ export interface EditItem {
   type: string;
 }
 
+interface Item {
+  _id?: string;
+  name: string;
+  image: string[];
+  description: string;
+  price: string;
+  category: string;
+  subcategory: string;
+  serves: string;
+  tag: string;
+  active?: boolean;
+  categoryActive?: boolean;
+  clicks?: number;
+  addone: { name: string; price: string; id?: string }[];
+  type: string;
+}
+
 interface EditMenuProps {
   setIsEditMenu: (isOpen: boolean) => void;
-  item: EditItem;
+  item: Item;
   categories: { _id: string; name: string; subcategory: SubcategoryItem[] }[];
 }
 
@@ -97,7 +114,7 @@ const EditMenuItem: React.FC<EditMenuProps> = ({
         item.addone.map((addon) => ({
           name: addon.name,
           additionalPrice: addon.price,
-          id: addon.id,
+          id: "",
         }))
       );
     }
