@@ -52,6 +52,8 @@ const CustomerList: React.FC = () => {
   const [customDateNotVisit, setCustomDateNotVisit] = useState<string>("");
   const [segmentation, setSegmentation] = useState<string[]>([]);
   const [gender, setGender] = useState<string[]>([]);
+  const [visitFilter, setVisitFilter] = useState<string>("");
+  const [nonVisitFilter, setNonVisitFilter] = useState<string>("");
 
   useEffect(() => {
     setCustomerData(data?.customerData);
@@ -100,7 +102,7 @@ const CustomerList: React.FC = () => {
                 customer.visits.some(
                   (visit: string) => new Date(visit) >= sixtyDaysAgo
                 )) ||
-              (visitFilter === "Custom" &&
+              (visitFilter.includes("Last visit:") &&
                 customer.visits.some(
                   (visit: string) => new Date(visit) >= customDateVisitObj
                 ));
@@ -118,15 +120,15 @@ const CustomerList: React.FC = () => {
             nonVisitCondition =
               (visitFilter === "Not visited in Last 30 days" &&
                 customer.visits.some(
-                  (visit: string) => new Date(visit) >= thirtyDaysAgo
+                  (visit: string) => new Date(visit) <= thirtyDaysAgo
                 )) ||
               (visitFilter === "Not visited in Last 60 days" &&
                 customer.visits.some(
-                  (visit: string) => new Date(visit) >= sixtyDaysAgo
+                  (visit: string) => new Date(visit) <= sixtyDaysAgo
                 )) ||
-              (visitFilter === "Custom" &&
+              (visitFilter.includes("Not visited since:") &&
                 customer.visits.some(
-                  (visit: string) => new Date(visit) >= customDateNotVisitObj
+                  (visit: string) => new Date(visit) <= customDateNotVisitObj
                 ));
           });
           return nonVisitCondition;
@@ -166,35 +168,6 @@ const CustomerList: React.FC = () => {
         // If only one filtered array is non-empty, use it
         filteredCustomers = nonEmptyFilteredArrays[0];
       }
-
-      // If both filters are non-empty, find the intersection
-      // if (
-      //   genderFiltered.length > 0 &&
-      //   segmentationFiltered.length > 0 &&
-      //   visitFiltered.length > 0 &&
-      //   nonVisitFiltered.length > 0
-      // ) {
-      //   filteredCustomers = segmentationFiltered
-      //     .filter((customer: Customer) => genderFiltered.includes(customer))
-      //     .filter((customer: Customer) => visitFiltered.includes(customer))
-      //     .filter((customer: Customer) => nonVisitFiltered.includes(customer));
-      // } else if (
-      //   genderFiltered.length > 0 &&
-      //   segmentationFiltered.length > 0 &&
-      //   visitFiltered.length > 0
-      // ) {
-      //   filteredCustomers = segmentationFiltered
-      //     .filter((customer: Customer) => genderFiltered.includes(customer))
-      //     .filter((customer: Customer) => visitFiltered.includes(customer));
-      // } else {
-      //   filteredCustomers.push(...genderFiltered);
-      //   console.log("gender added: ", filteredCustomers);
-      //   filteredCustomers.push(...segmentationFiltered);
-      //   console.log("segmentation added: ", filteredCustomers);
-      //   filteredCustomers.push(...visitFiltered);
-      //   console.log("segmentation added: ", visitFiltered);
-      // }
-
       console.log("Final result: ", filteredCustomers);
     } else {
       //if filter data is empty then filtered customers=all customers
@@ -220,7 +193,7 @@ const CustomerList: React.FC = () => {
       </button>
     );
     // If the total pages are more than the max visible buttons, add dots
-    if (totalPages+1 > maxVisibleButtons ) {
+    if (totalPages + 1 > maxVisibleButtons) {
       // Show the dots after the first page
       if (currentPage > maxVisibleButtons) {
         buttons.push(
@@ -304,6 +277,42 @@ const CustomerList: React.FC = () => {
     setFilterData(data);
   };
   const handleFilterDataRemove = (data: string) => {
+    if (data === "Female" || data === "Male" || data === "Others") {
+      const updatedGender = gender.filter((g) => g !== data);
+      setGender(updatedGender);
+    }
+    if (
+      data === "New" ||
+      data === "Risk" ||
+      data === "Regular" ||
+      data === "Loyal"
+    ) {
+      const updatedSegmentation = segmentation.filter((seg) => seg !== data);
+      setSegmentation(updatedSegmentation);
+    }
+    if (
+      data === "Visited in Last 30 days" ||
+      data === "Visited in Last 60 days"
+    ) {
+      setVisitFilter("");
+    }
+
+    if (
+      data === "Not visited in Last 30 days" ||
+      data === "Not visited in Last 60 days"
+    ) {
+      setNonVisitFilter("");
+    }
+
+    if (data.includes("Last visit:")) {
+      setCustomDateVisit("");
+      setVisitFilter("");
+    }
+    if (data.includes("Not visited since:")) {
+      setCustomDateNotVisit("");
+      setNonVisitFilter("");
+    }
+
     let newData: string[] = filterData.filter((el: string) => el !== data);
     setFilterData(newData);
   };
@@ -337,50 +346,50 @@ const CustomerList: React.FC = () => {
     setCustomerData(sortedData);
   };
 
-//   const getLastVisitDisplay = (visits: string[]): string => {
-//   if (visits.length === 0) return "No visits";
+  //   const getLastVisitDisplay = (visits: string[]): string => {
+  //   if (visits.length === 0) return "No visits";
 
-//   const lastVisit = new Date(visits[visits.length - 1]);
-//   const now = new Date();
+  //   const lastVisit = new Date(visits[visits.length - 1]);
+  //   const now = new Date();
 
-//   const timeDifference = now.getTime() - lastVisit.getTime();
-//   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  //   const timeDifference = now.getTime() - lastVisit.getTime();
+  //   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-//   if (daysDifference === 0) {
-//     return "Today";
-//   } else if (daysDifference === 1) {
-//     return "1 day ago";
-//   } else if (daysDifference <= 7) {
-//     return `${daysDifference} days ago`;
-//   } else {
-//     return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
-//   }
-// };
+  //   if (daysDifference === 0) {
+  //     return "Today";
+  //   } else if (daysDifference === 1) {
+  //     return "1 day ago";
+  //   } else if (daysDifference <= 7) {
+  //     return `${daysDifference} days ago`;
+  //   } else {
+  //     return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
+  //   }
+  // };
 
-const getLastVisitDisplay = (visits: string[]): string => {
-  if (visits.length === 0) return "No visits";
+  const getLastVisitDisplay = (visits: string[]): string => {
+    if (visits.length === 0) return "No visits";
 
-  const lastVisit = new Date(visits[visits.length - 1]);
-  const now = new Date();
+    const lastVisit = new Date(visits[visits.length - 1]);
+    const now = new Date();
 
-  // Set time components to 0 to only compare dates
-  lastVisit.setHours(0, 0, 0, 0);
-  now.setHours(0, 0, 0, 0);
+    // Set time components to 0 to only compare dates
+    lastVisit.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
 
-  const timeDifference = now.getTime() - lastVisit.getTime();
-  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const timeDifference = now.getTime() - lastVisit.getTime();
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-  if (daysDifference === 0) {
-    return "Today";
-  } else if (daysDifference === 1) {
-    return "1 day ago";
-  } else if (daysDifference <= 7) {
-    return `${daysDifference} days ago`;
-  } else {
-    return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
-  }
-};
-  
+    if (daysDifference === 0) {
+      return "Today";
+    } else if (daysDifference === 1) {
+      return "1 day ago";
+    } else if (daysDifference <= 7) {
+      return `${daysDifference} days ago`;
+    } else {
+      return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
+    }
+  };
+
   const getCustomerSegment = (
     visits: string[]
   ): "New" | "Regular" | "Risk" | "Loyal" => {
@@ -399,7 +408,10 @@ const getLastVisitDisplay = (visits: string[]): string => {
 
     if (visitsWithin30Days?.length === 1 || visitsWithin30Days?.length === 2) {
       return "New";
-    } else if (visitsWithin30Days?.length >= 3 || (visitsWithin60Days?.length > 3 && visitsWithin60Days?.length <= 5)) {
+    } else if (
+      visitsWithin30Days?.length >= 3 ||
+      (visitsWithin60Days?.length > 3 && visitsWithin60Days?.length <= 5)
+    ) {
       return "Regular";
     } else if (visitsWithin60Days?.length > 5) {
       return "Loyal";
@@ -436,14 +448,16 @@ const getLastVisitDisplay = (visits: string[]): string => {
 
   console.log("Segmentation visible: ", segmentationVisible);
 
-
-   // navbar fram
-   const handlefram = () => {
+  // navbar fram
+  const handlefram = () => {
     document.getElementById("frame")!.style.display = "none";
   };
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
-      <div onClick={handlefram} className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
+      <div
+        onClick={handlefram}
+        className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] "
+      >
         {/*Top div */}
         <div className="mb-4 flex justify-between items-center font-inter">
           <div className="relative flex items-center w-[410px]">
@@ -673,9 +687,6 @@ const getLastVisitDisplay = (visits: string[]): string => {
         isVisible={isFilterVisible}
         onClose={toggleFilter}
         setFilterData={filterElementsAdd}
-        // customerData={customerData}
-        // setCustomerData={setCustomerData}
-        // originalData={data?.customerData}
         customDateVisit={customDateVisit}
         customDateNotVisit={customDateNotVisit}
         setcustomDateVisit={setCustomDateVisit}
@@ -684,6 +695,10 @@ const getLastVisitDisplay = (visits: string[]): string => {
         setGender={setGender}
         segmentation={segmentation}
         setSegmentation={setSegmentation}
+        visitFilter={visitFilter}
+        setVisitFilter={setVisitFilter}
+        nonVisitFilter={nonVisitFilter}
+        setNonVisitFilter={setNonVisitFilter}
       />
     </div>
   );
