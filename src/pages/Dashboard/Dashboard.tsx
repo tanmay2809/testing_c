@@ -31,8 +31,7 @@ import icon1 from '../../assets/Regular Visitor.png'
 import notfound from '../../assets/No data found.png'
 
 import Chart1 from '../../component/dashboard/Chart1';
-import { MenuItem } from '../../component/Menu/AddMenuItem';
-import tag from '/tag.svg';
+
 
 
 
@@ -71,8 +70,9 @@ const Dashboard = () => {
   console.log(data?.additionalDetails);
   console.log(data?.category);
 
-  const [marketing,setmarketing]=useState(false);
+  // const [marketing,setmarketing]=useState(false);
 
+  const marketing=0;
   
   useEffect(() => {
     if (data?.category && data.category.length > 0) {
@@ -95,7 +95,7 @@ const Dashboard = () => {
   const [totalCustomers, setTotalCustomers] = useState(0);
   const [returningCustomers, setReturningCustomers] = useState(0);
 
-  const handleSelectChange = (event) => {
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDays(parseInt(event.target.value));
   };
 
@@ -109,7 +109,7 @@ const Dashboard = () => {
     let totalCustomers = 0;
     let returningCustomers = 0;
   
-    data.forEach((customer) => {
+    data.forEach((customer:any) => {
       const visitsInTimeFrame = customer?.visits?.filter((visit: string) => {
         const visitDate = new Date(visit);
         return visitDate >= startDate && visitDate <= now;
@@ -518,7 +518,7 @@ const Dashboard = () => {
           {/* menu performance */}
           <div className=" w-full grid lg:grid-cols-2 md:grid-cols-1  gap-4 h-fit font-inter   rounded-lg">
             {/* left part */}
-            <div className=" w-full h-fit flex flex-col  my-[1rem]  bg-[#F1F7FF] rounded-lg ">
+            <div className=" w-full h-[508px] flex flex-col  my-[1rem]  bg-[#F1F7FF] rounded-lg ">
               <div className="flex justify-between items-center font-inter border-b px-[1rem] border-[#00000099] py-4">
                 <p className="font-[700] text-[1.6rem] text-[#505050]">
                   Menu Performance

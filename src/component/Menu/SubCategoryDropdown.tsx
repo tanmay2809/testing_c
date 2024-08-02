@@ -160,7 +160,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
   return (
     <div className="space-y-2">
       <div>
-        <DragDropContext onDragEnd={() => handleDragEnd}>
+        <DragDropContext onDragEnd={handleDragEnd}>
           {category?.map((cat) => (
             <Droppable
               droppableId={`subcategory-${cat._id}`}
