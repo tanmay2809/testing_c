@@ -4,7 +4,7 @@ import { baseUrl } from "../main";
 import { toast } from "react-toastify";
 
 // components
-import EditMenuItem, { EditItem } from "../component/Menu/EditMenu";
+import EditMenuItem, { Item } from "../component/Menu/EditMenu";
 import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
@@ -63,7 +63,7 @@ const Menu = () => {
   const [editSubCategoryModal, setEditSubCategoryModal] =
     useState<boolean>(false);
 
-  const [selectedCard, setSelectedCard] = useState<MenuItem | EditItem | null>(
+  const [selectedCard, setSelectedCard] = useState<MenuItem | Item | null>(
     null
   );
 
@@ -157,8 +157,8 @@ const Menu = () => {
     ? categories.filter((category) => category._id === selectedCategoryId)
     : categories.length > 0
     ? [categories[0]]
-      : [];
-  
+    : [];
+
   const handleSelectedType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(e.target.value);
   };
@@ -529,7 +529,7 @@ const Menu = () => {
                   {isEditMenuOpen && selectedCard && (
                     <EditMenuItem
                       setIsEditMenu={setIsEditMenuOpen}
-                      item={selectedCard as EditItem}
+                      item={selectedCard as Item}
                       categories={filteredCategory}
                     />
                   )}

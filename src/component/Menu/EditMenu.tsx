@@ -38,7 +38,7 @@ export interface EditItem {
   type: string;
 }
 
-interface Item {
+export interface Item {
   _id?: string;
   name: string;
   image: string[];
