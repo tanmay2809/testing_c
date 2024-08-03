@@ -668,7 +668,7 @@ const Analytics: React.FC = () => {
             </div>
             
             <div className="relative flex justify-center items-center mb-4 bg-black "> 
-                <div className="w-full h-fit  absolute -top-[15rem] lg:-ml-[51rem] md:-ml-[45rem]">
+                <div className="w-full h-fit  absolute -top-[15rem] lg:-ml-[49rem] md:-ml-[45rem]">
                   <Charts male={100} female={50} other={50} />
                 </div>
             </div>
