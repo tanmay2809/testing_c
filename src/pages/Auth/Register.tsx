@@ -17,7 +17,6 @@ import Loader from "../../component/outlet/Loader";
 interface FormData {
   name: string;
   email: string;
-
   type: string;
 }
 

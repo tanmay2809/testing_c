@@ -405,15 +405,11 @@ const CustomerList: React.FC = () => {
     const visitsWithin60Days = visits?.filter(
       (visit) => new Date(visit) >= sixtyDaysAgo
     );
-
     if (visitsWithin30Days?.length === 1 || visitsWithin30Days?.length === 2) {
       return "New";
-    } else if (
-      visitsWithin30Days?.length >= 3 ||
-      (visitsWithin60Days?.length > 3 && visitsWithin60Days?.length <= 5)
-    ) {
+    } else if (visitsWithin30Days?.length == 3 || visitsWithin30Days?.length == 4 || (visitsWithin60Days?.length > 3 && visitsWithin60Days?.length < 5)) {
       return "Regular";
-    } else if (visitsWithin60Days?.length > 5) {
+    } else if (visitsWithin60Days?.length >= 5) {
       return "Loyal";
     } else {
       return "Risk";

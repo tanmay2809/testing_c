@@ -9,10 +9,10 @@ interface ChartProps {
 
 export const options: GoogleChartOptions = {
   title: "",
-  pieHole: 0.6,
+  pieHole: 0.5,
   is3D: false,
   colors: ['#34C759','#F9AB35','#F93535'],
-  backgroundColor: '#F1F7FF',
+  backgroundColor: '',
 };
 
 export default function Charts({ male = 0, female = 0, other = 0 }: ChartProps) {
@@ -27,7 +27,7 @@ export default function Charts({ male = 0, female = 0, other = 0 }: ChartProps) 
     <Chart
       className=""
       chartType="PieChart"
-      width="850px"
+      width="1500px"
       height="450px"
       data={data}
       options={options}

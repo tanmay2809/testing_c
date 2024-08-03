@@ -653,24 +653,26 @@ const Analytics: React.FC = () => {
         </div>
 
         {/*pie chart and customer related div */}
-        <div className="lg:flex gap-4">
+        <div className="lg:flex gap-4 w-full h-fit">
           {/* Customer Gender Card */}
-          <div className="bg-[#F1F7FF] overflow-hidden rounded-lg p-6 lg:w-1/3 flex flex-col justify-between mt-4">
-            <h3 className="text-base font-bold mb-4">Customer Gender</h3>
-            <div className="relative flex justify-center items-center mb-4">
-              <div>
-                <div className="w-full h-full ml-[12%] ">
+          <div className="bg-[#F1F7FF] overflow-hidden rounded-lg p-6 lg:w-1/3 flex flex-col md:h-[600px]  justify-between mt-4">
+            <div className="flex justify-between items-center">
+                <h3 className="text-base font-bold">Customer Gender</h3>
+                  <div className=" inset-0 flex gap-3  items-center justify-center">
+                    <div className="text-xl font-bold">
+                      {data?.customerData?.length}
+                    </div>
+                    <p className="text-sm text-gray-600">Customers</p>
+                  </div>
+
+            </div>
+            
+            <div className="relative flex justify-center items-center mb-4 bg-black "> 
+                <div className="w-full h-fit  absolute -top-[15rem] lg:-ml-[51rem] md:-ml-[45rem]">
                   <Charts male={100} female={50} other={50} />
                 </div>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-bold">
-                    {data?.customerData?.length}
-                  </span>
-                  <p className="text-sm text-gray-600">Customers</p>
-                </div>
-              </div>
             </div>
-            <div className="flex justify-around">
+            <div className="flex justify-around z-[400]">
               <div className="flex items-center">
                 <span className="block w-3 h-3 bg-[#34C759] rounded-full mr-2"></span>
                 <span>Female</span>

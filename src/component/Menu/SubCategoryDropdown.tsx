@@ -120,6 +120,8 @@ const SubCategoryDropdown: React.FC<Props> = ({
     if (category && category.length > 0 && category[0].subcategory.length > 0) {
       setSubcategory(category[0]?.subcategory);
     }
+    
+    
   }, [category]);
 
   const handleDragEnd = (result: DropResult) => {
@@ -151,10 +153,12 @@ const SubCategoryDropdown: React.FC<Props> = ({
       .then((response) => {
         console.log(JSON.stringify(response.data));
         dispatch(fetchRestaurantDetails({ id: resData.data._id }));
+       
       })
       .catch((error) => {
         console.log(error);
       });
+      
   };
 
   return (
