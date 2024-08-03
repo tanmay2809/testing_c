@@ -181,7 +181,7 @@ const Analytics: React.FC = () => {
     //     return annMonth - 1 === monthIndex;
     //   })?.length ?? 0;
 
-    const filteredBirthdays = data?.customerData?.filter((customer) => {
+    const filteredBirthdays = data?.customerData?.filter((customer:any) => {
       const birthday = customer?.userId?.birthday;
       if (!birthday) {
         return false;
@@ -197,7 +197,7 @@ const Analytics: React.FC = () => {
       return month === monthIndex;
     })?.length ?? 0;
     
-    const filteredAnniversaries = data?.customerData?.filter((customer) => {
+    const filteredAnniversaries = data?.customerData?.filter((customer:any) => {
       const anniversary = customer?.userId?.anniversary;
       if (!anniversary) {
         return false;
@@ -508,7 +508,7 @@ const Analytics: React.FC = () => {
 
         {/*Customer visit weekends vs weekdays */}
         <div className="lg:flex gap-4 w-full h-fit  font-inter">
-          <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-x-hidden">
+          <div className="bg-[#F1F7FF] relative rounded-lg p-6 lg:w-1/2 flex flex-col justify-evenly gap-4 h-96 mt-4 overflow-hidden">
             <div className="w-full h-full flex justify-between">
               <div>
                 <h3 className="text-lg font-semibold flex items-center gap-2">
