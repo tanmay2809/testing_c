@@ -15,6 +15,8 @@ export interface TableData {
   resId: string;
   tableNo: string;
   count: number;
+  image: string;
+  url: string;
   __v: number;
 }
 

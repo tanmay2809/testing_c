@@ -32,6 +32,23 @@ const TableComponent = ({ data }: { data: any }) => {
     setMonth(true);
   };
 
+  const downloadImage = (url: string, filename: string) => {
+    // Create a new link element
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+
+    // Append link to the body (it needs to be in the DOM to work)
+    document.body.appendChild(link);
+
+    // Trigger the download
+    link.click();
+
+    // Remove the link from the DOM
+    document.body.removeChild(link);
+  };
+
+
   function copyHandler(text: string) {
     navigator.clipboard.writeText(text).then(() => {
       console.log('Text copied to clipboard');
@@ -61,7 +78,12 @@ const TableComponent = ({ data }: { data: any }) => {
           <p onClick={() => {
             copyHandler(data?.url);
           }} className="flex items-center gap-1 cursor-pointer"><MdOutlineFolderCopy className="size-5" />Copy Link</p>
-          <p className="flex items-center gap-1 cursor-pointer"><GoDownload className="size-5" />Download</p>
+          <p
+            onClick={() => {
+              const filename = 'downloaded-image.png'; // Desired file name
+              downloadImage(data?.image, filename);
+            }}
+            className="flex items-center gap-1 cursor-pointer"><GoDownload className="size-5" />Download</p>
           <p className="flex items-center gap-1 cursor-pointer"><FaRegEye className="size-5" />Preview</p>
         </div>
       </div>
