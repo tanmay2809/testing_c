@@ -5,15 +5,11 @@ import { MdOutlineFolderCopy } from "react-icons/md";
 import { GoDownload } from "react-icons/go";
 import { FaRegEye } from "react-icons/fa6";
 import { RiDashboardFill } from "react-icons/ri";
+import { toast } from "react-toastify";
+// import TableData from "../../pages/Dashboard/Table";
 
-interface TableComponentProps {
-  data: Array<{
-    table: string;
-    customercapture: string;
-  }>;
-}
 
-const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
+const TableComponent = ({ data }: { data: any }) => {
   const [Today, setToday] = useState(true);
   const [Week, setWeek] = useState(false);
   const [Month, setMonth] = useState(false);
@@ -36,10 +32,20 @@ const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
     setMonth(true);
   };
 
+  function copyHandler(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      console.log('Text copied to clipboard');
+      toast.success('copy to clipboard');
+    }).catch(err => {
+      console.error('Could not copy text: ', err);
+      toast.error(err);
+    });
+  }
+
   return (
     <div className="bg-[#F1F7FF] w-full h-fit flex flex-col font-inter rounded-lg">
       <div className="flex w-full justify-between items-center py-[1.2rem] px-[2.5rem] border-b border-dashed border-black">
-        <p className="text-[#505050] font-semibold w-[700] text-[1.8rem]">Table NO {data[0].table}</p>
+        <p className="text-[#505050] font-semibold w-[700] text-[1.8rem]">Table NO {data?.tableNo}</p>
         <div className="flex items-center justify-center gap-4">
           <button onClick={today} className={`border px-4 py-2 rounded-lg font-semibold ${Today ? "text-white bg-[#004AAD]" : "text-[#0F172ACC] bg-white border-[#00000080]"}`}>Today</button>
           <button onClick={weekly} className={`border px-4 py-2 rounded-lg font-semibold ${Week ? "text-white bg-[#004AAD]" : "text-[#0F172ACC] bg-white border-[#00000080]"}`}>Weekly</button>
@@ -52,23 +58,25 @@ const TableComponent: React.FC<TableComponentProps> = ({ data }) => {
           <p className="font-inter font-[400] text-[1rem] text-nowrap text-[#505050]">Active since Nov 03, 2022 ( 605 Days )</p>
         </div>
         <div className="flex w-[50%] text-black font-inter font-[600] text-[1.15rem] gap-3 items-center justify-end">
-          <p className="flex items-center gap-2"><MdOutlineFolderCopy className="size-6" />Copy Link</p>
-          <p className="flex items-center gap-2"><GoDownload className="size-6" />Download</p>
-          <p className="flex items-center gap-2"><FaRegEye className="size-6" />Preview</p>
+          <p onClick={() => {
+            copyHandler(data?.url);
+          }} className="flex items-center gap-1 cursor-pointer"><MdOutlineFolderCopy className="size-5" />Copy Link</p>
+          <p className="flex items-center gap-1 cursor-pointer"><GoDownload className="size-5" />Download</p>
+          <p className="flex items-center gap-1 cursor-pointer"><FaRegEye className="size-5" />Preview</p>
         </div>
       </div>
       <div className="w-full h-fit px-[2.5rem] flex flex-col gap-4 pt-[1rem] pb-[2rem]">
         <div className="w-full h-fit flex gap-2 justify-between">
           <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-            <p className="font-[700] text-[1.8rem]">30</p>
+            <p className="font-[700] text-[1.8rem]">0</p>
             <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2"><span><IoPeopleSharp className="size-5" /></span>Customer captured</p>
           </div>
           <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-            <p className="font-[700] text-[1.8rem]">10</p>
+            <p className="font-[700] text-[1.8rem]">0</p>
             <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2"><span><RiDashboardFill className="size-5" /></span>Unique customer</p>
           </div>
           <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-            <p className="font-[700] text-[1.8rem]">100</p>
+            <p className="font-[700] text-[1.8rem]">{data?.count}</p>
             <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2"><span><RiDashboardFill className="size-5" /></span>Total QR Scans</p>
           </div>
         </div>

@@ -1,40 +1,140 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiSolidError } from "react-icons/bi";
 import { GiChessKing } from "react-icons/gi";
 import TableComponent from "../../component/dashboard/TableComponent";
+import axios from 'axios';
+import QRCode from 'qrcode';
 
-interface TableData {
-  table: string;
-  customercapture: string;
+
+import { useSelector } from "react-redux";
+import type { RootState } from "../../redux/store";
+import { toast } from 'react-toastify';
+export interface TableData {
+  _id: string;
+  resId: string;
+  tableNo: string;
+  count: number;
+  __v: number;
 }
 
 const Table: React.FC = () => {
-  const [tables, setTables] = useState<TableData[]>([
-    { table: "1", customercapture: "30" },
-    { table: "2", customercapture: "30" },
-    { table: "3", customercapture: "30" },
-    { table: "4", customercapture: "30" },
-    { table: "5", customercapture: "30" },
-  ]);
 
-  const AddTable: TableData = {
-    table: (tables.length + 1).toString(),
-    customercapture: "30",
+
+  const { data } = useSelector((state: RootState) => state.resturantdata);
+  const [tables, setTables] = useState<TableData[]>([]);
+
+
+  const createTable = async () => {
+    const resId = data?._id;
+    const tableNo = tables.length + 1;
+    try {
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `http://localhost:4000/api/scan/${resId}/${tableNo}`,
+        headers: {}
+      };
+
+      axios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data.scans));
+          toast.success("Table created successfully");
+          const tableNo = response.data?.scans?.tableNo;
+          const id = response.data?.scans?._id;
+          console.log(tableNo);
+          fileUploader(tableNo, resId,id);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const Addon = () => {
-    setTables([...tables, AddTable]);
-  };
 
-   // navbar fram
-   const handlefram = () => {
+  // navbar fram
+  const handlefram = () => {
     document.getElementById("frame")!.style.display = "none";
   };
+
+  const fileUploader = async (tableNo: string, resId: string,id: string) => {
+    try {
+      const resUrl = `https://web2-three-blush.vercel.app/restaurant/${resId}/${tableNo}`;
+
+      QRCode.toDataURL(resUrl)
+        .then(url => {
+          console.log(url)
+          let data = JSON.stringify({
+            "image": url,
+            "url": resUrl
+          });
+
+          let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: `http://localhost:4000/api/scan/${id}`,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            data: data
+          };
+
+          axios.request(config)
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
+        })
+        .catch(err => {
+          console.error(err)
+        })
+
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchtableData = async () => {
+    try {
+
+      let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `http://localhost:4000/api/scan/${data?._id}`,
+        headers: {}
+      };
+
+      axios.request(config)
+        .then((response) => {
+          console.log((response.data?.scans));
+          setTables(response.data?.scans);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    } catch (error) {
+      console.error("Error fetching table data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (tables.length === 0) {
+      fetchtableData();
+    }
+  }, [data]);
 
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="lg:w-[93%] h-fit px-[1rem] py-[1rem] flex flex-col items-center justify-center lg:ml-[7%]">
         <div onClick={handlefram} className="w-full h-fit flex flex-col items-center gap-2 mt-[80px] mx-[1.5rem]">
+
           <div className="w-full h-fit flex items-center justify-between bg-[#D7E8FF] font-inter font-[400] text-[.9rem] text-black px-[1rem] py-[.5rem] rounded-xl">
             <div className="flex items-center gap-2">
               <BiSolidError className="size-5 text-[#004AADC9]" />
@@ -52,15 +152,17 @@ const Table: React.FC = () => {
             </div>
             <div className="relative mr-[1rem]">
               <GiChessKing className="absolute text-white bg-black -right-2 -top-2 size-7 p-[.1rem] border-2 rounded-md" />
-              <button onClick={Addon} className="bg-[#004AAD] text-white border border-[#000000CC] rounded-lg px-[2rem] py-[.5rem]">
+              <button onClick={createTable} className="bg-[#004AAD] text-white border border-[#000000CC] rounded-lg px-[2rem] py-[.5rem]">
                 Add Table
               </button>
             </div>
           </div>
+
+
         </div>
         {tables.map((item) => (
-          <div key={item.table} className="w-full">
-            <TableComponent data={[item]} />
+          <div key={item?._id} className="w-full">
+            <TableComponent data={item} />
           </div>
         ))}
       </div>

@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
-//redus
 
+//redux
 import { useDispatch, useSelector } from "react-redux";
 import {fetchMostRecommandItemsDetails} from "../../redux/mostrecommandslice";
 import type { RootState, AppDispatch } from "../../redux/store";

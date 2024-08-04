@@ -1,66 +1,109 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { baseUrl } from "../../main";
-import { toast } from "react-toastify";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import axios from "axios"
+import { baseUrl } from "../../main"
+import { toast } from "react-toastify"
+import QRCode from "qrcode"
 
 // icons
-import { MdLockOutline } from "react-icons/md";
-import { RxCross2 } from "react-icons/rx";
-import { FaCheck } from "react-icons/fa6";
-import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
+import { MdLockOutline } from "react-icons/md"
+import { RxCross2 } from "react-icons/rx"
+import { FaCheck } from "react-icons/fa6"
+import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi"
 
 // assets
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.png"
 
 //components
-import Loader from "../../component/outlet/Loader";
+import Loader from "../../component/outlet/Loader"
 
 interface FormData {
-  password: string;
-  confirmPassword: string;
+  password: string
+  confirmPassword: string
 }
 
 const NewPassword = () => {
   const [formData, setFormData] = useState<FormData>({
     password: "",
     confirmPassword: "",
-  });
-  const [loading, setLoading] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  })
+  const [loading, setLoading] = useState<boolean>(false)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] =
-    useState<boolean>(false);
+    useState<boolean>(false)
 
-  const [isMinLength, setIsMinLength] = useState<boolean>(false);
-  const [hasUpperCase, setHasUpperCase] = useState<boolean>(false);
-  const [hasNumber, setHasNumber] = useState<boolean>(false);
-  const [hasSymbol, setHasSymbol] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const [isMinLength, setIsMinLength] = useState<boolean>(false)
+  const [hasUpperCase, setHasUpperCase] = useState<boolean>(false)
+  const [hasNumber, setHasNumber] = useState<boolean>(false)
+  const [hasSymbol, setHasSymbol] = useState<boolean>(false)
+  const navigate = useNavigate()
 
-  const [videoLoading, setVideoLoading] = useState<boolean>(true);
+  const [videoLoading, setVideoLoading] = useState<boolean>(true)
 
   function changeHandler(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-    }));
-    validatePassword(value);
+    }))
+    validatePassword(value)
   }
 
   function validatePassword(password: string) {
-    setIsMinLength(password.length >= 6);
-    setHasUpperCase(/[A-Z]/.test(password));
-    setHasNumber(/\d/.test(password));
-    setHasSymbol(/[!@#$%^&*]/.test(password));
+    setIsMinLength(password.length >= 6)
+    setHasUpperCase(/[A-Z]/.test(password))
+    setHasNumber(/\d/.test(password))
+    setHasSymbol(/[!@#$%^&*]/.test(password))
+  }
+
+  const fileUploader = async (tableNo: string, resId: string, id: string) => {
+    try {
+      const resUrl = `https://web2-three-blush.vercel.app/restaurant/${resId}/${tableNo}`;
+
+      QRCode.toDataURL(resUrl)
+        .then(url => {
+          console.log(url)
+          let data = JSON.stringify({
+            "image": url,
+            "url": resUrl
+          });
+
+          let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: `http://localhost:4000/api/scan/${id}`,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            data: data
+          };
+
+          axios.request(config)
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
+        })
+        .catch(err => {
+          console.error(err)
+        })
+
+
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   function submitHandler(event: FormEvent) {
-    event.preventDefault();
-    setLoading(true);
+    event.preventDefault()
+    setLoading(true)
 
     if (!isMinLength || !hasUpperCase || !hasNumber || !hasSymbol) {
-      return;
+      return
     }
 
     let data = JSON.stringify({
@@ -68,7 +111,7 @@ const NewPassword = () => {
       email: sessionStorage.getItem("email"),
       password: formData.password,
       businessType: sessionStorage.getItem("type"),
-    });
+    })
 
     let config = {
       method: "post",
@@ -78,35 +121,53 @@ const NewPassword = () => {
         "Content-Type": "application/json",
       },
       data: data,
-    };
+    }
 
     axios
       .request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
-        setLoading(false);
-        sessionStorage.removeItem("email");
-        sessionStorage.removeItem("name");
-        sessionStorage.removeItem("type");
-        toast.success("Account created successfully");
-        navigate("/login");
+        console.log(JSON.stringify(response.data))
+        setLoading(false)
+        sessionStorage.removeItem("email")
+        sessionStorage.removeItem("name")
+        sessionStorage.removeItem("type")
+        toast.success("Account created successfully")
+        const resId = response.data?.restaurantLogin?.details
+        for (let tableNo = 1; tableNo <= 5; tableNo++) {
+          let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: `http://localhost:4000/api/scan/${resId}/${tableNo}`,
+            headers: {}
+          }
+
+          axios.request(config)
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+              const tableNo = response.data?.scans?.tableNo;
+              const id = response.data?.scans?._id;
+              console.log(tableNo);
+              fileUploader(tableNo, resId, id);
+
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+        }
+        navigate("/login")
       })
       .catch((error) => {
-        console.log(error);
-      });
+        console.log(error)
+      })
 
-    setFormData({
-      password: "",
-      confirmPassword: "",
-    });
-    console.log(formData);
+    console.log(formData)
   }
 
   useEffect(() => {
     if (!sessionStorage.getItem("email")) {
-      navigate("/register");
+      navigate("/register")
     }
-  });
+  })
 
   return (
     <>
@@ -130,9 +191,6 @@ const NewPassword = () => {
             className="w-full flex flex-col gap-y-3.5"
           >
             <div className="w-full flex flex-col gap-3">
-              {/* <Link className="w-fit h-fit" to="/register">
-                  <IoMdArrowRoundBack className="text-[1.8rem]" />
-                </Link> */}
               <div className="font-bold text-left text-[24px]">
                 Create New Password
               </div>
@@ -196,33 +254,29 @@ const NewPassword = () => {
             {formData.password.length > 0 && (
               <div className="flex flex-col gap-2">
                 <p
-                  className={`text-sm flex flex-row items-center gap-1 ${
-                    isMinLength ? "text-green-500" : "text-red-500"
-                  }`}
+                  className={`text-sm flex flex-row items-center gap-1 ${isMinLength ? "text-green-500" : "text-red-500"
+                    }`}
                 >
                   {isMinLength ? <FaCheck /> : <RxCross2 />}
                   Minimum 6 characters
                 </p>
                 <p
-                  className={`text-sm flex flex-row items-center gap-1 ${
-                    hasUpperCase ? "text-green-500" : "text-red-500"
-                  }`}
+                  className={`text-sm flex flex-row items-center gap-1 ${hasUpperCase ? "text-green-500" : "text-red-500"
+                    }`}
                 >
                   {hasUpperCase ? <FaCheck /> : <RxCross2 />}
                   At least 1 capital letter
                 </p>
                 <p
-                  className={`text-sm flex flex-row items-center gap-1 ${
-                    hasNumber ? "text-green-500" : "text-red-500"
-                  }`}
+                  className={`text-sm flex flex-row items-center gap-1 ${hasNumber ? "text-green-500" : "text-red-500"
+                    }`}
                 >
                   {hasNumber ? <FaCheck /> : <RxCross2 />}
                   At least 1 number
                 </p>
                 <p
-                  className={`text-sm flex flex-row items-center gap-1 ${
-                    hasSymbol ? "text-green-500" : "text-red-500"
-                  }`}
+                  className={`text-sm flex flex-row items-center gap-1 ${hasSymbol ? "text-green-500" : "text-red-500"
+                    }`}
                 >
                   {hasSymbol ? <FaCheck /> : <RxCross2 />}
                   At least 1 symbol
@@ -250,7 +304,7 @@ const NewPassword = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default NewPassword;
+export default NewPassword
