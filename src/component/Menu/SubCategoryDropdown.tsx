@@ -85,9 +85,9 @@ const SubCategoryDropdown: React.FC<Props> = ({
     });
   };
 
-  const handleSubcategoryToggle = (id: string, isActive: boolean) => {
+  const handleSubcategoryToggle = (subcategory: SubcategoryItem) => {
     let data = JSON.stringify({
-      subcategory: id,
+      subcategory: subcategory._id,
     });
 
     let config = {
@@ -105,10 +105,10 @@ const SubCategoryDropdown: React.FC<Props> = ({
       .then((response) => {
         console.log(JSON.stringify(response.data));
         dispatch(fetchRestaurantDetails({ id: resData.data._id }));
-        if (isActive) {
-          toast.error("Subcategory Deactivated");
+        if (subcategory.active) {
+          toast.error(`${subcategory.name} Deactivated`);
         } else {
-          toast.success("Subcategory Activated");
+          toast.success(`${subcategory.name} Activated`);
         }
       })
       .catch((error) => {
@@ -221,10 +221,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
                                 <Switch
                                   isActive={subcategory.active}
                                   onclick={() =>
-                                    handleSubcategoryToggle(
-                                      subcategory._id,
-                                      subcategory.active
-                                    )
+                                    handleSubcategoryToggle(subcategory)
                                   }
                                 />
                                 <IoTrashOutline

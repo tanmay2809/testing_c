@@ -63,9 +63,9 @@ const ItemCard: React.FC<Props> = ({
         console.log(JSON.stringify(response.data));
         dispatch(fetchRestaurantDetails({ id: resData.data._id }));
         if (item.active) {
-          toast.error("Menu item Deactivated");
+          toast.error(`${item.name} Deactivated`);
         } else {
-          toast.success("Menu item Activated");
+          toast.success(`${item.name} Activated`);
         }
       })
       .catch((error) => {
