@@ -30,7 +30,7 @@ const CustomerList: React.FC = () => {
 
   console.log("resData: ", data);
 
-  const [resData, setResData] = useState<any>(data);
+  const resData = (data);
   const [customerData, setCustomerData] = useState<any>(data?.customerData);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
