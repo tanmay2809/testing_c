@@ -133,9 +133,9 @@ const Analytics: React.FC = () => {
     setCelebrationMonth(e.target.value);
   };
 
-  const parseDate = (dateString:string) => {
+  const parseDate = (dateString: string) => {
     let day, month, year;
-  
+
     if (dateString.includes("/")) {
       // "DD/MM/YYYY" format
       [day, month, year] = dateString.split("/").map(Number);
@@ -145,7 +145,7 @@ const Analytics: React.FC = () => {
     } else {
       return null;
     }
-  
+
     return { day, month: month - 1, year }; // Adjust month to 0-based index
   };
 
@@ -153,7 +153,7 @@ const Analytics: React.FC = () => {
     const monthIndex = months.indexOf(celebrationMonth);
     console.log("mi : ", monthIndex);
 
-    
+
     // const filteredBirthdays: number =
     //   data?.customerData?.filter((customer: any) => {
     //     if (!customer?.userId?.birthday) {
@@ -163,7 +163,7 @@ const Analytics: React.FC = () => {
     //     const [birthDay, birthMonth, birthYear] = customer?.userId?.birthday
     //       .split("/")
     //       .map(Number);
-        
+
     //     console.log(birthDay, birthMonth, birthYear);
     //     return birthMonth - 1 === monthIndex;
     //   })?.length ?? 0;
@@ -181,48 +181,49 @@ const Analytics: React.FC = () => {
     //     return annMonth - 1 === monthIndex;
     //   })?.length ?? 0;
 
-    const filteredBirthdays = data?.customerData?.filter((customer:any) => {
+    const filteredBirthdays = data?.customerData?.filter((customer: any) => {
       const birthday = customer?.userId?.birthday;
       if (!birthday) {
         return false;
       }
-    
+
       const parsedDate = parseDate(birthday);
       if (!parsedDate) {
         return false;
       }
-    
+
       const { month } = parsedDate;
       // console.log(parsedDate.day, month + 1, parsedDate.year);
       return month === monthIndex;
     })?.length ?? 0;
-    
-    const filteredAnniversaries = data?.customerData?.filter((customer:any) => {
+
+    const filteredAnniversaries = data?.customerData?.filter((customer: any) => {
       const anniversary = customer?.userId?.anniversary;
       if (!anniversary) {
         return false;
       }
-    
+
       const parsedDate = parseDate(anniversary);
       if (!parsedDate) {
         return false;
       }
-    
+
       const { month } = parsedDate;
       // console.log(parsedDate.day, month + 1, parsedDate.year);
       return month === monthIndex;
     })?.length ?? 0;
-    
+
 
     setBirthdays(filteredBirthdays);
     setAnniversaries(filteredAnniversaries);
 
-  }, [celebrationMonth, data.customerData]);
+  }, [celebrationMonth, data?.customerData]);
 
   //for growth rate
   const [growthMonth, setGrowthMonth] = useState<string>(
     months[new Date().getMonth()]
   );
+
   const [newCustomers, setNewCustomers] = useState<number>(0);
   const [regularCustomers, setRegularCustomers] = useState<number>(0);
   const [newCustomersDiff, setNewCustomersDiff] = useState<number>(0);
@@ -289,22 +290,22 @@ const Analytics: React.FC = () => {
     setNewCustomersDiff(
       prevMonthData.newCustomers && newCustomers
         ? ((newCustomers - prevMonthData?.newCustomers) /
-            prevMonthData?.newCustomers) *
-            100
+          prevMonthData?.newCustomers) *
+        100
         : prevMonthData.newCustomers == 0 && newCustomers
-        ? 100
-        : 0
+          ? 100
+          : 0
     );
 
     setRegularCustomersDiff(
       prevMonthData?.regularCustomers && regularCustomers
         ? ((currentMonthData?.regularCustomers -
-            prevMonthData?.regularCustomers) /
-            prevMonthData?.regularCustomers) *
-            100
+          prevMonthData?.regularCustomers) /
+          prevMonthData?.regularCustomers) *
+        100
         : prevMonthData.regularCustomers == 0 && regularCustomers
-        ? 100
-        : 0
+          ? 100
+          : 0
     );
   }, [growthMonth, data?.customerData]);
 
@@ -376,9 +377,8 @@ const Analytics: React.FC = () => {
           </div>
           <div className="lg:flex md:flex lg:text-left text-[#505050] sm:text-sm ">
             <div
-              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  sm:h-40 sm:w-1/4 ${
-                hoveredSegmentation === 1 && "z-[90]"
-              }`}
+              className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  sm:h-40 sm:w-1/4 ${hoveredSegmentation === 1 && "z-[90]"
+                }`}
               onMouseEnter={() => setHoveredSegmentation(1)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
@@ -389,8 +389,8 @@ const Analytics: React.FC = () => {
                   : `${data?.newCustomers || 0}%`}
               </h2>
               <p className="font-bold">
-              {data && data.length === 0 ? "0":Math.floor((data?.newCustomers / 100) * data?.customerData?.length)}{" "}
-              customers
+                {data?.newCount}{" "}
+                customers
               </p>
             </div>
             {hoveredSegmentation === 1 && (
@@ -420,9 +420,8 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
-                hoveredSegmentation === 3 && "z-[90]"
-              }`}
+              className={`lg:w-1/4 bg-[#FADBFF] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${hoveredSegmentation === 3 && "z-[90]"
+                }`}
               onMouseEnter={() => setHoveredSegmentation(3)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
@@ -434,8 +433,8 @@ const Analytics: React.FC = () => {
                   : `${data?.regularCustomers || 0}%`}
               </h2>
               <p className="font-bold">
-              {data && data.length === 0 ? "0": Math.floor((data?.regularCustomers / 100) * data?.customerData?.length)}{" "}
-              customers
+                {data?.regularCount}{" "}
+                customers
               </p>
             </div>
             {hoveredSegmentation === 3 && (
@@ -465,9 +464,8 @@ const Analytics: React.FC = () => {
               </div>
             )}
             <div
-              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
-                hoveredSegmentation === 2 && "z-[90]"
-              }`}
+              className={`lg:w-1/4 bg-[#F9FFB9]  p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${hoveredSegmentation === 2 && "z-[90]"
+                }`}
               onMouseEnter={() => setHoveredSegmentation(2)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
@@ -479,15 +477,14 @@ const Analytics: React.FC = () => {
                   : `${data?.loyalCustomers || 0}%`}
               </h2>
               <p className="font-bold">
-                {data && data.length === 0 ? "0":Math.floor((data?.loyalCustomers / 100) * data?.customerData?.length)}{" "}
+                {data?.loyalCount}{" "}
                 customers
               </p>
             </div>
 
             <div
-              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${
-                hoveredSegmentation === 4 && "z-[90]"
-              }`}
+              className={`lg:w-1/4 bg-[#FEC8C8] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2 sm:h-40 sm:w-1/4 ${hoveredSegmentation === 4 && "z-[90]"
+                }`}
               onMouseEnter={() => setHoveredSegmentation(4)}
               onMouseLeave={() => setHoveredSegmentation(null)}
             >
@@ -499,8 +496,8 @@ const Analytics: React.FC = () => {
                   : `${data?.riskCustomers || 0}%`}
               </h2>
               <p className="font-bold">
-              {data && data.length === 0 ? "0":Math.floor((data?.riskCustomers / 100) * data?.customerData?.length)}{" "}
-              customers
+                {data?.riskCount}{" "}
+                customers
               </p>
             </div>
           </div>
@@ -657,20 +654,20 @@ const Analytics: React.FC = () => {
           {/* Customer Gender Card */}
           <div className="bg-[#F1F7FF] overflow-hidden rounded-lg p-6 lg:w-1/3 flex flex-col md:h-[600px]  justify-between mt-4">
             <div className="flex justify-between items-center">
-                <h3 className="text-base font-bold">Customer Gender</h3>
-                  <div className=" inset-0 flex gap-3  items-center justify-center">
-                    <div className="text-xl font-bold">
-                      {data?.customerData?.length}
-                    </div>
-                    <p className="text-sm text-gray-600">Customers</p>
-                  </div>
+              <h3 className="text-base font-bold">Customer Gender</h3>
+              <div className=" inset-0 flex gap-3  items-center justify-center">
+                <div className="text-xl font-bold">
+                  {data?.customerData?.length}
+                </div>
+                <p className="text-sm text-gray-600">Customers</p>
+              </div>
 
             </div>
-            
-            <div className="relative flex justify-center items-center mb-4 bg-black "> 
-                <div className="w-full h-fit  absolute -top-[15rem] lg:-ml-[49rem] md:-ml-[45rem]">
-                  <Charts male={data?.maleVisitors} female={data?.femaleVisitors} other={data?.otherVisitors} /> 
-                </div>
+
+            <div className="relative flex justify-center items-center mb-4 bg-black ">
+              <div className="w-full h-fit  absolute -top-[15rem] lg:-ml-[49rem] md:-ml-[45rem]">
+                <Charts male={data?.maleVisitors} female={data?.femaleVisitors} other={data?.otherVisitors} />
+              </div>
             </div>
             <div className="flex justify-around z-[400]">
               <div className="flex items-center">
