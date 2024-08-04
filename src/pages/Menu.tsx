@@ -175,7 +175,7 @@ const Menu = () => {
     });
   };
 
-  const handleToggleCategory = (id: string) => {
+  const handleToggleCategory = (id: string, isActive: boolean) => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -188,7 +188,11 @@ const Menu = () => {
       .then((response) => {
         console.log(JSON.stringify(response.data));
         dispatch(fetchRestaurantDetails({ id: data._id }));
-        toast.success("Category Toggled");
+        if (isActive) {
+          toast.error("Category Deactivated");
+        } else {
+          toast.success("Category Activated");
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -393,7 +397,7 @@ const Menu = () => {
                               className="flex flex-row gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                               onClick={(e) => {
                                 setDropdownVisible("");
-                                handleToggleCategory(item._id);
+                                handleToggleCategory(item._id, item.active);
                                 handleActionClick(e);
                               }}
                             >
