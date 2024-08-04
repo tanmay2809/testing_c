@@ -71,7 +71,7 @@ const NewPassword = () => {
           let config = {
             method: 'put',
             maxBodyLength: Infinity,
-            url: `http://localhost:4000/api/scan/${id}`,
+            url: `${baseUrl}/api/scan/${id}`,
             headers: {
               'Content-Type': 'application/json'
             },
@@ -137,7 +137,7 @@ const NewPassword = () => {
           let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: `http://localhost:4000/api/scan/${resId}/${tableNo}`,
+            url: `${baseUrl}/api/scan/${resId}/${tableNo}`,
             headers: {}
           }
 

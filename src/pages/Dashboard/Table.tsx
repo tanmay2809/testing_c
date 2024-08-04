@@ -4,6 +4,7 @@ import { GiChessKing } from "react-icons/gi";
 import TableComponent from "../../component/dashboard/TableComponent";
 import axios from 'axios';
 import QRCode from 'qrcode';
+import { baseUrl } from '../../main';
 
 
 import { useSelector } from "react-redux";
@@ -31,7 +32,7 @@ const Table: React.FC = () => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `http://localhost:4000/api/scan/${resId}/${tableNo}`,
+        url: `${baseUrl}/api/scan/${resId}/${tableNo}`,
         headers: {}
       };
 
@@ -42,7 +43,7 @@ const Table: React.FC = () => {
           const tableNo = response.data?.scans?.tableNo;
           const id = response.data?.scans?._id;
           console.log(tableNo);
-          fileUploader(tableNo, resId,id);
+          fileUploader(tableNo, resId, id);
         })
         .catch((error) => {
           console.log(error);
@@ -58,7 +59,7 @@ const Table: React.FC = () => {
     document.getElementById("frame")!.style.display = "none";
   };
 
-  const fileUploader = async (tableNo: string, resId: string,id: string) => {
+  const fileUploader = async (tableNo: string, resId: string, id: string) => {
     try {
       const resUrl = `https://web2-three-blush.vercel.app/restaurant/${resId}/${tableNo}`;
 
@@ -73,7 +74,7 @@ const Table: React.FC = () => {
           let config = {
             method: 'put',
             maxBodyLength: Infinity,
-            url: `http://localhost:4000/api/scan/${id}`,
+            url: `${baseUrl}/api/scan/${id}`,
             headers: {
               'Content-Type': 'application/json'
             },
@@ -106,7 +107,7 @@ const Table: React.FC = () => {
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `http://localhost:4000/api/scan/${data?._id}`,
+        url: `${baseUrl}/api/scan/${data?._id}`,
         headers: {}
       };
 
@@ -125,9 +126,7 @@ const Table: React.FC = () => {
   };
 
   useEffect(() => {
-    if (tables.length === 0) {
-      fetchtableData();
-    }
+    fetchtableData();
   }, [data]);
 
   return (
@@ -161,7 +160,7 @@ const Table: React.FC = () => {
 
         </div>
         {tables.map((item) => (
-          <div key={item?._id} className="w-full">
+          <div key={item?._id} className="w-full my-[.5rem]">
             <TableComponent data={item} />
           </div>
         ))}
