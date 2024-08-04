@@ -62,7 +62,15 @@ const TableComponent = ({ data }: { data: any }) => {
   return (
     <div className="bg-[#F1F7FF] w-full h-fit flex flex-col font-inter rounded-lg">
       <div className="flex w-full justify-between items-center py-[1.2rem] px-[2.5rem] border-b border-dashed border-black">
-        <p className="text-[#505050] font-semibold w-[700] text-[1.8rem]">Table NO {data?.tableNo}</p>
+        <div className="flex items-center gap-7">
+          <p className="text-[#505050] font-semibold w-[700] text-[1.6rem]">Table NO {data?.tableNo}</p>
+          {
+            data?.tableNo == 1 ? <button className="px-[1.3rem] py-1.5 text-white bg-[#FF950A] rounded-lg">Default</button>
+            : <button className="px-[1.3rem] py-1.5 text-white bg-red-700 rounded-lg">Delete</button>
+          }
+          
+        </div>
+        
         <div className="flex items-center justify-center gap-4">
           <button onClick={today} className={`border px-4 py-2 rounded-lg font-semibold ${Today ? "text-white bg-[#004AAD]" : "text-[#0F172ACC] bg-white border-[#00000080]"}`}>Today</button>
           <button onClick={weekly} className={`border px-4 py-2 rounded-lg font-semibold ${Week ? "text-white bg-[#004AAD]" : "text-[#0F172ACC] bg-white border-[#00000080]"}`}>Weekly</button>

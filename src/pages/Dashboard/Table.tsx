@@ -144,7 +144,7 @@ const Table: React.FC = () => {
             <button className="px-[.9rem] py-[.3rem] bg-white rounded-lg">Upgrade Now</button>
           </div>
 
-          <div className="w-full h-fit flex items-center justify-between py-1">
+          <div className="w-full h-fit flex items-center justify-between py-2">
             <div>
               <p className="font-Roboto font-[600] text-[1.6rem] text-black">Manage Tables</p>
               <p className="font-inter font-[400] text-[1rem] text-[#7F7E7E]">
@@ -152,7 +152,7 @@ const Table: React.FC = () => {
               </p>
             </div>
             <div className="relative mr-[1rem]">
-              <GiChessKing className="absolute text-white bg-black -right-2 -top-2 size-7 p-[.1rem] border-2 rounded-md" />
+              <GiChessKing className="absolute hidden text-white bg-black -right-2 -top-2 size-7 p-[.1rem] border-2 rounded-md" />
               <button onClick={createTable} className="bg-[#004AAD] text-white border border-[#000000CC] rounded-lg px-[2rem] py-[.5rem]">
                 Add Table
               </button>
