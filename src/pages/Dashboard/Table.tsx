@@ -165,7 +165,7 @@ const Table: React.FC = () => {
         </div>
         {tables.map((item) => (
           <div key={item?._id} className="w-full my-[.5rem]">
-            <TableComponent data={item} />
+            <TableComponent data={item} totaltable ={tables.length} /> 
           </div>
         ))}
       </div>
