@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
-//redus
 
+//redux
 import { useDispatch, useSelector } from "react-redux";
 import {fetchMostRecommandItemsDetails} from "../../redux/mostrecommandslice";
 import type { RootState, AppDispatch } from "../../redux/store";
@@ -197,7 +197,7 @@ const Dashboard = () => {
             <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex py-[1.5rem] px-[2.5rem] rounded-lg ">
               <div className="w-[40%] h-fit">
                 <p className="flex items-center gap-4 font-Sen font-[700] text-[2rem] text-nowrap text-[#505050] tracking-tight">
-                  Hello Foodoos{" "}
+                  Hello {data.resName}{" "}
                   <span>
                     <PiHandWaving className=" text-black -rotate-[10deg]" />
                   </span>
@@ -325,7 +325,7 @@ const Dashboard = () => {
             <div className="bg-[#F1F7FF] w-full h-fit my-[.75rem] flex justify-between items-center py-[1.2rem] px-[2.5rem] rounded-lg ">
               <div className=" leading-[2.5rem]">
                 <p className="flex items-center gap-4 font-Sen font-[700] text-[2rem] text-nowrap text-[#505050] tracking-tight">
-                  Hello Foodoos{" "}
+                  Hello{data.resName}
                   <span>
                     <PiHandWaving className=" text-black -rotate-[10deg]" />
                   </span>

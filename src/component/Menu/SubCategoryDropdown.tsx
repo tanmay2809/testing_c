@@ -85,9 +85,9 @@ const SubCategoryDropdown: React.FC<Props> = ({
     });
   };
 
-  const handleSubcategoryToggle = (id: string) => {
+  const handleSubcategoryToggle = (subcategory: SubcategoryItem) => {
     let data = JSON.stringify({
-      subcategory: id,
+      subcategory: subcategory._id,
     });
 
     let config = {
@@ -105,7 +105,11 @@ const SubCategoryDropdown: React.FC<Props> = ({
       .then((response) => {
         console.log(JSON.stringify(response.data));
         dispatch(fetchRestaurantDetails({ id: resData.data._id }));
-        toast.success("Subcategory toggle");
+        if (subcategory.active) {
+          toast.error(`${subcategory.name} Deactivated`);
+        } else {
+          toast.success(`${subcategory.name} Activated`);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -120,8 +124,6 @@ const SubCategoryDropdown: React.FC<Props> = ({
     if (category && category.length > 0 && category[0].subcategory.length > 0) {
       setSubcategory(category[0]?.subcategory);
     }
-    
-    
   }, [category]);
 
   const handleDragEnd = (result: DropResult) => {
@@ -152,13 +154,12 @@ const SubCategoryDropdown: React.FC<Props> = ({
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        dispatch(fetchRestaurantDetails({ id: resData.data._id }));
-       
+        // dispatch(fetchRestaurantDetails({ id: resData.data._id }));
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
       });
-      
   };
 
   return (
@@ -167,7 +168,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
         <DragDropContext onDragEnd={handleDragEnd}>
           {category?.map((cat) => (
             <Droppable
-              droppableId={`subcategory-${cat._id}`}
+              droppableId={`${cat._id}`}
               direction="vertical"
               type="subcategory"
               key={cat._id}
@@ -220,7 +221,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
                                 <Switch
                                   isActive={subcategory.active}
                                   onclick={() =>
-                                    handleSubcategoryToggle(subcategory._id)
+                                    handleSubcategoryToggle(subcategory)
                                   }
                                 />
                                 <IoTrashOutline

@@ -9,6 +9,7 @@ import { FaAnglesRight } from "react-icons/fa6";
 
 // assets
 import invoice from "../../assets/Invoice Template.png";
+import noinvoice from "../../assets/invoice.svg";
 
 const Invoice = () => {
   const { invoices } = useSelector((state: RootState) => state.invoice);
@@ -53,9 +54,12 @@ const Invoice = () => {
             </div>
             <div className="flex flex-col">
               {invoices.length === 0 && (
-                <h1 className="text-[1.8rem] text-[#4D4D4D] text-center font-semibold">
-                  No Invoice Found!
-                </h1>
+                <div className="flex flex-col items-center mt-5">
+                  <img src={noinvoice} className="w-20" />
+                  <h1 className="text-[1.8rem] text-[#4D4D4D] text-center font-semibold">
+                    No Invoice Found!
+                  </h1>
+                </div>
               )}
               {invoices.map((invoice: InvoiceType) => (
                 <div
