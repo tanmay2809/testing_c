@@ -48,7 +48,7 @@ const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
         {slides.map((slide, index) => (
           <SwiperSlide
             key={index}
-            style={{ width: "16rem", height: "18rem" }}
+            style={{ width: "13rem", height: "16rem" }}
             onClick={() => sendToCampaign(slide.type)}
             className="cursor-pointer"
           >

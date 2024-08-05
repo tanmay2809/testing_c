@@ -27,6 +27,8 @@ import Campaigns from "./pages/Marketing/Campaigns";
 import CreateCampaigns from "./pages/Marketing/CreateCampaign";
 import Wallet from "./pages/Wallet";
 import ConnectNumber from "./pages/Marketing/ConnectNumber";
+import Integrations from "./pages/Marketing/Integrations";
+import WhatsappBusinessProfile from "./pages/Marketing/WhatsappBusinessProfile";
 import WhatsAppManager from "./pages/Marketing/WhatsappManager";
 
 const App: React.FC = () => {
@@ -49,17 +51,24 @@ const App: React.FC = () => {
           <Route path="/menu" element={<Menu />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/marketing" element={<Marketing />}>
-            <Route index element={<CampaignLibrary />} />
+            <Route index element={<Integrations />} />
             <Route path="manage" element={<ManageCampaigns />} />
-            <Route path="whatsappsetting" element={<WhatsAppSettings />} >
-            </Route>
+            <Route
+              path="whatsappsetting"
+              element={<WhatsAppSettings />}
+            ></Route>
           </Route>
           <Route path="/campaign/:type" element={<Campaigns />} />
           <Route path="/createcampaign" element={<CreateCampaigns />} />
           <Route path="/connectNumber" element={<ConnectNumber />} />
-          <Route path="/manager" element={<WhatsAppManager />}>
-            <Route index element={<WhatsAppManager />} />
+          <Route path="/businessProfile" element={<WhatsappBusinessProfile />}>
+            <Route index element={<WhatsappBusinessProfile />} />
             {/* <Route path="/profil"/> */}
+          </Route>
+          <Route path="/manager" element={<WhatsAppManager />}>
+            <Route index element={<CampaignLibrary />} />
+            <Route path="header" element={<WhatsAppSettings />} />
+
           </Route>
 
           <Route path="/customer" element={<Customer />}>

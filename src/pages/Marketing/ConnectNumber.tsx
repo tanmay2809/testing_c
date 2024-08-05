@@ -47,13 +47,16 @@ const ConnectNumber: React.FC = () => {
         <div className="w-full flex flex-row justify-between mt-[60px] font-inter h-fit">
           <div className="flex p-8 md:p-3 w-full rounded-md ">
             {/* Left section */}
-            <div className="lg:w-2/5 w-full p-4 flex flex-col justify-evenly items-center h-[33rem]">
-              <DotLottieReact
-                src=""
-                autoplay
-                loop
-                style={{ width: "300px", height: "200px" }}
-              />
+            <div className="lg:w-[45%] w-full p-4 flex flex-col justify-evenly items-center h-[33rem]">
+              <div>
+                <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                <DotLottieReact
+                  src="https://lottie.host/47db11f3-776f-42b8-a6c5-9b966e9941cd/rDXZ4m4bpJ.json"
+                  autoplay
+                  loop
+                  style={{ width: "300px", height: "200px" }}
+                ></DotLottieReact>
+              </div>
               <h2 className="text-xl font-semibold mt-4 w-full text-center">
                 WHY CONNECT YOUR OWN NUMBER?
               </h2>
@@ -81,12 +84,12 @@ const ConnectNumber: React.FC = () => {
               </ul>
             </div>
             {/* Right section */}
-            <div className="lg:w-3/5 bg-[#F1F7FF] py-3 px-16 rounded-md h-fit min-h-[33rem] flex flex-col justify-evenly">
+            <div className="lg:w-[55%] bg-[#F1F7FF] py-4 px-12 rounded-md h-fit min-h-[33rem] flex flex-col justify-evenly">
               <h2 className="text-lg font-semibold w-full text-center mb-2">
                 Connect a Number for your WhatsApp Business API Account
               </h2>
               <div
-                className="bg-white p-3 rounded-lg text-sm h-[22rem] overflow-y-auto"
+                className="bg-white p-4 rounded-lg text-sm h-[22rem] overflow-y-auto"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
                 <div>

@@ -270,22 +270,22 @@ export const segmentationColors = {
 };
 
 export interface Customer {
-  userId : {
+  userId: {
     _id: string;
     name: string;
     phone: string;
     gender: string;
     birthday: string;
-    anniversary : string;
-    favoriteMenuItems : [
+    anniversary: string;
+    favoriteMenuItems: [
       {
         resId: string;
-        menuItems : string[];
-        _id:string;
+        menuItems: string[];
+        _id: string;
       }
-    ]
-  }
-  resId : string;
+    ];
+  };
+  resId: string;
   visits: string[];
   // segmentation: "New" | "Regular" | "Risk" | "Loyal";
 }
@@ -452,14 +452,17 @@ export const segmentationDetails: {
   },
   Regular: {
     title: "Regular",
-    description: "These customers have visited your business for more than 3 time in last 30 days.",
+    description:
+      "These customers have visited your business for more than 3 time in last 30 days.",
     proTip: "Send  Offer campaigns on their next Visit at your business",
     color: "bg-purple-200 text-purple-800",
   },
   Risk: {
     title: "Risk",
-    description: "These customers have not visited your business in last 60 Days",
-    proTip: "Send  Offer campaigns for retaining them to Visit at your business again",
+    description:
+      "These customers have not visited your business in last 60 Days",
+    proTip:
+      "Send  Offer campaigns for retaining them to Visit at your business again",
     color: "bg-red-200 text-red-800",
   },
   Loyal: {
@@ -558,7 +561,7 @@ export interface SlideCategory {
   slides: Slide[];
 }
 
-export const slidesData: Record<string, SlideCategory> = {
+export const AllData: Record<string, SlideCategory> = {
   recentlyViewed: {
     title: "Recently Viewed",
     slides: [
@@ -606,22 +609,8 @@ export const slidesData: Record<string, SlideCategory> = {
       // Add more slides
     ],
   },
-  popularCampaigns: {
-    title: "Popular Campaigns",
-    slides: [
-      {
-        image: "https://via.placeholder.com/300x200",
-        title: "Popular Campaign 1",
-        type: "Marketing",
-      },
-      {
-        image: "https://via.placeholder.com/300x200",
-        title: "Popular Campaign 2",
-        type: "Marketing",
-      },
-      // Add more slides
-    ],
-  },
+};
+export const slidesData: Record<string, SlideCategory> = {
   utility: {
     title: "Utility",
     slides: [
@@ -716,3 +705,53 @@ export const Campaigns = {
     2: "A marketing campaign aims to promote products or services, attract new customers, and drive sales. These messages often include offers, discounts, product announcements, and brand awareness efforts. Marketing campaigns are designed to engage customers and encourage them to take action.",
   },
 };
+
+type Campaign = {
+  channel: string;
+  name: string;
+  delivered: number;
+  revisit: number;
+  conversionRate: string;
+  cost: string;
+  status: string;
+};
+
+export const manageCampaigns: Campaign[] = [
+  {
+    channel: 'Marketing',
+    name: 'Anniversary campaign to all customers',
+    delivered: 0,
+    revisit: 0,
+    conversionRate: '0%',
+    cost: '₹0',
+    status: 'Under Review'
+  },
+  {
+    channel: 'Marketing',
+    name: 'Birthday campaign to all customers',
+    delivered: 250,
+    revisit: 32,
+    conversionRate: '12%',
+    cost: '₹250',
+    status: 'Active'
+  },
+  {
+    channel: 'Utility',
+    name: 'Greeting Campaign on visit',
+    delivered: 300,
+    revisit: 0,
+    conversionRate: '0%',
+    cost: '₹150',
+    status: 'Active'
+  },
+  {
+    channel: 'Marketing',
+    name: 'Birthday campaign to all customers',
+    delivered: 150,
+    revisit: 20,
+    conversionRate: '13%',
+    cost: '₹150',
+    status: 'Pause'
+  }
+];
+

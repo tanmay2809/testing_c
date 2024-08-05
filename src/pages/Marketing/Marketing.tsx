@@ -1,17 +1,17 @@
 import { useState } from "react";
 
 //icons
-import { FaPlus } from "react-icons/fa6";
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+// import { FaPlus } from "react-icons/fa6";
+import { Outlet, Link, useLocation } from "react-router-dom";
 
 //other components
 import CampaignPricing from "../../component/Marketing/CampaignPricing";
 
 //svg
-import doubleArrow from "/doubleArrow.svg";
+// import doubleArrow from "/doubleArrow.svg";
 
 const Marketing = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
   console.log("Customer Component Rendered");
   console.log("Current Location:", location.pathname);
@@ -43,7 +43,7 @@ const Marketing = () => {
               Create and manage your marketing seemlessly
             </p>
           </div>
-          <div className="flex justify-center items-center gap-2">
+          {/* <div className="flex justify-center items-center gap-2">
             <button
               className="w-[9rem] flex flex-row items-center justify-evenly gap-2 px-4 py-2 border-2 text-base font-[500] rounded-md"
               onClick={togglePricing}
@@ -61,17 +61,17 @@ const Marketing = () => {
               <FaPlus className="text-base" />
               Create Campaign
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* Buttons Container */}
-        <div className=" w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-3">
+        <div className=" w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-6">
           <Link
             className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
             to="/marketing"
             onClick={handleScrollToTop}
           >
-            Campaign Library
+            Integrations
             <span
               className={`${
                 location.pathname === "/marketing" ? "bg-[#004AAD]" : "hidden"
@@ -92,20 +92,7 @@ const Marketing = () => {
               } h-1 w-[80%] rounded-t-[0.375rem]`}
             ></span>
           </Link>
-          <Link
-            className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
-            to="/marketing/whatsappsetting"
-            onClick={handleScrollToTop}
-          >
-            WhatsApp Settings
-            <span
-              className={`${
-                location.pathname === "/marketing/whatsappsetting"
-                  ? "bg-[#004AAD]"
-                  : "hidden"
-              } h-1 w-[80%] rounded-t-[0.375rem]`}
-            ></span>
-          </Link>
+          
         </div>
       </div>
       <Outlet />

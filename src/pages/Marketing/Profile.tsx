@@ -17,7 +17,6 @@ const Profile: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
 
-
   const handleDescriptionChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -45,7 +44,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="w-[75%] flex  gap-3">
+    <div className="w-full flex  gap-3">
       {/* Left Section */}
       <div
         className="w-2/3 rounded-lg flex flex-col gap-1 h-[80vh] overflow-y-auto"
@@ -58,34 +57,40 @@ const Profile: React.FC = () => {
           </p>
           <input type="file" />
         </div>
+
         <div className="bg-white p-4 ">
-          <h2 className="text-lg font-semibold mb-2">Display Name</h2>
-          <input
-            type="text"
-            placeholder="Foodoos"
-            className="p-2 border border-gray-300 rounded w-full mb-4"
-          />
-          <h2 className="text-lg font-semibold mb-2">Category</h2>
-          <select className="p-2 border border-gray-300 rounded w-full mb-4">
-            <option>Food & Beverage</option>
-          </select>
-          <h2 className="text-lg font-semibold mb-2">
-            Official business account
-          </h2>
-          <p className="text-gray-600 mb-4">
-            An official business account has a green tick{" "}
-            <span>
-              <img className="w-4 h-auto inline align-middle" src={greenTick} />
-            </span>{" "}
-            next to its name. This shows that WhatsApp has confirmed that an
-            authentic and notable brand owns this account. Learn more.
-          </p>
-          <button className="bg-[#F4F2F2] text-[#626262] p-2 rounded">
-            Submit Request
-          </button>
+          <div className="w-3/5">
+            <h2 className="text-lg font-semibold mb-2">Display Name</h2>
+            <input
+              type="text"
+              placeholder="Foodoos"
+              className="p-2 border border-gray-300 rounded w-full mb-4"
+            />
+            <h2 className="text-lg font-semibold mb-2">Category</h2>
+            <select className="p-2 border border-gray-300 rounded w-full mb-4">
+              <option>Food & Beverage</option>
+            </select>
+            <h2 className="text-lg font-semibold mb-2">
+              Official business account
+            </h2>
+            <p className="text-gray-600 mb-4">
+              An official business account has a green tick{" "}
+              <span>
+                <img
+                  className="w-4 h-auto inline align-middle"
+                  src={greenTick}
+                />
+              </span>{" "}
+              next to its name. This shows that WhatsApp has confirmed that an
+              authentic and notable brand owns this account. Learn more.
+            </p>
+            <button className="bg-[#F4F2F2] text-[#626262] p-2 rounded">
+              Submit Request
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col justify-start items-start w-full ">
-          <div className="bg-white p-6  w-full ">
+        <div className="flex flex-col justify-start items-start w-full bg-white p-6">
+          <div className="  w-3/5 ">
             <h2 className="text-xl font-semibold mb-2">Description</h2>
             <p className="text-gray-600 mb-2">
               Tell your customers about your business
@@ -93,7 +98,7 @@ const Profile: React.FC = () => {
             <textarea
               value={description}
               onChange={handleDescriptionChange}
-              className="p-2 border border-gray-300 rounded w-full h-32 resize-none"
+              className="p-2 border border-gray-300 rounded w-full h-20 resize-none"
               placeholder="Description"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             />
@@ -109,7 +114,7 @@ const Profile: React.FC = () => {
               <textarea
                 value={address}
                 onChange={handleAddressChange}
-                className="p-2 border border-gray-300 h-16 rounded w-full"
+                className="p-2 border border-gray-300 h-10 rounded w-full"
                 placeholder="Address"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               />
@@ -122,7 +127,7 @@ const Profile: React.FC = () => {
               <textarea
                 value={email}
                 onChange={handleEmailChange}
-                className="p-2 border border-gray-300 h-16 rounded w-full"
+                className="p-2 border border-gray-300 h-10 rounded w-full"
                 placeholder="Email address"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               />
@@ -133,7 +138,7 @@ const Profile: React.FC = () => {
               <textarea
                 value={website}
                 onChange={handleWebsiteChange}
-                className="p-2 border border-gray-300 h-16 rounded w-full"
+                className="p-2 border border-gray-300 h-10 rounded w-full"
                 placeholder="Website"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               />
