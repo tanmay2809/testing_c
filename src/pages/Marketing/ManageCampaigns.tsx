@@ -1,20 +1,25 @@
 import React, { ChangeEvent, useState } from "react";
 
-//data
+// data
 import { months, manageCampaigns } from "../../constants";
 
-//icons
-import { FaSearch,FaPen } from "react-icons/fa";
+// icons
+import { FaSearch, FaPen } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-//svg
+// svg
 import threeDots from "/threeDots.svg";
 import whatsapp from "../../assets/whatsapp.png";
+
+// modal component
+import DeleteModal from "../../component/Marketing/DeleteModal";
 
 const ManageCampaigns: React.FC = () => {
   const [month, setMonth] = useState<string>(months[new Date().getMonth()]);
   const [actionIndex, setActionIndex] = useState<number | null>(null); // State to track which campaign's action menu is open
   const [status, setStatus] = useState(true);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [campaignToDelete, setCampaignToDelete] = useState<number | null>(null);
 
   // navbar fram
   const handlefram = () => {
@@ -35,19 +40,36 @@ const ManageCampaigns: React.FC = () => {
     Pause: "text-red-500",
   };
 
-  // const statusClasses: { [key: string]: string } = {
-  //   "Under Review": "#F65757",
-  //   Active: "#67CE67",
-  //   Pause: "#F65757",
-  // };
+  const openDeleteModal = (index: number) => {
+    setCampaignToDelete(index);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDelete = () => {
+    if (campaignToDelete !== null) {
+      // Handle the delete logic here, e.g., remove the campaign from the list
+      console.log(`Deleting campaign at index: ${campaignToDelete}`);
+      setDeleteModalOpen(false);
+      setActionIndex(null);
+      setCampaignToDelete(null);
+    }
+  };
 
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setActionIndex(null);
+        }}
+        onDelete={handleDelete}
+      />
       <div
         onClick={handlefram}
         className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%]"
       >
-        <div className="p-4">
+        <div className="px-4">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Campaign Performance</h2>
             <div className="flex items-center space-x-4">
@@ -107,7 +129,7 @@ const ManageCampaigns: React.FC = () => {
                 type="search"
                 onChange={(e) => searchCampaign(e.target.value)}
                 placeholder="Search anything..."
-                className="w-full  pl-10 pr-3 py-2 rounded-md border border-[#E2E8F0]"
+                className="w-full pl-10 pr-3 py-2 rounded-md border border-[#E2E8F0]"
               />
             </div>
             <select className="px-4 py-2 border rounded text-[#004AAD]">
@@ -116,9 +138,9 @@ const ManageCampaigns: React.FC = () => {
             </select>
           </div>
           <div className="mt-4">
-            <table className="min-w-full bg-white  text-[#434343] font-inter text-sm">
+            <table className="min-w-full bg-white text-[#434343] font-inter text-sm">
               <thead>
-                <tr className="bg-[#F1F7FF] w-full border-b-4 border-white rounded-lg p-3 ">
+                <tr className="bg-[#F1F7FF] w-full border-b-4 border-white p-3">
                   <th className="px-4 py-4 text-left">Channel/Type</th>
                   <th className="px-4 py-4 text-left">Campaign name</th>
                   <th className="px-4 py-4 text-left">Delivered</th>
@@ -131,8 +153,11 @@ const ManageCampaigns: React.FC = () => {
               </thead>
               <tbody className="bg-[#F1F7FF]">
                 {manageCampaigns.map((campaign, index) => (
-                  <tr key={index} className="border-b border-[#8B8B8B] relative">
-                    <td className="px-2 py-4 flex items-center gap-1 ">
+                  <tr
+                    key={index}
+                    className="border-b border-[#8B8B8B] relative"
+                  >
+                    <td className="px-2 py-4 flex items-center gap-1">
                       <div className="bg-[#F2F0F0] p-2 rounded-lg">
                         <img src={whatsapp} className="w-5" />
                       </div>
@@ -142,17 +167,14 @@ const ManageCampaigns: React.FC = () => {
                     <td className="px-4 py-4">{campaign.delivered}</td>
                     <td className="px-4 py-4">{campaign.revisit}</td>
                     <td className="px-4 py-4">{campaign.conversionRate}</td>
-
-                    <td className="px-4 py-4">{campaign.cost}</td>
-
+                    <td className="px-4 py-4 font-semibold">{campaign.cost}</td>
                     <td
-                      className={`px-4 py-4 ${
+                      className={`px-4 py-4 font-semibold ${
                         statusClasses[campaign.status]
                       } text-center`}
                     >
                       {campaign.status}
                     </td>
-
                     <td className="px-4 py-4 text-center relative">
                       {actionIndex === index && (
                         <div className="bg-white rounded shadow-md w-40 absolute right-14 top-0 z-10">
@@ -173,7 +195,10 @@ const ManageCampaigns: React.FC = () => {
                             <span>Edit</span>
                             <FaPen className="text-[#004AAD]" />
                           </div>
-                          <div className="flex items-center justify-between cursor-pointer border-b border-b-[#CBC6C6] p-2">
+                          <div
+                            className="flex items-center justify-between cursor-pointer border-b border-b-[#CBC6C6] p-2"
+                            onClick={() => openDeleteModal(index)}
+                          >
                             <span>Delete</span>
                             <RiDeleteBin6Line className="text-[#BE1D3A]" />
                           </div>
