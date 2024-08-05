@@ -128,8 +128,10 @@ const Table: React.FC = () => {
   };
 
   useEffect(() => {
+
     fetchtableData();
-  }, [data]);
+
+  }, [fetchtableData]);
 
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
