@@ -14,7 +14,7 @@ import Customer from "./pages/Customer/Customer";
 import Setting from "./pages/Settings/Setting";
 import MyPlans from "./pages/Settings/MyPlans";
 import Billing from "./pages/Settings/Billing";
-import Invoice from "./pages/Settings/Invoice";
+// import Invoice from "./pages/Settings/Invoice";
 import Stores from "./pages/Settings/Stores";
 import CustomerList from "./pages/Customer/CustomerList";
 import Overview from "./pages/Customer/Overview";
@@ -82,7 +82,7 @@ const App: React.FC = () => {
             <Route path="myplans" element={<MyPlans />} />
             <Route path="store" element={<Stores />} />
             <Route path="billing" element={<Billing />} />
-            <Route path="invoice" element={<Invoice />} />
+            {/* <Route path="invoice" element={<Invoice />} /> */}
           </Route>
         </Route>
       </Routes>

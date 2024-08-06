@@ -71,7 +71,7 @@ const Setting = () => {
               } h-1 w-[80%] rounded-t-[6px]`}
             ></span>
           </Link>
-          <Link
+          {/* <Link
             className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
             to="/setting/invoice"
           >
@@ -83,7 +83,7 @@ const Setting = () => {
                   : "hidden"
               } h-1 w-[80%] rounded-t-[6px]`}
             ></span>
-          </Link>
+          </Link> */}
         </div>
       </div>
       <Outlet />

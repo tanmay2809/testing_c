@@ -1,43 +1,43 @@
 import { RxReload } from "react-icons/rx";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { BsDownload } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import whatsapp from "../assets/whatsapp.png";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { IoCloseCircle } from "react-icons/io5";
 import recharge from "../assets/recharge.png";
+import { months } from "../constants";
 
-interface data {
-  id: number;
-  cycle: string;
-  status: string;
-  billAmount: string;
-  paidAmount: string;
-}
+// interface data {
+//   id: number;
+//   cycle: string;
+//   status: string;
+//   billAmount: string;
+//   paidAmount: string;
+// }
 
-const data = [
-  {
-    id: 1,
-    cycle: "1 August-31 August",
-    status: "ongoing",
-    billAmount: "100",
-    paidAmount: "50",
-  },
-  {
-    id: 2,
-    cycle: "1 August-31 August",
-    status: "completed",
-    billAmount: "100",
-    paidAmount: "50",
-  },
-  {
-    id: 3,
-    cycle: "1 August-31 August",
-    status: "defaulted",
-    billAmount: "100",
-    paidAmount: "50",
-  },
-];
+// const data = [
+//   {
+//     id: 1,
+//     cycle: "1 August-31 August",
+//     status: "ongoing",
+//     billAmount: "100",
+//     paidAmount: "50",
+//   },
+//   {
+//     id: 2,
+//     cycle: "1 August-31 August",
+//     status: "completed",
+//     billAmount: "100",
+//     paidAmount: "50",
+//   },
+//   {
+//     id: 3,
+//     cycle: "1 August-31 August",
+//     status: "defaulted",
+//     billAmount: "100",
+//     paidAmount: "50",
+//   },
+// ];
 
 const Wallet: React.FC = () => {
   const [popupVisible, setPopupVisible] = useState<boolean>(false);
@@ -46,6 +46,9 @@ const Wallet: React.FC = () => {
   const [balance, setBalance] = useState<string>("1000");
   const [credits, setCredits] = useState<string>("0");
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedMonth, setSelectedMonth] = useState<string>(
+    months[new Date().getMonth()]
+  );
 
   const handleAmountClick = (amount: string) => {
     setInputValue(amount);
@@ -61,6 +64,10 @@ const Wallet: React.FC = () => {
 
   const fetchBalance = async () => {
     return ["1200", "0"];
+  };
+
+  const handleMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMonth(e.target.value);
   };
 
   return (
@@ -151,10 +158,26 @@ const Wallet: React.FC = () => {
 
             {/* Activity Table */}
             <div className="mt-8">
-              <h1 className="text-[1.5rem] text-[#505050] font-semibold mb-[1rem] ml-2">
-                Wallet Activity
-              </h1>
-              <div className="overflow-x-scroll no-scrollbar rounded-[12px] border-[2px] border-[#DDDDDD] bg-[#FAFCFF]">
+              <div className="flex flex-row justify-between pr-24 py-8">
+                <h1 className="text-[1.5rem] text-[#505050] font-semibold mb-[1rem] ml-2">
+                  Balance Utilisation
+                </h1>
+                <select
+                  id="month"
+                  name="month"
+                  value={selectedMonth}
+                  onChange={handleMonthChange}
+                  className="font-inter border-none px-2 py-2 text-base focus:outline-none sm:text-sm rounded-md border border-black mt-1"
+                >
+                  {months.map((month) => (
+                    <option key={month} value={month}>
+                      {month}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* <div className="overflow-x-scroll no-scrollbar rounded-[12px] border-[2px] border-[#DDDDDD] bg-[#FAFCFF]">
                 <table className="w-full text-base mt-4">
                   <thead>
                     <tr className="w-full text-center text-[#858687] text-nowrap">
@@ -206,6 +229,24 @@ const Wallet: React.FC = () => {
                     ))}
                   </tbody>
                 </table>
+              </div> */}
+              <div className="flex flex-row flex-wrap gap-x-5 gap-y-5 text-[#505050] font-inter">
+                <div className="w-[300px] h-[150px] bg-[#FADBFF] flex flex-col justify-between rounded-md p-5">
+                  <p className="text-[1rem]">Total Cost</p>
+                  <p className="text-[2.5rem] font-bold">₹400</p>
+                </div>
+                <div className="w-[300px] h-[150px] bg-[#F9FFB9] flex flex-col justify-between rounded-md p-5">
+                  <p className="text-[1rem]">WhatsApp Utility Cost</p>
+                  <p className="text-[2.5rem] font-bold">₹200</p>
+                </div>
+                <div className="w-[300px] h-[150px] bg-[#FEC8C8] flex flex-col justify-between rounded-md p-5">
+                  <p className="text-[1rem]">WhatsApp Marketing Cost</p>
+                  <p className="text-[2.5rem] font-bold">₹200</p>
+                </div>
+                <div className="w-[300px] h-[150px] bg-[#BEFED4] flex flex-col justify-between rounded-md p-5">
+                  <p className="text-[1rem]">Total Due Amount</p>
+                  <p className="text-[2.5rem] font-bold">₹200</p>
+                </div>
               </div>
             </div>
           </div>
