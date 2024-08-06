@@ -48,6 +48,7 @@ const Register: React.FC = () => {
     setLoading(true);
     if (!isAgree) {
       setAgreeError("Please Agree to privacy policy!");
+      setLoading(false);
       return;
     } else {
       setAgreeError("");

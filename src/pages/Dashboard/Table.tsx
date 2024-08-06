@@ -128,8 +128,10 @@ const Table: React.FC = () => {
   };
 
   useEffect(() => {
+
     fetchtableData();
-  }, [data]);
+
+  }, [fetchtableData]);
 
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
@@ -163,7 +165,7 @@ const Table: React.FC = () => {
         </div>
         {tables.map((item) => (
           <div key={item?._id} className="w-full my-[.5rem]">
-            <TableComponent data={item} />
+            <TableComponent data={item} totaltable ={tables.length} /> 
           </div>
         ))}
       </div>

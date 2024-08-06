@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SwitchTable from "./SwitchTable";
+// import SwitchTable from "./SwitchTable";
 import { IoPeopleSharp } from "react-icons/io5";
 import { MdOutlineFolderCopy } from "react-icons/md";
 import { GoDownload } from "react-icons/go";
@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 // import TableData from "../../pages/Dashboard/Table";
 
 
-const TableComponent = ({ data }: { data: any }) => {
+const TableComponent = ({ data ,totaltable }: { data: any , totaltable:any }) => {
   const [Today, setToday] = useState(true);
   const [Week, setWeek] = useState(false);
   const [Month, setMonth] = useState(false);
@@ -65,12 +65,12 @@ const TableComponent = ({ data }: { data: any }) => {
         <div className="flex items-center gap-7">
           <p className="text-[#505050] font-semibold w-[700] text-[1.6rem]">Table NO {data?.tableNo}</p>
           {
-            data?.tableNo == 1 ? <button className="px-[1.3rem] py-1.5 text-white bg-[#FF950A] rounded-lg">Default</button>
-            : <button className="px-[1.3rem] py-1.5 text-white bg-red-700 rounded-lg">Delete</button>
+            data?.tableNo != totaltable  ? <button className="px-[1.3rem] py-1.5 text-white bg-[#FF950A] rounded-lg">Default</button>
+              : <button className="px-[1.3rem] py-1.5 text-white bg-red-700 rounded-lg">Delete</button>
           }
-          
+
         </div>
-        
+
         <div className="flex items-center justify-center gap-4">
           <button onClick={today} className={`border px-4 py-2 rounded-lg font-semibold ${Today ? "text-white bg-[#004AAD]" : "text-[#0F172ACC] bg-white border-[#00000080]"}`}>Today</button>
           <button onClick={weekly} className={`border px-4 py-2 rounded-lg font-semibold ${Week ? "text-white bg-[#004AAD]" : "text-[#0F172ACC] bg-white border-[#00000080]"}`}>Weekly</button>
@@ -79,7 +79,7 @@ const TableComponent = ({ data }: { data: any }) => {
       </div>
       <div className="flex justify-between w-full items-center py-[1rem] px-[2rem]">
         <div className="flex items-center gap-4">
-          <SwitchTable />
+          {/* <SwitchTable /> */}
           <p className="font-inter font-[400] text-[1rem] text-nowrap text-[#505050]">Active since Nov 03, 2022 ( 605 Days )</p>
         </div>
         <div className="flex w-[50%] text-black font-inter font-[600] text-[1.15rem] gap-3 items-center justify-end">
@@ -92,7 +92,12 @@ const TableComponent = ({ data }: { data: any }) => {
               downloadImage(data?.image, filename);
             }}
             className="flex items-center gap-1 cursor-pointer"><GoDownload className="size-5" />Download</p>
-          <p className="flex items-center gap-1 cursor-pointer"><FaRegEye className="size-5" />Preview</p>
+          <p
+            onClick={
+              () => {
+                window.open(data?.url, "_blank");
+              }
+            } className="flex items-center gap-1 cursor-pointer"><FaRegEye className="size-5" />Preview</p>
         </div>
       </div>
       <div className="w-full h-fit px-[2.5rem] flex flex-col gap-4 pt-[1rem] pb-[2rem]">
