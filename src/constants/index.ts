@@ -718,40 +718,39 @@ type Campaign = {
 
 export const manageCampaigns: Campaign[] = [
   {
-    channel: 'Marketing',
-    name: 'Anniversary campaign to all customers',
+    channel: "Marketing",
+    name: "Anniversary campaign to all customers",
     delivered: 0,
     revisit: 0,
-    conversionRate: '0%',
-    cost: '₹0',
-    status: 'Under Review'
+    conversionRate: "0%",
+    cost: "₹0",
+    status: "Under Review",
   },
   {
-    channel: 'Marketing',
-    name: 'Birthday campaign to all customers',
+    channel: "Marketing",
+    name: "Birthday campaign to all customers",
     delivered: 250,
     revisit: 32,
-    conversionRate: '12%',
-    cost: '₹250',
-    status: 'Active'
+    conversionRate: "12%",
+    cost: "₹250",
+    status: "Active",
   },
   {
-    channel: 'Utility',
-    name: 'Greeting Campaign on visit',
+    channel: "Utility",
+    name: "Greeting Campaign on visit",
     delivered: 300,
     revisit: 0,
-    conversionRate: '0%',
-    cost: '₹150',
-    status: 'Active'
+    conversionRate: "0%",
+    cost: "₹150",
+    status: "Active",
   },
   {
-    channel: 'Marketing',
-    name: 'Birthday campaign to all customers',
+    channel: "Marketing",
+    name: "Birthday campaign to all customers",
     delivered: 150,
     revisit: 20,
-    conversionRate: '13%',
-    cost: '₹150',
-    status: 'Pause'
-  }
+    conversionRate: "13%",
+    cost: "₹150",
+    status: "Pause",
+  },
 ];
-

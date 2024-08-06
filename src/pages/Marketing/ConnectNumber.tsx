@@ -45,7 +45,7 @@ const ConnectNumber: React.FC = () => {
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="lg:w-[93%]  lg:px-[2rem] py-[1rem] gap-10 lg:ml-[7%] h-[100vh]">
         <div className="w-full flex flex-row justify-between mt-[60px] font-inter h-fit">
-          <div className="flex p-8 md:p-3 w-full rounded-md ">
+          <div className="flex px-8 md:px-3 w-full rounded-md ">
             {/* Left section */}
             <div className="lg:w-[45%] w-full p-4 flex flex-col justify-evenly items-center h-[33rem]">
               <div>

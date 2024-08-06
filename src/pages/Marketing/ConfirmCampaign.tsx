@@ -7,10 +7,11 @@ interface ConfirmCampaignProps {
 //svg
 import caution from "/Caution.svg";
 import verifiedTick from "/verifiedTick.svg";
+import { Link } from "react-router-dom";
 
 const ConfirmCampaign: React.FC<ConfirmCampaignProps> = ({ backClick }) => {
   return (
-    <div className=" mt-10 p-6 bg-white rounded-lg shadow-md h-[80vh] flex flex-col justify-between">
+    <div className=" p-6 bg-white rounded-lg shadow-md md:h-full lg:h-[80vh] flex flex-col justify-between">
       <div className="flex flex-col gap-4">
         <div className="flex gap-2 items-center p-4 bg-[#F5F9FF] rounded-lg text-black">
           <div className="flex-shrink-0">
@@ -46,9 +47,10 @@ const ConfirmCampaign: React.FC<ConfirmCampaignProps> = ({ backClick }) => {
         >
           Back
         </button>
+        <Link to="/marketing/manage">
         <button className="px-4 py-2 bg-[#004AAD] text-white rounded-md ">
           Manage Campaign
-        </button>
+        </button></Link>
       </div>
     </div>
   );

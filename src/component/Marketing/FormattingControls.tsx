@@ -5,6 +5,7 @@ import EmojiPicker from "emoji-picker-react";
 import emoji from "/emoji.svg";
 import italic from "/italic.svg";
 import bold from "/bold.svg";
+import svg1 from "/@.svg";
 
 type Section = "header" | "body" | "footer";
 
@@ -117,6 +118,9 @@ const FormattingControls: React.FC<FormattingControlsProps> = ({
           onClick={toggleItalic}
         >
           <img src={italic} />
+        </button>
+        <button className={`border rounded p-1 `}>
+          <img src={svg1} className="w-7 p-1" />
         </button>
       </div>
     </div>

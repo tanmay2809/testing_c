@@ -97,9 +97,14 @@ const CreateCampaigns: React.FC = () => {
   const [customDate, setCustomDate] = useState<string | null>(null);
 
   const handleOptionChange = (value: string) => {
-    setSelectedOption(value);
-    if (value !== "customDate") {
+    if (selectedOption === value) {
+      setSelectedOption(null);
       setCustomDate(null);
+    } else {
+      setSelectedOption(value);
+      if (value !== "customDate") {
+        setCustomDate(null);
+      }
     }
   };
 
@@ -239,12 +244,12 @@ const CreateCampaigns: React.FC = () => {
     setIsOpenschedule(!isOpenschedule);
   };
   return (
-    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
-      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
-        <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
-          <div className="bg-white rounded-lg p-1 w-full ">
+    <div className="w-full h-fit relative  lg:mb-0">
+      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] bg-[#F5F9FF]">
+        <div className="w-full flex flex-row justify-between mt-[70px] font-inter ">
+          <div className=" rounded-lg p-1 w-full ">
             {!Confirmation && (
-              <div className="bg-white sticky pt-[1.6rem] top-[4rem] z-10 ">
+              <div className="bg-white sticky mt-[1rem] top-[4rem] z-10 p-4 rounded-xl">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold ">Create Campaign</h2>
                   <div className="flex gap-5">
@@ -298,16 +303,16 @@ const CreateCampaigns: React.FC = () => {
                     )}
                   </div>
                 </div>
-                <p className="mb-4">Create campaign from scratch</p>
+                <p>Create campaign from scratch</p>
               </div>
             )}
 
             {/*main content div */}
-            <div className="bg-[#F5F9FF] flex justify-between gap-10  lg:px-10 md:p-5 rounded-lg">
+            <div className=" flex justify-between gap-10  lg:px-10 md:p-5 rounded-lg h-fit">
               {/*text div */}
-              <div className=" lg:w-[65%] md:w-[50%] sm:[w-50%]">
+              <div className=" lg:w-[55%] md:w-[50%] sm:[w-50%]">
                 {!next && (
-                  <div className="pb-20">
+                  <div className="flex flex-col justify-evenly h-full">
                     <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
                       <div className="flex items-center gap-3">
                         <h3 className="text-lg font-semibold">
@@ -315,49 +320,49 @@ const CreateCampaigns: React.FC = () => {
                         </h3>
                       </div>
                     </div>
-
-                    <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          id="Utility"
-                          className="form-checkbox h-10 w-6 text-[#004AAD] mr-4"
-                          checked={selectedCampaign === "Utility"}
-                          onChange={handleCreateCampaignCheckboxChange}
-                        />
-                        <div className="bg-[#FFA858] p-4 rounded-lg">
-                          <img src={utility} />
+                    <div>
+                      <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            id="Utility"
+                            className="form-checkbox h-10 w-6 text-[#004AAD] mr-4"
+                            checked={selectedCampaign === "Utility"}
+                            onChange={handleCreateCampaignCheckboxChange}
+                          />
+                          <div className="bg-[#FFA858] p-4 rounded-lg">
+                            <img src={utility} />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-semibold mb-2">
+                              Welcome customers with greetings
+                            </h3>
+                            <p className="text-gray-600 mb-2">Utility</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-lg font-semibold mb-2">
-                            Welcome customers with greetings
-                          </h3>
-                          <p className="text-gray-600 mb-2">Utility</p>
+                      </div>
+
+                      <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            id="Marketing"
+                            className="form-checkbox h-10 w-6 text-[#004AAD] mr-4"
+                            checked={selectedCampaign === "Marketing"}
+                            onChange={handleCreateCampaignCheckboxChange}
+                          />
+                          <div className="bg-[#FFCF27] p-4 rounded-lg">
+                            <img src={booking} />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-semibold mb-2">
+                              Booking Campaign
+                            </h3>
+                            <p className="text-gray-600 mb-2">Marketing</p>
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                    <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          id="Marketing"
-                          className="form-checkbox h-10 w-6 text-[#004AAD] mr-4"
-                          checked={selectedCampaign === "Marketing"}
-                          onChange={handleCreateCampaignCheckboxChange}
-                        />
-                        <div className="bg-[#FFCF27] p-4 rounded-lg">
-                          <img src={booking} />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold mb-2">
-                            Booking Campaign
-                          </h3>
-                          <p className="text-gray-600 mb-2">Marketing</p>
-                        </div>
-                      </div>
-                    </div>
-
                     <div className="p-4 rounded-lg mb-4 bg-white flex justify-between w-full">
                       <div className="flex flex-col justify-start gap-3 w-full">
                         <h3 className="text-lg font-semibold">Campaign Name</h3>
@@ -749,7 +754,7 @@ const CreateCampaigns: React.FC = () => {
                           } mt-3 bg-white  rounded-lg`}
                         >
                           <div className="  rounded-md w-full">
-                            <div className=" p-4 flex items-center gap-3 border-b border-b-gray-400">
+                            <div className=" p-4 flex items-center gap-6 border-b border-b-gray-400">
                               <input
                                 type="checkbox"
                                 id="allCustomers"
@@ -766,13 +771,13 @@ const CreateCampaigns: React.FC = () => {
                                 >
                                   All Customers
                                 </label>
-                                <p className="text-sm">
-                                  All Customers that are in the database or will
-                                  be added to the database
+                                {/*estimated customers */}
+                                <p className="text-sm text-[#004AAD] font-semibold">
+                                  240 Estimated Customers
                                 </p>
                               </div>
                             </div>
-                            <div className=" p-4 flex items-center gap-3">
+                            <div className=" p-4 flex items-center gap-6">
                               <input
                                 type="checkbox"
                                 id="advanceFilter"
@@ -875,11 +880,21 @@ const CreateCampaigns: React.FC = () => {
               </div>
 
               {/*screen div */}
-              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[11rem] md:right-11 md:top-48 sm:right-11 sm:top-56 h-fit">
+              <div
+                className={`w-full max-w-xs mx-auto lg:p-3  h-fit flex justify-evenly items-center ${
+                  next && !Confirmation
+                    ? "fixed lg:right-[4.5rem] lg:top-[12rem] md:right-11 md:top-48 sm:right-11 sm:top-56"
+                    : "relative top-0"
+                }`}
+              >
                 <img
                   src={screen}
                   alt="Phone Screen"
-                  className="lg:w-[88%] md:w-[90%] h-auto mx-auto  sm:w-[88%] ml-10"
+                  className={`${
+                    next && Confirmation
+                      ? "lg:w-[88%] md:w-[90%] h-auto mx-auto  sm:w-[88%] ml-10"
+                      : "lg:w-[80%] md:w-[80%] h-auto"
+                  }`}
                 />
                 {next && (
                   <>

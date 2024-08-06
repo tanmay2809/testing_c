@@ -93,9 +93,14 @@ const Campaigns: React.FC = () => {
   const [customDate, setCustomDate] = useState<string | null>(null);
 
   const handleOptionChange = (value: string) => {
-    setSelectedOption(value);
-    if (value !== "customDate") {
+    if (selectedOption === value) {
+      setSelectedOption(null);
       setCustomDate(null);
+    } else {
+      setSelectedOption(value);
+      if (value !== "customDate") {
+        setCustomDate(null);
+      }
     }
   };
 
@@ -231,15 +236,13 @@ const Campaigns: React.FC = () => {
 
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
-      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
+      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] bg-[#F5F9FF]">
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
-          <div className="bg-white rounded-lg p-1 w-full ">
+          <div className=" rounded-lg p-1 w-full ">
             {!Confirmation && (
-              <div className="bg-white sticky pt-[1.6rem] top-[4rem] z-10">
+              <div className="bg-white sticky mt-[1rem] top-[4rem] z-10 p-4 rounded-xl">
                 <div className="flex justify-between w-full">
-                  <h2 className="text-xl font-semibold ">
-                    Template Preview
-                  </h2>
+                  <h2 className="text-xl font-semibold ">Template Preview</h2>
                   <div className="flex gap-6">
                     <Link to="/marketing">
                       <button className=" text-[#E61856] bg-[#FDF1F1] p-2 rounded-lg">
@@ -483,7 +486,7 @@ const Campaigns: React.FC = () => {
                                 id="footer"
                                 placeholder="Enter the footer"
                                 className="bg-[#F5F9FF]  h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
-                                rows={2}
+                                rows={1}
                                 value={footer}
                                 ref={textareaRef}
                                 onChange={(
@@ -641,7 +644,7 @@ const Campaigns: React.FC = () => {
                           } mt-3 bg-white  rounded-lg`}
                         >
                           <div className="  rounded-md w-full">
-                            <div className=" p-4 flex items-center gap-3 border-b border-b-gray-400">
+                            <div className=" p-4 flex items-center gap-6 border-b border-b-gray-400">
                               <input
                                 type="checkbox"
                                 id="allCustomers"
@@ -658,13 +661,13 @@ const Campaigns: React.FC = () => {
                                 >
                                   All Customers
                                 </label>
-                                <p className="text-sm">
-                                  All Customers that are in the database or will
-                                  be added to the database
+                                {/*estimated customers */}
+                                <p className="text-sm text-[#004AAD] font-semibold">
+                                  240 Estimated Customers
                                 </p>
                               </div>
                             </div>
-                            <div className=" p-4 flex items-center gap-3">
+                            <div className=" p-4 flex items-center gap-6">
                               <input
                                 type="checkbox"
                                 id="advanceFilter"
@@ -766,7 +769,13 @@ const Campaigns: React.FC = () => {
                 )}
               </div>
 
-              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[11rem] md:right-12 md:top-44 sm:right-12 sm:top-56 h-fit">
+              <div
+                className={`w-full max-w-xs mx-auto lg:p-3 ${
+                  !Confirmation
+                    ? "fixed  lg:right-[4rem] lg:top-[12rem] md:right-12 md:top-44 sm:right-12 sm:top-56 h-fit"
+                    : "relative top-0"
+                }`}
+              >
                 {" "}
                 <img
                   src={screen}

@@ -175,7 +175,7 @@ const CustomerDetails: React.FC<CustomerDetailsProps> = ({
             </div>
           </div>
           {/*customer related information */}
-          <div className="mt-6 bg-[#F1F7FF] p-4 rounded-lg">
+          <div className="mt-6 bg-[#e3ecfd] p-4 rounded-lg">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="font-semibold">Customer Name</p>
