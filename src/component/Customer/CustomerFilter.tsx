@@ -300,24 +300,24 @@ const CustomerFilter: React.FC<FilterProps> = ({
               <label className={"flex items-center space-x-2 cursor-pointer "}>
                 <input
                   type="checkbox"
-                  checked={gender.includes("Male")}
-                  onChange={() => toggleGender("Male")}
+                  checked={gender.includes("male")}
+                  onChange={() => toggleGender("male")}
                 />
                 <p className={"text-lg font-medium"}>Male</p>
               </label>
               <label className={"flex items-center space-x-2 cursor-pointer "}>
                 <input
                   type="checkbox"
-                  checked={gender.includes("Female")}
-                  onChange={() => toggleGender("Female")}
+                  checked={gender.includes("female")}
+                  onChange={() => toggleGender("female")}
                 />
                 <p className={"text-lg font-medium "}>Female</p>
               </label>
               <label className="flex items-center space-x-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={gender.includes("Others")}
-                  onChange={() => toggleGender("Others")}
+                  checked={gender.includes("other")}
+                  onChange={() => toggleGender("other")}
                 />
                 <p className="text-lg font-medium ">Others</p>
               </label>
