@@ -8,17 +8,9 @@ interface FilterProps {
   customDateNotVisit: string;
   setcustomDateVisit: (date: string) => void;
   setcustomDateNotVisit: (date: string) => void;
-  gender: string[];
-  segmentation: string[];
-  visitFilter: string;
-  nonVisitFilter: string;
-  setNonVisitFilter: (nonvisit: string) => void;
-  setVisitFilter: (visit: string) => void;
-  setGender: (gender: string[]) => void;
-  setSegmentation: (segmentation: string[]) => void;
 }
 
-const CustomerFilter: React.FC<FilterProps> = ({
+const AdvanceFilter: React.FC<FilterProps> = ({
   isVisible,
   onClose,
   setFilterData,
@@ -26,17 +18,12 @@ const CustomerFilter: React.FC<FilterProps> = ({
   customDateNotVisit,
   setcustomDateVisit,
   setcustomDateNotVisit,
-  gender,
-  segmentation,
-  setGender,
-  setSegmentation,
-  visitFilter,
-  nonVisitFilter,
-  setNonVisitFilter,
-  setVisitFilter,
 }) => {
   const [isClosing, setIsClosing] = useState<boolean>(false);
-  
+  const [segmentation, setSegmentation] = useState<string[]>([]);
+  const [gender, setGender] = useState<string[]>([]);
+  const [visitFilter, setVisitFilter] = useState<string>("");
+  const [nonVisitFilter, setNonVisitFilter] = useState<string>("");
 
   if (!isVisible) return null;
 
@@ -344,4 +331,4 @@ const CustomerFilter: React.FC<FilterProps> = ({
   );
 };
 
-export default CustomerFilter;
+export default AdvanceFilter;
