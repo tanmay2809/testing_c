@@ -51,11 +51,7 @@ const LeftNavbar = () => {
     {
       name: "Foodoos",
       id: "1234567",
-    },
-    {
-      name: "Foodoos",
-      id: "1234567",
-    },
+    }
   ];
 
   const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -212,7 +208,7 @@ const LeftNavbar = () => {
           >
             <div className="font-inter ">
               <p className="text-[#4E4E4E] text-[.8rem]">Your Outlet</p>
-              <p className="text-[#64748B] text-[.9rem]">Foodoos</p>
+              <p className="text-[#64748B] text-[.9rem]">{data.resName}</p>
             </div>
             <HiChevronUpDown className="size-6" onClick={handleToggle1} />
           </div>
@@ -228,7 +224,7 @@ const LeftNavbar = () => {
                 className="flex flex-col   justify-between w-full  border-b border-[#706e6e] "
               >
                 <div className="px-4 p-1 ">
-                  <p className="text-[#64748B] text-[.9rem]">{item.name}</p>
+                  <p className="text-[#64748B] text-[.9rem]">{data.resName}</p>
                   <p className="text-[#4E4E4E] text-[.8rem]">Id: {item.id}</p>
                 </div>
               </div>

@@ -9,7 +9,7 @@ interface BarChartcProps {
 
 export const BarChartc: React.FC<BarChartcProps> = ({ dailyVisits }) => {
   // Explicitly define the type for data
-  const data: (string | number)[][] = [["Date", "Visits"]];
+  const data: (string | number)[][] = [["Date", ""]];
 
   const sortedDates = Object.keys(dailyVisits).sort((a, b) => {
     const dateA = new Date(a).getTime();

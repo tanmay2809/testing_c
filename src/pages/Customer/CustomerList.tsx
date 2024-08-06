@@ -564,11 +564,11 @@ const CustomerList: React.FC = () => {
                 {currentItems?.map((customer: any, index: any) => (
                   <tr key={index} className="border-t text-base text-center">
                     <td className="py-3 px-6">{customer?.userId?.name}</td>
-                    <td className="py-3 px-6">
-                      +91 {customer?.userId?.phone}{" "}
+                    <td className="py-3 px-6 text-nowrap flex gap-2">
+                      <span className="lg:block md:hidden">+91</span> {customer?.userId?.phone}{" "}
                     </td>
                     <td className="py-3 px-6">{customer?.visits?.length}</td>
-                    <td className="py-3 px-6">
+                    <td className="py-3 px-6 text-nowra">
                       {getLastVisitDisplay(customer?.visits)}
                     </td>
 

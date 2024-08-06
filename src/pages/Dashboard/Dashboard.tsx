@@ -440,11 +440,11 @@ const Dashboard = () => {
 
           {/* Customer Overview1 1 */}
           <div className="bg-[#F1F7FF] w-full h-fit flex flex-col mt-[.8rem] py-[1.5rem] font-inter px-[2.5rem] rounded-lg">
-            <div className="flex w-full justify-between items-center">
-              <p className="text-[#505050] font-semibold w-[700] text-[1.6rem] ">
+            <div className="flex w-full justify-between items-center gap-2">
+              <p className="text-[#505050] font-semibold w-[700] text-nowrap lg:text-[1.6rem] md:text-[1.4rem] ">
                 Customer Overview
               </p>
-              <div className="flex items-center justify-center gap-4">
+              <div className="flex items-center md:text-[.9rem] lg:text-[1rem] justify-center lg:gap-4 md:gap-2">
                 {/* Dropdown */}
 
                 <select
@@ -464,7 +464,7 @@ const Dashboard = () => {
                 <Link
                   to="/customer/analytics"
                   onClick={handleScrollToTop}
-                  className="flex items-center  bg-white rounded-lg px-5 py-2 font-[700] text-[#64748B]"
+                  className="flex items-center text-nowrap  bg-white rounded-lg px-5 py-2 font-[700] text-[#64748B]"
                 >
                   {" "}
                   View Analytics{" "}
@@ -473,7 +473,7 @@ const Dashboard = () => {
                 <Link
                   to="/Table"
                   onClick={handleScrollToTop}
-                  className="flex items-center  bg-white rounded-lg px-5 py-2 font-[700] text-[#64748B]"
+                  className="flex items-center text-nowrap bg-white rounded-lg px-5 py-2 font-[700] text-[#64748B]"
                 >
                   {" "}
                   View Tables{" "}

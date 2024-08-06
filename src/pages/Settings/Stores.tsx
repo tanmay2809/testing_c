@@ -7,7 +7,9 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // icons
-import { FaFacebook, FaPlus, FaYoutube } from "react-icons/fa6";
+import { FaFacebook, FaYoutube } from "react-icons/fa6";
+// import {  FaPlus } from "react-icons/fa6";
+
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
 import { LuAsterisk } from "react-icons/lu";
@@ -18,7 +20,7 @@ import zomato from "../../assets/image 159.png";
 import google from "../../assets/Google-Review.png";
 
 //svg
-import premium from "/premium.svg";
+// import premium from "/premium.svg";
 
 // redux
 import {
@@ -186,7 +188,7 @@ const Stores = () => {
   return (
     <div className="w-full h-fit relative">
       <div className="lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center gap-2 justify-center lg:ml-[7%]">
-        <div className="w-full flex flex-row justify-between">
+        <div className="w-full flex flex-row justify-between mb-[1rem]">
           <div className="flex flex-col -mt-3">
             <h1 className="text-2xl font-[500]">My stores</h1>
             <p className="text-[1rem]">
@@ -196,7 +198,7 @@ const Stores = () => {
               </span>
             </p>
           </div>
-          <div className="w-fit h-fit">
+          {/* <div className="w-fit h-fit">
             <button className="w-[9.375rem] flex flex-row justify-center items-center gap-2 bg-[#004AAD] text-white px-2 py-2 text-lg font-[500] rounded-[0.5rem]">
               <FaPlus className="text-lg" />
               Add Store
@@ -205,7 +207,7 @@ const Stores = () => {
               src={premium}
               className="relative -top-[3.5rem] -right-[8.4rem] w-[1.75rem] h-[1.5rem]"
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="w-full flex flex-col -mt-2">

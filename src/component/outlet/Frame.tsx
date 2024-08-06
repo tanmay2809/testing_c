@@ -61,7 +61,7 @@ const frame = () => {
         </div>
         <div className="flex flex-col p-2 border-b gap-1 border-[#aca9a9] text-[#64748B] ">
           <Link
-            to="/plans"
+           to="https://www.snackbae.in/"
             onClick={handlefram}
             className="px-2  text-[1.1rem]  flex items-center justify-start  "
           >
@@ -75,13 +75,13 @@ const frame = () => {
             Pricing
           </Link>
         </div>
-        <div
+        <Link  to="https://wa.me/917044292143?text=Hi%20"
           onClick={handlefram}
           className="flex cursor-pointer px-2  text-[1.1rem]  gap-3 items-center text-[#64748B] justify-start p-2 "
         >
           <IoLogoWhatsapp className="text-green-500 size-6" />
           <p className="font-semibold">Contact Us</p>
-        </div>
+        </Link>
         <div
           className={`flex lg:hidden items-center text-nowrap px-2 gap-3 text-red-500 hover:cursor-pointer`}
           onClick={handleLogout}

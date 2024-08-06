@@ -27,8 +27,8 @@ export default function Charts({ male = 0, female = 0, other = 0 }: ChartProps) 
     <Chart
       className=""
       chartType="PieChart"
-      width="1500px"
-      height="450px"
+      width="580px"
+      height="350px"
       data={data}
       options={options}
     />
