@@ -65,8 +65,14 @@ const TableComponent = ({ data ,totaltable }: { data: any , totaltable:any }) =>
         <div className="flex items-center gap-7">
           <p className="text-[#505050] font-semibold w-[700] text-[1.6rem]">Table NO {data?.tableNo}</p>
           {
-            data?.tableNo != totaltable  ? <button className="px-[1.3rem] py-1.5 text-white bg-[#FF950A] rounded-lg">Default</button>
-              : <button className="px-[1.3rem] py-1.5 text-white bg-red-700 rounded-lg">Delete</button>
+            data?.tableNo == totaltable  ? 
+               <button className="px-[1.3rem] py-1.5 text-white bg-red-700 rounded-lg">Delete</button>
+
+               :
+               (
+                data?.tableNo  == 1 && 
+                <button className="px-[1.3rem] py-1.5 text-white bg-[#FF950A] rounded-lg">Default</button>
+               )
           }
 
         </div>
