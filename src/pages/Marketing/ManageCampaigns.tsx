@@ -14,6 +14,9 @@ import whatsapp from "../../assets/whatsapp.png";
 // modal component
 import DeleteModal from "../../component/Marketing/DeleteModal";
 
+//images
+import noDataFound from "../../assets/No data found.png";
+
 const ManageCampaigns: React.FC = () => {
   const [month, setMonth] = useState<string>(months[new Date().getMonth()]);
   const [actionIndex, setActionIndex] = useState<number | null>(null); // State to track which campaign's action menu is open
@@ -54,6 +57,7 @@ const ManageCampaigns: React.FC = () => {
       setCampaignToDelete(null);
     }
   };
+  const isEmpty = Object.keys(manageCampaigns).length === 0;
 
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
@@ -137,8 +141,11 @@ const ManageCampaigns: React.FC = () => {
               {/* Add more options here */}
             </select>
           </div>
-          <div className="mt-4">
-            <table className="min-w-full bg-white text-[#434343] font-inter text-sm">
+          <div
+            className="mt-4 mb-6 h-[25rem] overflow-y-auto bg-[#F1F7FF]"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            <table className="min-w-full bg-white text-[#434343] font-inter text-sm ">
               <thead>
                 <tr className="bg-[#F1F7FF] w-full border-b-4 border-white p-3">
                   <th className="px-4 py-4 text-left">Channel/Type</th>
@@ -151,71 +158,89 @@ const ManageCampaigns: React.FC = () => {
                   <th className="px-4 py-4 text-center">Action</th>
                 </tr>
               </thead>
-              <tbody className="bg-[#F1F7FF]">
-                {manageCampaigns.map((campaign, index) => (
-                  <tr
-                    key={index}
-                    className="border-b border-[#8B8B8B] relative"
-                  >
-                    <td className="px-2 py-4 flex items-center gap-1">
-                      <div className="bg-[#F2F0F0] p-2 rounded-lg">
-                        <img src={whatsapp} className="w-5" />
+              {isEmpty ? (
+                <tbody className="bg-[#F1F7FF] ">
+                  <tr>
+                    <td colSpan={8} className="pb-4">
+                      <div className=" flex flex-col items-center justify-start w-full">
+                        <img src={noDataFound} className="w-60 h-auto" />
+                        <p className="w-full text-center font-semibold">
+                          No data to display. Once customers starts visiting
+                          this will look a lot more exciting.
+                        </p>
                       </div>
-                      <p>{campaign.channel}</p>
-                    </td>
-                    <td className="px-4 py-4">{campaign.name}</td>
-                    <td className="px-4 py-4">{campaign.delivered}</td>
-                    <td className="px-4 py-4">{campaign.revisit}</td>
-                    <td className="px-4 py-4">{campaign.conversionRate}</td>
-                    <td className="px-4 py-4 font-semibold">{campaign.cost}</td>
-                    <td
-                      className={`px-4 py-4 font-semibold ${
-                        statusClasses[campaign.status]
-                      } text-center`}
-                    >
-                      {campaign.status}
-                    </td>
-                    <td className="px-4 py-4 text-center relative">
-                      {actionIndex === index && (
-                        <div className="bg-white rounded shadow-md w-40 absolute right-14 top-0 z-10">
-                          <div className="flex items-center justify-between mb-2 border-b border-b-[#CBC6C6] p-2">
-                            <span>Status</span>
-                            <label className="relative inline-flex items-center cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={status}
-                                onChange={() => setStatus(!status)}
-                                className="sr-only peer"
-                              />
-                              <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500"></div>
-                              <div className="absolute left-1 top-1 bg-white border border-gray-300 rounded-full h-4 w-4 transition peer-checked:translate-x-full peer-checked:border-white"></div>
-                            </label>
-                          </div>
-                          <div className="flex items-center justify-between mb-2 cursor-pointer border-b border-b-[#CBC6C6] p-2">
-                            <span>Edit</span>
-                            <FaPen className="text-[#004AAD]" />
-                          </div>
-                          <div
-                            className="flex items-center justify-between cursor-pointer border-b border-b-[#CBC6C6] p-2"
-                            onClick={() => openDeleteModal(index)}
-                          >
-                            <span>Delete</span>
-                            <RiDeleteBin6Line className="text-[#BE1D3A]" />
-                          </div>
-                        </div>
-                      )}
-                      <button
-                        className="text-gray-500"
-                        onClick={() =>
-                          setActionIndex(actionIndex === index ? null : index)
-                        }
-                      >
-                        <img src={threeDots} />
-                      </button>
                     </td>
                   </tr>
-                ))}
-              </tbody>
+                </tbody>
+              ) : (
+                <tbody className="bg-[#F1F7FF] ">
+                  {manageCampaigns.map((campaign, index) => (
+                    <tr
+                      key={index}
+                      className="border-b border-[#8B8B8B] relative"
+                    >
+                      <td className="px-2 py-4 flex items-center gap-1">
+                        <div className="bg-[#F2F0F0] p-2 rounded-lg">
+                          <img src={whatsapp} className="w-5" />
+                        </div>
+                        <p>{campaign.channel}</p>
+                      </td>
+                      <td className="px-4 py-4">{campaign.name}</td>
+                      <td className="px-4 py-4">{campaign.delivered}</td>
+                      <td className="px-4 py-4">{campaign.revisit}</td>
+                      <td className="px-4 py-4">{campaign.conversionRate}</td>
+                      <td className="px-4 py-4 font-semibold">
+                        {campaign.cost}
+                      </td>
+                      <td
+                        className={`px-4 py-4 font-semibold ${
+                          statusClasses[campaign.status]
+                        } text-center`}
+                      >
+                        {campaign.status}
+                      </td>
+                      <td className="px-4 py-4 text-center relative">
+                        {actionIndex === index && (
+                          <div className="bg-white rounded shadow-md w-40 absolute right-14 top-0 z-10">
+                            <div className="flex items-center justify-between mb-2 border-b border-b-[#CBC6C6] p-2">
+                              <span>Status</span>
+                              <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={status}
+                                  onChange={() => setStatus(!status)}
+                                  className="sr-only peer"
+                                />
+                                <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500"></div>
+                                <div className="absolute left-1 top-1 bg-white border border-gray-300 rounded-full h-4 w-4 transition peer-checked:translate-x-full peer-checked:border-white"></div>
+                              </label>
+                            </div>
+                            <div className="flex items-center justify-between mb-2 cursor-pointer border-b border-b-[#CBC6C6] p-2">
+                              <span>Edit</span>
+                              <FaPen className="text-[#004AAD]" />
+                            </div>
+                            <div
+                              className="flex items-center justify-between cursor-pointer border-b border-b-[#CBC6C6] p-2"
+                              onClick={() => openDeleteModal(index)}
+                            >
+                              <span>Delete</span>
+                              <RiDeleteBin6Line className="text-[#BE1D3A]" />
+                            </div>
+                          </div>
+                        )}
+                        <button
+                          className="text-gray-500"
+                          onClick={() =>
+                            setActionIndex(actionIndex === index ? null : index)
+                          }
+                        >
+                          <img src={threeDots} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
             </table>
           </div>
         </div>

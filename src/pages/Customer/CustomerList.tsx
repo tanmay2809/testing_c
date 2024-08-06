@@ -271,6 +271,10 @@ const CustomerList: React.FC = () => {
   //filter
   const toggleFilter = () => {
     // setCustomerData(data?.customerData);
+    setVisitFilter("");
+    setNonVisitFilter("");
+    setGender([]);
+    setSegmentation([]);
     setIsFilterVisible(!isFilterVisible);
   };
   const filterElementsAdd = (data: string[]) => {

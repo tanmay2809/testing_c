@@ -65,7 +65,7 @@ const WhatsAppManager = () => {
                 location.pathname === "/manager"
                   ? "bg-[#EDF5FF] text-[#004AAD] border-none"
                   : ""
-              } flex flex-col items-center gap-2 text-[1.2rem] font-[500] border border-[#D1D1D1] rounded-lg p-2`}
+              } font-[500] border border-[#D1D1D1] rounded-lg px-2 py-[0.3rem]`}
               to="/manager"
               onClick={handleScrollToTop}
             >
@@ -76,7 +76,7 @@ const WhatsAppManager = () => {
                 location.pathname === "/manager/header"
                   ? "bg-[#EDF5FF] text-[#004AAD] border-none"
                   : ""
-              } flex flex-col items-center gap-2 text-[1.2rem] font-[500] border border-[#D1D1D1] rounded-lg p-2`}
+              } font-[500] border border-[#D1D1D1] rounded-lg px-2 py-[0.3rem]`}
               to="/manager/header"
               onClick={handleScrollToTop}
             >
@@ -88,7 +88,7 @@ const WhatsAppManager = () => {
               navigate("/createcampaign");
               handleScrollToTop();
             }}
-            className="w-[10.5rem] flex justify-center items-center gap-1 bg-[white] text-[#004AAD] px-2 py-2 text-base font-[500] rounded-md border border-[#E2E8F0]"
+            className="w-[10.5rem] flex justify-center items-center gap-1 bg-[white] text-[#004AAD] px-2 py-[0.3rem] text-base font-[500] rounded-md border border-[#E2E8F0]"
           >
             <FaPlus className="text-base" />
             Create Campaign

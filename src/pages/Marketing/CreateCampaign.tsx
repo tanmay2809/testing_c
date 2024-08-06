@@ -1,5 +1,8 @@
 import React, { useState, ChangeEvent, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { Customer } from "../../constants/index";
 
 //images
 import screen from "../../assets/Group 1171278587.png";
@@ -26,6 +29,7 @@ import FormattingControls from "../../component/Marketing/FormattingControls";
 //svg
 import booking from "/booking.svg";
 import utility from "/utility.svg";
+import AdvanceFilter from "../../component/Marketing/AdvanceFilter";
 
 interface RadioOption {
   label: string;
@@ -51,6 +55,11 @@ type StylesState = {
 };
 
 const CreateCampaigns: React.FC = () => {
+  const { data } = useSelector((state: RootState) => state.resturantdata);
+
+  console.log("resData: ", data);
+
+  const [customerData, setCustomerData] = useState<any>(data?.customerData);
   const [type, setType] = useState<string>("");
   const [next, setNext] = useState<boolean>(false);
   const [isOpenContent, setIsOpenContent] = useState<boolean>(true);
@@ -60,8 +69,6 @@ const CreateCampaigns: React.FC = () => {
   const [isButton, setIsButton] = useState<boolean>(false);
   const [buttons, setButtons] = useState<{ id: number; type: string }[]>([]);
   const [target, setTarget] = useState<string | null>(null);
-  const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
-  // const [filterData, setFilterData] = useState<string[]>([]);
   const [header, setHeader] = useState<string>("Bon Appétit!");
   const [body, setBody] = useState<string>(
     "Hey Customer's Name enjoy our exclusive deals on this weekend."
@@ -96,10 +103,169 @@ const CreateCampaigns: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [customDate, setCustomDate] = useState<string | null>(null);
 
+  //filter states
+  const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
+  const [filterData, setFilterData] = useState<string[]>([]);
+  const [customDateVisit, setCustomDateVisit] = useState<string>("");
+  const [customDateNotVisit, setCustomDateNotVisit] = useState<string>("");
+
+  useEffect(() => {
+    setCustomerData(data?.customerData);
+  }, [data]);
+  useEffect(() => {
+    // Only call handleFilter if filterData has been set
+    handleFilter();
+  }, [filterData]);
+
+  const filterElementsAdd = (data: string[]) => {
+    setFilterData(data);
+  };
+  console.log(filterData);
+
+  const handleFilter = () => {
+    console.log(filterData);
+    let filteredCustomers: Customer[] = [];
+    let mainData = data?.customerData;
+    let genderFiltered: Customer[] = [];
+    let segmentationFiltered: Customer[] = [];
+    let visitFiltered: Customer[] = [];
+    let nonVisitFiltered: Customer[] = [];
+
+    const now = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(now.getDate() - 30);
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(now.getDate() - 60);
+    const customDateVisitObj = new Date(customDateVisit);
+    const customDateNotVisitObj = new Date(customDateNotVisit);
+
+    if (filterData.length > 0) {
+      // Filter by visit dates
+      visitFiltered = mainData.filter((customer: Customer) => {
+        let visitCondition;
+        {
+          filterData.map((visitFilter) => {
+            visitCondition =
+              (visitFilter === "Visited in Last 30 days" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) >= thirtyDaysAgo
+                )) ||
+              (visitFilter === "Visited in Last 60 days" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) >= sixtyDaysAgo
+                )) ||
+              (visitFilter.includes("Last visit:") &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) >= customDateVisitObj
+                ));
+          });
+          return visitCondition;
+        }
+      });
+      console.log("After visit: ", visitFiltered);
+
+      // Filter by not visit dates
+      nonVisitFiltered = mainData.filter((customer: Customer) => {
+        let nonVisitCondition;
+        {
+          filterData.map((visitFilter) => {
+            nonVisitCondition =
+              (visitFilter === "Not visited in Last 30 days" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) <= thirtyDaysAgo
+                )) ||
+              (visitFilter === "Not visited in Last 60 days" &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) <= sixtyDaysAgo
+                )) ||
+              (visitFilter.includes("Not visited since:") &&
+                customer.visits.some(
+                  (visit: string) => new Date(visit) <= customDateNotVisitObj
+                ));
+          });
+          return nonVisitCondition;
+        }
+      });
+      console.log("After not visit: ", nonVisitFiltered);
+
+      // Filter by gender
+      genderFiltered = mainData.filter((customer: Customer) => {
+        return filterData.includes(customer.userId?.gender);
+      });
+      console.log("After gender: ", genderFiltered);
+
+      // Filter by customer segmentation
+      segmentationFiltered = mainData.filter((customer: Customer) => {
+        const customerSegment = getCustomerSegment(customer.visits);
+        console.log(customerSegment);
+        return filterData.includes(customerSegment);
+      });
+      console.log("After segmentation: ", segmentationFiltered);
+      const filteredArrays = [
+        genderFiltered,
+        segmentationFiltered,
+        visitFiltered,
+        nonVisitFiltered,
+      ];
+      const nonEmptyFilteredArrays = filteredArrays.filter(
+        (array) => array.length > 0
+      );
+
+      if (nonEmptyFilteredArrays.length > 1) {
+        // Find the intersection of all non-empty filtered arrays
+        filteredCustomers = nonEmptyFilteredArrays.reduce((acc, curr) => {
+          return acc.filter((customer: Customer) => curr.includes(customer));
+        });
+      } else if (nonEmptyFilteredArrays.length === 1) {
+        // If only one filtered array is non-empty, use it
+        filteredCustomers = nonEmptyFilteredArrays[0];
+      }
+      console.log("Final result: ", filteredCustomers);
+    } else {
+      //if filter data is empty then filtered customers=all customers
+      filteredCustomers = data?.customerData;
+    }
+    setCustomerData(filteredCustomers);
+  };
+  const getCustomerSegment = (
+    visits: string[]
+  ): "New" | "Regular" | "Risk" | "Loyal" => {
+    const now = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(now.getDate() - 30);
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(now.getDate() - 60);
+
+    const visitsWithin30Days = visits?.filter(
+      (visit) => new Date(visit) >= thirtyDaysAgo
+    );
+    const visitsWithin60Days = visits?.filter(
+      (visit) => new Date(visit) >= sixtyDaysAgo
+    );
+    if (visitsWithin30Days?.length === 1 || visitsWithin30Days?.length === 2) {
+      return "New";
+    } else if (
+      visitsWithin30Days?.length == 3 ||
+      visitsWithin30Days?.length == 4 ||
+      (visitsWithin60Days?.length > 3 && visitsWithin60Days?.length < 5)
+    ) {
+      return "Regular";
+    } else if (visitsWithin60Days?.length >= 5) {
+      return "Loyal";
+    } else {
+      return "Risk";
+    }
+  };
+
   const handleOptionChange = (value: string) => {
-    setSelectedOption(value);
-    if (value !== "customDate") {
+    if (selectedOption === value) {
+      setSelectedOption(null);
       setCustomDate(null);
+    } else {
+      setSelectedOption(value);
+      if (value !== "customDate") {
+        setCustomDate(null);
+      }
     }
   };
 
@@ -239,12 +405,12 @@ const CreateCampaigns: React.FC = () => {
     setIsOpenschedule(!isOpenschedule);
   };
   return (
-    <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
-      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
-        <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
-          <div className="bg-white rounded-lg p-1 w-full ">
+    <div className="w-full h-fit relative  lg:mb-0">
+      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] bg-[#F5F9FF]">
+        <div className="w-full flex flex-row justify-between mt-[70px] font-inter ">
+          <div className=" rounded-lg p-1 w-full ">
             {!Confirmation && (
-              <div className="bg-white sticky pt-[1.6rem] top-[4rem] z-10 ">
+              <div className="bg-white sticky mt-[1rem] top-[4rem] z-10 p-4 rounded-xl">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold ">Create Campaign</h2>
                   <div className="flex gap-5">
@@ -298,16 +464,16 @@ const CreateCampaigns: React.FC = () => {
                     )}
                   </div>
                 </div>
-                <p className="mb-4">Create campaign from scratch</p>
+                <p>Create campaign from scratch</p>
               </div>
             )}
 
             {/*main content div */}
-            <div className="bg-[#F5F9FF] flex justify-between gap-10  lg:px-10 md:p-5 rounded-lg">
+            <div className=" flex justify-between gap-10  lg:px-10 md:p-5 rounded-lg h-fit">
               {/*text div */}
-              <div className=" lg:w-[65%] md:w-[50%] sm:[w-50%]">
+              <div className=" lg:w-[55%] md:w-[50%] sm:[w-50%]">
                 {!next && (
-                  <div className="pb-20">
+                  <div className="flex flex-col justify-evenly h-full">
                     <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
                       <div className="flex items-center gap-3">
                         <h3 className="text-lg font-semibold">
@@ -315,49 +481,49 @@ const CreateCampaigns: React.FC = () => {
                         </h3>
                       </div>
                     </div>
-
-                    <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          id="Utility"
-                          className="form-checkbox h-10 w-6 text-[#004AAD] mr-4"
-                          checked={selectedCampaign === "Utility"}
-                          onChange={handleCreateCampaignCheckboxChange}
-                        />
-                        <div className="bg-[#FFA858] p-4 rounded-lg">
-                          <img src={utility} />
+                    <div>
+                      <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            id="Utility"
+                            className="form-checkbox h-10 w-6 text-[#004AAD] mr-4"
+                            checked={selectedCampaign === "Utility"}
+                            onChange={handleCreateCampaignCheckboxChange}
+                          />
+                          <div className="bg-[#FFA858] p-4 rounded-lg">
+                            <img src={utility} />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-semibold mb-2">
+                              Welcome customers with greetings
+                            </h3>
+                            <p className="text-gray-600 mb-2">Utility</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-lg font-semibold mb-2">
-                            Welcome customers with greetings
-                          </h3>
-                          <p className="text-gray-600 mb-2">Utility</p>
+                      </div>
+
+                      <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            id="Marketing"
+                            className="form-checkbox h-10 w-6 text-[#004AAD] mr-4"
+                            checked={selectedCampaign === "Marketing"}
+                            onChange={handleCreateCampaignCheckboxChange}
+                          />
+                          <div className="bg-[#FFCF27] p-4 rounded-lg">
+                            <img src={booking} />
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-semibold mb-2">
+                              Booking Campaign
+                            </h3>
+                            <p className="text-gray-600 mb-2">Marketing</p>
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                    <div className="p-4 rounded-lg mb-4 bg-white flex justify-between">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          id="Marketing"
-                          className="form-checkbox h-10 w-6 text-[#004AAD] mr-4"
-                          checked={selectedCampaign === "Marketing"}
-                          onChange={handleCreateCampaignCheckboxChange}
-                        />
-                        <div className="bg-[#FFCF27] p-4 rounded-lg">
-                          <img src={booking} />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold mb-2">
-                            Booking Campaign
-                          </h3>
-                          <p className="text-gray-600 mb-2">Marketing</p>
-                        </div>
-                      </div>
-                    </div>
-
                     <div className="p-4 rounded-lg mb-4 bg-white flex justify-between w-full">
                       <div className="flex flex-col justify-start gap-3 w-full">
                         <h3 className="text-lg font-semibold">Campaign Name</h3>
@@ -749,7 +915,7 @@ const CreateCampaigns: React.FC = () => {
                           } mt-3 bg-white  rounded-lg`}
                         >
                           <div className="  rounded-md w-full">
-                            <div className=" p-4 flex items-center gap-3 border-b border-b-gray-400">
+                            <div className=" p-4 flex items-center gap-6 border-b border-b-gray-400">
                               <input
                                 type="checkbox"
                                 id="allCustomers"
@@ -766,13 +932,13 @@ const CreateCampaigns: React.FC = () => {
                                 >
                                   All Customers
                                 </label>
-                                <p className="text-sm">
-                                  All Customers that are in the database or will
-                                  be added to the database
+                                {/*estimated customers */}
+                                <p className="text-sm text-[#004AAD] font-semibold">
+                                  240 Estimated Customers
                                 </p>
                               </div>
                             </div>
-                            <div className=" p-4 flex items-center gap-3">
+                            <div className=" p-4 flex items-center gap-6">
                               <input
                                 type="checkbox"
                                 id="advanceFilter"
@@ -875,11 +1041,21 @@ const CreateCampaigns: React.FC = () => {
               </div>
 
               {/*screen div */}
-              <div className="fixed w-full max-w-xs mx-auto lg:p-3 lg:right-[4rem] lg:top-[11rem] md:right-11 md:top-48 sm:right-11 sm:top-56 h-fit">
+              <div
+                className={`w-full max-w-xs mx-auto lg:p-3  h-fit flex justify-evenly items-center ${
+                  next && !Confirmation
+                    ? "fixed lg:right-[4.5rem] lg:top-[12rem] md:right-11 md:top-48 sm:right-11 sm:top-56"
+                    : "relative top-0"
+                }`}
+              >
                 <img
                   src={screen}
                   alt="Phone Screen"
-                  className="lg:w-[88%] md:w-[90%] h-auto mx-auto  sm:w-[88%] ml-10"
+                  className={`${
+                    next && Confirmation
+                      ? "lg:w-[88%] md:w-[90%] h-auto mx-auto  sm:w-[88%] ml-10"
+                      : "lg:w-[80%] md:w-[80%] h-auto"
+                  }`}
                 />
                 {next && (
                   <>
@@ -971,11 +1147,15 @@ const CreateCampaigns: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* <CustomerFilter
+      <AdvanceFilter
         isVisible={isFilterVisible}
         onClose={toggleFilter}
-        filterData={filterElementsAdd}
-      /> */}
+        setFilterData={filterElementsAdd}
+        customDateVisit={customDateVisit}
+        customDateNotVisit={customDateNotVisit}
+        setcustomDateVisit={setCustomDateVisit}
+        setcustomDateNotVisit={setCustomDateNotVisit}
+      />
     </div>
   );
 };

@@ -41,7 +41,7 @@ const CampaignLibrary: React.FC = () => {
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div
         onClick={handlefram}
-        className="lg:w-[93%] h-fit px-[2rem] gap-10 lg:ml-[7%] bg-[#F1F7FF]"
+        className="lg:w-[93%] h-fit px-[2rem] gap-10 lg:ml-[7%] bg-[#F1F7FF] mb-2"
       >
         <div className="font-inter bg-white">
           <div className="p-4 rounded-md">
