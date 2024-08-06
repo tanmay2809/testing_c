@@ -59,7 +59,7 @@ const Overview: React.FC = () => {
 
     let startDate: Date;
     let endDate: Date;
-
+              
     if (selectedDay === "Today") {
       // Show data for the same date in the selected month
       startDate = new Date(year, monthIndex, today.getDate());
@@ -78,14 +78,12 @@ const Overview: React.FC = () => {
       // Calculate endDate as 7 days after startDate
       endDate = new Date(startDate);
       endDate.setDate(startDate.getDate() + 7);
-  
+      
       // Ensure endDate does not exceed the selected month
       if (endDate.getMonth() !== monthIndex) {
         endDate = new Date(year, monthIndex + 1, 0); // Last day of the selected month
       }
     }
-
-    // console.log(selectedDay," - ",startDate," : ",endDate);
 
     const isDateInRange = (date: Date) => date >= startDate && date < endDate;
 
@@ -95,38 +93,40 @@ const Overview: React.FC = () => {
       return isDateInRange(firstVisitDate) || (secondVisitDate && isDateInRange(secondVisitDate));
     }).length;
 
-
     const regularCustomersCount = data?.filter((customer: any) => {
-      const totalVisitsInMonth = customer?.visits?.filter((visit: string) => {
+      const last30DaysDate = new Date(startDate);
+      last30DaysDate.setDate(startDate.getDate() - 30);
+  
+      const visitsInLast30Days = customer?.visits?.filter((visit: string) => {
         const visitDate = new Date(visit);
-        return visitDate.getMonth() === monthIndex && visitDate.getFullYear() === year;
+        return visitDate >= last30DaysDate && visitDate <= startDate;
       }).length;
-    
+  
       const visitsInRange = customer.visits.filter((visit: string) => {
         const visitDate = new Date(visit);
         return isDateInRange(visitDate);
       }).length;
-    
+  
       if (selectedDay === "Today") {
         const visitsToday = customer.visits.filter((visit: string) => {
           const visitDate = new Date(visit);
-          return visitDate.getDate() === today.getDate() &&
-                 visitDate.getMonth() === monthIndex &&
-                 visitDate.getFullYear() === year;
+          return visitDate.getDate() === startDate.getDate() &&
+            visitDate.getMonth() === startDate.getMonth() &&
+            visitDate.getFullYear() === startDate.getFullYear();
         }).length;
-        return visitsToday >= 1 && totalVisitsInMonth >= 3;
+        return visitsToday >= 1 && (visitsInLast30Days+visitsToday >= 3);
       } else if (selectedDay === "Weekly") {
-        return visitsInRange >= 1 && totalVisitsInMonth >= 3;
+        return visitsInRange >= 1 && (visitsInLast30Days+visitsInRange >= 3);
       }
-    }).length;
-
+    }).length;  
+      
     const totalCustomersCount = data?.filter((customer: any) => {
       return customer?.visits?.some((visit: string) => {
         const visitDate = new Date(visit);
         return isDateInRange(visitDate);
       });
     }).length;
-
+    
     return {
       newCustomers: newCustomersCount,
       regularCustomers: regularCustomersCount,
