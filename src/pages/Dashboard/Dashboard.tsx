@@ -99,38 +99,43 @@ const Dashboard = () => {
     setSelectedDays(parseInt(event.target.value));
   };
 
-  const getFilteredData = (data:any) => {
-    const days = selectedDays;
-    const now = new Date();
-    const startDate = new Date(now);
-    startDate.setDate(now.getDate() - days);
-  
-    let totalVisits = 0;
-    let totalCustomers = 0;
-    let returningCustomers = 0;
-  
-    data.forEach((customer:any) => {
-      const visitsInTimeFrame = customer?.visits?.filter((visit: string) => {
-        const visitDate = new Date(visit);
-        return visitDate >= startDate && visitDate <= now;
-      });
-  
-      if (visitsInTimeFrame.length > 0) {
-        totalVisits += visitsInTimeFrame.length;
-        totalCustomers++;
-  
-        if (visitsInTimeFrame.length >= 3) {
-          returningCustomers++;
-        }
-      }
+  const getFilteredData = (data: any) => {
+  const days = selectedDays;
+  const now = new Date();
+  const startDate = new Date(now);
+
+  // Adjust startDate to UTC and calculate the range
+  startDate.setUTCDate(now.getUTCDate() - days);
+  startDate.setUTCHours(0, 0, 0, 0); // Set to the start of the day in UTC
+  now.setUTCHours(23, 59, 59, 999); // Set to the end of the day in UTC
+
+  let totalVisits = 0;
+  let totalCustomers = 0;
+  let returningCustomers = 0;
+
+  data.forEach((customer: any) => {
+    const visitsInTimeFrame = customer?.visits?.filter((visit: string) => {
+      const visitDate = new Date(visit);
+      return visitDate >= startDate && visitDate <= now;
     });
-  
-    return {
-      totalVisits,
-      totalCustomers,
-      returningCustomers
-    };
+
+    if (visitsInTimeFrame.length > 0) {
+      totalVisits += visitsInTimeFrame.length;
+      totalCustomers++;
+
+      if (visitsInTimeFrame.length >= 3) {
+        returningCustomers++;
+      }
+    }
+  });
+
+  return {
+    totalVisits,
+    totalCustomers,
+    returningCustomers
   };
+};
+
 
   useEffect(()=>{
 
