@@ -231,19 +231,19 @@ const Wallet: React.FC = () => {
                 </table>
               </div> */}
               <div className="flex flex-row flex-wrap gap-x-5 gap-y-5 text-[#505050] font-inter">
-                <div className="w-[300px] h-[150px] bg-[#FADBFF] flex flex-col justify-between rounded-md p-5">
+                <div className="w-[22%] h-[150px] bg-[#FADBFF] flex flex-col justify-between rounded-md p-5">
                   <p className="text-[1rem]">Total Cost</p>
                   <p className="text-[2.5rem] font-bold">₹400</p>
                 </div>
-                <div className="w-[300px] h-[150px] bg-[#F9FFB9] flex flex-col justify-between rounded-md p-5">
+                <div className="w-[22%] h-[150px] bg-[#F9FFB9] flex flex-col justify-between rounded-md p-5">
                   <p className="text-[1rem]">WhatsApp Utility Cost</p>
                   <p className="text-[2.5rem] font-bold">₹200</p>
                 </div>
-                <div className="w-[300px] h-[150px] bg-[#FEC8C8] flex flex-col justify-between rounded-md p-5">
+                <div className="w-[22%] h-[150px] bg-[#FEC8C8] flex flex-col justify-between rounded-md p-5">
                   <p className="text-[1rem]">WhatsApp Marketing Cost</p>
                   <p className="text-[2.5rem] font-bold">₹200</p>
                 </div>
-                <div className="w-[300px] h-[150px] bg-[#BEFED4] flex flex-col justify-between rounded-md p-5">
+                <div className="w-[22%] h-[150px] bg-[#BEFED4] flex flex-col justify-between rounded-md p-5">
                   <p className="text-[1rem]">Total Due Amount</p>
                   <p className="text-[2.5rem] font-bold">₹200</p>
                 </div>
