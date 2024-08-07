@@ -114,7 +114,8 @@ const CreateCampaigns: React.FC = () => {
   );
 
   useEffect(() => {
-    setCustomerData(data?.customerData);
+    const userIds = data?.customerData?.map((item: Customer) => item.userId);
+    setCustomerData(userIds);
   }, [data]);
   useEffect(() => {
     // Only call handleFilter if filterData has been set
@@ -128,6 +129,7 @@ const CreateCampaigns: React.FC = () => {
 
   const handleFilter = () => {
     console.log(filterData);
+    console.log(customerData);
     let filteredCustomers: Customer[] = [];
     let mainData = data?.customerData;
     let genderFiltered: Customer[] = [];
@@ -273,12 +275,14 @@ const CreateCampaigns: React.FC = () => {
         // If only one filtered array is non-empty, use it
         filteredCustomers = nonEmptyFilteredArrays[0];
       }
-      console.log("Final result: ", filteredCustomers);
+      console.log("Main final result: ", filteredCustomers);
     } else {
       //if filter data is empty then filtered customers=all customers
       filteredCustomers = data?.customerData;
     }
-    setCustomerData(filteredCustomers);
+    const userIds = filteredCustomers?.map((item) => item.userId);
+    console.log("UserIds Result: ",userIds);
+    setCustomerData(userIds);
   };
   const getCustomerSegment = (
     visits: string[]
@@ -992,7 +996,7 @@ const CreateCampaigns: React.FC = () => {
                                 </label>
                                 {/*estimated customers */}
                                 <p className="text-sm text-[#004AAD] font-semibold">
-                                  240 Estimated Customers
+                                  {data?.customerData.length} Customers
                                 </p>
                               </div>
                             </div>
