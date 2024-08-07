@@ -86,54 +86,118 @@ const CustomerList: React.FC = () => {
     sixtyDaysAgo.setDate(now.getDate() - 60);
     const customDateVisitObj = new Date(customDateVisit);
     const customDateNotVisitObj = new Date(customDateNotVisit);
+    console.log(customDateNotVisitObj);
 
     if (filterData.length > 0) {
       // Filter by visit dates
+      // visitFiltered = mainData.filter((customer: Customer) => {
+      //   let visitCondition;
+      //   const customDateString = new Date(customDateVisitObj).toISOString().split('T')[0];
+      //   {
+      //     filterData.map((visitFilter) => {
+      //       visitCondition =
+      //         (visitFilter === "Visited in Last 30 days" &&
+      //           customer.visits.some(
+      //             (visit: string) => new Date(visit) >= thirtyDaysAgo
+      //           )) ||
+      //         (visitFilter === "Visited in Last 60 days" &&
+      //           customer.visits.some(
+      //             (visit: string) => new Date(visit) >= sixtyDaysAgo
+      //           )) ||
+      //         (visitFilter.includes("Visited on:") &&
+      //           customer.visits.some(
+      //             (visit: string) => new Date(visit) >= customDateVisitObj
+      //           ));
+      //     });
+      //     return visitCondition;
+      //   }
+      // });
       visitFiltered = mainData.filter((customer: Customer) => {
-        let visitCondition;
-        {
-          filterData.map((visitFilter) => {
-            visitCondition =
-              (visitFilter === "Visited in Last 30 days" &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) >= thirtyDaysAgo
-                )) ||
-              (visitFilter === "Visited in Last 60 days" &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) >= sixtyDaysAgo
-                )) ||
-              (visitFilter.includes("Last visit:") &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) >= customDateVisitObj
-                ));
-          });
-          return visitCondition;
-        }
-      });
+        return filterData.some((visitFilter) => {
+            let visitCondition = false;
+            
+            if (visitFilter === "Visited in Last 30 days") {
+                visitCondition = customer.visits.some(
+                    (visit: string) => new Date(visit) >= thirtyDaysAgo
+                );
+            } else if (visitFilter === "Visited in Last 60 days") {
+                visitCondition = customer.visits.some(
+                    (visit: string) => new Date(visit) >= sixtyDaysAgo
+                );
+            } else if (visitFilter.includes("Visited on:")) {
+                const customDateString = new Date(customDateVisitObj).toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+                visitCondition = customer.visits.some(
+                    (visit: string) => {
+                        const visitDate = new Date(visit).toISOString().split('T')[0]; // Format: YYYY-MM-DD
+                        return visitDate === customDateString; // Exact match on the specified day
+                    }
+                );
+            }
+            
+            return visitCondition;
+        });
+    });
       console.log("After visit: ", visitFiltered);
 
       // Filter by not visit dates
+      // nonVisitFiltered = mainData.filter((customer: Customer) => {
+      //   let nonVisitCondition;
+      //   let customDateString : String;
+      //   if(customDateNotVisitObj){
+      //     customDateString = new Date(customDateNotVisitObj).toISOString().split('T')[0]; 
+      //   }// Format: YYYY-MM-DD
+      //   {
+      //     filterData.map((visitFilter) => {
+      //       nonVisitCondition =
+      //         (visitFilter === "Not visited in Last 30 days" &&
+      //           customer.visits.some(
+      //             (visit: string) => new Date(visit) <= thirtyDaysAgo
+      //           )) ||
+      //         (visitFilter === "Not visited in Last 60 days" &&
+      //           customer.visits.some(
+      //             (visit: string) => new Date(visit) <= sixtyDaysAgo
+      //           )) ||
+      //         (visitFilter.includes("Not visited on:") &&
+      //           customer.visits.every(
+      //               (visit: string) => {
+      //                   const visitDate = new Date(visit).toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      //                   return visitDate !== customDateString; // Ensure no visit on the specified day
+      //               }
+      //           ))
+      //     });
+      //     return nonVisitCondition;
+      //   }
+      // });
       nonVisitFiltered = mainData.filter((customer: Customer) => {
-        let nonVisitCondition;
-        {
-          filterData.map((visitFilter) => {
-            nonVisitCondition =
-              (visitFilter === "Not visited in Last 30 days" &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) <= thirtyDaysAgo
-                )) ||
-              (visitFilter === "Not visited in Last 60 days" &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) <= sixtyDaysAgo
-                )) ||
-              (visitFilter.includes("Not visited since:") &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) <= customDateNotVisitObj
-                ));
-          });
-          return nonVisitCondition;
-        }
-      });
+        return filterData.some((visitFilter) => {
+            const customDateString = customDateNotVisitObj ?  new Date(customDateNotVisitObj).toISOString().split('T')[0] : "2024-01-01"; // Format: YYYY-MM-DD
+
+            console.log(`Filtering with customDateString: ${customDateString}`);
+    
+            return (
+                (visitFilter === "Not visited in Last 30 days" &&
+                    customer.visits.every((visit: string) => {
+                        const visitDate = new Date(visit).toISOString().split('T')[0];
+                        console.log(`Checking visitDate for 30 days: ${visitDate}`);
+                        return visitDate <= thirtyDaysAgo.toISOString().split('T')[0];
+                    })) ||
+                (visitFilter === "Not visited in Last 60 days" &&
+                    customer.visits.every((visit: string) => {
+                        const visitDate = new Date(visit).toISOString().split('T')[0];
+                        console.log(`Checking visitDate for 60 days: ${visitDate}`);
+                        return visitDate <= sixtyDaysAgo.toISOString().split('T')[0];
+                    })) ||
+                (visitFilter.includes("Not visited on:") &&
+                    customer.visits.every((visit: string) => {
+                        const visitDate = new Date(visit).toISOString().split('T')[0];
+                        console.log(`Checking visitDate for specific day: ${visitDate}`);
+                        return visitDate !== customDateString; // Ensure no visit on the specified day
+                    }))
+            );
+        });
+    });
+    
       console.log("After not visit: ", nonVisitFiltered);
 
       // Filter by gender
@@ -174,7 +238,7 @@ const CustomerList: React.FC = () => {
       filteredCustomers = data?.customerData;
     }
     setCustomerData(filteredCustomers);
-  };
+  }; 
 
   // Helper function to create pagination buttons
   const getPaginationButtons = () => {
@@ -271,10 +335,6 @@ const CustomerList: React.FC = () => {
   //filter
   const toggleFilter = () => {
     // setCustomerData(data?.customerData);
-    setVisitFilter("");
-    setNonVisitFilter("");
-    setGender([]);
-    setSegmentation([]);
     setIsFilterVisible(!isFilterVisible);
   };
   const filterElementsAdd = (data: string[]) => {
@@ -308,11 +368,11 @@ const CustomerList: React.FC = () => {
       setNonVisitFilter("");
     }
 
-    if (data.includes("Last visit:")) {
+    if (data.includes("Visited on:")) {
       setCustomDateVisit("");
       setVisitFilter("");
     }
-    if (data.includes("Not visited since:")) {
+    if (data.includes("Not visited on:")) {
       setCustomDateNotVisit("");
       setNonVisitFilter("");
     }
@@ -350,11 +410,15 @@ const CustomerList: React.FC = () => {
     setCustomerData(sortedData);
   };
 
-  //   const getLastVisitDisplay = (visits: string[]): string => {
+  // const getLastVisitDisplay = (visits: string[]): string => {
   //   if (visits.length === 0) return "No visits";
 
   //   const lastVisit = new Date(visits[visits.length - 1]);
   //   const now = new Date();
+  //   console.log("last visit : ",lastVisit , " now : ",now);
+  //   // Set time components to 0 to only compare dates
+  //   lastVisit.setHours(0, 0, 0, 0);
+  //   now.setHours(0, 0, 0, 0);
 
   //   const timeDifference = now.getTime() - lastVisit.getTime();
   //   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
@@ -372,17 +436,17 @@ const CustomerList: React.FC = () => {
 
   const getLastVisitDisplay = (visits: string[]): string => {
     if (visits.length === 0) return "No visits";
-
+  
     const lastVisit = new Date(visits[visits.length - 1]);
     const now = new Date();
-
-    // Set time components to 0 to only compare dates
-    lastVisit.setHours(0, 0, 0, 0);
-    now.setHours(0, 0, 0, 0);
-
-    const timeDifference = now.getTime() - lastVisit.getTime();
+  
+    // Convert both dates to UTC and then set time components to 0
+    const lastVisitUTC = new Date(Date.UTC(lastVisit.getUTCFullYear(), lastVisit.getUTCMonth(), lastVisit.getUTCDate()));
+    const nowUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  
+    const timeDifference = nowUTC.getTime() - lastVisitUTC.getTime();
     const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
+  
     if (daysDifference === 0) {
       return "Today";
     } else if (daysDifference === 1) {
@@ -390,7 +454,7 @@ const CustomerList: React.FC = () => {
     } else if (daysDifference <= 7) {
       return `${daysDifference} days ago`;
     } else {
-      return lastVisit.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
+      return lastVisitUTC.toLocaleDateString("en-GB"); // Format DD/MM/YYYY
     }
   };
 
@@ -564,11 +628,11 @@ const CustomerList: React.FC = () => {
                 {currentItems?.map((customer: any, index: any) => (
                   <tr key={index} className="border-t text-base text-center">
                     <td className="py-3 px-6">{customer?.userId?.name}</td>
-                    <td className="py-3 px-6 text-nowrap flex gap-2">
-                      <span className="lg:block md:hidden">+91</span> {customer?.userId?.phone}{" "}
+                    <td className="py-3 px-6">
+                      +91 {customer?.userId?.phone}{" "}
                     </td>
                     <td className="py-3 px-6">{customer?.visits?.length}</td>
-                    <td className="py-3 px-6 text-nowra">
+                    <td className="py-3 px-6">
                       {getLastVisitDisplay(customer?.visits)}
                     </td>
 
