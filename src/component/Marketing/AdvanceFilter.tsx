@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface FilterProps {
   isVisible: boolean;
   onClose: () => void;
   setFilterData: (data: string[]) => void;
-  customDateVisit: string;
-  customDateNotVisit: string;
-  setcustomDateVisit: (date: string) => void;
-  setcustomDateNotVisit: (date: string) => void;
+  customDateVisit: Date | null;
+  customDateNotVisit: Date | null;
+  setcustomDateVisit: (date: Date | null) => void;
+  setcustomDateNotVisit: (date: Date | null) => void;
 }
 
 const AdvanceFilter: React.FC<FilterProps> = ({
@@ -137,7 +139,7 @@ const AdvanceFilter: React.FC<FilterProps> = ({
               >
                 Last 60 days
               </button>
-              <div>
+              <div className="relative inline-block">
                 <button
                   className={`px-3 py-1 border rounded-lg ${
                     visitFilter === "Custom" ? "bg-[#004AAD] text-white" : ""
@@ -147,23 +149,25 @@ const AdvanceFilter: React.FC<FilterProps> = ({
                       setVisitFilter("Custom");
                     } else {
                       setVisitFilter("");
+                      setcustomDateVisit(null);
                     }
                   }}
                 >
                   Custom
                 </button>
-                {visitFilter === "Custom" && (
-                  <div>
-                    <input
-                      className="absolute right-36 top-[8.5rem] w-10 opacity-0"
-                      type="date"
-                      id="customDateInput"
-                      value={customDateVisit}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setcustomDateVisit(e.target.value)
-                      }
+                {visitFilter === "Custom" && customDateVisit === null ? (
+                  <div className="absolute -right-20 z-50">
+                    <DatePicker
+                      selected={customDateVisit}
+                      onChange={(date: Date | null) => {
+                        console.log(date);
+                        setcustomDateVisit(date);
+                      }}
+                      inline
                     />
                   </div>
+                ) : (
+                  ""
                 )}
               </div>
             </div>
@@ -204,7 +208,7 @@ const AdvanceFilter: React.FC<FilterProps> = ({
               >
                 Last 60 days
               </button>
-              <div>
+              <div className="relative inline-block">
                 <button
                   className={`px-3 py-1 border rounded-lg ${
                     nonVisitFilter === "Custom" ? "bg-[#004AAD] text-white" : ""
@@ -214,20 +218,25 @@ const AdvanceFilter: React.FC<FilterProps> = ({
                       setNonVisitFilter("Custom");
                     } else {
                       setNonVisitFilter("");
+                      setcustomDateNotVisit(null);
                     }
                   }}
                 >
                   Custom
                 </button>
-                {nonVisitFilter === "Custom" && (
-                  <input
-                    type="date"
-                    id="customDateInput"
-                    value={customDateNotVisit}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setcustomDateNotVisit(e.target.value)
-                    }
-                  />
+                {nonVisitFilter === "Custom" && customDateNotVisit === null ? (
+                  <div className="absolute -right-20 z-50">
+                    <DatePicker
+                      selected={customDateNotVisit}
+                      onChange={(date: Date | null) => {
+                        console.log(date);
+                        setcustomDateNotVisit(date);
+                      }}
+                      inline
+                    />
+                  </div>
+                ) : (
+                  ""
                 )}
               </div>
             </div>

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Customer } from "../../constants/index";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 //images
 import screen from "../../assets/Group 1171278587.png";
@@ -101,13 +103,15 @@ const CreateCampaigns: React.FC = () => {
   });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [customDate, setCustomDate] = useState<string | null>(null);
+  const [customDate, setCustomDate] = useState<Date | null>(null);
 
   //filter states
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const [filterData, setFilterData] = useState<string[]>([]);
-  const [customDateVisit, setCustomDateVisit] = useState<string>("");
-  const [customDateNotVisit, setCustomDateNotVisit] = useState<string>("");
+  const [customDateVisit, setCustomDateVisit] = useState<Date | null>(null);
+  const [customDateNotVisit, setCustomDateNotVisit] = useState<Date | null>(
+    null
+  );
 
   useEffect(() => {
     setCustomerData(data?.customerData);
@@ -136,56 +140,105 @@ const CreateCampaigns: React.FC = () => {
     thirtyDaysAgo.setDate(now.getDate() - 30);
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(now.getDate() - 60);
-    const customDateVisitObj = new Date(customDateVisit);
-    const customDateNotVisitObj = new Date(customDateNotVisit);
+    const customDateVisitObj = customDateVisit
+      ? new Date(customDateVisit)
+      : null;
+    const customDateNotVisitObj = customDateNotVisit
+      ? new Date(customDateNotVisit)
+      : null;
 
     if (filterData.length > 0) {
-      // Filter by visit dates
       visitFiltered = mainData.filter((customer: Customer) => {
-        let visitCondition;
-        {
-          filterData.map((visitFilter) => {
-            visitCondition =
-              (visitFilter === "Visited in Last 30 days" &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) >= thirtyDaysAgo
-                )) ||
-              (visitFilter === "Visited in Last 60 days" &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) >= sixtyDaysAgo
-                )) ||
-              (visitFilter.includes("Last visit:") &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) >= customDateVisitObj
-                ));
-          });
+        return filterData.some((visitFilter) => {
+          let visitCondition = false;
+
+          if (visitFilter === "Visited in Last 30 days") {
+            visitCondition = customer.visits.some(
+              (visit: string) => new Date(visit) >= thirtyDaysAgo
+            );
+          } else if (visitFilter === "Visited in Last 60 days") {
+            visitCondition = customer.visits.some(
+              (visit: string) => new Date(visit) >= sixtyDaysAgo
+            );
+          } else if (
+            visitFilter.includes("Last visit:") &&
+            customDateVisitObj
+          ) {
+            const customDateString = customDateVisitObj
+              .toISOString()
+              .split("T")[0]; // Format: YYYY-MM-DD
+
+            visitCondition = customer.visits.some((visit: string) => {
+              const visitDate = new Date(visit).toISOString().split("T")[0]; // Format: YYYY-MM-DD
+              return visitDate === customDateString; // Exact match on the specified day
+            });
+          }
+
           return visitCondition;
-        }
+        });
       });
       console.log("After visit: ", visitFiltered);
 
       // Filter by not visit dates
+      // nonVisitFiltered = mainData.filter((customer: Customer) => {
+      //   let nonVisitCondition;
+      //   let customDateString : String;
+      //   if(customDateNotVisitObj){
+      //     customDateString = new Date(customDateNotVisitObj).toISOString().split('T')[0];
+      //   }// Format: YYYY-MM-DD
+      //   {
+      //     filterData.map((visitFilter) => {
+      //       nonVisitCondition =
+      //         (visitFilter === "Not visited in Last 30 days" &&
+      //           customer.visits.some(
+      //             (visit: string) => new Date(visit) <= thirtyDaysAgo
+      //           )) ||
+      //         (visitFilter === "Not visited in Last 60 days" &&
+      //           customer.visits.some(
+      //             (visit: string) => new Date(visit) <= sixtyDaysAgo
+      //           )) ||
+      //         (visitFilter.includes("Not visited on:") &&
+      //           customer.visits.every(
+      //               (visit: string) => {
+      //                   const visitDate = new Date(visit).toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      //                   return visitDate !== customDateString; // Ensure no visit on the specified day
+      //               }
+      //           ))
+      //     });
+      //     return nonVisitCondition;
+      //   }
+      // });
       nonVisitFiltered = mainData.filter((customer: Customer) => {
-        let nonVisitCondition;
-        {
-          filterData.map((visitFilter) => {
-            nonVisitCondition =
-              (visitFilter === "Not visited in Last 30 days" &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) <= thirtyDaysAgo
-                )) ||
-              (visitFilter === "Not visited in Last 60 days" &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) <= sixtyDaysAgo
-                )) ||
-              (visitFilter.includes("Not visited since:") &&
-                customer.visits.some(
-                  (visit: string) => new Date(visit) <= customDateNotVisitObj
-                ));
-          });
-          return nonVisitCondition;
-        }
+        return filterData.some((visitFilter) => {
+          return (
+            (visitFilter === "Not visited in Last 30 days" &&
+              customer.visits.every((visit: string) => {
+                const visitDate = new Date(visit).toISOString().split("T")[0];
+                console.log(`Checking visitDate for 30 days: ${visitDate}`);
+                return visitDate <= thirtyDaysAgo.toISOString().split("T")[0];
+              })) ||
+            (visitFilter === "Not visited in Last 60 days" &&
+              customer.visits.every((visit: string) => {
+                const visitDate = new Date(visit).toISOString().split("T")[0];
+                console.log(`Checking visitDate for 60 days: ${visitDate}`);
+                return visitDate <= sixtyDaysAgo.toISOString().split("T")[0];
+              })) ||
+            (visitFilter.includes("Not visited since:") && customDateNotVisitObj
+              ? customer.visits.every((visit: string) => {
+                  const customDateString = new Date(customDateNotVisitObj)
+                    .toISOString()
+                    .split("T")[0]; // Format: YYYY-MM-DD
+                  const visitDate = new Date(visit).toISOString().split("T")[0];
+                  console.log(
+                    `Checking visitDate for specific day: ${visitDate}`
+                  );
+                  return visitDate !== customDateString; // Ensure no visit on the specified day
+                })
+              : "")
+          );
+        });
       });
+
       console.log("After not visit: ", nonVisitFiltered);
 
       // Filter by gender
@@ -269,8 +322,8 @@ const CreateCampaigns: React.FC = () => {
     }
   };
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomDate(event.target.value);
+  const handleDateChange = (date: Date | null) => {
+    setCustomDate(date);
   };
 
   useEffect(() => {
@@ -406,11 +459,11 @@ const CreateCampaigns: React.FC = () => {
   };
   return (
     <div className="w-full h-fit relative  lg:mb-0">
-      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] bg-[#F5F9FF]">
+      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] bg-[#F5F9FF] ">
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter ">
-          <div className=" rounded-lg p-1 w-full ">
+          <div className=" rounded-lg p-1 w-full mb-14">
             {!Confirmation && (
-              <div className="bg-white sticky mt-[1rem] top-[4rem] z-10 p-4 rounded-xl">
+              <div className="bg-white fixed lg:w-[85%] md:w-[91%] mt-[1rem] z-10 p-4 rounded-xl top-[4rem]">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold ">Create Campaign</h2>
                   <div className="flex gap-5">
@@ -469,7 +522,12 @@ const CreateCampaigns: React.FC = () => {
             )}
 
             {/*main content div */}
-            <div className=" flex justify-between gap-10  lg:px-10 md:p-5 rounded-lg h-fit">
+            <div
+              className={`bg-[#F5F9FF] flex justify-between gap-10 lg:py-5 md:py-5 rounded-lg ${
+                !Confirmation ? "mt-24" : ""
+              } `}
+            >
+              {" "}
               {/*text div */}
               <div className=" lg:w-[55%] md:w-[50%] sm:[w-50%]">
                 {!next && (
@@ -1016,17 +1074,18 @@ const CreateCampaigns: React.FC = () => {
                                   </div>
                                 </div>
                                 {selectedOption === "customDate" &&
-                                  option.value === "customDate" && (
-                                    <div className="">
-                                      <input
-                                        type="date"
-                                        id="customDateInput"
-                                        value={customDate || ""}
-                                        onChange={handleDateChange}
-                                        className=" mt-1 "
-                                      />
-                                    </div>
-                                  )}
+                                option.value === "customDate" &&
+                                customDate === null ? (
+                                  <div className=" absolute mt-1">
+                                    <DatePicker
+                                      selected={customDate}
+                                      onChange={handleDateChange}
+                                      inline
+                                    />
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
                               </div>
                             ))}
                           </div>
@@ -1039,27 +1098,22 @@ const CreateCampaigns: React.FC = () => {
                   <ConfirmCampaign backClick={activateCampaign} />
                 )}
               </div>
-
               {/*screen div */}
               <div
-                className={`w-full max-w-xs mx-auto lg:p-3  h-fit flex justify-evenly items-center ${
+                className={`w-full max-w-xs mx-auto lg:p-3  h-fit flex justify-center items-center ${
                   next && !Confirmation
-                    ? "fixed lg:right-[4.5rem] lg:top-[12rem] md:right-11 md:top-48 sm:right-11 sm:top-56"
+                    ? "sticky  lg:right-[8rem] lg:top-[10.5rem] md:top-44 sm:top-56 h-fit"
                     : "relative top-0"
                 }`}
               >
                 <img
                   src={screen}
                   alt="Phone Screen"
-                  className={`${
-                    next && Confirmation
-                      ? "lg:w-[88%] md:w-[90%] h-auto mx-auto  sm:w-[88%] ml-10"
-                      : "lg:w-[80%] md:w-[80%] h-auto"
-                  }`}
+                  className="lg:w-[85%] md:w-[80%] h-auto mx-auto  sm:w-[88%] ml-10"
                 />
                 {next && (
                   <>
-                    <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit top-[6rem] w-[14.4rem] left-[4rem]">
+                    <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit lg:top-[6rem] md:top-[5.5rem] lg:w-[13.7rem] md:w-[14.3rem] lg:left-[4rem] md:left-[3.1rem]">
                       <div className="bg-white  p-4 rounded-md  ">
                         {selectedImage && type === "Marketing" && (
                           <div className="w-[12rem]  h-[6rem]">
