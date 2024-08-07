@@ -109,8 +109,7 @@ const Campaigns: React.FC = () => {
   );
 
   useEffect(() => {
-    const userIds = data?.customerData?.map((item: Customer) => item.userId);
-    setCustomerData(userIds);
+    getAllCustomersUserId();
   }, [data]);
   useEffect(() => {
     // Only call handleFilter if filterData has been set
@@ -119,6 +118,12 @@ const Campaigns: React.FC = () => {
 
   const filterElementsAdd = (data: string[]) => {
     setFilterData(data);
+  };
+
+  const getAllCustomersUserId = () => {
+    const userIds = data?.customerData?.map((item: Customer) => item.userId);
+    console.log("All Customers: ", userIds);
+    setCustomerData(userIds);
   };
 
   const handleFilter = () => {
@@ -878,9 +883,10 @@ const Campaigns: React.FC = () => {
                                 type="checkbox"
                                 id="allCustomers"
                                 checked={target === "allCustomers"}
-                                onChange={() =>
-                                  handleCheckboxChange("allCustomers")
-                                }
+                                onChange={() => {
+                                  getAllCustomersUserId();
+                                  handleCheckboxChange("allCustomers");
+                                }}
                                 className="form-checkbox h-4 w-4 text-[#004AAD]"
                               />
                               <div className="flex flex-col justify-center items-start">
@@ -892,7 +898,7 @@ const Campaigns: React.FC = () => {
                                 </label>
                                 {/*estimated customers */}
                                 <p className="text-sm text-[#004AAD] font-semibold">
-                                  {data?.customerData.length} Customers
+                                  {data?.customerData?.length} Customers
                                 </p>
                               </div>
                             </div>
