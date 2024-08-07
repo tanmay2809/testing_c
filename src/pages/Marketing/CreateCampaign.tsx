@@ -114,8 +114,7 @@ const CreateCampaigns: React.FC = () => {
   );
 
   useEffect(() => {
-    const userIds = data?.customerData?.map((item: Customer) => item.userId);
-    setCustomerData(userIds);
+    getAllCustomersUserId();
   }, [data]);
   useEffect(() => {
     // Only call handleFilter if filterData has been set
@@ -125,7 +124,12 @@ const CreateCampaigns: React.FC = () => {
   const filterElementsAdd = (data: string[]) => {
     setFilterData(data);
   };
-  console.log(filterData);
+
+  const getAllCustomersUserId = () => {
+    const userIds = data?.customerData?.map((item: Customer) => item.userId);
+    console.log("All Customers: ", userIds);
+    setCustomerData(userIds);
+  };
 
   const handleFilter = () => {
     console.log(filterData);
@@ -281,7 +285,7 @@ const CreateCampaigns: React.FC = () => {
       filteredCustomers = data?.customerData;
     }
     const userIds = filteredCustomers?.map((item) => item.userId);
-    console.log("UserIds Result: ",userIds);
+    console.log("UserIds Result: ", userIds);
     setCustomerData(userIds);
   };
   const getCustomerSegment = (
@@ -982,9 +986,10 @@ const CreateCampaigns: React.FC = () => {
                                 type="checkbox"
                                 id="allCustomers"
                                 checked={target === "allCustomers"}
-                                onChange={() =>
-                                  handleCheckboxChange("allCustomers")
-                                }
+                                onChange={() => {
+                                  getAllCustomersUserId();
+                                  handleCheckboxChange("allCustomers");
+                                }}
                                 className="form-checkbox h-4 w-4 text-[#004AAD]"
                               />
                               <div className="flex flex-col justify-center items-start">
