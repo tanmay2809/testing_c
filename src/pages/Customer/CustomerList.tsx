@@ -89,29 +89,6 @@ const CustomerList: React.FC = () => {
     console.log(customDateNotVisitObj);
 
     if (filterData.length > 0) {
-      // Filter by visit dates
-      // visitFiltered = mainData.filter((customer: Customer) => {
-      //   let visitCondition;
-      //   const customDateString = new Date(customDateVisitObj).toISOString().split('T')[0];
-      //   {
-      //     filterData.map((visitFilter) => {
-      //       visitCondition =
-      //         (visitFilter === "Visited in Last 30 days" &&
-      //           customer.visits.some(
-      //             (visit: string) => new Date(visit) >= thirtyDaysAgo
-      //           )) ||
-      //         (visitFilter === "Visited in Last 60 days" &&
-      //           customer.visits.some(
-      //             (visit: string) => new Date(visit) >= sixtyDaysAgo
-      //           )) ||
-      //         (visitFilter.includes("Visited on:") &&
-      //           customer.visits.some(
-      //             (visit: string) => new Date(visit) >= customDateVisitObj
-      //           ));
-      //     });
-      //     return visitCondition;
-      //   }
-      // });
       visitFiltered = mainData.filter((customer: Customer) => {
         return filterData.some((visitFilter) => {
             let visitCondition = false;
@@ -171,10 +148,6 @@ const CustomerList: React.FC = () => {
       // });
       nonVisitFiltered = mainData.filter((customer: Customer) => {
         return filterData.some((visitFilter) => {
-            const customDateString = customDateNotVisitObj ?  new Date(customDateNotVisitObj).toISOString().split('T')[0] : "2024-01-01"; // Format: YYYY-MM-DD
-
-            console.log(`Filtering with customDateString: ${customDateString}`);
-    
             return (
                 (visitFilter === "Not visited in Last 30 days" &&
                     customer.visits.every((visit: string) => {
@@ -190,6 +163,7 @@ const CustomerList: React.FC = () => {
                     })) ||
                 (visitFilter.includes("Not visited on:") &&
                     customer.visits.every((visit: string) => {
+                        const customDateString = new Date(customDateNotVisitObj).toISOString().split('T')[0] ; // Format: YYYY-MM-DD
                         const visitDate = new Date(visit).toISOString().split('T')[0];
                         console.log(`Checking visitDate for specific day: ${visitDate}`);
                         return visitDate !== customDateString; // Ensure no visit on the specified day
