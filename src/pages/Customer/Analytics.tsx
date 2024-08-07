@@ -2,7 +2,6 @@ import { useState, ChangeEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Charts from "../../component/Customer/Charts";
-import { Link } from "react-router-dom";
 
 //chartjs
 
@@ -25,7 +24,6 @@ import noDataFound from "../../assets/No data found.png";
 
 //svg
 import i from "/i.svg";
-// import { toast } from 'react-toastify';
 
 const optionsForBar = {
   scales: {
@@ -64,6 +62,34 @@ const Analytics: React.FC = () => {
 
   const index = (month: string): number => months.indexOf(month);
 
+  // const countVisits = (
+  //   year: number,
+  //   monthIndex: number,
+  //   data: any
+  // ): { weekendVisits: number; weekdayVisits: number } => {
+  //   let weekendCount = 0;
+  //   let weekdayCount = 0;
+
+  //   data?.forEach((customer: any) => {
+  //     customer.visits.forEach((visit: string) => {
+  //       const visitDate = new Date(visit);
+  //       if (
+  //         visitDate.getMonth() === monthIndex &&
+  //         visitDate.getFullYear() === year
+  //       ) {
+  //         const dayOfWeek = visitDate.getDay();
+  //         if (dayOfWeek === 0 || dayOfWeek === 6) {
+  //           weekendCount++;
+  //         } else {
+  //           weekdayCount++;
+  //         }
+  //       }
+  //     });
+  //   });
+
+  //   return { weekendVisits: weekendCount, weekdayVisits: weekdayCount };
+  // };
+
   const countVisits = (
     year: number,
     monthIndex: number,
@@ -71,15 +97,15 @@ const Analytics: React.FC = () => {
   ): { weekendVisits: number; weekdayVisits: number } => {
     let weekendCount = 0;
     let weekdayCount = 0;
-
+  
     data?.forEach((customer: any) => {
       customer.visits.forEach((visit: string) => {
         const visitDate = new Date(visit);
-        if (
-          visitDate.getMonth() === monthIndex &&
-          visitDate.getFullYear() === year
-        ) {
-          const dayOfWeek = visitDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+        const visitMonth = visitDate.getUTCMonth();
+        const visitYear = visitDate.getUTCFullYear();
+  
+        if (visitMonth === monthIndex && visitYear === year) {
+          const dayOfWeek = visitDate.getUTCDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
           if (dayOfWeek === 0 || dayOfWeek === 6) {
             weekendCount++;
           } else {
@@ -88,9 +114,9 @@ const Analytics: React.FC = () => {
         }
       });
     });
-
+  
     return { weekendVisits: weekendCount, weekdayVisits: weekdayCount };
-  };
+  };  
 
   useEffect(() => {
     const currentDate = new Date();
@@ -327,36 +353,70 @@ const Analytics: React.FC = () => {
   // };
 
   // const [visitBox, setVisitBox] = useState<string | null>(null);
+
   const [dailyVisits, setDailyVisits] = useState<{ [key: string]: number }>({});
+  // const countDailyVisits = (data: any) => {
+  //   const visitCounts: { [key: string]: number } = {};
+  //   const currentDate = new Date();
+  //   const currentMonth = currentDate.getMonth();
+  //   const currentYear = currentDate.getFullYear();
+
+  //   // Initialize the visitCounts with all days of the current month
+  //   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  //   for (let day = 1; day <= daysInMonth; day++) {
+  //     const key = `${day} ${months[currentMonth]}`;
+  //     visitCounts[key] = 0;
+  //   }
+
+  //   data?.forEach((customer: any) => {
+  //     customer.visits.forEach((visit: string) => {
+  //       const visitDate = new Date(visit);
+  //       if (
+  //         visitDate.getMonth() === currentMonth &&
+  //         visitDate.getFullYear() === currentYear
+  //       ) {
+  //         const day = visitDate.getDate();
+  //         const key = `${day} ${months[currentMonth]}`;
+  //         visitCounts[key]++;
+  //       }
+  //     });
+  //   });
+
+  //   setDailyVisits(visitCounts);
+  // };
+
   const countDailyVisits = (data: any) => {
     const visitCounts: { [key: string]: number } = {};
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-
+    const currentMonth = currentDate.getUTCMonth();  // Use UTC methods
+    const currentYear = currentDate.getUTCFullYear(); // Use UTC methods
+  
     // Initialize the visitCounts with all days of the current month
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const daysInMonth = new Date(Date.UTC(currentYear, currentMonth + 1, 0)).getUTCDate();
     for (let day = 1; day <= daysInMonth; day++) {
       const key = `${day} ${months[currentMonth]}`;
       visitCounts[key] = 0;
     }
-
+  
     data?.forEach((customer: any) => {
       customer.visits.forEach((visit: string) => {
         const visitDate = new Date(visit);
+        const visitDay = visitDate.getUTCDate();
+        const visitMonth = visitDate.getUTCMonth();
+        const visitYear = visitDate.getUTCFullYear();
+  
         if (
-          visitDate.getMonth() === currentMonth &&
-          visitDate.getFullYear() === currentYear
+          visitMonth === currentMonth &&
+          visitYear === currentYear
         ) {
-          const day = visitDate.getDate();
-          const key = `${day} ${months[currentMonth]}`;
+          const key = `${visitDay} ${months[currentMonth]}`;
           visitCounts[key]++;
         }
       });
     });
-
+  
     setDailyVisits(visitCounts);
-  };
+  };  
 
   useEffect(() => {
     countDailyVisits(data?.customerData);
@@ -367,7 +427,7 @@ const Analytics: React.FC = () => {
   return (
     <div className="w-full h-fit relative ">
       <div className=" lg:w-[93%] h-fit px-[2rem] py-[1rem]  gap-10 lg:ml-[7%] ">
-        <div className="w-full h-fit mx-auto font-inter">
+        <div className="container mx-auto font-inter">
           <h1 className="text-xl font-semibold">Customer Segmentation</h1>
           <div className="mb-2">
             <span className="text-sm">
@@ -377,7 +437,7 @@ const Analytics: React.FC = () => {
               </strong>
             </span>
           </div>
-          <div className="lg:flex md:flex lg:text-left text-[#505050] sm:text-sm w-full ">
+          <div className="lg:flex md:flex lg:text-left text-[#505050] sm:text-sm ">
             <div
               className={`lg:w-1/4 bg-[#BEFED4] p-4 rounded-lg mx-2 h-32 flex flex-col justify-between px-6 mt-2  sm:h-40 sm:w-1/4 ${hoveredSegmentation === 1 && "z-[90]"
                 }`}
@@ -555,13 +615,13 @@ const Analytics: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <div className=" w-full h-fit flex absolute left-4 lg:top-[5.rem] md:top-[6rem]  ">
+              <div className=" w-full h-fit flex absolute left-4 lg:top-[5rem] md:top-[6rem]  ">
                 <div className="w-full h-full lg:block hidden ">
                   <BarChart
                     data={dataForBar}
                     options={optionsForBar}
                     width={160}
-                    height={75}
+                    height={80}
                   />
                 </div>
                 <div className="w-full h-full lg:hidden block ">
@@ -654,7 +714,7 @@ const Analytics: React.FC = () => {
         {/*pie chart and customer related div */}
         <div className="lg:flex gap-4 w-full h-fit">
           {/* Customer Gender Card */}
-          <div className="bg-[#F1F7FF] overflow-hidden rounded-lg p-6 lg:w-1/3 flex flex-col   justify-between mt-4">
+          <div className="bg-[#F1F7FF] overflow-hidden rounded-lg p-6 lg:w-1/3 flex flex-col md:h-[600px]  justify-between mt-4">
             <div className="flex justify-between items-center">
               <h3 className="text-base font-bold">Customer Gender</h3>
               <div className=" inset-0 flex gap-3  items-center justify-center">
@@ -666,12 +726,25 @@ const Analytics: React.FC = () => {
 
             </div>
 
-            <div className="relative flex justify-center items-center mb-4  ">
-              <div className="w-full h-fit  lg:-ml-[15.5rem] md:-ml-[45rem">
+            <div className="relative flex justify-center items-center mb-4 bg-black ">
+              <div className="w-full h-fit  absolute -top-[15rem] lg:-ml-[49rem] md:-ml-[45rem]">
                 <Charts male={data?.maleVisitors} female={data?.femaleVisitors} other={data?.otherVisitors} />
               </div>
             </div>
-            
+            <div className="flex justify-around z-[400]">
+              <div className="flex items-center">
+                <span className="block w-3 h-3 bg-[#34C759] rounded-full mr-2"></span>
+                <span>Female</span>
+              </div>
+              <div className="flex items-center">
+                <span className="block w-3 h-3 bg-[#F9AB35] rounded-full mr-2"></span>
+                <span>Male</span>
+              </div>
+              <div className="flex items-center">
+                <span className="block w-3 h-3 bg-[#F93535] rounded-full mr-2"></span>
+                <span>Others</span>
+              </div>
+            </div>
           </div>
 
           {/* Customer Celebration Card */}
@@ -699,7 +772,7 @@ const Analytics: React.FC = () => {
                 ))}
               </select>
             </div>
-            <div className="border-t border-gray-200 pt-6 flex flex-col  gap-12">
+            <div className="border-t border-gray-200 pt-10 flex flex-col  gap-12">
               <div className="flex justify-between items-center mb-4 xsm:flex-col">
                 <div className="flex items-center justify-start gap-4 lg:w-3/5">
                   <p className="text-[2.5rem] text-[#3A9E3E]">{birthdays}</p>
@@ -711,9 +784,9 @@ const Analytics: React.FC = () => {
                     {birthdays} Customers have their birthdays
                   </p>
                 </div>
-                <Link to="/marketing"  className=" bg-[#004AAD] text-nowrap text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
+                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
                   Send Campaign
-                </Link>
+                </button>
               </div>
               <div className="flex justify-between items-center ">
                 <div className="flex items-center justify-start gap-4 lg:w-3/5">
@@ -728,9 +801,9 @@ const Analytics: React.FC = () => {
                     {anniversaries} Customers have their Anniversary
                   </p>
                 </div>
-                <Link to="/marketing" className=" bg-[#004AAD] text-nowrap text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
+                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
                   Send Campaign
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -738,11 +811,11 @@ const Analytics: React.FC = () => {
           {/* Customer Growth Rate Card */}
           <div className="bg-[#F1F7FF]  rounded-lg p-6 lg:w-1/3 font-inter mt-4">
             <div className="flex justify-between items-start ">
-              <div className=" mb-3 pr-10 w-full">
-                <h3 className="text-base font-bold mb-2 text-nowrap ">
+              <div className=" mb-3 pr-10">
+                <h3 className="text-base font-bold mb-2">
                   Customer Growth Rate
                 </h3>
-                <p className="text-[#434A5E] ">
+                <p className="text-[#434A5E]">
                   Customer growth rate at your business
                 </p>
               </div>
@@ -759,16 +832,13 @@ const Analytics: React.FC = () => {
                   </option>
                 ))}
               </select>
-              <div>
-                
-              </div>
             </div>
             <div className="border-t border-gray-200 pt-10 flex flex-col justify-between gap-12">
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center justify-start gap-4">
                   <div className="flex items-center ">
                     <p className="text-[2.5rem] text-[#3A9E3E]">
-                      {Math.round(newCustomersDiff)}%
+                      {newCustomersDiff}%
                     </p>
                     <FaArrowUpLong className="text-2xl text-[#3A9E3E]" />
                   </div>
@@ -801,7 +871,6 @@ const Analytics: React.FC = () => {
               </div>
             </div>
           </div>
-
         </div>
 
         {/*Feedback div */}
