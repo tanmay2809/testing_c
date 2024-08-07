@@ -15,7 +15,7 @@ import { baseUrl } from "../../main";
 
 
 
-const TableComponent = ({ data, totaltable }: { data: any, totaltable: any }) => {
+const TableComponent = ({ data, totaltable }: { data: any, totaltable: number }) => {
   const [Today, setToday] = useState(true);
   const [Week, setWeek] = useState(false);
   const [Month, setMonth] = useState(false);
@@ -100,7 +100,7 @@ const TableComponent = ({ data, totaltable }: { data: any, totaltable: any }) =>
               <button className="px-[1.3rem] py-1.5 text-white bg-[#FF950A] rounded-lg">Default</button>
               :
               (
-                data?.tableNo == totaltable &&
+                Number(data?.tableNo ) == totaltable &&
                 <button
                   onClick={() => {
                     deleteScan(data?._id);
@@ -119,7 +119,7 @@ const TableComponent = ({ data, totaltable }: { data: any, totaltable: any }) =>
       <div className="flex justify-between w-full items-center py-[1rem] px-[2rem]">
         <div className="flex items-center gap-4">
           {/* <SwitchTable /> */}
-          <p className="font-inter font-[400] text-[1rem] text-nowrap text-[#505050]">Active since Nov 03, 2022 ( 605 Days )</p>
+          <p className="font-inter font-[400] text-[1rem] text-nowrap text-[#505050]">Active since {data?.createdAt}</p>
         </div>
         <div className="flex w-[50%] text-black font-inter font-[600] text-[1.15rem] gap-3 items-center justify-end">
           <p onClick={() => {

@@ -24,6 +24,7 @@ export interface TableData {
   url: string;
   newCustomer: number;
   totalCustomer: number;
+  createdAt: Date;
   __v: number;
 }
 
