@@ -36,7 +36,7 @@ const Setting = () => {
 
       {/* Sticky Buttons Container */}
       <div className="sticky top-[70px] pt-[10px] bg-white z-10 border-b border-b-[#000000CC]">
-        <div className="w-[100%] flex ml-[9%] flex-row justify-start">
+        <div className="w-[91%] flex ml-[9%] flex-row justify-start">
           <Link
             className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
             to="/setting/store"
