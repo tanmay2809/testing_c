@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { BiSolidError } from "react-icons/bi";
 import { GiChessKing } from "react-icons/gi";
 import TableComponent from "../../component/dashboard/TableComponent";
 import axios from 'axios';
 import QRCode from 'qrcode';
 import { baseUrl } from '../../main';
-
-
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/store";
 import { toast } from 'react-toastify';
+
 export interface TableData {
   _id: string;
   resId: string;
@@ -21,11 +20,8 @@ export interface TableData {
 }
 
 const Table: React.FC = () => {
-
-
   const { data } = useSelector((state: RootState) => state.resturantdata);
   const [tables, setTables] = useState<TableData[]>([]);
-
 
   const createTable = async () => {
     const resId = data?._id;
@@ -40,11 +36,9 @@ const Table: React.FC = () => {
 
       axios.request(config)
         .then((response) => {
-          console.log(JSON.stringify(response.data.scans));
           toast.success("Table created successfully");
           const tableNo = response.data?.scans?.tableNo;
           const id = response.data?.scans?._id;
-          console.log(tableNo);
           fileUploader(tableNo, resId, id);
         })
         .catch((error) => {
@@ -55,8 +49,6 @@ const Table: React.FC = () => {
     }
   };
 
-
-  // navbar fram
   const handlefram = () => {
     document.getElementById("frame")!.style.display = "none";
   };
@@ -67,7 +59,6 @@ const Table: React.FC = () => {
 
       QRCode.toDataURL(resUrl)
         .then(url => {
-          console.log(url)
           let data = JSON.stringify({
             "image": url,
             "url": resUrl
@@ -96,16 +87,13 @@ const Table: React.FC = () => {
           console.error(err)
         })
 
-
-
     } catch (error) {
       console.log(error)
     }
   }
 
-  const fetchtableData = async () => {
+  const fetchtableData = useCallback(async () => {
     try {
-
       let config = {
         method: 'get',
         maxBodyLength: Infinity,
@@ -115,7 +103,6 @@ const Table: React.FC = () => {
 
       axios.request(config)
         .then((response) => {
-          console.log((response.data?.scans));
           setTables(response.data?.scans);
         })
         .catch((error) => {
@@ -125,13 +112,13 @@ const Table: React.FC = () => {
     } catch (error) {
       console.error("Error fetching table data:", error);
     }
-  };
+  }, [tables,data]);
 
   useEffect(() => {
-
-    fetchtableData();
-
-  }, [fetchtableData]);
+    if (data) {
+      fetchtableData();
+    }
+  }, [data, fetchtableData]);
 
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
@@ -161,11 +148,10 @@ const Table: React.FC = () => {
             </div>
           </div>
 
-
         </div>
         {tables.map((item) => (
           <div key={item?._id} className="w-full my-[.5rem]">
-            <TableComponent data={item} totaltable ={tables.length} /> 
+            <TableComponent data={item} totaltable={tables.length} />
           </div>
         ))}
       </div>
