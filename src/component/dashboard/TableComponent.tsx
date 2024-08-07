@@ -1,15 +1,21 @@
 import { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+
 // import SwitchTable from "./SwitchTable";
+// import TableData from "../../pages/Dashboard/Table";
+
+//icons
 import { IoPeopleSharp } from "react-icons/io5";
 import { MdOutlineFolderCopy } from "react-icons/md";
 import { GoDownload } from "react-icons/go";
 import { FaRegEye } from "react-icons/fa6";
 import { RiDashboardFill } from "react-icons/ri";
-import { toast } from "react-toastify";
-// import TableData from "../../pages/Dashboard/Table";
+import { baseUrl } from "../../main";
 
 
-const TableComponent = ({ data ,totaltable }: { data: any , totaltable:any }) => {
+
+const TableComponent = ({ data, totaltable }: { data: any, totaltable: any }) => {
   const [Today, setToday] = useState(true);
   const [Week, setWeek] = useState(false);
   const [Month, setMonth] = useState(false);
@@ -59,20 +65,47 @@ const TableComponent = ({ data ,totaltable }: { data: any , totaltable:any }) =>
     });
   }
 
+
+  const deleteScan = async (id: string) => {
+    try {
+
+      let config = {
+        method: 'delete',
+        maxBodyLength: Infinity,
+        url: `${baseUrl}/api/scan/${id}`,
+        headers: {}
+      };
+
+      axios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
   return (
     <div className="bg-[#F1F7FF] w-full h-fit flex flex-col font-inter rounded-lg">
       <div className="flex w-full justify-between items-center py-[1.2rem] px-[2.5rem] border-b border-dashed border-black">
         <div className="flex items-center gap-7">
           <p className="text-[#505050] font-semibold w-[700] text-[1.6rem]">Table NO {data?.tableNo}</p>
           {
-            data?.tableNo == totaltable  ? 
-               <button className="px-[1.3rem] py-1.5 text-white bg-red-700 rounded-lg">Delete</button>
-
-               :
-               (
-                data?.tableNo  == 1 && 
-                <button className="px-[1.3rem] py-1.5 text-white bg-[#FF950A] rounded-lg">Default</button>
-               )
+            data?.tableNo == 1 ?
+              <button className="px-[1.3rem] py-1.5 text-white bg-[#FF950A] rounded-lg">Default</button>
+              :
+              (
+                data?.tableNo == totaltable &&
+                <button
+                  onClick={() => {
+                    deleteScan(data?._id);
+                  }} className="px-[1.3rem] py-1.5 text-white bg-red-700 rounded-lg">Delete</button>
+              )
           }
 
         </div>
@@ -109,11 +142,11 @@ const TableComponent = ({ data ,totaltable }: { data: any , totaltable:any }) =>
       <div className="w-full h-fit px-[2.5rem] flex flex-col gap-4 pt-[1rem] pb-[2rem]">
         <div className="w-full h-fit flex gap-2 justify-between">
           <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-            <p className="font-[700] text-[1.8rem]">0</p>
+            <p className="font-[700] text-[1.8rem]">{data?.totalCustomer}</p>
             <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2"><span><IoPeopleSharp className="size-5" /></span>Customer captured</p>
           </div>
           <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">
-            <p className="font-[700] text-[1.8rem]">0</p>
+            <p className="font-[700] text-[1.8rem]">{data?.newCustomer}</p>
             <p className="flex text-nowrap font-[500] text-[1rem] items-center gap-2"><span><RiDashboardFill className="size-5" /></span>Unique customer</p>
           </div>
           <div className="w-[32%] h-fit flex flex-col px-[1.5rem] py-[1rem] leading-[1.8rem] rounded-md gap-4 font-inter bg-white text-[#505050]">

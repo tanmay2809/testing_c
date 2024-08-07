@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
 
 export const baseUrl = "https://dolphin-app-fmayj.ondigitalocean.app";
+export const userUrl = "https://web2-three-blush.vercel.app";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

@@ -1,14 +1,20 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { BiSolidError } from "react-icons/bi";
-import { GiChessKing } from "react-icons/gi";
-import TableComponent from "../../component/dashboard/TableComponent";
 import axios from 'axios';
 import QRCode from 'qrcode';
 import { baseUrl } from '../../main';
+import { toast } from 'react-toastify';
+import { userUrl } from '../../main';
+
+//icons
+import { BiSolidError } from "react-icons/bi";
+import { GiChessKing } from "react-icons/gi";
+
+//components
+import TableComponent from "../../component/dashboard/TableComponent";
+
+//redux
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/store";
-import { toast } from 'react-toastify';
-
 export interface TableData {
   _id: string;
   resId: string;
@@ -16,13 +22,15 @@ export interface TableData {
   count: number;
   image: string;
   url: string;
+  newCustomer: number;
+  totalCustomer: number;
   __v: number;
 }
 
 const Table: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
   const [tables, setTables] = useState<TableData[]>([]);
-
+  
   const createTable = async () => {
     const resId = data?._id;
     const tableNo = tables.length + 1;
@@ -55,7 +63,7 @@ const Table: React.FC = () => {
 
   const fileUploader = async (tableNo: string, resId: string, id: string) => {
     try {
-      const resUrl = `https://web2-three-blush.vercel.app/restaurant/${resId}/${tableNo}`;
+      const resUrl = `${userUrl}/restaurant/${resId}/${tableNo}`;
 
       QRCode.toDataURL(resUrl)
         .then(url => {
@@ -112,7 +120,7 @@ const Table: React.FC = () => {
     } catch (error) {
       console.error("Error fetching table data:", error);
     }
-  }, [tables,data]);
+  }, [data,tables]);
 
   useEffect(() => {
     if (data) {
