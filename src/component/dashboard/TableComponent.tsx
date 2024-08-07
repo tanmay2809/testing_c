@@ -38,6 +38,11 @@ const TableComponent = ({ data, totaltable }: { data: any, totaltable: number })
     setMonth(true);
   };
 
+  const formatDate = (dateString: Date) => {
+    const options: any = { year: 'numeric', month: 'short', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
+
   const downloadImage = (url: string, filename: string) => {
     // Create a new link element
     const link = document.createElement('a');
@@ -100,7 +105,7 @@ const TableComponent = ({ data, totaltable }: { data: any, totaltable: number })
               <button className="px-[1.3rem] py-1.5 text-white bg-[#FF950A] rounded-lg">Default</button>
               :
               (
-                Number(data?.tableNo ) == totaltable &&
+                Number(data?.tableNo) == totaltable &&
                 <button
                   onClick={() => {
                     deleteScan(data?._id);
@@ -119,7 +124,7 @@ const TableComponent = ({ data, totaltable }: { data: any, totaltable: number })
       <div className="flex justify-between w-full items-center py-[1rem] px-[2rem]">
         <div className="flex items-center gap-4">
           {/* <SwitchTable /> */}
-          <p className="font-inter font-[400] text-[1rem] text-nowrap text-[#505050]">Active since {data?.createdAt}</p>
+          <p className="font-inter font-[400] text-[1rem] text-nowrap text-[#505050]">Active since {formatDate(data?.createdAt)} ({Date.now() - data?.table}days)</p>
         </div>
         <div className="flex w-[50%] text-black font-inter font-[600] text-[1.15rem] gap-3 items-center justify-end">
           <p onClick={() => {
