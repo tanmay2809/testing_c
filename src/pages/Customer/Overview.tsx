@@ -56,46 +56,49 @@ const Overview: React.FC = () => {
     totalCustomers: number;
   } => {
     const today = new Date();
-
+  
     let startDate: Date;
     let endDate: Date;
-              
+  
     if (selectedDay === "Today") {
       // Show data for the same date in the selected month
-      startDate = new Date(year, monthIndex, today.getDate());
-      endDate = new Date(year, monthIndex, today.getDate() + 1);
+      startDate = new Date(Date.UTC(year, monthIndex, today.getUTCDate()));
+      endDate = new Date(Date.UTC(year, monthIndex, today.getUTCDate() + 1));
     } else if (selectedDay === "Weekly") {
       // Calculate the start of the current week in the selected month
-      const dayOfWeek = today.getDay();
-      const startOfWeek = today.getDate() - dayOfWeek;
-      startDate = new Date(year, monthIndex, startOfWeek);
-      
+      const dayOfWeek = today.getUTCDay();
+      const startOfWeek = today.getUTCDate() - dayOfWeek;
+      startDate = new Date(Date.UTC(year, monthIndex, startOfWeek));
+  
       // Ensure startDate is within the selected month
-      if (startDate.getMonth() !== monthIndex) {
-        startDate = new Date(year, monthIndex, 1);
+      if (startDate.getUTCMonth() !== monthIndex) {
+        startDate = new Date(Date.UTC(year, monthIndex, 1));
       }
   
       // Calculate endDate as 7 days after startDate
       endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 7);
-      
+      endDate.setUTCDate(startDate.getUTCDate() + 7);
+  
       // Ensure endDate does not exceed the selected month
-      if (endDate.getMonth() !== monthIndex) {
-        endDate = new Date(year, monthIndex + 1, 0); // Last day of the selected month
+      if (endDate.getUTCMonth() !== monthIndex) {
+        endDate = new Date(Date.UTC(year, monthIndex + 1, 0)); // Last day of the selected month
       }
     }
-
-    const isDateInRange = (date: Date) => date >= startDate && date < endDate;
-
+  
+    const isDateInRange = (date: Date) => {
+      const utcDate = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+      return utcDate >= startDate && utcDate < endDate;
+    };
+  
     const newCustomersCount = data?.filter((customer: any) => {
       const firstVisitDate = new Date(customer?.visits[0]);
-      const secondVisitDate = customer.visits.length==2 && customer.visits[1] ? new Date(customer?.visits[1]) : null;
+      const secondVisitDate = customer.visits.length == 2 && customer.visits[1] ? new Date(customer?.visits[1]) : null;
       return isDateInRange(firstVisitDate) || (secondVisitDate && isDateInRange(secondVisitDate));
     }).length;
-
+  
     const regularCustomersCount = data?.filter((customer: any) => {
       const last30DaysDate = new Date(startDate);
-      last30DaysDate.setDate(startDate.getDate() - 30);
+      last30DaysDate.setUTCDate(startDate.getUTCDate() - 30);
   
       const visitsInLast30Days = customer?.visits?.filter((visit: string) => {
         const visitDate = new Date(visit);
@@ -110,29 +113,30 @@ const Overview: React.FC = () => {
       if (selectedDay === "Today") {
         const visitsToday = customer.visits.filter((visit: string) => {
           const visitDate = new Date(visit);
-          return visitDate.getDate() === startDate.getDate() &&
-            visitDate.getMonth() === startDate.getMonth() &&
-            visitDate.getFullYear() === startDate.getFullYear();
+          return visitDate.getUTCDate() === startDate.getUTCDate() &&
+            visitDate.getUTCMonth() === startDate.getUTCMonth() &&
+            visitDate.getUTCFullYear() === startDate.getUTCFullYear();
         }).length;
-        return visitsToday >= 1 && (visitsInLast30Days+visitsToday >= 3);
+        return visitsToday >= 1 && (visitsInLast30Days + visitsToday >= 3);
       } else if (selectedDay === "Weekly") {
-        return visitsInRange >= 1 && (visitsInLast30Days+visitsInRange >= 3);
+        return visitsInRange >= 1 && (visitsInLast30Days + visitsInRange >= 3);
       }
-    }).length;  
-      
+    }).length;
+  
     const totalCustomersCount = data?.filter((customer: any) => {
       return customer?.visits?.some((visit: string) => {
         const visitDate = new Date(visit);
         return isDateInRange(visitDate);
       });
     }).length;
-    
+  
     return {
       newCustomers: newCustomersCount,
       regularCustomers: regularCustomersCount,
       totalCustomers: totalCustomersCount,
     };
   };
+  
 
   useEffect(() => {
     const currentDate = new Date();
@@ -170,6 +174,7 @@ const Overview: React.FC = () => {
         method: "get",
         maxBodyLength: Infinity,
         url: `https://dolphin-app-fmayj.ondigitalocean.app/api/customerCounts/${data._id}/${monthIndex}`,
+        // url: `http://localhost:4000/api/customerCounts/${data._id}/${monthIndex}`,
         headers: {},
       };
       console.log(data._id, monthIndex); //data._id undefined
