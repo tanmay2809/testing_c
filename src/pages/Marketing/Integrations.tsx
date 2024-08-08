@@ -29,12 +29,12 @@ const Integrations: React.FC = () => {
       <div className="lg:w-[93%] h-fit px-[2rem] py-[0.5rem] gap-10 lg:ml-[7%]">
         {/* reach out your customer */}
         <div className="w-full h-fit flex relative py-[1.5rem] px-[2.5rem] bg-[#FFCF27] rounded-md">
-          <div className="font-inter text-black w-[60%]">
+          <div className="font-inter text-black w-[70%]">
             <div className="font-[700] text-[2rem] leading-[2.7rem]">
               <p>Reach out your customers like never before</p>
             </div>
 
-            <p className="font-[600] text-[1.1rem] tracking-tighter mt-3">
+            <p className="font-[600] text-[1.1rem]  mt-3 tracking-wide">
               Lets SnackBAE automates your marketing on the right platform for
               you & get the best possible results.
             </p>
@@ -59,7 +59,7 @@ const Integrations: React.FC = () => {
 
               <div>
                 <h3 className="font-semibold">WhatsApp Business Manager</h3>
-                <span className="text-green-500 flex items-center">
+                <span className="text-green-500 flex font-[600] items-center">
                   <span className="w-2 h-2 rounded-full bg-green-500 mr-1"></span>{" "}
                   Active
                 </span>
@@ -92,7 +92,7 @@ const Integrations: React.FC = () => {
 
               <div>
                 <h3 className="font-semibold">Instagram Business Manager</h3>
-                <span className="text-[#FF6B26] flex items-center">
+                <span className="text-[#FF6B26] flex font-[600] items-center">
                   <span className="w-2 h-2 rounded-full bg-[#FF6B26] mr-1"></span>{" "}
                   Upgrade Plan
                 </span>
@@ -118,7 +118,7 @@ const Integrations: React.FC = () => {
 
               <div>
                 <h3 className="font-semibold">Facebook Business Manager</h3>
-                <span className="text-[#FF6B26] flex items-center">
+                <span className="text-[#FF6B26] flex font-[600] items-center">
                   <span className="w-2 h-2 rounded-full bg-[#FF6B26] mr-1"></span>{" "}
                   Upgrade Plan
                 </span>
@@ -144,7 +144,7 @@ const Integrations: React.FC = () => {
 
               <div>
                 <h3 className="font-semibold">Google Ads Business Manager</h3>
-                <span className="text-[#FF6B26] flex items-center">
+                <span className="text-[#FF6B26] flex font-[600] items-center">
                   <span className="w-2 h-2 rounded-full bg-[#FF6B26] mr-1"></span>{" "}
                   Upgrade Plan
                 </span>

@@ -65,9 +65,10 @@ const Marketing = () => {
         </div>
 
         {/* Buttons Container */}
-        <div className=" w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-6">
+        <div className=" w-[100%] flex flex-row justify-start border-b  border-b-[#000000CC] -mt-6">
+
           <Link
-            className="w-[9.4rem] flex flex-col items-center gap-2 text-[1.3125rem] font-[500]"
+            className="w-[9.4rem] flex flex-col  gap-2 text-[1.3125rem] font-[500]"
             to="/marketing"
             onClick={handleScrollToTop}
           >
@@ -79,7 +80,7 @@ const Marketing = () => {
             ></span>
           </Link>
           <Link
-            className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.3125rem] font-[500]"
+            className="w-[13.75rem] flex flex-col  gap-2 text-[1.3125rem] font-[500]"
             to="/marketing/manage"
             onClick={handleScrollToTop}
           >
