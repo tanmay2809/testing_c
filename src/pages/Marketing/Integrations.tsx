@@ -40,7 +40,7 @@ const Integrations: React.FC = () => {
             </p>
           </div>
 
-          <div className=" absolute lg:right-[2rem] -top-[0.4rem]  md:right-[2rem]  sm:right-[0.5rem]">
+          <div className="absolute lg:right-[2rem] -top-[0.4rem] md:right-[2rem] sm:right-[0.5rem]">
             <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
             <DotLottieReact
               src="https://lottie.host/262044b0-d5af-46ed-bf78-5b4a2c9ae2d9/drLoFDQofB.json"
@@ -50,8 +50,8 @@ const Integrations: React.FC = () => {
             ></DotLottieReact>
           </div>
         </div>
-        <div className="flex items-center justify-start flex-wrap gap-6 mt-5">
-          <div className="flex flex-col border rounded-lg shadow-sm p-4 max-w-sm h-[12rem] justify-between lg:w-[25rem] md:w-[20rem]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-5 mb-3">
+          <div className="flex flex-col border rounded-lg shadow-sm p-4 h-[12rem] justify-between">
             <div className="flex items-center mb-2 justify-start gap-4">
               <div className="bg-[#F2F0F0] p-3 rounded-lg">
                 <img src={whatsapp} className="w-6" />
@@ -65,9 +65,9 @@ const Integrations: React.FC = () => {
                 </span>
               </div>
             </div>
-            <div className="flex items-center w-full mt-4 gap-4 text-[#7C7C7C]">
+            <div className="flex items-center w-full mt-4  text-[#7C7C7C] text-sm">
               <Link to="/manager" onClick={handleScrollToTop} className="w-3/5">
-                <button className="flex items-center justify-evenly border border-gray-300 rounded-lg p-2 w-full mr-2">
+                <button className="flex items-center justify-evenly border border-gray-300 rounded-lg py-[0.63rem] px-2 w-[90%] mr-2">
                   <img src={manage} />
                   <p>Manage</p>
                 </button>
@@ -77,14 +77,14 @@ const Integrations: React.FC = () => {
                 onClick={handleScrollToTop}
                 className="w-full"
               >
-                <button className="flex items-center justify-evenly bg-white  border border-gray-300 rounded-lg p-2 mr-2 w-full">
+                <button className="flex items-center justify-evenly bg-white border border-gray-300 rounded-lg p-2 mr-2 w-full">
                   <img src={whatsapp} className="w-6" />
-                  <p>Connect Number</p>
+                  <p className="whitespace-nowrap">Connect Number</p>
                 </button>
               </Link>
             </div>
           </div>
-          <div className="flex flex-col border rounded-lg shadow-sm p-4 max-w-sm h-[12rem] justify-between lg:w-[25rem] md:w-[20rem]">
+          <div className="flex flex-col border rounded-lg shadow-sm p-4 h-[12rem] justify-between">
             <div className="flex items-center mb-2 justify-start gap-4">
               <div className="bg-[#F2F0F0] p-3 rounded-lg">
                 <img src={instagram} className="w-6" />
@@ -98,19 +98,19 @@ const Integrations: React.FC = () => {
                 </span>
               </div>
             </div>
-            <div className="flex items-center w-full mt-4 gap-4 text-[#D7D5D5]">
-              <button className="flex items-center justify-evenly border border-[#D7D5D5] rounded-lg p-2 w-3/5 mr-2">
+            <div className="flex items-center w-full mt-4  text-[#D7D5D5] text-sm">
+              <button className="flex items-center justify-evenly border border-[#D7D5D5] rounded-lg py-[0.63rem] px-2 w-3/5 mr-2">
                 <img src={blurManage} />
                 <p>Manage</p>
               </button>
 
-              <button className="flex items-center justify-evenly bg-white  border border-[#D7D5D5] rounded-lg p-2 mr-2 w-full">
+              <button className="flex items-center justify-evenly bg-white border border-[#D7D5D5] rounded-lg p-2 mr-2 w-full">
                 <img src={blurInsta} className="w-6" />
-                <p>Connect Instagram</p>
+                <p className="whitespace-nowrap">Connect Instagram</p>
               </button>
             </div>
           </div>
-          <div className="flex flex-col border rounded-lg shadow-sm p-4 max-w-sm h-[12rem] justify-between lg:w-[25rem] md:w-[20rem]">
+          <div className="flex flex-col border rounded-lg shadow-sm p-4 h-[12rem] justify-between">
             <div className="flex items-center mb-2 justify-start gap-4">
               <div className="bg-[#F2F0F0] p-3 rounded-lg">
                 <img src={facebook} className="w-6" />
@@ -124,19 +124,19 @@ const Integrations: React.FC = () => {
                 </span>
               </div>
             </div>
-            <div className="flex items-center w-full mt-4 gap-4 text-[#D7D5D5]">
-              <button className="flex items-center justify-evenly border border-[#D7D5D5] rounded-lg p-2 w-3/5 mr-2">
+            <div className="flex items-center w-full mt-4  text-[#D7D5D5] text-sm">
+              <button className="flex items-center justify-evenly border border-[#D7D5D5] rounded-lg py-[0.63rem] px-2 w-3/5 mr-2">
                 <img src={blurManage} />
                 <p>Manage</p>
               </button>
 
-              <button className="flex items-center justify-evenly bg-white  border border-[#D7D5D5] rounded-lg p-2 mr-2 w-full ">
+              <button className="flex items-center justify-evenly bg-white border border-[#D7D5D5] rounded-lg p-2 mr-2 w-full">
                 <img src={blurFacebook} className="w-6" />
-                <p>Connect Facebook</p>
+                <p className="whitespace-nowrap">Connect Facebook</p>
               </button>
             </div>
           </div>
-          <div className="flex flex-col border rounded-lg shadow-sm p-4 max-w-sm h-[12rem] justify-between lg:w-[25rem] md:w-[20rem]">
+          <div className="flex flex-col border rounded-lg shadow-sm p-4 h-[12rem] justify-between">
             <div className="flex items-center mb-2 justify-start gap-4">
               <div className="bg-[#F2F0F0] p-3 rounded-lg">
                 <img src={googleAds} className="w-6" />
@@ -150,15 +150,15 @@ const Integrations: React.FC = () => {
                 </span>
               </div>
             </div>
-            <div className="flex items-center w-full mt-4 gap-4 text-[#D7D5D5]">
-              <button className="flex items-center justify-evenly border border-[#D7D5D5] rounded-lg p-2 w-3/5 mr-2">
+            <div className="flex items-center w-full mt-4  text-[#D7D5D5] text-sm">
+              <button className="flex items-center justify-evenly border border-[#D7D5D5] rounded-lg py-[0.63rem] px-2 w-3/5 mr-2">
                 <img src={blurManage} />
                 <p>Manage</p>
               </button>
 
-              <button className="flex items-center justify-evenly bg-white  border border-[#D7D5D5] rounded-lg p-2 mr-2 w-full">
+              <button className="flex items-center justify-evenly bg-white border border-[#D7D5D5] rounded-lg p-2 mr-2 w-full">
                 <img src={blurgoogleAds} className="w-6" />
-                <p>Connect Google Ads</p>
+                <p className="whitespace-nowrap">Connect Google Ads</p>
               </button>
             </div>
           </div>

@@ -9,6 +9,10 @@ import whatsapp from "../../assets/whatsapp.png";
 import greenTick from "/greenTick.svg";
 import doubleArrow from "/doubleArrow.svg";
 
+//toastify
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const WhatsAppSettings: React.FC = () => {
   const [selectedCheckbox, setSelectedCheckbox] = useState<string | null>(
     "SnackBAE"
@@ -36,7 +40,7 @@ const WhatsAppSettings: React.FC = () => {
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div
         onClick={handlefram}
-        className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%] bg-[#F1F7FF]"
+        className="lg:w-[93%] h-fit px-[2rem] lg:ml-[7%] bg-[#F1F7FF] pb-4"
       >
         <div className="flex gap-6 font-inter bg-white p-4 rounded-lg">
           <div className=" w-1/2 flex flex-col justify-between gap-6">
@@ -65,7 +69,10 @@ const WhatsAppSettings: React.FC = () => {
                       type="checkbox"
                       className="form-checkbox text-[#004AAD]"
                       checked={selectedCheckbox === "Custom"}
-                      onChange={() => handleCheckboxChange("Custom")}
+                      onChange={() => {
+                        toast.warn("Need Premium subscription to access this");
+                        handleCheckboxChange("Custom");
+                      }}
                     />
                     <span className="ml-2">Custom</span>
                     <span className="ml-2 text-base text-white bg-[#004AAD] px-2 py-1 rounded-lg">
@@ -93,7 +100,7 @@ const WhatsAppSettings: React.FC = () => {
                     Want to connect your custom number?
                   </p>
                   <Link to="/connectNumber" onClick={handleScrollToTop}>
-                    <button className="flex items-center lg:gap-2 bg-[#60D66A] text-white py-2 lg:px-3 md:px-1 rounded-lg">
+                    <button className="flex items-center lg:gap-2 bg-[#60D66A] text-white py-2 lg:px-3 md:px-1 rounded-lg whitespace-nowrap">
                       <img src={whatsapp} className="w-7" />
                       Connect Number
                     </button>
@@ -114,7 +121,7 @@ const WhatsAppSettings: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="w-1/2 flex justify-center px-14 pt-20 bg-[#F1F7FF] rounded-2xl ">
+          <div className="w-1/2 flex items-end justify-center px-14 pt-20 bg-[#F1F7FF] rounded-2xl ">
             <img src={phone} className="h-96" />
           </div>
         </div>

@@ -41,55 +41,57 @@ const CampaignLibrary: React.FC = () => {
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div
         onClick={handlefram}
-        className="lg:w-[93%] h-fit px-[2rem] gap-10 lg:ml-[7%] bg-[#F1F7FF] mb-2"
+        className="lg:w-[93%] h-fit px-[2rem] gap-10 lg:ml-[7%]  "
       >
-        <div className="font-inter bg-white">
-          <div className="p-4 rounded-md">
-            <div className="flex justify-between items-center text-[#0F172A]">
-              <div className="relative flex items-center w-[410px]">
-                <FaSearch className="relative left-7 text-gray-400" />
-                <input
-                  type="search"
-                  onChange={(e) => searchCampaign(e.target.value)}
-                  placeholder="Search templates"
-                  className="w-full h-[50px] pl-10 pr-3 py-2 rounded-md border border-[#E2E8F0]"
-                />
+        <div className="bg-[#F1F7FF] pb-6">
+          <div className="font-inter bg-white">
+            <div className="p-4 rounded-md">
+              <div className="flex justify-between items-center text-[#0F172A] gap-3">
+                <div className="relative flex items-center w-[410px]">
+                  <FaSearch className="relative left-7 text-gray-400" />
+                  <input
+                    type="search"
+                    onChange={(e) => searchCampaign(e.target.value)}
+                    placeholder="Search templates"
+                    className="w-full h-[50px] pl-10 pr-3 py-2 rounded-md border border-[#E2E8F0]"
+                  />
+                </div>
+                {/* Buttons div */}
+                <div className=" flex items-center lg:gap-3 md:gap-1">
+                  {buttons.map((button, index) => (
+                    <button
+                      onClick={() => scrollToElement(button.name)}
+                      key={index}
+                      className=" w-28 text-center px-1 py-1 bg-white text-[#0F172A] rounded-md border border-[#E2E8F0] cursor-pointer"
+                    >
+                      {button.name}
+                    </button>
+                  ))}
+                </div>
               </div>
-              {/* Buttons div */}
-              <div className=" flex items-center gap-3">
-                {buttons.map((button, index) => (
-                  <button
-                    onClick={() => scrollToElement(button.name)}
-                    key={index}
-                    className=" w-28 text-center px-1 py-1 bg-white text-[#0F172A] rounded-md border border-[#E2E8F0] cursor-pointer"
-                  >
-                    {button.name}
-                  </button>
-                ))}
-              </div>
+              {Object.entries(AllData).map(([key, value]) => (
+                <div key={key} id={value.title} className="mt-4">
+                  <SliderComponent slides={value.slides} />
+                </div>
+              ))}
             </div>
-            {Object.entries(AllData).map(([key, value]) => (
-              <div key={key} id={value.title} className="mt-4">
-                <SliderComponent slides={value.slides} />
-              </div>
-            ))}
           </div>
+
+          {/* All swiper div */}
+          {Object.entries(slidesData).map(([key, value]) => (
+            <div
+              key={key}
+              id={value.title}
+              className="mt-2 bg-white p-4 rounded-md"
+            >
+              <h2 className="text-2xl font-bold mb-4">{value.title}</h2>
+              <SliderComponent slides={value.slides} />
+            </div>
+          ))}
+
+          {/* Feedback div */}
+          <Feedback />
         </div>
-
-        {/* All swiper div */}
-        {Object.entries(slidesData).map(([key, value]) => (
-          <div
-            key={key}
-            id={value.title}
-            className="mt-2 bg-white p-4 rounded-md"
-          >
-            <h2 className="text-2xl font-bold mb-4">{value.title}</h2>
-            <SliderComponent slides={value.slides} />
-          </div>
-        ))}
-
-        {/* Feedback div */}
-        <Feedback />
       </div>
     </div>
   );

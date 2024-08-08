@@ -35,7 +35,7 @@ const Marketing = () => {
 
   return (
     <div className="w-full h-fit ">
-      <div onClick={handlefram} className="lg:w-[93%]  h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
+      <div onClick={handlefram} className="relative lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] ">
         <div className="w-full flex flex-row justify-between mt-[70px]">
           <div className="flex flex-col">
             <h1 className="text-[1.75rem] font-semibold">Marketing</h1>
@@ -67,7 +67,7 @@ const Marketing = () => {
         {/* Buttons Container */}
         <div className=" w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-6">
           <Link
-            className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
+            className="w-[9.4rem] flex flex-col items-center gap-2 text-[1.3125rem] font-[500]"
             to="/marketing"
             onClick={handleScrollToTop}
           >
@@ -79,7 +79,7 @@ const Marketing = () => {
             ></span>
           </Link>
           <Link
-            className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.325rem] font-[500]"
+            className="w-[13.75rem] flex flex-col items-center gap-2 text-[1.3125rem] font-[500]"
             to="/marketing/manage"
             onClick={handleScrollToTop}
           >

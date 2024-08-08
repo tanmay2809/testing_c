@@ -31,6 +31,7 @@ import FormattingControls from "../../component/Marketing/FormattingControls";
 import booking from "/booking.svg";
 import utility from "/utility.svg";
 import AdvanceFilter from "../../component/Marketing/AdvanceFilter";
+import CustomerPool from "../../component/Marketing/CustomerPool";
 
 interface RadioOption {
   label: string;
@@ -107,6 +108,8 @@ const Campaigns: React.FC = () => {
   const [customDateNotVisit, setCustomDateNotVisit] = useState<Date | null>(
     null
   );
+
+  const [isPoolVisible, setIsPoolVisible] = useState<boolean>(false);
 
   useEffect(() => {
     getAllCustomersUserId();
@@ -415,6 +418,10 @@ const Campaigns: React.FC = () => {
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
+
+  const togglePool = () => {
+    setIsPoolVisible(!isPoolVisible);
+  };
   // const filterElementsAdd = (data: string[]) => {
   //   setFilterData(data);
   //   console.log(filterData);
@@ -424,8 +431,11 @@ const Campaigns: React.FC = () => {
   const handleCheckboxChange = (value: string) => {
     if (value === "advanceFilter" && target !== "advanceFilter") {
       toggleFilter();
+    } else if (value === "customerPool" && target !== "customerPool") {
+      togglePool();
     } else {
       setIsFilterVisible(false);
+      setIsPoolVisible(false);
     }
     setTarget(target === value ? null : value);
   };
@@ -486,7 +496,7 @@ const Campaigns: React.FC = () => {
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
           <div className=" rounded-lg p-1 w-full ">
             {!Confirmation && (
-              <div className="bg-white fixed lg:w-[85%] md:w-[91%] mt-[1rem] z-10 p-4 rounded-xl top-[4rem]">
+              <div className="bg-white fixed lg:w-[85%] md:w-[91%] -mt-[0.26rem] z-10 p-4 rounded-xl ">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold ">Template Preview</h2>
                   <div className="flex gap-6">
@@ -514,7 +524,7 @@ const Campaigns: React.FC = () => {
             {/*main content div */}
             <div
               className={`bg-[#F5F9FF] flex justify-between gap-10 lg:py-5 md:py-3 rounded-lg ${
-                !Confirmation ? "mt-28" : ""
+                !Confirmation ? "mt-24" : ""
               }`}
             >
               {/*text div */}
@@ -918,7 +928,7 @@ const Campaigns: React.FC = () => {
                                 </p>
                               </div>
                             </div>
-                            <div className=" p-4 flex items-center gap-6">
+                            <div className=" p-4 flex items-center gap-6 border-b border-b-gray-400">
                               <input
                                 type="checkbox"
                                 id="advanceFilter"
@@ -938,6 +948,34 @@ const Campaigns: React.FC = () => {
                                 <p className="text-sm">
                                   Target customers on the basis of their visit
                                   pattern and segementation
+                                </p>
+                              </div>
+                            </div>
+                            <div className=" p-4 flex items-center gap-6">
+                              <input
+                                type="checkbox"
+                                id="customerPool"
+                                checked={target === "customerPool"}
+                                onChange={() =>
+                                  handleCheckboxChange("customerPool")
+                                }
+                                className="form-checkbox h-4 w-4 text-[#004AAD]"
+                              />
+                              <div className="flex flex-col justify-center items-start">
+                                <div className="flex justify-start gap-2 items-center">
+                                  <label
+                                    htmlFor="customerPool"
+                                    className="text-lg font-[500]"
+                                  >
+                                    Target Customer Pool
+                                  </label>
+                                  <button className="bg-[#004AAD] px-2  text-white rounded-xl">
+                                    Premium
+                                  </button>
+                                </div>
+                                <p className="text-sm">
+                                  Target all customers visiting multiple
+                                  eateries
                                 </p>
                               </div>
                             </div>
@@ -1024,7 +1062,7 @@ const Campaigns: React.FC = () => {
               <div
                 className={`w-full max-w-xs mx-auto lg:p-3 ${
                   !Confirmation
-                    ? "sticky  lg:right-[6rem] lg:top-[10.5rem] md:top-44 sm:top-56 h-fit"
+                    ? "fixed  lg:right-[6rem] lg:top-[12rem] md:right-12 md:top-44 sm:right-12 sm:top-56 h-fit"
                     : "relative top-0"
                 }`}
               >
@@ -1128,6 +1166,11 @@ const Campaigns: React.FC = () => {
         customDateNotVisit={customDateNotVisit}
         setcustomDateVisit={setCustomDateVisit}
         setcustomDateNotVisit={setCustomDateNotVisit}
+      />
+      <CustomerPool
+        isVisible={isPoolVisible}
+        onClose={togglePool}
+        // setFilterData={filterElementsAdd}
       />
     </div>
   );

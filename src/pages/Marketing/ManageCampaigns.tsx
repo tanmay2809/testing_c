@@ -95,31 +95,31 @@ const ManageCampaigns: React.FC = () => {
 
           <div className="flex space-x-4 mb-4">
             <div
-              className={`flex-1 p-4 bg-[#BEFED4] rounded shadow text-left text-[#505050]`}
+              className={`flex-1 p-4 bg-[#BEFED4] flex flex-col justify-between rounded shadow text-left text-[#505050]`}
             >
               <p>Active Campaign</p>
               <p className="text-2xl font-bold">0</p>
             </div>
             <div
-              className={`flex-1 p-4 bg-[#FADBFF] rounded shadow text-left text-[#505050]`}
+              className={`flex-1 p-4 bg-[#FADBFF] flex flex-col justify-between rounded shadow text-left text-[#505050]`}
             >
               <p>Total Campaign sent</p>
               <p className="text-2xl font-bold">0</p>
             </div>
             <div
-              className={`flex-1 p-4 bg-[#F9FFB9] rounded shadow text-left text-[#505050]`}
+              className={`flex-1 p-4 bg-[#F9FFB9] flex flex-col justify-between rounded shadow text-left text-[#505050]`}
             >
               <p>Customer Visit</p>
               <p className="text-2xl font-bold">0</p>
             </div>
             <div
-              className={`flex-1 p-4 bg-[#FFDA75] rounded shadow text-left text-[#505050]`}
+              className={`flex-1 p-4 bg-[#FFDA75] flex flex-col justify-between rounded shadow text-left text-[#505050]`}
             >
               <p>Total Cost</p>
               <p className="text-2xl font-bold">0</p>
             </div>
             <div
-              className={`flex-1 p-4 bg-[#B3FFEF] rounded shadow text-left text-[#505050]`}
+              className={`flex-1 p-4 bg-[#B3FFEF] flex flex-col justify-between rounded shadow text-left text-[#505050]`}
             >
               <p>Return on ad spend</p>
               <p className="text-2xl font-bold">0</p>
@@ -138,7 +138,9 @@ const ManageCampaigns: React.FC = () => {
             </div>
             <select className="px-4 py-2 border rounded text-[#004AAD]">
               <option>Status</option>
-              {/* Add more options here */}
+              <option>Active</option>
+              <option>Under Review</option>
+              <option>Pause</option>
             </select>
           </div>
           <div

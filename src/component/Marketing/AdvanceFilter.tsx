@@ -84,12 +84,12 @@ const AdvanceFilter: React.FC<FilterProps> = ({
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-end z-50 p-5 ">
       <div
-        className={`bg-white w-[30rem] h-auto p-5 shadow-lg rounded-lg overflow-y-auto ${
+        className={`bg-white w-[30rem] h-auto p-5 pt-0 shadow-lg rounded-lg overflow-y-auto ${
           isClosing ? "slide-out-right" : "slide-in-right"
         }`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        <div className=" sticky top-0 flex justify-between items-center pb-2 border-black border-b font-Roboto">
+        <div className=" sticky top-0 flex justify-between pt-5 bg-white items-center pb-2 border-black border-b font-Roboto z-50">
           <div>
             <h2 className="text-2xl font-semibold">Filter Customer</h2>
             <p className="text-base">Filter your customer database easily</p>

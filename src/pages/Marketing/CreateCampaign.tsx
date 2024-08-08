@@ -22,16 +22,17 @@ import WebsiteButton from "../../component/Marketing/WebsiteButton";
 import FeedbackButton from "../../component/Marketing/FeedbackButton";
 // import CustomerFilter from "../../component/Customer/CustomerFilter";
 import ConfirmCampaign from "./ConfirmCampaign";
+import FormattingControls from "../../component/Marketing/FormattingControls";
 
 //toastify
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import FormattingControls from "../../component/Marketing/FormattingControls";
 
 //svg
 import booking from "/booking.svg";
 import utility from "/utility.svg";
 import AdvanceFilter from "../../component/Marketing/AdvanceFilter";
+import CustomerPool from "../../component/Marketing/CustomerPool";
 
 interface RadioOption {
   label: string;
@@ -112,6 +113,8 @@ const CreateCampaigns: React.FC = () => {
   const [customDateNotVisit, setCustomDateNotVisit] = useState<Date | null>(
     null
   );
+
+  const [isPoolVisible, setIsPoolVisible] = useState<boolean>(false);
 
   useEffect(() => {
     getAllCustomersUserId();
@@ -425,6 +428,10 @@ const CreateCampaigns: React.FC = () => {
   const toggleFilter = () => {
     setIsFilterVisible(!isFilterVisible);
   };
+
+  const togglePool = () => {
+    setIsPoolVisible(!isPoolVisible);
+  };
   // const filterElementsAdd = (data: string[]) => {
   //   setFilterData(data);
   //   console.log(filterData);
@@ -433,8 +440,11 @@ const CreateCampaigns: React.FC = () => {
   const handleCheckboxChange = (value: string) => {
     if (value === "advanceFilter" && target !== "advanceFilter") {
       toggleFilter();
+    } else if (value === "customerPool" && target !== "customerPool") {
+      togglePool();
     } else {
       setIsFilterVisible(false);
+      setIsPoolVisible(false);
     }
     setTarget(target === value ? null : value);
   };
@@ -489,9 +499,9 @@ const CreateCampaigns: React.FC = () => {
     <div className="w-full h-fit relative  lg:mb-0">
       <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] bg-[#F5F9FF] ">
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter ">
-          <div className=" rounded-lg p-1 w-full mb-14">
+          <div className=" rounded-lg p-1 w-full mb-8">
             {!Confirmation && (
-              <div className="bg-white fixed lg:w-[85%] md:w-[91%] mt-[1rem] z-10 p-4 rounded-xl top-[4rem]">
+              <div className="bg-white fixed lg:w-[85%] md:w-[91%] -mt-[0.26rem] z-10 p-4 rounded-xl ">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold ">Create Campaign</h2>
                   <div className="flex gap-5">
@@ -552,7 +562,7 @@ const CreateCampaigns: React.FC = () => {
             {/*main content div */}
             <div
               className={`bg-[#F5F9FF] flex justify-between gap-10 lg:py-5 md:py-5 rounded-lg ${
-                !Confirmation ? "mt-24" : ""
+                !Confirmation ? "mt-20" : ""
               } `}
             >
               {" "}
@@ -1048,6 +1058,34 @@ const CreateCampaigns: React.FC = () => {
                                 </p>
                               </div>
                             </div>
+                            <div className=" p-4 flex items-center gap-6">
+                              <input
+                                type="checkbox"
+                                id="customerPool"
+                                checked={target === "customerPool"}
+                                onChange={() =>
+                                  handleCheckboxChange("customerPool")
+                                }
+                                className="form-checkbox h-4 w-4 text-[#004AAD]"
+                              />
+                              <div className="flex flex-col justify-center items-start">
+                                <div className="flex justify-start gap-2 items-center">
+                                  <label
+                                    htmlFor="customerPool"
+                                    className="text-lg font-[500]"
+                                  >
+                                    Target Customer Pool
+                                  </label>
+                                  <button className="bg-[#004AAD] px-2  text-white rounded-xl">
+                                    Premium
+                                  </button>
+                                </div>
+                                <p className="text-sm">
+                                  Target all customers visiting multiple
+                                  eateries
+                                </p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1131,7 +1169,7 @@ const CreateCampaigns: React.FC = () => {
               <div
                 className={`w-full max-w-xs mx-auto lg:p-3  h-fit flex justify-center items-center ${
                   next && !Confirmation
-                    ? "sticky  lg:right-[8rem] lg:top-[10.5rem] md:top-44 sm:top-56 h-fit"
+                    ? "fixed lg:right-[8rem] lg:top-[12rem] md:right-11 md:top-48 sm:right-11 sm:top-56"
                     : "relative top-0"
                 }`}
               >
@@ -1238,6 +1276,11 @@ const CreateCampaigns: React.FC = () => {
         customDateNotVisit={customDateNotVisit}
         setcustomDateVisit={setCustomDateVisit}
         setcustomDateNotVisit={setCustomDateNotVisit}
+      />
+      <CustomerPool
+        isVisible={isPoolVisible}
+        onClose={togglePool}
+        // setFilterData={filterElementsAdd}
       />
     </div>
   );
