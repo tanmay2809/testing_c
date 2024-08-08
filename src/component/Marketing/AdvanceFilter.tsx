@@ -62,10 +62,10 @@ const AdvanceFilter: React.FC<FilterProps> = ({
       data.push(...gender);
     }
     if (visitFilter === "Custom" && customDateVisit) {
-      data.push(`Last visit: ${customDateVisit}`);
+      data.push(`Visited on: ${customDateVisit}`);
     }
     if (nonVisitFilter === "Custom" && customDateNotVisit) {
-      data.push(`Not visited since: ${customDateNotVisit}`);
+      data.push(`Not visited on: ${customDateNotVisit}`);
     }
 
     setFilterData(data);

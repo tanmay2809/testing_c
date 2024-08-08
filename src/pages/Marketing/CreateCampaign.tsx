@@ -167,12 +167,22 @@ const CreateCampaigns: React.FC = () => {
               (visit: string) => new Date(visit) >= sixtyDaysAgo
             );
           } else if (
-            visitFilter.includes("Last visit:") &&
+            visitFilter.includes("Visited on:") &&
             customDateVisitObj
           ) {
-            const customDateString = customDateVisitObj
+            const customDate = new Date(customDateVisitObj);
+
+            // Get the timezone offset in minutes and convert it to milliseconds
+            const timezoneOffset = customDate.getTimezoneOffset() * 60000;
+
+            // Adjust the date by adding the offset to get the local date in ISO format
+            const customDateString = new Date(
+              customDate.getTime() - timezoneOffset
+            )
               .toISOString()
-              .split("T")[0]; // Format: YYYY-MM-DD
+              .split("T")[0];
+
+            console.log(customDateString); // This will show the correct date in your local timezone
 
             visitCondition = customer.visits.some((visit: string) => {
               const visitDate = new Date(visit).toISOString().split("T")[0]; // Format: YYYY-MM-DD
@@ -229,11 +239,21 @@ const CreateCampaigns: React.FC = () => {
                 console.log(`Checking visitDate for 60 days: ${visitDate}`);
                 return visitDate <= sixtyDaysAgo.toISOString().split("T")[0];
               })) ||
-            (visitFilter.includes("Not visited since:") && customDateNotVisitObj
+            (visitFilter.includes("Not visited on:") && customDateNotVisitObj
               ? customer.visits.every((visit: string) => {
-                  const customDateString = new Date(customDateNotVisitObj)
+                  const customDate = new Date(customDateNotVisitObj);
+
+                  // Get the timezone offset in minutes and convert it to milliseconds
+                  const timezoneOffset = customDate.getTimezoneOffset() * 60000;
+
+                  // Adjust the date by adding the offset to get the local date in ISO format
+                  const customDateString = new Date(
+                    customDate.getTime() - timezoneOffset
+                  )
                     .toISOString()
-                    .split("T")[0]; // Format: YYYY-MM-DD
+                    .split("T")[0];
+
+                  console.log(customDateString); // This will show the correct date in your local timezone
                   const visitDate = new Date(visit).toISOString().split("T")[0];
                   console.log(
                     `Checking visitDate for specific day: ${visitDate}`

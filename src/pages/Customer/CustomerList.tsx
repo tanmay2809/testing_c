@@ -103,10 +103,10 @@ const CustomerList: React.FC = () => {
                 );
             } else if (visitFilter.includes("Visited on:")) {
                 const customDateString = new Date(customDateVisitObj).toISOString().split('T')[0]; // Format: YYYY-MM-DD
-
                 visitCondition = customer.visits.some(
                     (visit: string) => {
                         const visitDate = new Date(visit).toISOString().split('T')[0]; // Format: YYYY-MM-DD
+                        console.log(visitDate)
                         return visitDate === customDateString; // Exact match on the specified day
                     }
                 );
