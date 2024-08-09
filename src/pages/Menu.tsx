@@ -478,17 +478,19 @@ const Menu = () => {
                     showActive={showActive}
                   />
                 ) : (
-                  <SubCategoryDropdown
-                    setIsAddMenuOpen={setIsAddMenuOpen}
-                    setIsEditMenuOpen={setIsEditMenuOpen}
-                    setIsSubCategoryOpen={setIsSubCategoryOpen}
-                    setSelectedCard={setSelectedCard}
-                    subcategoryToEdit={setSubCategoryToEdit}
-                    editSubcategoryModal={setEditSubCategoryModal}
-                    selectedType={selectedType}
-                    category={filteredCategory}
-                    showActive={showActive}
-                  />
+                  filteredCategory[0]?.subcategory.length > 0 && (
+                    <SubCategoryDropdown
+                      setIsAddMenuOpen={setIsAddMenuOpen}
+                      setIsEditMenuOpen={setIsEditMenuOpen}
+                      setIsSubCategoryOpen={setIsSubCategoryOpen}
+                      setSelectedCard={setSelectedCard}
+                      subcategoryToEdit={setSubCategoryToEdit}
+                      editSubcategoryModal={setEditSubCategoryModal}
+                      selectedType={selectedType}
+                      category={filteredCategory}
+                      showActive={showActive}
+                    />
+                  )
                 )}
               </div>
             </div>
