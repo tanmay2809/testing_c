@@ -1,8 +1,9 @@
 import { useState } from "react";
 
 //icons
-import { FaPlus } from "react-icons/fa6";
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+// import { FaPlus } from "react-icons/fa6";
+import { Outlet, Link, useLocation} from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 //other components
 import CampaignPricing from "../../component/Marketing/CampaignPricing";
@@ -11,7 +12,7 @@ import CampaignPricing from "../../component/Marketing/CampaignPricing";
 import doubleArrow from "/doubleArrow.svg";
 
 const WhatsAppManager = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
   console.log("Customer Component Rendered");
   console.log("Current Location:", location.pathname);

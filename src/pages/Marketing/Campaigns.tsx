@@ -501,7 +501,7 @@ const Campaigns: React.FC = () => {
                   <h2 className="text-xl font-semibold ">Template Preview</h2>
                   <div className="flex gap-6">
                     <Link to="/marketing">
-                      <button className=" text-[#E61856] bg-[#FDF1F1] p-2 rounded-lg">
+                      <button className=" text-[#E61856] bg-[#FDF1F1] px-4 py-2 rounded-lg">
                         Cancel
                       </button>
                     </Link>
@@ -510,9 +510,9 @@ const Campaigns: React.FC = () => {
                       onClick={activateCampaign}
                     >
                       {loading ? (
-                        <div className="inline-block h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+                        <div className="inline-block  h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
                       ) : (
-                        <span>Activate</span>
+                        <span className="px-4 ">Activate</span>
                       )}
                     </button>
                   </div>
