@@ -589,7 +589,7 @@ const CustomerList: React.FC = () => {
           <table className=" bg-white border font-inter text-base w-full">
             <thead>
               <tr className="w-full bg-gray-100 text-center text-[#858687] ">
-                <th className="py-3 px-6">Customer Name</th>
+                <th className="py-3 px-2">Customer Name</th>
                 <th className="py-3 px-6">Phone Number</th>
                 <th className="py-3 px-6">Total Visit</th>
                 <th className="py-3 px-6">Last Visit</th>
@@ -601,11 +601,12 @@ const CustomerList: React.FC = () => {
               <tbody className="">
                 {currentItems?.map((customer: any, index: any) => (
                   <tr key={index} className="border-t text-base text-center">
-                    <td className="py-3 px-6">{customer?.userId?.name}</td>
-                    <td className="py-3 px-6 text-nowrap flex gap-2">
-                      <span className="lg:block md:hidden">+91</span> {customer?.userId?.phone}{" "}
+                    
+                    <td className="py-3 px-6 items-start justify-start">{customer?.userId?.name}</td>
+                    <td className="py-3 px-10  lg:ml-[2.2rem] text-nowrap flex gap-2">
+                      <span className="lg:block md:hidden"> +91</span> {customer?.userId?.phone}{" "}
                     </td>
-                    <td className="py-3 px-6">{customer?.visits?.length}</td>
+                    <td className="py-3 px-6  items-center">{customer?.visits?.length}</td>
                     <td className="py-3 px-6 text-nowrap">
                       {getLastVisitDisplay(customer?.visits)}
                     </td>

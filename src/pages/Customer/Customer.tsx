@@ -18,7 +18,7 @@ const Customer: React.FC = () => {
         <div onClick={handlefram} className="w-full flex flex-row justify-between mt-[70px]">
           <div className="flex flex-col ">
             <h1 className="text-[28px] font-semibold">Customers</h1>
-            <p className="text-[18px]">
+            <p className="text-[16px]">
               All your customer behaviour data and activity, easily accessible
               in one place.
             </p>
@@ -26,9 +26,9 @@ const Customer: React.FC = () => {
         </div>
 
         {/* Buttons Container */}
-        <div className="w-[100%] flex flex-row justify-start border-b border-b-[#000000CC] -mt-3">
+        <div className="w-[100%] flex flex-row justify-start items-start border-b  border-b-[#000000CC]  -mt-3">
           <Link
-            className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
+            className="w-[120px] flex flex-col   gap-2 text-[21px] font-[500]"
             to="/customer"
           >
             Overview
@@ -42,7 +42,7 @@ const Customer: React.FC = () => {
             ></span>
           </Link>
           <Link
-            className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
+            className="w-[150px] flex flex-col items-center  gap-2 text-[21px] font-[500]"
             to="/customer/analytics"
           >
             Analytics
@@ -55,7 +55,7 @@ const Customer: React.FC = () => {
             ></span>
           </Link>
           <Link
-            className="w-[150px] flex flex-col items-center gap-2 text-[21px] font-[500]"
+            className="w-[170px] flex flex-col  gap-2 text-[21px] font-[500]"
             to="/customer/customerList"
           >
             Customer List

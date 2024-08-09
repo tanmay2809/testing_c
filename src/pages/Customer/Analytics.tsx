@@ -2,6 +2,7 @@ import { useState, ChangeEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Charts from "../../component/Customer/Charts";
+import { Link } from "react-router-dom";
 
 //chartjs
 
@@ -727,7 +728,7 @@ const Analytics: React.FC = () => {
             </div>
 
             <div className="relative flex justify-center items-center mb-4  ">
-              <div className="w-full h-fit  lg:-ml-[15.5rem] md:-ml-[45rem">
+              <div className="w-full h-fit  lg:-ml-[14.5rem] md:-ml-[45rem">
                 <Charts male={data?.maleVisitors} female={data?.femaleVisitors} other={data?.otherVisitors} />
               </div>
             </div>
@@ -771,9 +772,9 @@ const Analytics: React.FC = () => {
                     {birthdays} Customers have their birthdays
                   </p>
                 </div>
-                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
+                <Link to='/manager' className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
                   Send Campaign
-                </button>
+                </Link>
               </div>
               <div className="flex justify-between items-center ">
                 <div className="flex items-center justify-start gap-4 lg:w-3/5">
@@ -788,9 +789,9 @@ const Analytics: React.FC = () => {
                     {anniversaries} Customers have their Anniversary
                   </p>
                 </div>
-                <button className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
+                <Link to='/manager' className=" bg-[#004AAD] text-white rounded-xl text-sm px-[0.5rem] py-[0.4rem]">
                   Send Campaign
-                </button>
+                </Link>
               </div>
             </div>
           </div>

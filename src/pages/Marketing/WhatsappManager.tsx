@@ -65,7 +65,7 @@ const WhatsAppManager = () => {
                 location.pathname === "/manager"
                   ? "bg-[#EDF5FF] text-[#004AAD] border-none"
                   : ""
-              } font-[500] border border-[#D1D1D1] rounded-lg px-2 py-[0.3rem]`}
+              } font-[500] border border-[#D1D1D1] rounded-lg px-4 py-[0.4rem]`}
               to="/manager"
               onClick={handleScrollToTop}
             >
@@ -76,14 +76,14 @@ const WhatsAppManager = () => {
                 location.pathname === "/manager/header"
                   ? "bg-[#EDF5FF] text-[#004AAD] border-none"
                   : ""
-              } font-[500] border border-[#D1D1D1] rounded-lg px-2 py-[0.3rem]`}
+              } font-[500] border border-[#D1D1D1] rounded-lg px-4 py-[0.4rem]`}
               to="/manager/header"
               onClick={handleScrollToTop}
             >
               WhatsApp Header
             </Link>
           </div>
-          <button
+          {/* <button
             onClick={() => {
               navigate("/createcampaign");
               handleScrollToTop();
@@ -92,7 +92,7 @@ const WhatsAppManager = () => {
           >
             <FaPlus className="text-base" />
             Create Campaign
-          </button>
+          </button> */}
         </div>
       </div>
       <Outlet />

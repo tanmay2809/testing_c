@@ -62,7 +62,7 @@ const CampaignLibrary: React.FC = () => {
                     <button
                       onClick={() => scrollToElement(button.name)}
                       key={index}
-                      className=" w-28 text-center px-1 py-1 bg-white text-[#0F172A] rounded-md border border-[#E2E8F0] cursor-pointer"
+                      className="  text-center px-4 py-1 bg-white text-[#0F172A] rounded-md border-2 border-[#E2E8F0] cursor-pointer font-semibold"
                     >
                       {button.name}
                     </button>

@@ -51,7 +51,7 @@ const Integrations: React.FC = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-5 mb-3">
-          <div className="flex flex-col border rounded-lg shadow-sm p-4 h-[12rem] justify-between">
+          <div className="flex flex-col border-2 rounded-lg shadow-sm p-4 h-[12rem] justify-between">
             <div className="flex items-center mb-2 justify-start gap-4">
               <div className="bg-[#F2F0F0] p-3 rounded-lg">
                 <img src={whatsapp} className="w-6" />
@@ -67,9 +67,9 @@ const Integrations: React.FC = () => {
             </div>
             <div className="flex items-center w-full mt-4  text-[#7C7C7C] text-sm">
               <Link to="/manager" onClick={handleScrollToTop} className="w-3/5">
-                <button className="flex items-center justify-evenly border border-gray-300 rounded-lg py-[0.63rem] px-2 w-[90%] mr-2">
+                <button className="flex items-center justify-evenly border-2 border-gray-300 rounded-lg py-[0.63rem] px-2 w-[90%] mr-2">
                   <img src={manage} />
-                  <p>Manage</p>
+                  <p className="font-[600] ">Manage</p>
                 </button>
               </Link>
               <Link
@@ -77,9 +77,9 @@ const Integrations: React.FC = () => {
                 onClick={handleScrollToTop}
                 className="w-full"
               >
-                <button className="flex items-center justify-evenly bg-white border border-gray-300 rounded-lg p-2 mr-2 w-full">
+                <button className="flex items-center justify-evenly bg-white border-2 border-gray-300 rounded-lg p-2 mr-2 w-full">
                   <img src={whatsapp} className="w-6" />
-                  <p className="whitespace-nowrap">Connect Number</p>
+                  <p className="whitespace-nowrap font-[600]">Connect Number</p>
                 </button>
               </Link>
             </div>
