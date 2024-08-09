@@ -2,7 +2,7 @@ import { useState } from "react";
 
 //icons
 // import { FaPlus } from "react-icons/fa6";
-import { Outlet, Link, useLocation} from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 //other components
@@ -57,34 +57,34 @@ const WhatsAppManager = () => {
             </button>
           </div>
         </div>
-
-        {/* Buttons Container */}
-        <div className=" w-[100%] flex items-center justify-between -mt-6 bg-white p-2 rounded-lg">
-          <div className="flex justify-start gap-4 text-[#7C7C7C]">
-            <Link
-              className={`${
-                location.pathname === "/manager"
-                  ? "bg-[#EDF5FF] text-[#004AAD] border-none"
-                  : ""
-              } font-[500] border border-[#D1D1D1] rounded-lg px-4 py-[0.4rem]`}
-              to="/manager"
-              onClick={handleScrollToTop}
-            >
-              Templates
-            </Link>
-            <Link
-              className={`${
-                location.pathname === "/manager/header"
-                  ? "bg-[#EDF5FF] text-[#004AAD] border-none"
-                  : ""
-              } font-[500] border border-[#D1D1D1] rounded-lg px-4 py-[0.4rem]`}
-              to="/manager/header"
-              onClick={handleScrollToTop}
-            >
-              WhatsApp Header
-            </Link>
-          </div>
-          {/* <button
+      </div>
+      {/* Buttons Container */}
+      <div className="w-[92%] lg:w-[89%] ml-[4%] lg:ml-[9%] mb-[10px] sticky top-[70px] z-10 flex items-center justify-between  bg-white p-2 rounded-lg">
+        <div className="w-full flex justify-start gap-4 text-[#7C7C7C]">
+          <Link
+            className={`${
+              location.pathname === "/manager"
+                ? "bg-[#EDF5FF] text-[#004AAD] border-none"
+                : ""
+            } font-[500] border border-[#D1D1D1] rounded-lg px-4 py-[0.4rem]`}
+            to="/manager"
+            onClick={handleScrollToTop}
+          >
+            Templates
+          </Link>
+          <Link
+            className={`${
+              location.pathname === "/manager/header"
+                ? "bg-[#EDF5FF] text-[#004AAD] border-none"
+                : ""
+            } font-[500] border border-[#D1D1D1] rounded-lg px-4 py-[0.4rem]`}
+            to="/manager/header"
+            onClick={handleScrollToTop}
+          >
+            WhatsApp Header
+          </Link>
+        </div>
+        {/* <button
             onClick={() => {
               navigate("/createcampaign");
               handleScrollToTop();
@@ -94,8 +94,8 @@ const WhatsAppManager = () => {
             <FaPlus className="text-base" />
             Create Campaign
           </button> */}
-        </div>
       </div>
+
       <Outlet />
       <CampaignPricing isVisible={isPricingVisible} onClose={togglePricing} />
     </div>
