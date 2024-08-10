@@ -105,6 +105,7 @@ const CreateCampaigns: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [customDate, setCustomDate] = useState<Date | null>(null);
+  const [customTime, setCustomTime] = useState<string | null>(null);
 
   //filter states
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
@@ -354,7 +355,22 @@ const CreateCampaigns: React.FC = () => {
   };
 
   const handleDateChange = (date: Date | null) => {
-    setCustomDate(date);
+    console.log(date);
+
+    if (date) {
+      // Extract hours and minutes from the date
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+
+      // Set the custom date and time
+      setCustomDate(date);
+      setCustomTime(`${hours}${minutes} Hours`);
+
+      console.log(`${hours}${minutes} Hours`);
+    } else {
+      setCustomDate(null);
+      setCustomTime(null);
+    }
   };
 
   useEffect(() => {
@@ -495,6 +511,8 @@ const CreateCampaigns: React.FC = () => {
   const toggleAccordionschedule = () => {
     setIsOpenschedule(!isOpenschedule);
   };
+  console.log(customTime);
+
   return (
     <div className="w-full h-fit relative  lg:mb-0">
       <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] bg-[#F5F9FF] ">
@@ -1140,19 +1158,27 @@ const CreateCampaigns: React.FC = () => {
                                     <p className="text-sm">{option.desc}</p>
                                   </div>
                                 </div>
-                                {selectedOption === "customDate" &&
-                                option.value === "customDate" &&
-                                customDate === null ? (
-                                  <div className=" absolute mt-1">
+                                {selectedOption === option.value &&
+                                option.value !== "postVisit" &&
+                                option.value !== "onVisit" ? (
+                                  <div className="flex juttify start items-start absolute mt-1">
                                     <DatePicker
                                       selected={customDate}
                                       onChange={handleDateChange}
+                                      showTimeInput
                                       inline
                                     />
+                                    {/* <DatePicker
+                                      selected={customDate}
+                                      onChange={handleDateChange}
+                                      showTimeInput
+                                      showTimeSelectOnly
+                                      timeIntervals={1}
+                                      inline
+                                    /> */}
+                                    {/* <button className="bg-black text-white">select</button> */}
                                   </div>
-                                ) : (
-                                  ""
-                                )}
+                                ) : null}
                               </div>
                             ))}
                           </div>
