@@ -70,6 +70,22 @@ const TableComponent = ({ data, totaltable }: { data: any, totaltable: number })
     });
   }
 
+  function calculateDaysFromNow(providedDate :any) {
+    // Convert the provided date to a JavaScript Date object
+    const dateObj = new Date(providedDate);
+
+    // Get the current timestamp in milliseconds
+    const currentTimestamp = Date.now();
+
+    // Calculate the difference in time (milliseconds)
+    const timeDifference = Math.abs(currentTimestamp - dateObj.getTime());
+
+    // Convert time difference from milliseconds to days
+    const dayDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+    return dayDifference;
+  }
+
 
   const deleteScan = async (id: string) => {
     try {
@@ -84,6 +100,7 @@ const TableComponent = ({ data, totaltable }: { data: any, totaltable: number })
       axios.request(config)
         .then((response) => {
           console.log(JSON.stringify(response.data));
+          toast.success(`Table ${response.data?.deletedScan?.tableNo} deleted successfully`);
         })
         .catch((error) => {
           console.log(error);
@@ -94,6 +111,8 @@ const TableComponent = ({ data, totaltable }: { data: any, totaltable: number })
     }
 
   }
+
+
 
   return (
     <div className="bg-[#F1F7FF] w-full h-fit flex flex-col font-inter rounded-lg">
@@ -124,12 +143,12 @@ const TableComponent = ({ data, totaltable }: { data: any, totaltable: number })
       <div className="flex justify-between w-full items-center py-[1rem] px-[2rem]">
         <div className="flex items-center gap-4">
           {/* <SwitchTable /> */}
-          <p className="font-inter font-[400] text-[1rem] text-nowrap text-[#505050]">Active since {formatDate(data?.createdAt)} ({Date.now() - data?.table}days)</p>
+          <p className="font-inter font-[400] text-[1rem] text-nowrap text-[#505050]">Active since {formatDate(data?.createdAt)} ({calculateDaysFromNow(data?.createdAt)} days)</p>
         </div>
         <div className="flex w-[50%] text-black font-inter font-[600] text-[1.15rem] gap-3 items-center justify-end">
           <p onClick={() => {
             copyHandler(data?.url);
-          }} className="flex items-center gap-1 cursor-pointer"><MdOutlineFolderCopy className="size-5" />Copy Link</p>
+          }} className="flex items-center gap-1 cursor-pointer text-nowrap"><MdOutlineFolderCopy className="size-5" />Copy Link</p>
           <p
             onClick={() => {
               const filename = 'downloaded-image.png'; // Desired file name

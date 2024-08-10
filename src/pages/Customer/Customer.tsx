@@ -42,12 +42,11 @@ const Customer: React.FC = () => {
           >
             Overview
             <span
-              className={`${
-                location.pathname === "/customer/overview" ||
-                location.pathname === "/customer"
+              className={`${location.pathname === "/customer/overview" ||
+                  location.pathname === "/customer"
                   ? "bg-[#004AAD]"
                   : "hidden"
-              } h-1 w-[80%] rounded-t-[6px]`}
+                } h-1 w-[80%] rounded-t-[6px]`}
             ></span>
           </Link>
           <Link
@@ -56,11 +55,10 @@ const Customer: React.FC = () => {
           >
             Analytics
             <span
-              className={`${
-                location.pathname === "/customer/analytics"
+              className={`${location.pathname === "/customer/analytics"
                   ? "bg-[#004AAD]"
                   : "hidden"
-              } h-1 w-[80%] rounded-t-[6px]`}
+                } h-1 w-[80%] rounded-t-[6px]`}
             ></span>
           </Link>
           <Link
@@ -69,11 +67,10 @@ const Customer: React.FC = () => {
           >
             Customer List
             <span
-              className={`${
-                location.pathname === "/customer/customerList"
+              className={`${location.pathname === "/customer/customerList"
                   ? "bg-[#004AAD]"
                   : "hidden"
-              } h-1 w-[80%] rounded-t-[6px]`}
+                } h-1 w-[80%] rounded-t-[6px]`}
             ></span>
           </Link>
         </div>
