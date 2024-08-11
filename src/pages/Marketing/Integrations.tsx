@@ -15,7 +15,7 @@ import blurFacebook from "/blurFacebook.svg";
 import blurgoogleAds from "/blurGoogleAds.svg";
 
 //lottie
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+// import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const Integrations: React.FC = () => {
   const handleScrollToTop = () => {
@@ -42,12 +42,12 @@ const Integrations: React.FC = () => {
 
           <div className="absolute lg:right-[2rem] -top-[0.4rem] md:right-[2rem] sm:right-[0.5rem]">
             <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-            <DotLottieReact
+            {/* <DotLottieReact
               src="https://lottie.host/262044b0-d5af-46ed-bf78-5b4a2c9ae2d9/drLoFDQofB.json"
               autoplay
               loop
               style={{ width: "250px" }}
-            ></DotLottieReact>
+            ></DotLottieReact> */}
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-5 mb-3">

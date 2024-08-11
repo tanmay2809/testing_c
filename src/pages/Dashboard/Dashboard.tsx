@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import Feedback from "../../component/outlet/Feedback";
 
 //lottie
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+// import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 //icons
 import { PiHandWaving } from "react-icons/pi";
@@ -188,12 +188,12 @@ const Dashboard = () => {
             </div>
 
             <div className=" absolute lg:right-[10rem] md:right-[6rem] -top-[.1rem] rotate-[13deg] ">
-              <DotLottieReact
+              {/* <DotLottieReact
                 src="https://lottie.host/d4be8719-9a6c-4ad1-8cb8-46b28c108c50/b2zAzWhAdV.json"
                 autoplay
                 loop
                 style={{ width: "300px", height: "200px" }}
-              />
+              /> */}
             </div>
           </div>
 
@@ -214,12 +214,12 @@ const Dashboard = () => {
                   </div>
 
                   <div className="lg:mt-0 md:mt-[60px]">
-                    <DotLottieReact
+                    {/* <DotLottieReact
                       src="https://lottie.host/a3f808d0-ea12-443d-940e-1f07bb25e67e/xLVE06Ex60.json"
                       autoplay
                       loop
                       style={{ width: "200px", height: "200px" }}
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div>

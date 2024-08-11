@@ -478,7 +478,7 @@ const Menu = () => {
                     showActive={showActive}
                   />
                 ) : (
-                  filteredCategory[0]?.subcategory.length > 0 && (
+                  //  filteredCategory[0]?.subcategory.length > 0 && (
                     <SubCategoryDropdown
                       setIsAddMenuOpen={setIsAddMenuOpen}
                       setIsEditMenuOpen={setIsEditMenuOpen}
@@ -490,7 +490,7 @@ const Menu = () => {
                       category={filteredCategory}
                       showActive={showActive}
                     />
-                  )
+                  // )
                 )}
               </div>
             </div>
