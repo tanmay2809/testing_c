@@ -30,7 +30,7 @@ const CustomerList: React.FC = () => {
 
   console.log("resData: ", data);
 
-  const resData = (data);
+  const resData = data;
   const [customerData, setCustomerData] = useState<any>(data?.customerData);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
@@ -48,8 +48,10 @@ const CustomerList: React.FC = () => {
   //filter states
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
   const [filterData, setFilterData] = useState<string[]>([]);
-  const [customDateVisit, setCustomDateVisit] = useState<string>("");
-  const [customDateNotVisit, setCustomDateNotVisit] = useState<string>("");
+  const [customDateVisit, setCustomDateVisit] = useState<Date | null>(null);
+  const [customDateNotVisit, setCustomDateNotVisit] = useState<Date | null>(
+    null
+  );
   const [segmentation, setSegmentation] = useState<string[]>([]);
   const [gender, setGender] = useState<string[]>([]);
   const [visitFilter, setVisitFilter] = useState<string>("");
@@ -57,6 +59,16 @@ const CustomerList: React.FC = () => {
 
   useEffect(() => {
     setCustomerData(data?.customerData);
+    if (Array.isArray(customerData) && customerData.length > 0) {
+      const latestVisitSort = [...customerData];
+      console.log(latestVisitSort);
+      latestVisitSort.sort((a, b) => {
+        const latestVisitA = new Date(a?.visits[a?.visits?.length - 1]);
+        const latestVisitB = new Date(b?.visits[b?.visits?.length - 1]);
+        return latestVisitB.getTime() - latestVisitA.getTime();
+      });
+      setCustomerData(latestVisitSort);
+    }
   }, [data]);
   useEffect(() => {
     // Only call handleFilter if filterData has been set
@@ -84,37 +96,53 @@ const CustomerList: React.FC = () => {
     thirtyDaysAgo.setDate(now.getDate() - 30);
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(now.getDate() - 60);
-    const customDateVisitObj = new Date(customDateVisit);
-    const customDateNotVisitObj = new Date(customDateNotVisit);
+    const customDateVisitObj = customDateVisit
+      ? new Date(customDateVisit)
+      : null;
+    const customDateNotVisitObj = customDateNotVisit
+      ? new Date(customDateNotVisit)
+      : null;
     console.log(customDateNotVisitObj);
 
     if (filterData.length > 0) {
       visitFiltered = mainData.filter((customer: Customer) => {
         return filterData.some((visitFilter) => {
-            let visitCondition = false;
-            
-            if (visitFilter === "Visited in Last 30 days") {
-                visitCondition = customer.visits.some(
-                    (visit: string) => new Date(visit) >= thirtyDaysAgo
-                );
-            } else if (visitFilter === "Visited in Last 60 days") {
-                visitCondition = customer.visits.some(
-                    (visit: string) => new Date(visit) >= sixtyDaysAgo
-                );
-            } else if (visitFilter.includes("Visited on:")) {
-                const customDateString = new Date(customDateVisitObj).toISOString().split('T')[0]; // Format: YYYY-MM-DD
-                visitCondition = customer.visits.some(
-                    (visit: string) => {
-                        const visitDate = new Date(visit).toISOString().split('T')[0]; // Format: YYYY-MM-DD
-                        console.log(visitDate)
-                        return visitDate === customDateString; // Exact match on the specified day
-                    }
-                );
-            }
-            
-            return visitCondition;
+          let visitCondition = false;
+
+          if (visitFilter === "Visited in Last 30 days") {
+            visitCondition = customer.visits.some(
+              (visit: string) => new Date(visit) >= thirtyDaysAgo
+            );
+          } else if (visitFilter === "Visited in Last 60 days") {
+            visitCondition = customer.visits.some(
+              (visit: string) => new Date(visit) >= sixtyDaysAgo
+            );
+          } else if (
+            visitFilter.includes("Visited on:") &&
+            customDateVisitObj
+          ) {
+            const customDate = new Date(customDateVisitObj);
+
+            // Get the timezone offset in minutes and convert it to milliseconds
+            const timezoneOffset = customDate.getTimezoneOffset() * 60000;
+
+            // Adjust the date by adding the offset to get the local date in ISO format
+            const customDateString = new Date(
+              customDate.getTime() - timezoneOffset
+            )
+              .toISOString()
+              .split("T")[0];
+
+            console.log(customDateString); // This will show the correct date in your local timezone
+            visitCondition = customer.visits.some((visit: string) => {
+              const visitDate = new Date(visit).toISOString().split("T")[0]; // Format: YYYY-MM-DD
+              return visitDate === customDateString; // Exact match on the specified day
+            });
+          }
+
+          return visitCondition;
         });
-    });
+      });
       console.log("After visit: ", visitFiltered);
 
       // Filter by not visit dates
@@ -122,7 +150,7 @@ const CustomerList: React.FC = () => {
       //   let nonVisitCondition;
       //   let customDateString : String;
       //   if(customDateNotVisitObj){
-      //     customDateString = new Date(customDateNotVisitObj).toISOString().split('T')[0]; 
+      //     customDateString = new Date(customDateNotVisitObj).toISOString().split('T')[0];
       //   }// Format: YYYY-MM-DD
       //   {
       //     filterData.map((visitFilter) => {
@@ -148,30 +176,45 @@ const CustomerList: React.FC = () => {
       // });
       nonVisitFiltered = mainData.filter((customer: Customer) => {
         return filterData.some((visitFilter) => {
-            return (
-                (visitFilter === "Not visited in Last 30 days" &&
-                    customer.visits.every((visit: string) => {
-                        const visitDate = new Date(visit).toISOString().split('T')[0];
-                        console.log(`Checking visitDate for 30 days: ${visitDate}`);
-                        return visitDate <= thirtyDaysAgo.toISOString().split('T')[0];
-                    })) ||
-                (visitFilter === "Not visited in Last 60 days" &&
-                    customer.visits.every((visit: string) => {
-                        const visitDate = new Date(visit).toISOString().split('T')[0];
-                        console.log(`Checking visitDate for 60 days: ${visitDate}`);
-                        return visitDate <= sixtyDaysAgo.toISOString().split('T')[0];
-                    })) ||
-                (visitFilter.includes("Not visited on:") &&
-                    customer.visits.every((visit: string) => {
-                        const customDateString = new Date(customDateNotVisitObj).toISOString().split('T')[0] ; // Format: YYYY-MM-DD
-                        const visitDate = new Date(visit).toISOString().split('T')[0];
-                        console.log(`Checking visitDate for specific day: ${visitDate}`);
-                        return visitDate !== customDateString; // Ensure no visit on the specified day
-                    }))
-            );
+          return (
+            (visitFilter === "Not visited in Last 30 days" &&
+              customer.visits.every((visit: string) => {
+                const visitDate = new Date(visit).toISOString().split("T")[0];
+                console.log(`Checking visitDate for 30 days: ${visitDate}`);
+                return visitDate <= thirtyDaysAgo.toISOString().split("T")[0];
+              })) ||
+            (visitFilter === "Not visited in Last 60 days" &&
+              customer.visits.every((visit: string) => {
+                const visitDate = new Date(visit).toISOString().split("T")[0];
+                console.log(`Checking visitDate for 60 days: ${visitDate}`);
+                return visitDate <= sixtyDaysAgo.toISOString().split("T")[0];
+              })) ||
+            (visitFilter.includes("Not visited on:") && customDateNotVisitObj
+              ? customer.visits.every((visit: string) => {
+                  const customDate = new Date(customDateNotVisitObj);
+
+                  // Get the timezone offset in minutes and convert it to milliseconds
+                  const timezoneOffset = customDate.getTimezoneOffset() * 60000;
+
+                  // Adjust the date by adding the offset to get the local date in ISO format
+                  const customDateString = new Date(
+                    customDate.getTime() - timezoneOffset
+                  )
+                    .toISOString()
+                    .split("T")[0];
+
+                  console.log(customDateString); // This will show the correct date in your local timezone
+                  const visitDate = new Date(visit).toISOString().split("T")[0];
+                  console.log(
+                    `Checking visitDate for specific day: ${visitDate}`
+                  );
+                  return visitDate !== customDateString; // Ensure no visit on the specified day
+                })
+              : "")
+          );
         });
-    });
-    
+      });
+
       console.log("After not visit: ", nonVisitFiltered);
 
       // Filter by gender
@@ -212,7 +255,7 @@ const CustomerList: React.FC = () => {
       filteredCustomers = data?.customerData;
     }
     setCustomerData(filteredCustomers);
-  }; 
+  };
 
   // Helper function to create pagination buttons
   const getPaginationButtons = () => {
@@ -343,11 +386,11 @@ const CustomerList: React.FC = () => {
     }
 
     if (data.includes("Visited on:")) {
-      setCustomDateVisit("");
+      setCustomDateVisit(null);
       setVisitFilter("");
     }
     if (data.includes("Not visited on:")) {
-      setCustomDateNotVisit("");
+      setCustomDateNotVisit(null);
       setNonVisitFilter("");
     }
 
@@ -360,7 +403,7 @@ const CustomerList: React.FC = () => {
     setSort(false);
     //the sorting logic goes here
     const sortedData = [...customerData];
-
+    console.log(sortedData);
     switch (criteria) {
       case "visit-high":
         sortedData.sort((a, b) => b?.visits?.length - a?.visits?.length);
@@ -410,17 +453,25 @@ const CustomerList: React.FC = () => {
 
   const getLastVisitDisplay = (visits: string[]): string => {
     if (visits.length === 0) return "No visits";
-  
+
     const lastVisit = new Date(visits[visits.length - 1]);
     const now = new Date();
-  
+
     // Convert both dates to UTC and then set time components to 0
-    const lastVisitUTC = new Date(Date.UTC(lastVisit.getUTCFullYear(), lastVisit.getUTCMonth(), lastVisit.getUTCDate()));
-    const nowUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-  
+    const lastVisitUTC = new Date(
+      Date.UTC(
+        lastVisit.getUTCFullYear(),
+        lastVisit.getUTCMonth(),
+        lastVisit.getUTCDate()
+      )
+    );
+    const nowUTC = new Date(
+      Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+    );
+
     const timeDifference = nowUTC.getTime() - lastVisitUTC.getTime();
     const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  
+
     if (daysDifference === 0) {
       return "Today";
     } else if (daysDifference === 1) {
@@ -449,7 +500,11 @@ const CustomerList: React.FC = () => {
     );
     if (visitsWithin30Days?.length === 1 || visitsWithin30Days?.length === 2) {
       return "New";
-    } else if (visitsWithin30Days?.length == 3 || visitsWithin30Days?.length == 4 || (visitsWithin60Days?.length > 3 && visitsWithin60Days?.length < 5)) {
+    } else if (
+      visitsWithin30Days?.length == 3 ||
+      visitsWithin30Days?.length == 4 ||
+      (visitsWithin60Days?.length > 3 && visitsWithin60Days?.length < 5)
+    ) {
       return "Regular";
     } else if (visitsWithin60Days?.length >= 5) {
       return "Loyal";
@@ -490,6 +545,20 @@ const CustomerList: React.FC = () => {
   const handlefram = () => {
     document.getElementById("frame")!.style.display = "none";
   };
+
+  //formating the date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+  const isDateItem = (data: string) => {
+    return data.includes("Visited on:") || data.includes("Not visited on:");
+  };
+
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div
@@ -568,6 +637,35 @@ const CustomerList: React.FC = () => {
           <div className="font-inter flex items-center justify-start gap-2 mb-4">
             <h2 className="font-bold text-base text-[#454545]">Filter</h2>
             {filterData.map((data: string, index: number) => {
+              const formattedData = isDateItem(data)
+                ? data.includes("Visited on:")
+                  ? `Visited on: ${formatDate(
+                      data.replace("Visited on: ", "")
+                    )}`
+                  : `Not visited on: ${formatDate(
+                      data.replace("Not visited on: ", "")
+                    )}`
+                : data;
+              return (
+                <div
+                  key={index}
+                  className="flex items-center gap-1 bg-[#F1F7FF] text-xs font-semibold px-2 py-1 rounded-xl text-[#373737]"
+                >
+                  <p>{formattedData}</p>
+                  <IoCloseOutline
+                    className="text-lg cursor-pointer"
+                    onClick={() => handleFilterDataRemove(data)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {/* Filter elements
+        {filterData.length > 0 && (
+          <div className="font-inter flex items-center justify-start gap-2 mb-4">
+            <h2 className="font-bold text-base text-[#454545]">Filter</h2>
+            {filterData.map((data: string, index: number) => {
               return (
                 <div
                   key={index}
@@ -582,7 +680,7 @@ const CustomerList: React.FC = () => {
               );
             })}
           </div>
-        )}
+        )} */}
 
         {/*Customer info table */}
         <div className="">
@@ -601,12 +699,16 @@ const CustomerList: React.FC = () => {
               <tbody className="">
                 {currentItems?.map((customer: any, index: any) => (
                   <tr key={index} className="border-t text-base text-center">
-                    
-                    <td className="py-3 px-6 items-start justify-start">{customer?.userId?.name}</td>
-                    <td className="py-3 px-10  lg:ml-[2.2rem] text-nowrap flex gap-2">
-                      <span className="lg:block md:hidden"> +91</span> {customer?.userId?.phone}{" "}
+                    <td className="py-3 px-6 items-start justify-start">
+                      {customer?.userId?.name}
                     </td>
-                    <td className="py-3 px-6  items-center">{customer?.visits?.length}</td>
+                    <td className="py-3 px-10  lg:ml-[2.2rem] text-nowrap flex gap-2">
+                      <span className="lg:block md:hidden"> +91</span>{" "}
+                      {customer?.userId?.phone}{" "}
+                    </td>
+                    <td className="py-3 px-6  items-center">
+                      {customer?.visits?.length}
+                    </td>
                     <td className="py-3 px-6 text-nowrap">
                       {getLastVisitDisplay(customer?.visits)}
                     </td>
