@@ -38,6 +38,19 @@ import Chart1 from '../../component/dashboard/Chart1';
 const Dashboard = () => {
 
   const  {data}  = useSelector((state: RootState) => state.resturantdata);
+  console.log("data: ", data);
+
+  const totalMenuLikes = data?.category?.reduce((acc :any, category :any) => {
+    const categoryLikes = category?.subcategory?.reduce((acc :any, subcategory :any) => {
+      const subcategoryLikes = subcategory?.menuItems?.reduce((acc :any, menuItem :any) => {
+        return acc + menuItem?.likes;
+      }, 0);
+      return acc + subcategoryLikes;
+    }, 0);
+    return acc + categoryLikes;
+  }, 0);
+
+  console.log(totalMenuLikes);
  
   console.log("restaurantData: ", data);
   
@@ -598,7 +611,7 @@ const Dashboard = () => {
                 <p className="text-[1rem] text-nowrap">
                   Menu Interaction includes customer like a menu products
                 </p>
-                <p className="text-[3.2rem] pt-[1rem]">1024</p>
+                <p className="text-[3.2rem] pt-[1rem]">{totalMenuLikes}</p>
               </div>
 
               <div className="w-full h-fit bg-[#F1F7FF] rounded-lg  ">
