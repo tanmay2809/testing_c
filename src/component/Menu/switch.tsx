@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-// import { useEffect } from "react";
+import React, { useState,useEffect } from "react";
 
 interface SwitchProps {
   isActive: boolean | undefined;
@@ -9,10 +8,9 @@ interface SwitchProps {
 const Switch: React.FC<SwitchProps> = ({ isActive, onclick }) => {
   const [switc, setSwitch] = useState<boolean | undefined>(isActive);
 
-  // useEffect(() => {
-  //   console.log(dishname+" : "+isActive);
-  //   setSwitch(isActive);
-  // }, [isActive]);
+  useEffect(() => {
+    setSwitch(isActive);
+  }, [isActive]);
 
   const handleClick = () => {
     setSwitch(!switc);

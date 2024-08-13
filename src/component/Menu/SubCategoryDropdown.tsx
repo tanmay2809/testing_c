@@ -100,6 +100,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
       },
       data: data,
     };
+    console.log("1",subcategory)
 
     axios
       .request(config)
@@ -115,6 +116,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
       .catch((error) => {
         console.log(error);
       });
+      
   };
 
   const [subcategory, setSubcategory] = useState<SubcategoryItem[]>();
