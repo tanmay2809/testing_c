@@ -4,7 +4,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Customer } from "../../constants/index";
 import DatePicker from "react-datepicker";
+import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
+import { order_action_required_1 } from "../../component/Marketing/data";
+import { baseUrl } from "../../main";
 
 //images
 import screen from "../../assets/Group 1171278587.png";
@@ -195,35 +198,6 @@ const Campaigns: React.FC = () => {
       });
       console.log("After visit: ", visitFiltered);
 
-      // Filter by not visit dates
-      // nonVisitFiltered = mainData.filter((customer: Customer) => {
-      //   let nonVisitCondition;
-      //   let customDateString : String;
-      //   if(customDateNotVisitObj){
-      //     customDateString = new Date(customDateNotVisitObj).toISOString().split('T')[0];
-      //   }// Format: YYYY-MM-DD
-      //   {
-      //     filterData.map((visitFilter) => {
-      //       nonVisitCondition =
-      //         (visitFilter === "Not visited in Last 30 days" &&
-      //           customer.visits.some(
-      //             (visit: string) => new Date(visit) <= thirtyDaysAgo
-      //           )) ||
-      //         (visitFilter === "Not visited in Last 60 days" &&
-      //           customer.visits.some(
-      //             (visit: string) => new Date(visit) <= sixtyDaysAgo
-      //           )) ||
-      //         (visitFilter.includes("Not visited on:") &&
-      //           customer.visits.every(
-      //               (visit: string) => {
-      //                   const visitDate = new Date(visit).toISOString().split('T')[0]; // Format: YYYY-MM-DD
-      //                   return visitDate !== customDateString; // Ensure no visit on the specified day
-      //               }
-      //           ))
-      //     });
-      //     return nonVisitCondition;
-      //   }
-      // });
       nonVisitFiltered = mainData.filter((customer: Customer) => {
         return filterData.some((visitFilter) => {
           return (
@@ -312,6 +286,7 @@ const Campaigns: React.FC = () => {
 
     setCustomerData(userIds);
   };
+
   const getCustomerSegment = (
     visits: string[]
   ): "New" | "Regular" | "Risk" | "Loyal" => {
@@ -382,15 +357,78 @@ const Campaigns: React.FC = () => {
     setSelectedImage(egImage);
   }, []);
 
+  const getTime = (selectedOption:any, customDate:any, customTime:any) => {
+    let scheduledTime = "";
+    if(selectedOption == "sendNow")
+    {
+      const date = new Date();
+      date.setMinutes(date.getMinutes() + 2);
+      // scheduledTime = `${date.getMinutes()} ${date.getHours()} * * *`;
+      scheduledTime = `${date.getMinutes()} ${date.getHours()} ${date.getDate()} ${date.getMonth() + 1} *`;
+    }
+    else if(selectedOption == "customDate")
+    {
+      const customDateTime = new Date(`${customDate}T${customTime}`);
+      scheduledTime = `${customDateTime.getMinutes()} ${customDateTime.getHours()} ${customDateTime.getDate()} ${customDateTime.getMonth() + 1} *`;
+    }
+    else if(selectedOption == "weekly")
+    {
+      scheduledTime = `0 0 * * 0`;
+    }
+    return scheduledTime;
+  };
+
   //on activate click
-  const activateCampaign = () => {
-    setLoading(true);
+  const activateCampaign = async() => {
+    // setLoading(true);
     // simulate a network request
-    setTimeout(() => {
-      if (!Confirmation) toast.success("Campaign Scheduled");
-      setLoading(false);
-      setConfirmation(!Confirmation);
-    }, 2000);
+
+    console.log("customerData : ",customerData);
+    console.log("selectedOption : ",selectedOption);
+    console.log("customDate : ",customDate);
+    console.log("customTime : ",customTime);
+      
+    let scheduledTime : string = getTime(selectedOption, customDate, customTime);
+
+    console.log("scheduledTime : ",scheduledTime);
+
+    const userContacts = customerData.map((user:any) => ({
+      contact: `+91${user.phone}`
+    }));
+    
+    order_action_required_1.users = userContacts;
+    order_action_required_1.time = scheduledTime;
+    
+    console.log(order_action_required_1);
+
+    const d = JSON.stringify(order_action_required_1);
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      // url: `${baseUrl}/api/schedule`,
+      url: `http://localhost:4000/api/schedule`,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data : d
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      // setLoading(false);
+      // if (!Confirmation) toast.success("Campaign Scheduled");
+      // setConfirmation(!Confirmation);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    // setTimeout(() => {
+    //   if (!Confirmation) toast.success("Campaign Scheduled");
+    //   setConfirmation(!Confirmation);
+    // }, 2000);
   };
 
   const options: RadioOption[] = [
