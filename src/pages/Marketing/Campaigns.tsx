@@ -21,6 +21,8 @@ import CallingButton from "../../component/Marketing/CallingButton";
 import WebsiteButton from "../../component/Marketing/WebsiteButton";
 import FeedbackButton from "../../component/Marketing/FeedbackButton";
 import ConfirmCampaign from "./ConfirmCampaign";
+import AdvanceFilter from "../../component/Marketing/AdvanceFilter";
+import CustomerPool from "../../component/Marketing/CustomerPool";
 
 //toastify
 import { toast } from "react-toastify";
@@ -30,8 +32,6 @@ import FormattingControls from "../../component/Marketing/FormattingControls";
 //svg
 import booking from "/booking.svg";
 import utility from "/utility.svg";
-import AdvanceFilter from "../../component/Marketing/AdvanceFilter";
-import CustomerPool from "../../component/Marketing/CustomerPool";
 
 interface RadioOption {
   label: string;

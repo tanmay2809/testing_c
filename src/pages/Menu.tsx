@@ -9,7 +9,7 @@ import AddSubCategory from "../component/Menu/AddSubCategory";
 import AddCategory from "../component/Menu/AddCategory";
 import EditSubcategory from "../component/Menu/EditSubcategory";
 import SubCategoryDropdown from "../component/Menu/SubCategoryDropdown";
-import ItemCard from "../component/Menu/ItemCard";
+// import ItemCard from "../component/Menu/ItemCard";
 import AddMenuItem, { MenuItem } from "../component/Menu/AddMenuItem";
 import Switch from "../component/Menu/switch";
 import CategoryDelete from "../component/Menu/CategoryDelete";
@@ -38,6 +38,7 @@ import FoodMenu from "../assets/Food Menu.png";
 import Burger from "../assets/Burger.png";
 import Category from "../assets/category.png";
 import Bussiness from "../assets/Business Task list.png";
+import SearchItemCard from "../component/Menu/SearchItemCard";
 
 export interface SubcategoryItem {
   _id: string;
@@ -100,6 +101,7 @@ const Menu = () => {
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
+    console.log(inputValue);
     setSearch(inputValue);
     if (!inputValue) {
       setSearchMenuItems(undefined);
@@ -147,11 +149,13 @@ const Menu = () => {
     if (data) {
       setCategories(data.category || []);
     }
+  }, [data]);
+  useEffect(() => {
     if (isFirstLoad.current && categories.length > 0) {
       setSelectedCategoryId(categories[0]._id);
       isFirstLoad.current = false;
     }
-  }, [data, categories]);
+  }, [categories]);
 
   const filteredCategory = selectedCategoryId
     ? categories.filter((category) => category._id === selectedCategoryId)
@@ -182,7 +186,6 @@ const Menu = () => {
       url: `${baseUrl}/api/toggleCategory/${category._id}`,
       headers: {},
     };
-
     axios
       .request(config)
       .then((response) => {
@@ -468,7 +471,7 @@ const Menu = () => {
                 )}
 
                 {search && searchMenuItems ? (
-                  <ItemCard
+                  <SearchItemCard
                     setIsEditMenuOpen={setIsEditMenuOpen}
                     setSelectedCard={setSelectedCard}
                     setIsSubCategoryOpen={setIsSubCategoryOpen}
@@ -478,7 +481,7 @@ const Menu = () => {
                     showActive={showActive}
                   />
                 ) : (
-                  //  filteredCategory[0]?.subcategory.length > 0 && (
+                  filteredCategory[0]?.subcategory.length > 0 && (
                     <SubCategoryDropdown
                       setIsAddMenuOpen={setIsAddMenuOpen}
                       setIsEditMenuOpen={setIsEditMenuOpen}
@@ -490,7 +493,7 @@ const Menu = () => {
                       category={filteredCategory}
                       showActive={showActive}
                     />
-                  // )
+                  )
                 )}
               </div>
             </div>

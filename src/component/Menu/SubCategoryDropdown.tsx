@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   DragDropContext,
-  Droppable,
+  // Droppable,
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
 import axios from "axios";
 import { baseUrl } from "../../main";
 import { toast } from "react-toastify";
+import { StrictModeDroppable as Droppable } from "../../helpers/StrictModeDroppable";
 
 // icons
 import { MdDragIndicator, MdModeEditOutline } from "react-icons/md";
@@ -182,7 +183,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
                   {subcategory?.map((subcategory, index) => (
                     <Draggable
                       key={subcategory._id}
-                      draggableId={subcategory._id}
+                      draggableId={`${subcategory._id}`}
                       index={index}
                     >
                       {(provided) => (

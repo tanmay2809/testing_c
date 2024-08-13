@@ -35,7 +35,7 @@ interface Props {
   showActive: boolean;
 }
 
-const ItemCard: React.FC<Props> = ({
+const SearchItemCard: React.FC<Props> = ({
   items,
   setIsEditMenuOpen,
   setSelectedCard,
@@ -56,14 +56,15 @@ const ItemCard: React.FC<Props> = ({
       url: `${baseUrl}/api/toggleActiveMenu/${item._id}`,
       headers: {},
     };
-console.log("1",item)
     axios
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        console.log("2",item)
+        console.log(response.data.updatedMenu.active);
         dispatch(fetchRestaurantDetails({ id: resData.data._id }));
-        if (item.active) {
+        console.log(item);
+        item.active = response.data.updatedMenu.active;
+        if (!item.active) {
           toast.error(`${item.name} Deactivated`);
         } else {
           toast.success(`${item.name} Activated`);
@@ -72,8 +73,6 @@ console.log("1",item)
       .catch((error) => {
         console.log(error);
       });
-      console.log("",item)
-
   };
 
   return (
@@ -146,4 +145,4 @@ console.log("1",item)
   );
 };
 
-export default ItemCard;
+export default SearchItemCard;
