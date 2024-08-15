@@ -45,9 +45,9 @@ const ConnectNumber: React.FC = () => {
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="lg:w-[93%]  lg:px-[2rem] py-[1rem] gap-10 lg:ml-[7%] h-[100vh]">
         <div className="w-full flex flex-row justify-between mt-[60px] font-inter h-fit">
-          <div className="flex px-8 md:px-3 w-full rounded-md ">
+          <div className="flex px-8 md:px-3 w-full rounded-md h-fit  ">
             {/* Left section */}
-            <div className="lg:w-[45%] w-full p-4 flex flex-col justify-evenly items-center h-[33rem]">
+            <div className="lg:w-[35%] w-full p-4 flex flex-col justify-evenly items-center h-[33rem]">
               <div>
                 <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
                 <DotLottieReact
@@ -60,22 +60,22 @@ const ConnectNumber: React.FC = () => {
               <h2 className="text-xl font-semibold mt-4 w-full text-center">
                 WHY CONNECT YOUR OWN NUMBER?
               </h2>
-              <ul className=" space-y-2 flex flex-col justify-evenly h-1/2">
-                <li className="flex items-center justify-center gap-14">
-                  <img src={messages} />
+              <ul className=" space-y-2 flex flex-col justify-evenly h-1/2 mt-4">
+                <li className="flex items-center justify-center gap-8">
+                  <img src={messages} className="size-[1.5rem] "/>
                   <span className="w-64">
                     Respond to unlimited customer initiated conversations with
                     auto replies & chatflows
                   </span>
                 </li>
-                <li className="flex items-center justify-center gap-14">
-                  <img src={announcement} />
+                <li className="flex items-center justify-center gap-8">
+                  <img src={announcement} className="size-[1.5rem] " />
                   <span className="w-64">
                     Start sending bulk WhatsApp Campaigns to your customers{" "}
                   </span>
                 </li>
-                <li className="flex items-center justify-center gap-14">
-                  <img src={shop} />
+                <li className="flex items-center justify-center gap-8">
+                  <img src={shop}className="size-[1.5rem]" />
                   <span className="w-64">
                     Create & connect your menu and delivery links to your
                     WhatsApp Business Number
@@ -84,12 +84,12 @@ const ConnectNumber: React.FC = () => {
               </ul>
             </div>
             {/* Right section */}
-            <div className="lg:w-[55%] bg-[#F1F7FF] py-4 px-12 rounded-md h-fit min-h-[33rem] flex flex-col justify-evenly">
+            <div className="lg:w-[65%] bg-[#F1F7FF] py-4 px-12 rounded-md h-fit min-h-[40rem] flex flex-col justify-evenly">
               <h2 className="text-lg font-semibold w-full text-center mb-2">
                 Connect a Number for your WhatsApp Business API Account
               </h2>
               <div
-                className="bg-white p-4 rounded-lg text-sm h-[22rem] overflow-y-auto"
+                className="bg-white p-4 rounded-lg text-sm h-[30rem] overflow-y-auto"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
                 <div>

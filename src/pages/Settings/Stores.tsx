@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 
 // icons
 import { FaFacebook, FaYoutube } from "react-icons/fa6";
+import { ImMagicWand } from "react-icons/im";
 // import {  FaPlus } from "react-icons/fa6";
 
 import { BiEditAlt } from "react-icons/bi";
@@ -19,6 +20,9 @@ import instagram from "../../assets/instagram.svg";
 import zomato from "../../assets/image 159.png";
 import google from "../../assets/Google-Review.png";
 
+
+import { useNavigate } from 'react-router-dom';
+
 //svg
 // import premium from "/premium.svg";
 
@@ -28,6 +32,10 @@ import {
   fetchRestaurantDetails,
 } from "../../redux/restaurantData";
 import { useDispatch } from "react-redux";
+
+
+
+
 
 interface FormData {
   image: string;
@@ -185,10 +193,12 @@ const Stores = () => {
     setStore([resData.data]);
   }, [resData]);
 
+  const navigate = useNavigate();
+
   return (
     <div className="w-full h-fit relative">
       <div className="lg:w-[93%] h-fit px-[2rem] py-[1rem] flex flex-col items-center gap-2 justify-center lg:ml-[7%]">
-        <div className="w-full flex flex-row justify-between mb-[1rem]">
+        <div className="w-full flex flex-row justify-between mb-[1rem]  my-[2rem]">
           <div className="flex flex-col -mt-3">
             <h1 className="text-2xl font-[500]">My stores</h1>
             <p className="text-[1rem]">
@@ -208,6 +218,7 @@ const Stores = () => {
               className="relative -top-[3.5rem] -right-[8.4rem] w-[1.75rem] h-[1.5rem]"
             />
           </div> */}
+          <button  onClick={() => navigate('/CustomiseTheme')}  className="border border-[#000000CC] flex items-center justify-center gap-4 px-[1.4rem] py-1.5 rounded-md text-[1.4rem] font-semibold text-[#505050] "> <ImMagicWand />Customise Profile</button>
         </div>
 
         <div className="w-full flex flex-col -mt-2">

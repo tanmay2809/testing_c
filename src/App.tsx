@@ -14,6 +14,7 @@ import Customer from "./pages/Customer/Customer";
 import Setting from "./pages/Settings/Setting";
 import MyPlans from "./pages/Settings/MyPlans";
 import Billing from "./pages/Settings/Billing";
+
 // import Invoice from "./pages/Settings/Invoice";
 import Stores from "./pages/Settings/Stores";
 import CustomerList from "./pages/Customer/CustomerList";
@@ -30,6 +31,7 @@ import ConnectNumber from "./pages/Marketing/ConnectNumber";
 import Integrations from "./pages/Marketing/Integrations";
 import WhatsappBusinessProfile from "./pages/Marketing/WhatsappBusinessProfile";
 import WhatsAppManager from "./pages/Marketing/WhatsappManager";
+import CustomiseTheme from './pages/Settings/CustomiseTheme';
 
 const App: React.FC = () => {
   console.log("App Component Rendered");
@@ -79,11 +81,13 @@ const App: React.FC = () => {
 
           <Route path="/setting" element={<Setting />}>
             <Route index element={<Stores />} />
+            
             <Route path="myplans" element={<MyPlans />} />
             <Route path="store" element={<Stores />} />
             <Route path="billing" element={<Billing />} />
             {/* <Route path="invoice" element={<Invoice />} /> */}
           </Route>
+          <Route path="/CustomiseTheme" element={<CustomiseTheme />} />
         </Route>
       </Routes>
     </>
