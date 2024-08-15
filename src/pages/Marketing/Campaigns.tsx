@@ -8,6 +8,10 @@ import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { order_action_required_1 } from "../../component/Marketing/data";
 import { baseUrl } from "../../main";
+import {
+  MessageData,
+  ContentData,
+} from "../../component/Marketing/SliderComponent";
 
 //images
 import screen from "../../assets/Group 1171278587.png";
@@ -30,7 +34,7 @@ import CustomerPool from "../../component/Marketing/CustomerPool";
 //toastify
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import FormattingControls from "../../component/Marketing/FormattingControls";
+// import FormattingControls from "../../component/Marketing/FormattingControls";
 
 //svg
 import booking from "/booking.svg";
@@ -42,22 +46,29 @@ interface RadioOption {
   desc: string;
 }
 
-// interface CampaignsPops{
-//   tye:string
-// }
-
-type SectionStyles = {
-  color: string;
-  bold: boolean;
-  italic: boolean;
-  emoji: string | null;
+type CampaignParams = {
+  header: { [key: string]: string };
+  body: { [key: string]: string };
+  footer: { [key: string]: string };
 };
 
-type StylesState = {
-  header: SectionStyles;
-  body: SectionStyles;
-  footer: SectionStyles;
-};
+interface Compon {
+  type: string;
+  parameters: any[]; // Define this type more specifically if you know the structure
+}
+
+// type SectionStyles = {
+//   color: string;
+//   bold: boolean;
+//   italic: boolean;
+//   emoji: string | null;
+// };
+
+// type StylesState = {
+//   header: SectionStyles;
+//   body: SectionStyles;
+//   footer: SectionStyles;
+// };
 
 const Campaigns: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
@@ -73,33 +84,31 @@ const Campaigns: React.FC = () => {
   const [isButton, setIsButton] = useState<boolean>(false);
   const [buttons, setButtons] = useState<{ id: number; type: string }[]>([]);
   const [target, setTarget] = useState<string | null>(null);
-  const [header, setHeader] = useState<string>("Bon Appétit!");
-  const [body, setBody] = useState<string>(
-    "Hey Customer's Name enjoy our exclusive deals on this weekend."
-  );
-  const [footer, setFooter] = useState<string>("Thank You");
+  const [header, setHeader] = useState<string>("");
+  const [body, setBody] = useState<string>("");
+  const [footer, setFooter] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [Confirmation, setConfirmation] = useState<boolean>(false);
-  const [styles, setStyles] = useState<StylesState>({
-    header: {
-      color: "#000000",
-      bold: false,
-      italic: false,
-      emoji: null,
-    },
-    body: {
-      color: "#000000",
-      bold: false,
-      italic: false,
-      emoji: null,
-    },
-    footer: {
-      color: "#000000",
-      bold: false,
-      italic: false,
-      emoji: null,
-    },
-  });
+  // const [styles, setStyles] = useState<StylesState>({
+  //   header: {
+  //     color: "#000000",
+  //     bold: false,
+  //     italic: false,
+  //     emoji: null,
+  //   },
+  //   body: {
+  //     color: "#000000",
+  //     bold: false,
+  //     italic: false,
+  //     emoji: null,
+  //   },
+  //   footer: {
+  //     color: "#000000",
+  //     bold: false,
+  //     italic: false,
+  //     emoji: null,
+  //   },
+  // });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [customDate, setCustomDate] = useState<Date | null>(null);
@@ -114,10 +123,22 @@ const Campaigns: React.FC = () => {
   );
 
   const [isPoolVisible, setIsPoolVisible] = useState<boolean>(false);
+  const [mesData, setMesData] = useState<MessageData | null>(null);
+  const [conData, setConData] = useState<ContentData | null>(null);
+  const [campaignParams, setCampaignParams] = useState<CampaignParams>({
+    header: {},
+    body: {},
+    footer: {},
+  });
+
+  const [originalHeader, setOriginalHeader] = useState("");
+  const [originalBody, setOriginalBody] = useState("");
+  const [originalFooter, setOriginalFooter] = useState("");
 
   useEffect(() => {
     getAllCustomersUserId();
   }, [data]);
+
   useEffect(() => {
     // Only call handleFilter if filterData has been set
     handleFilter();
@@ -350,6 +371,12 @@ const Campaigns: React.FC = () => {
   };
 
   useEffect(() => {
+    let campContent = JSON.parse(
+      sessionStorage.getItem("campaignContent") || "[]"
+    );
+    setMesData(campContent[0].msData);
+    setConData(campContent[0].coData);
+
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto"; // Reset the height
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set the height based on the scroll height
@@ -357,73 +384,128 @@ const Campaigns: React.FC = () => {
     setSelectedImage(egImage);
   }, []);
 
-  const getTime = (selectedOption:any, customDate:any, customTime:any) => {
+  useEffect(() => {
+    if (conData?.header) {
+      setOriginalHeader(conData.header);
+    } else {
+      setOriginalHeader(""); // Or any default value you want to use
+    }
+    if (conData?.body) {
+      setOriginalBody(conData.body);
+    } else {
+      setOriginalBody(""); // Or any default value you want to use
+    }
+    if (conData?.footer) {
+      setOriginalFooter(conData.footer);
+    } else {
+      setOriginalFooter(""); // Or any default value you want to use
+    }
+  }, [conData]);
+
+  useEffect(() => {
+    // Initially set the content from the template
+    setHeader(originalHeader);
+    setBody(originalBody);
+    setFooter(originalFooter);
+  }, [originalBody, originalHeader, originalFooter]);
+
+  useEffect(() => {
+    const headerParams: { [key: string]: string } = {};
+    const bodyParams: { [key: string]: string } = {};
+    const footerParams: { [key: string]: string } = {};
+
+    mesData?.messageData.template.components.forEach((component) => {
+      component.parameters.forEach((param) => {
+        if (param.type && param.text) {
+          if (component.type === "header") {
+            headerParams[param.type] = param.text;
+          } else if (component.type === "body") {
+            bodyParams[param.type] = param.text;
+          } else if (component.type === "footer") {
+            footerParams[param.type] = param.text;
+          }
+        }
+      });
+    });
+
+    setCampaignParams({
+      header: headerParams,
+      body: bodyParams,
+      footer: footerParams,
+    });
+  }, [mesData]);
+
+  useEffect(() => {
+    updateContent(campaignParams);
+  }, [campaignParams]);
+
+  const getTime = (selectedOption: any, customDate: any, customTime: any) => {
     let scheduledTime = "";
-    if(selectedOption == "sendNow")
-    {
+    if (selectedOption == "sendNow") {
       const date = new Date();
       date.setMinutes(date.getMinutes() + 2);
       // scheduledTime = `${date.getMinutes()} ${date.getHours()} * * *`;
-      scheduledTime = `${date.getMinutes()} ${date.getHours()} ${date.getDate()} ${date.getMonth() + 1} *`;
-    }
-    else if(selectedOption == "customDate")
-    {
+      scheduledTime = `${date.getMinutes()} ${date.getHours()} ${date.getDate()} ${
+        date.getMonth() + 1
+      } *`;
+    } else if (selectedOption == "customDate") {
       const customDateTime = new Date(`${customDate}T${customTime}`);
-      scheduledTime = `${customDateTime.getMinutes()} ${customDateTime.getHours()} ${customDateTime.getDate()} ${customDateTime.getMonth() + 1} *`;
-    }
-    else if(selectedOption == "weekly")
-    {
+      scheduledTime = `${customDateTime.getMinutes()} ${customDateTime.getHours()} ${customDateTime.getDate()} ${
+        customDateTime.getMonth() + 1
+      } *`;
+    } else if (selectedOption == "weekly") {
       scheduledTime = `0 0 * * 0`;
     }
     return scheduledTime;
   };
 
   //on activate click
-  const activateCampaign = async() => {
+  const activateCampaign = async () => {
     // setLoading(true);
     // simulate a network request
 
-    console.log("customerData : ",customerData);
-    console.log("selectedOption : ",selectedOption);
-    console.log("customDate : ",customDate);
-    console.log("customTime : ",customTime);
-      
-    let scheduledTime : string = getTime(selectedOption, customDate, customTime);
+    console.log("customerData : ", customerData);
+    console.log("selectedOption : ", selectedOption);
+    console.log("customDate : ", customDate);
+    console.log("customTime : ", customTime);
 
-    console.log("scheduledTime : ",scheduledTime);
+    let scheduledTime: string = getTime(selectedOption, customDate, customTime);
 
-    const userContacts = customerData.map((user:any) => ({
-      contact: `+91${user.phone}`
+    console.log("scheduledTime : ", scheduledTime);
+
+    const userContacts = customerData.map((user: any) => ({
+      contact: `+91${user.phone}`,
     }));
-    
+
     order_action_required_1.users = userContacts;
     order_action_required_1.time = scheduledTime;
-    
+
     console.log(order_action_required_1);
 
     const d = JSON.stringify(order_action_required_1);
 
     let config = {
-      method: 'post',
+      method: "post",
       maxBodyLength: Infinity,
       // url: `${baseUrl}/api/schedule`,
       url: `http://localhost:4000/api/schedule`,
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      data : d
+      data: d,
     };
-    
-    axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-      // setLoading(false);
-      // if (!Confirmation) toast.success("Campaign Scheduled");
-      // setConfirmation(!Confirmation);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        // setLoading(false);
+        // if (!Confirmation) toast.success("Campaign Scheduled");
+        // setConfirmation(!Confirmation);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     // setTimeout(() => {
     //   if (!Confirmation) toast.success("Campaign Scheduled");
@@ -544,11 +626,65 @@ const Campaigns: React.FC = () => {
   const toggleAccordionschedule = () => {
     setIsOpenschedule(!isOpenschedule);
   };
-  console.log(customTime);
+  // console.log(customTime);
+
+  const handleParamsChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    section: keyof CampaignParams
+  ) => {
+    const { name, value } = e.target;
+    console.log(name, value, section);
+    // Update the specific section (header, body, footer) in campaignParams
+    setCampaignParams((prevParams) => {
+      const updatedSection = { ...prevParams[section], [name]: value };
+      const updatedParams = { ...prevParams, [section]: updatedSection };
+      console.log(updatedSection);
+      console.log(updatedParams);
+      // Update the content with the new params
+      updateContent(updatedParams);
+
+      return updatedParams;
+    });
+  };
+
+  const updateContent = (params: CampaignParams) => {
+    let updatedHeader = originalHeader;
+    let updatedBody = originalBody;
+    let updatedFooter = originalFooter;
+
+    // Replace placeholders in the header
+    Object.entries(params.header).forEach(([key, value]) => {
+      updatedHeader = updatedHeader.replace(
+        new RegExp(`{${key}}`, "g"),
+        value || ""
+      );
+    });
+
+    // Replace placeholders in the body
+    Object.entries(params.body).forEach(([key, value]) => {
+      updatedBody = updatedBody.replace(
+        new RegExp(`{${key}}`, "g"),
+        value || ""
+      );
+    });
+
+    // Replace placeholders in the footer
+    Object.entries(params.footer).forEach(([key, value]) => {
+      updatedFooter = updatedFooter.replace(
+        new RegExp(`{${key}}`, "g"),
+        value || ""
+      );
+    });
+
+    // Update the state with the modified content
+    setHeader(updatedHeader);
+    setBody(updatedBody);
+    setFooter(updatedFooter);
+  };
 
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
-      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] bg-[#F5F9FF]">
+      <div className="lg:w-[93%] h-fit px-[2rem] flex flex-col items-center justify-center gap-10 lg:ml-[7%] bg-[#F5F9FF] min-h-full">
         <div className="w-full flex flex-row justify-between mt-[70px] font-inter">
           <div className=" rounded-lg p-1 w-full ">
             {!Confirmation && (
@@ -693,147 +829,277 @@ const Campaigns: React.FC = () => {
                           </div>
                         )}
                         {/*header*/}
-                        <div
-                          className={`${
-                            isOpenContent ? "block" : "hidden"
-                          } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
-                        >
-                          <h1 className="text-lg font-semibold">
-                            Header <span>Optional</span>
-                          </h1>
-                          <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
-                            <GiMeal className="text-gray-500" />
-                            <h2 className="font-medium text-base w-full">
-                              <textarea
-                                id="name"
-                                placeholder="Enter the header"
-                                className="bg-[#F5F9FF] h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
-                                value={header}
-                                rows={1}
-                                ref={textareaRef}
-                                onChange={(
-                                  event: ChangeEvent<HTMLTextAreaElement>
-                                ) => {
-                                  if (event.target.value.length <= 100) {
-                                    setHeader(event.target.value);
-                                  }
-                                }}
-                                style={{
-                                  scrollbarWidth: "none",
-                                  msOverflowStyle: "none",
-                                  color: styles.header.color,
-                                  fontWeight: styles.header.bold
-                                    ? "bold"
-                                    : "normal",
-                                  fontStyle: styles.header.italic
-                                    ? "italic"
-                                    : "",
-                                }}
-                              />
-                            </h2>
+                        {mesData?.messageData.template.components.some(
+                          (component: Compon) => component.type === "header"
+                        ) && (
+                          <div
+                            className={`${
+                              isOpenContent ? "block" : "hidden"
+                            } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
+                          >
+                            <h1 className="text-lg font-semibold">
+                              Header <span>Optional</span>
+                            </h1>
+                            <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
+                              <GiMeal className="text-gray-500" />
+
+                              <h2 className="font-medium text-base w-full">
+                                <div
+                                  className="bg-[#F5F9FF] h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                  // style={{
+                                  //   color: styles.header.color,
+                                  //   fontWeight: styles.header.bold
+                                  //     ? "bold"
+                                  //     : "normal",
+                                  //   fontStyle: styles.header.italic
+                                  //     ? "italic"
+                                  //     : "",
+                                  // }}
+                                  dangerouslySetInnerHTML={{ __html: header }}
+                                />
+                                {/* <textarea
+                                  readOnly
+                                  id="name"
+                                  placeholder="Enter the header"
+                                  className="bg-[#F5F9FF] h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                  value={header}
+                                  rows={1}
+                                  ref={textareaRef}
+                                  onChange={(
+                                    event: ChangeEvent<HTMLTextAreaElement>
+                                  ) => {
+                                    if (event.target.value.length <= 100) {
+                                      setHeader(event.target.value);
+                                    }
+                                  }}
+                                  style={{
+                                    scrollbarWidth: "none",
+                                    msOverflowStyle: "none",
+                                    color: styles.header.color,
+                                    fontWeight: styles.header.bold
+                                      ? "bold"
+                                      : "normal",
+                                    fontStyle: styles.header.italic
+                                      ? "italic"
+                                      : "",
+                                  }}
+                                /> */}
+                              </h2>
+                            </div>
+                            {/* <FormattingControls
+                              content={header}
+                              section="header"
+                              styles={styles}
+                              setStyles={setStyles}
+                              setContent={setHeader}
+                            /> */}
+                            {Object.entries(campaignParams.header).map(
+                              ([key, value]) => (
+                                <div
+                                  className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
+                                  key={key}
+                                >
+                                  <h2 className="text-base w-full">
+                                    <input
+                                      type="text"
+                                      name={key}
+                                      placeholder={
+                                        key.charAt(0).toUpperCase() +
+                                        key.slice(1)
+                                      }
+                                      value={value}
+                                      onChange={(e) =>
+                                        handleParamsChange(e, "header")
+                                      }
+                                      className="bg-[#F5F9FF] p-3 rounded-lg border-0 outline-none"
+                                    />
+                                  </h2>
+                                </div>
+                              )
+                            )}
                           </div>
-                          <FormattingControls
-                            content={header}
-                            section="header"
-                            styles={styles}
-                            setStyles={setStyles}
-                            setContent={setHeader}
-                          />
-                        </div>
+                        )}
 
                         {/*body*/}
-                        <div
-                          className={`${
-                            isOpenContent ? "block" : "hidden"
-                          } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
-                        >
-                          <h1 className="text-lg font-semibold">
-                            Body <span>Optional</span>
-                          </h1>
-                          <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
-                            <h2 className=" text-base w-full">
-                              <textarea
-                                id="body"
-                                placeholder="Enter the body"
-                                className="bg-[#F5F9FF]  h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
-                                value={body}
-                                rows={3}
-                                ref={textareaRef}
-                                onChange={(
-                                  event: ChangeEvent<HTMLTextAreaElement>
-                                ) => {
-                                  if (event.target.value.length <= 1000) {
-                                    setBody(event.target.value);
-                                  }
-                                }}
-                                style={{
-                                  scrollbarWidth: "none",
-                                  msOverflowStyle: "none",
-                                  color: styles.body.color,
-                                  fontWeight: styles.body.bold
-                                    ? "bold"
-                                    : "normal",
-                                  fontStyle: styles.body.italic ? "italic" : "",
-                                }}
-                              />
-                            </h2>
+                        {mesData?.messageData.template.components.some(
+                          (component: Compon) => component.type === "body"
+                        ) && (
+                          <div
+                            className={`${
+                              isOpenContent ? "block" : "hidden"
+                            } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
+                          >
+                            <h1 className="text-lg font-semibold">
+                              Body <span>Optional</span>
+                            </h1>
+                            <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
+                              <h2 className=" text-base w-full">
+                                <div
+                                  className="bg-[#F5F9FF]  h-fit w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                  // style={{
+                                  //   color: styles.body.color,
+                                  //   fontWeight: styles.body.bold
+                                  //     ? "bold"
+                                  //     : "normal",
+                                  //   fontStyle: styles.body.italic
+                                  //     ? "italic"
+                                  //     : "",
+                                  // }}
+                                  dangerouslySetInnerHTML={{ __html: body }}
+                                />
+                                {/* <textarea
+                                  readOnly
+                                  id="body"
+                                  placeholder="Enter the body"
+                                  className="bg-[#F5F9FF]  h-32 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                  value={body}
+                                  rows={6}
+                                  ref={textareaRef}
+                                  onChange={(
+                                    event: ChangeEvent<HTMLTextAreaElement>
+                                  ) => {
+                                    if (event.target.value.length <= 1000) {
+                                      setBody(event.target.value);
+                                    }
+                                  }}
+                                  style={{
+                                    scrollbarWidth: "none",
+                                    msOverflowStyle: "none",
+                                    color: styles.body.color,
+                                    fontWeight: styles.body.bold
+                                      ? "bold"
+                                      : "normal",
+                                    fontStyle: styles.body.italic
+                                      ? "italic"
+                                      : "",
+                                  }}
+                                /> */}
+                              </h2>
+                            </div>
+                            {/* <FormattingControls
+                              content={body}
+                              section="body"
+                              styles={styles}
+                              setStyles={setStyles}
+                              setContent={setBody}
+                            /> */}
+                            {Object.entries(campaignParams.body).map(
+                              ([key, value]) => (
+                                <div
+                                  className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
+                                  key={key}
+                                >
+                                  <h2 className="text-base w-full">
+                                    <input
+                                      type="text"
+                                      name={key}
+                                      placeholder={
+                                        key.charAt(0).toUpperCase() +
+                                        key.slice(1)
+                                      }
+                                      value={value}
+                                      onChange={(e) =>
+                                        handleParamsChange(e, "body")
+                                      }
+                                      className="bg-[#F5F9FF] p-3 rounded-lg border-0 outline-none"
+                                    />
+                                  </h2>
+                                </div>
+                              )
+                            )}
                           </div>
-                          <FormattingControls
-                            content={body}
-                            section="body"
-                            styles={styles}
-                            setStyles={setStyles}
-                            setContent={setBody}
-                          />
-                        </div>
+                        )}
 
                         {/*footer*/}
-                        <div
-                          className={`${
-                            isOpenContent ? "block" : "hidden"
-                          } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
-                        >
-                          <h1 className="text-lg font-semibold">
-                            Footer <span>Optional</span>
-                          </h1>
-                          <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
-                            <h2 className=" text-base w-full">
-                              <textarea
-                                id="footer"
-                                placeholder="Enter the footer"
-                                className="bg-[#F5F9FF]  h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
-                                rows={1}
-                                value={footer}
-                                ref={textareaRef}
-                                onChange={(
-                                  event: ChangeEvent<HTMLTextAreaElement>
-                                ) => {
-                                  if (event.target.value.length <= 200) {
-                                    setFooter(event.target.value);
-                                  }
-                                }}
-                                style={{
-                                  scrollbarWidth: "none",
-                                  msOverflowStyle: "none",
-                                  color: styles.footer.color,
-                                  fontWeight: styles.footer.bold
-                                    ? "bold"
-                                    : "normal",
-                                  fontStyle: styles.footer.italic
-                                    ? "italic"
-                                    : "",
-                                }}
-                              />
-                            </h2>
+                        {mesData?.messageData.template.components.some(
+                          (component: Compon) => component.type === "footer"
+                        ) && (
+                          <div
+                            className={`${
+                              isOpenContent ? "block" : "hidden"
+                            } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
+                          >
+                            <h1 className="text-lg font-semibold">
+                              Footer <span>Optional</span>
+                            </h1>
+                            <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
+                              <h2 className=" text-base w-full">
+                                <div
+                                  className="bg-[#F5F9FF]  h-fit w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                  // style={{
+                                  //   color: styles.footer.color,
+                                  //   fontWeight: styles.footer.bold
+                                  //     ? "bold"
+                                  //     : "normal",
+                                  //   fontStyle: styles.footer.italic
+                                  //     ? "italic"
+                                  //     : "",
+                                  // }}
+                                  dangerouslySetInnerHTML={{ __html: footer }}
+                                />
+                                {/* <textarea
+                                  readOnly
+                                  id="footer"
+                                  placeholder="Enter the footer"
+                                  className="bg-[#F5F9FF]  h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                  rows={1}
+                                  value={footer}
+                                  ref={textareaRef}
+                                  onChange={(
+                                    event: ChangeEvent<HTMLTextAreaElement>
+                                  ) => {
+                                    if (event.target.value.length <= 200) {
+                                      setFooter(event.target.value);
+                                    }
+                                  }}
+                                  style={{
+                                    scrollbarWidth: "none",
+                                    msOverflowStyle: "none",
+                                    color: styles.footer.color,
+                                    fontWeight: styles.footer.bold
+                                      ? "bold"
+                                      : "normal",
+                                    fontStyle: styles.footer.italic
+                                      ? "italic"
+                                      : "",
+                                  }}
+                                  dangerouslySetInnerHTML={{ __html: footer }}
+                                /> */}
+                              </h2>
+                            </div>
+                            {/* <FormattingControls
+                              content={footer}
+                              section="footer"
+                              styles={styles}
+                              setStyles={setStyles}
+                              setContent={setFooter}
+                            /> */}
+                            {Object.entries(campaignParams.footer).map(
+                              ([key, value]) => (
+                                <div
+                                  className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
+                                  key={key}
+                                >
+                                  <h2 className="text-base w-full">
+                                    <input
+                                      type="text"
+                                      name={key}
+                                      placeholder={
+                                        key.charAt(0).toUpperCase() +
+                                        key.slice(1)
+                                      }
+                                      value={value}
+                                      onChange={(e) =>
+                                        handleParamsChange(e, "footer")
+                                      }
+                                      className="bg-[#F5F9FF] p-3 rounded-lg border-0 outline-none"
+                                    />
+                                  </h2>
+                                </div>
+                              )
+                            )}
                           </div>
-                          <FormattingControls
-                            content={footer}
-                            section="footer"
-                            styles={styles}
-                            setStyles={setStyles}
-                            setContent={setFooter}
-                          />
-                        </div>
+                        )}
 
                         {/*buttons*/}
                         <div
@@ -1090,8 +1356,7 @@ const Campaigns: React.FC = () => {
                                   </div>
                                 </div>
                                 {selectedOption === option.value &&
-                                option.value !== "postVisit" &&
-                                option.value !== "onVisit" ? (
+                                option.value === "customDate" ? (
                                   <div className="flex juttify start items-start absolute mt-1">
                                     <DatePicker
                                       selected={customDate}
@@ -1137,7 +1402,7 @@ const Campaigns: React.FC = () => {
                   className="lg:w-[85%] md:w-[80%] h-auto mx-auto  sm:w-[88%] ml-10"
                 />
                 <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit lg:top-[6rem] md:top-[5.5rem] lg:w-[13.7rem] md:w-[14.3rem] lg:left-[4rem] md:left-[3.1rem]">
-                  <div className="bg-white  p-4 rounded-md  w-full h-fit">
+                  <div className="bg-white  p-2 rounded-md  w-full h-fit">
                     {selectedImage && type === "Marketing" && (
                       <div className="w-full h-[6rem]">
                         <img
@@ -1147,39 +1412,37 @@ const Campaigns: React.FC = () => {
                       </div>
                     )}
                     <p
-                      className="text-sm text-gray-600 mt-1 break-words"
-                      style={{
-                        color: styles.header.color,
-                        fontWeight: styles.header.bold ? "bold" : "normal",
-                        fontStyle: styles.header.italic ? "italic" : "",
-                      }}
-                    >
-                      {header}
-                    </p>
+                      className="text-sm text-black mt-1 break-words"
+                      // style={{
+                      //   color: styles.header.color,
+                      //   fontWeight: styles.header.bold ? "bold" : "normal",
+                      //   fontStyle: styles.header.italic ? "italic" : "",
+                      // }}
+                      dangerouslySetInnerHTML={{ __html: header }}
+                    />
                     <p
-                      className="text-sm text-gray-600 break-words"
-                      style={{
-                        color: styles.body.color,
-                        fontWeight: styles.body.bold ? "bold" : "normal",
-                        fontStyle: styles.body.italic ? "italic" : "",
-                      }}
-                    >
-                      {body}
-                    </p>
+                      className="text-sm text-black break-words"
+                      // style={{
+                      //   color: styles.body.color,
+                      //   fontWeight: styles.body.bold ? "bold" : "normal",
+                      //   fontStyle: styles.body.italic ? "italic" : "",
+                      // }}
+                      dangerouslySetInnerHTML={{ __html: body }}
+                    />
+
                     <p
-                      className="text-sm text-gray-600 break-words"
-                      style={{
-                        color: styles.footer.color,
-                        fontWeight: styles.footer.bold ? "bold" : "normal",
-                        fontStyle: styles.footer.italic ? "italic" : "",
-                      }}
-                    >
-                      {footer}
-                    </p>
+                      className="text-sm text-black break-words"
+                      // style={{
+                      //   color: styles.footer.color,
+                      //   fontWeight: styles.footer.bold ? "bold" : "normal",
+                      //   fontStyle: styles.footer.italic ? "italic" : "",
+                      // }}
+                      dangerouslySetInnerHTML={{ __html: footer }}
+                    />
                   </div>
                   {buttons.map((button, index) => {
                     return (
-                      <div className="w-full">
+                      <div className="w-full" key={index}>
                         {button.type === "CallingButton" && (
                           <div
                             key={index}

@@ -164,6 +164,7 @@ const SubCategoryDropdown: React.FC<Props> = ({
         console.log(error);
       });
   };
+  console.log(category)
 
   return (
     <div className="space-y-2">
@@ -197,13 +198,13 @@ const SubCategoryDropdown: React.FC<Props> = ({
                         >
                           <div>
                             <div
-                              className="w-full h-fit px-4 py-3 border-2 rounded-[0.5rem] flex flex-row justify-between items-center font-Roboto"
+                              className="w-full h-fit px-2 md:px-4 py-3 border-2 rounded-[0.5rem] flex flex-row justify-between items-center font-Roboto"
                               role="button"
                             >
-                              <div className="w-fit flex flex-row items-center text-[1.5rem] gap-4">
+                              <div className="w-fit flex flex-row items-center text-[1.5rem] gap-2 md:gap-4">
                                 <MdDragIndicator />
                                 <IoMdArrowDropdown
-                                  className={`text-[#004AAD] ${
+                                  className={`text-[#004AAD]  ${
                                     isOpen[subcategory._id]
                                       ? "transform"
                                       : "-rotate-90"
@@ -213,14 +214,14 @@ const SubCategoryDropdown: React.FC<Props> = ({
                                 <img
                                   src={subcategory.image}
                                   alt="Pizza"
-                                  className="w-10"
+                                  className="w-10 hidden md:block"
                                 />
                                 <p className="text-[1.2rem] font-semibold">
                                   {subcategory.name} (
                                   {subcategory.menuItems.length})
                                 </p>
                               </div>
-                              <div className="w-fit flex flex-row items-center text-[1.5rem] gap-4 text-[#004AAD]">
+                              <div className="w-fit flex flex-row items-center text-[1.5rem] gap-3 md:gap-4 text-[#004AAD]">
                                 <Switch
                                   isActive={subcategory.active}
                                   onclick={() =>

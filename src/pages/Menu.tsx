@@ -151,11 +151,19 @@ const Menu = () => {
     }
   }, [data]);
   useEffect(() => {
+    let storedCategoryId = localStorage.getItem("selectedCategoryId");
     if (isFirstLoad.current && categories.length > 0) {
       setSelectedCategoryId(categories[0]._id);
       isFirstLoad.current = false;
+    } else if (!isFirstLoad.current && categories.length > 0) {
+      setSelectedCategoryId(storedCategoryId);
     }
   }, [categories]);
+
+  const handleCategoryClick = (categoryId: string) => {
+    setSelectedCategoryId(categoryId);
+    localStorage.setItem("selectedCategoryId", categoryId);
+  };
 
   const filteredCategory = selectedCategoryId
     ? categories.filter((category) => category._id === selectedCategoryId)
@@ -249,7 +257,7 @@ const Menu = () => {
                       Manage your menu item here
                     </p>
                   </div>
-                  <div className="flex w-[50%]  h-fit  items-center justify-end gap-5 font-semibold text-[#004AAD]">
+                  <div className="hidden md:flex w-[50%]  h-fit  items-center justify-end gap-5 font-semibold text-[#004AAD]">
                     <button
                       className="px-5 py-2.5 border border-[#E2E8F0] rounded-md flex items-center gap-3 text-nowrap"
                       onClick={() => {
@@ -277,9 +285,9 @@ const Menu = () => {
                   </div>
                 </div>
 
-                <div className="w-full h-fit flex items-center justify-between mt-5">
+                <div className="w-full h-fit flex flex-col md:flex-row md:items-center md:justify-between items-start justify-start mt-5 gap-4">
                   {/* Search result */}
-                  <div className="relative w-[35%] flex items-center rounded-md border border-[#407fd1]">
+                  <div className="relative w-full md:w-[35%] flex items-center rounded-md border border-[#407fd1]">
                     <input
                       className="w-full sm:py-2 py-3 px-8 rounded-lg"
                       type="text"
@@ -298,10 +306,10 @@ const Menu = () => {
                       </button>
                     )}
                   </div>
-                  <div className="flex items-center gap-5">
+                  <div className="flex items-center gap-10 md:gap-5">
                     <div>
                       <select
-                        className="w-full px-8 focus:outline-none p-2 border  border-gray-300 rounded-md"
+                        className="w-full md:px-8  focus:outline-none p-2 border  border-gray-300 rounded-md"
                         id="filter"
                         name="filter"
                         value={selectedType}
@@ -313,7 +321,7 @@ const Menu = () => {
                         <option value="Non-Veg">Non-Veg</option>
                       </select>
                     </div>
-                    <div className="flex gap-5">
+                    <div className="flex md:gap-5 gap-2 items-center">
                       <p>Active items </p>
                       <Switch
                         onclick={() => {
@@ -332,12 +340,12 @@ const Menu = () => {
                 {categories.length === 0 && (
                   <div className="w-full h-fit sm:p-9 px-1 py-4 flex flex-col sm:gap-10 gap-7 sm:mb-0 mb-5 font-inter">
                     <div className="flex items-center gap-6 ">
-                      <img className=" size-20" src={FoodMenu} alt="" />
+                      <img className="size-12 md:size-20" src={FoodMenu} alt="" />
                       <p className="sm:text-[1.7rem] text-[1.5rem] text-[#4B4B4B] font-semibold">
                         Create Menu in 2 easy steps
                       </p>
                     </div>
-                    <div className="flex items-center gap-10 sm:ml-3 ml-4 ">
+                    <div className="flex items-center gap-6 md:gap-10  md:ml-3">
                       <img className="size-12" src={Category} alt="" />
                       <div>
                         <p className="sm:text-[1.2rem] text-[1.1rem] font-[500]">
@@ -348,7 +356,7 @@ const Menu = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-10 sm:ml-3 ml-4 ">
+                    <div className="flex items-center gap-6 md:gap-10 md:ml-3  ">
                       <img className="size-12" src={Burger} alt="" />
                       <div>
                         <p className="sm:text-[1.2rem] text-[1.1rem] font-[500]">
@@ -362,7 +370,7 @@ const Menu = () => {
                     </div>
                     <button
                       onClick={() => setCategoryModal(true)}
-                      className="bg-[#004AAD] sm:w-[20%] px-5 py-3 rounded-md border text-[1.1rem] font-semibold  border-[#000000B2] text-white"
+                      className="bg-[#004AAD] md:w-[15rem] px-5 py-3 rounded-md border text-[1.1rem] font-semibold  border-[#000000B2] text-white"
                     >
                       Start Creating !
                     </button>
@@ -378,14 +386,14 @@ const Menu = () => {
                           item._id === selectedCategoryId
                             ? "bg-white text-[#004AAD]"
                             : "bg-[#004AAD] text-white"
-                        } font-semibold text-[1rem] px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center gap-3 text-nowrap`}
+                        } font-semibold text-[1rem] px-2 md:px-5 py-2 border-[0.1rem] border-[#004AAD] rounded-md flex items-center md:gap-3 text-nowrap`}
                         onClick={() => {
-                          setSelectedCategoryId(item._id);
+                          handleCategoryClick(item._id);
                         }}
                       >
                         {item?.name}
                         <div
-                          className="text-[1.2rem] ml-auto cursor-pointer"
+                          className="text-[1.2rem] md:ml-auto cursor-pointer"
                           onClick={(e) => {
                             setSelectedCategoryId(item._id);
                             handleActionClick(e);

@@ -554,6 +554,7 @@ export interface Slide {
   image: string;
   title: string;
   type: string;
+  start: boolean;
 }
 
 export interface SlideCategory {
@@ -569,64 +570,56 @@ export const AllData: Record<string, SlideCategory> = {
         image: "../../assets/image 168.png",
         title: "Welcome Greetings when they visit your business",
         type: "Utility",
+        start: false,
       },
       {
         image: "image 168",
         title: "Happy birthday to you! FREE starter on us",
         type: "Marketing",
+        start: false,
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Happy birthday to you! Enjoy Flat 10% OFF",
         type: "Utility",
+        start: false,
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Welcome Greetings when they visit your business",
         type: "Marketing",
+        start: false,
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Happy birthday! Enjoy a complimentary dessert on the house.",
         type: "Utility",
+        start: false,
       },
       {
         image: "https://via.placeholder.com/300x200",
         title:
           "Happy Birthday! Treat yourself with a flat 25% discount from us.",
         type: "Utility",
+        start: false,
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Feedback Campaign for Zomato reviews",
         type: "Utility",
+        start: false,
       },
       {
         image: "image 166.png",
         title: "Feedback Campaign for Google reviews",
         type: "Marketing",
+        start: false,
       },
       // Add more slides
     ],
   },
 };
 export const slidesData: Record<string, SlideCategory> = {
-  utility: {
-    title: "Utility",
-    slides: [
-      {
-        image: "https://via.placeholder.com/300x200",
-        title: "Utility 1",
-        type: "Utility",
-      },
-      {
-        image: "https://via.placeholder.com/300x200",
-        title: "Utility 2",
-        type: "Utility",
-      },
-      // Add more slides
-    ],
-  },
   birthdays: {
     title: "Birthdays",
     slides: [
@@ -634,11 +627,13 @@ export const slidesData: Record<string, SlideCategory> = {
         image: "https://via.placeholder.com/300x200",
         title: "Birthday 1",
         type: "Utility",
+        start: false,
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Birthday 2",
         type: "Utility",
+        start: false,
       },
       // Add more slides
     ],
@@ -650,31 +645,33 @@ export const slidesData: Record<string, SlideCategory> = {
         image: "https://via.placeholder.com/300x200",
         title: "Anniversary 1",
         type: "Utility",
+        start: false,
       },
       {
         image: "https://via.placeholder.com/300x200",
         title: "Anniversary 2",
         type: "Utility",
+        start: false,
       },
       // Add more slides
     ],
   },
-  events: {
-    title: "Events",
-    slides: [
-      {
-        image: "https://via.placeholder.com/300x200",
-        title: "Event 1",
-        type: "Utility",
-      },
-      {
-        image: "https://via.placeholder.com/300x200",
-        title: "Event 2",
-        type: "Utility",
-      },
-      // Add more slides
-    ],
-  },
+  // events: {
+  //   title: "Events",
+  //   slides: [
+  //     {
+  //       image: "https://via.placeholder.com/300x200",
+  //       title: "Event 1",
+  //       type: "Utility",
+  //     },
+  //     {
+  //       image: "https://via.placeholder.com/300x200",
+  //       title: "Event 2",
+  //       type: "Utility",
+  //     },
+  //     // Add more slides
+  //   ],
+  // },
 };
 
 export const pricingData = {

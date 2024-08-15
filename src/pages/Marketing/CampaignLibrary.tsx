@@ -7,6 +7,7 @@ import SliderComponent from "../../component/Marketing/SliderComponent";
 //swiperjs
 import { slidesData, AllData } from "../../constants/index";
 import { FaSearch } from "react-icons/fa";
+import { marketing, utility } from "../../component/Marketing/data";
 
 const CampaignLibrary: React.FC = () => {
   const buttons: { name: string }[] = [
@@ -69,16 +70,25 @@ const CampaignLibrary: React.FC = () => {
                   ))}
                 </div>
               </div>
-              {Object.entries(AllData).map(([key, value]) => (
+              {/* {Object.entries(AllData).map(([key, value]) => (
                 <div key={key} id={value.title} className="mt-4">
                   <SliderComponent slides={value.slides} />
                 </div>
-              ))}
+              ))} */}
             </div>
           </div>
 
           {/* All swiper div */}
-          {Object.entries(slidesData).map(([key, value]) => (
+          <div className="mt-2 bg-white p-4 rounded-md">
+            <h2 className="text-2xl font-bold mb-4">Utility</h2>
+            <SliderComponent slides={utility} />
+          </div>
+          <div className="mt-2 bg-white p-4 rounded-md">
+            <h2 className="text-2xl font-bold mb-4">Marketing</h2>
+            <SliderComponent slides={marketing} />
+          </div>
+
+          {/* {Object.entries(slidesData).map(([key, value]) => (
             <div
               key={key}
               id={value.title}
@@ -87,7 +97,7 @@ const CampaignLibrary: React.FC = () => {
               <h2 className="text-2xl font-bold mb-4">{value.title}</h2>
               <SliderComponent slides={value.slides} />
             </div>
-          ))}
+          ))} */}
 
           {/* Feedback div */}
           <Feedback />
