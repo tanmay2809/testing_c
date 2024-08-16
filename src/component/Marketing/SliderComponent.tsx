@@ -2,7 +2,7 @@ import React from "react";
 
 export interface MessageData {
   time: string;
-  users: any[]; // Use appropriate type instead of 'any[]' if possible
+  users: any[]; // Replace 'User' with the appropriate user type if defined elsewhere
   messageData: {
     messaging_product: string;
     type: string;
@@ -11,16 +11,27 @@ export interface MessageData {
       language: {
         code: string;
       };
-      components: {
-        type: string;
-        parameters: {
-          type: string;
-          text: string;
-        }[];
-      }[];
+      components: Component[];
     };
   };
 }
+
+export interface Component {
+  type: string;
+  sub_type?: string;
+  index?: string;
+  parameters: Parameter[];
+}
+
+export interface Parameter {
+  type: string;
+  text?: string;
+  image?:{
+    link:string;
+  }
+  payload?: string; // Added 'payload' in case it's used in buttons
+}
+
 export interface ContentData {
   header?: string;
   body?: string;

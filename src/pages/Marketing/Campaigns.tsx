@@ -6,7 +6,10 @@ import { Customer } from "../../constants/index";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
-import { order_action_required_1 } from "../../component/Marketing/data";
+import {
+  order_action_required_1,
+  order_action_required_2,
+} from "../../component/Marketing/data";
 import { baseUrl } from "../../main";
 import {
   MessageData,
@@ -25,8 +28,8 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 
 //components
 import CallingButton from "../../component/Marketing/CallingButton";
-import WebsiteButton from "../../component/Marketing/WebsiteButton";
-import FeedbackButton from "../../component/Marketing/FeedbackButton";
+// import WebsiteButton from "../../component/Marketing/WebsiteButton";
+// import FeedbackButton from "../../component/Marketing/FeedbackButton";
 import ConfirmCampaign from "./ConfirmCampaign";
 import AdvanceFilter from "../../component/Marketing/AdvanceFilter";
 import CustomerPool from "../../component/Marketing/CustomerPool";
@@ -72,17 +75,19 @@ interface Compon {
 
 const Campaigns: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
-  const { type } = useParams();
-
+  // const { type } = useParams();
+  const type = "Marketing";
   console.log("resData: ", data);
 
   const [customerData, setCustomerData] = useState<any>(data?.customerData);
   const [isOpenContent, setIsOpenContent] = useState<boolean>(true);
   const [isOpentarget, setIsOpentarget] = useState<boolean>(false);
   const [isOpenschedule, setIsOpenschedule] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | undefined>(
+    undefined
+  );
   const [isButton, setIsButton] = useState<boolean>(false);
-  const [buttons, setButtons] = useState<{ id: number; type: string }[]>([]);
+  // const [buttons, setButtons] = useState<{ id: number; type: string }[]>([]);
   const [target, setTarget] = useState<string | null>(null);
   const [header, setHeader] = useState<string>("");
   const [body, setBody] = useState<string>("");
@@ -134,6 +139,8 @@ const Campaigns: React.FC = () => {
   const [originalHeader, setOriginalHeader] = useState("");
   const [originalBody, setOriginalBody] = useState("");
   const [originalFooter, setOriginalFooter] = useState("");
+  const [buttons, setButtons] = useState<any[]>([]);
+  const [order, setOrder] = useState(order_action_required_2);
 
   useEffect(() => {
     getAllCustomersUserId();
@@ -147,6 +154,73 @@ const Campaigns: React.FC = () => {
   const filterElementsAdd = (data: string[]) => {
     setFilterData(data);
   };
+
+  const updateOrderWithParams = () => {
+    const updatedOrder = { ...order };
+
+    // Update header parameters
+    const headerComponent = updatedOrder.messageData.template.components.find(
+      (component) => component.type === "header"
+    );
+    if (headerComponent) {
+      headerComponent.parameters = Object.entries(campaignParams.header).map(
+        ([type, text]) => {
+          // Set type to "text" if not one of the specified types
+          const paramType = ["button", "payload", "date_time", "currency", "image"].includes(type)
+            ? type
+            : "text";
+  
+          if (paramType === "image") {
+            return {
+              type: paramType,
+              image: { link: text },
+            };
+          }
+          return { type: paramType, text };
+        }
+      );
+    }
+  
+    // Update body parameters
+    const bodyComponent = updatedOrder.messageData.template.components.find(
+      (component) => component.type === "body"
+    );
+    if (bodyComponent) {
+      bodyComponent.parameters = Object.entries(campaignParams.body).map(
+        ([type, text]) => {
+          // Set type to "text" if not one of the specified types
+          const paramType = ["button", "payload", "date_time", "currency", "image"].includes(type)
+            ? type
+            : "text";
+  
+          return { type: paramType, text };
+        }
+      );
+    }
+  
+    // Update footer parameters
+    const footerComponent = updatedOrder.messageData.template.components.find(
+      (component) => component.type === "footer"
+    );
+    if (footerComponent) {
+      footerComponent.parameters = Object.entries(campaignParams.footer).map(
+        ([type, text]) => {
+          // Set type to "text" if not one of the specified types
+          const paramType = ["button", "payload", "date_time", "currency", "image"].includes(type)
+            ? type
+            : "text";
+  
+          return { type: paramType, text };
+        }
+      );
+    }
+  console.log(updatedOrder)
+    // Update the state with the modified order
+    setOrder(updatedOrder);
+  };
+  useEffect(() => {
+    console.log(order);
+  }, [order]);
 
   const getAllCustomersUserId = () => {
     const userIds = data?.customerData?.map((item: Customer) => item.userId);
@@ -381,7 +455,6 @@ const Campaigns: React.FC = () => {
       textareaRef.current.style.height = "auto"; // Reset the height
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set the height based on the scroll height
     }
-    setSelectedImage(egImage);
   }, []);
 
   useEffect(() => {
@@ -413,6 +486,8 @@ const Campaigns: React.FC = () => {
     const headerParams: { [key: string]: string } = {};
     const bodyParams: { [key: string]: string } = {};
     const footerParams: { [key: string]: string } = {};
+    const buttonParams: any[] = []; // New array to hold buttons
+    let image: string | undefined = undefined; // Initialize image as undefined
 
     mesData?.messageData.template.components.forEach((component) => {
       component.parameters.forEach((param) => {
@@ -425,7 +500,17 @@ const Campaigns: React.FC = () => {
             footerParams[param.type] = param.text;
           }
         }
+        if (param.type && param.image) {
+          if (component.type === "header") {
+            image = param.image.link;
+          }
+        }
       });
+
+      // Handle buttons separately
+      if (component.type === "button") {
+        buttonParams.push(component); // Store the whole button component
+      }
     });
 
     setCampaignParams({
@@ -433,6 +518,12 @@ const Campaigns: React.FC = () => {
       body: bodyParams,
       footer: footerParams,
     });
+
+    // Set the buttons state
+    setButtons(buttonParams);
+    // Set the image
+    console.log(image);
+    setSelectedImage(image || ""); // Use an empty string if image is undefined
   }, [mesData]);
 
   useEffect(() => {
@@ -614,7 +705,7 @@ const Campaigns: React.FC = () => {
   };
 
   const handleImageClick = () => {
-    setSelectedImage(null);
+    setSelectedImage(undefined);
   };
 
   const toggleAccordionContent = () => {
@@ -691,6 +782,7 @@ const Campaigns: React.FC = () => {
               <div className="bg-white fixed lg:w-[85%] md:w-[91%] -mt-[0.26rem] z-10 p-4 rounded-xl ">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold ">Template Preview</h2>
+                  <button onClick={updateOrderWithParams}>test</button>
                   <div className="flex gap-6">
                     <Link to="/marketing">
                       <button className=" text-[#E61856] bg-[#FDF1F1] px-4 py-2 rounded-lg">
@@ -724,7 +816,13 @@ const Campaigns: React.FC = () => {
                 {/*booking */}
                 {!Confirmation && (
                   <>
-                    {type === "Marketing" && (
+                    {mesData?.messageData.template.components.some(
+                      (component) =>
+                        component.type === "header" &&
+                        component.parameters.some(
+                          (param) => param.type === "image" && param.image
+                        )
+                    ) && (
                       <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
                         <div className="flex items-center gap-3">
                           <div className="bg-[#FFCF27] p-4 rounded-lg">
@@ -740,7 +838,13 @@ const Campaigns: React.FC = () => {
                       </div>
                     )}
 
-                    {type === "Utility" && (
+                    {!mesData?.messageData.template.components.some(
+                      (component) =>
+                        component.type === "header" &&
+                        component.parameters.some(
+                          (param) => param.type === "image" && param.image
+                        )
+                    ) && (
                       <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
                         <div className="flex items-center gap-3">
                           <div className="bg-[#FFA858] p-4 rounded-lg">
@@ -779,7 +883,13 @@ const Campaigns: React.FC = () => {
                             )}
                           </div>
                         </div>
-                        {type === "Marketing" && (
+                        {mesData?.messageData.template.components.some(
+                          (component) =>
+                            component.type === "header" &&
+                            component.parameters.some(
+                              (param) => param.type === "image" && param.image
+                            )
+                        ) && (
                           <div
                             className={`${
                               isOpenContent ? "block" : "hidden"
@@ -805,26 +915,24 @@ const Campaigns: React.FC = () => {
                                   onChange={handleImageChange}
                                 />
                               </label>
-                              {selectedImage && (
-                                <div className="w-[7rem] h-[7rem] flex items-center justify-center  object-cover cursor-pointer  rounded-lg">
-                                  <img
-                                    src={selectedImage}
-                                    alt="Selected"
-                                    className="w-[7rem] h-[6rem] object-cover rounded-md "
-                                    onClick={handleImageClick}
+                              <div className="w-[7rem] h-[7rem] flex items-center justify-center  object-cover cursor-pointer  rounded-lg">
+                                <img
+                                  src={selectedImage}
+                                  alt="Selected"
+                                  className="w-[7rem] h-[6rem] object-cover rounded-md "
+                                  onClick={handleImageClick}
+                                />
+                                <button
+                                  type="button"
+                                  className="relative rounded-full -top-12 -left-4"
+                                  onClick={handleImageClick}
+                                >
+                                  <IoIosCloseCircleOutline
+                                    size={30}
+                                    className="text-black bg-white rounded-full"
                                   />
-                                  <button
-                                    type="button"
-                                    className="relative rounded-full -top-12 -left-4"
-                                    onClick={handleImageClick}
-                                  >
-                                    <IoIosCloseCircleOutline
-                                      size={30}
-                                      className="text-black bg-white rounded-full"
-                                    />
-                                  </button>
-                                </div>
-                              )}
+                                </button>
+                              </div>
                             </div>
                           </div>
                         )}
@@ -1102,99 +1210,87 @@ const Campaigns: React.FC = () => {
                         )}
 
                         {/*buttons*/}
-                        <div
-                          className={`${
-                            isOpenContent ? "block" : "hidden"
-                          } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
-                        >
-                          <div className="flex justify-between items-center">
-                            <h1 className="text-lg font-semibold ">
-                              Buttons <span>Optional</span>
-                            </h1>
-                            <div className="relative">
-                              <button
-                                className="bg-white border rounded-lg px-4 py-2 mx-2 flex items-center text-sm font-Roboto text-[#004AAD] font-semibold"
-                                onClick={() => setIsButton(!isButton)}
-                              >
-                                Add Buttons
-                              </button>
-                              {/* Dropdown menu for sorting */}
-                              {isButton && (
-                                <ul className="absolute left-0 mt-1 w-48 bg-white border rounded-lg shadow-lg py-1 z-10">
-                                  <li className="cursor-pointer px-2 py-1 hover:bg-gray-100 border-b border-gray-300 ">
-                                    <h1
-                                      className="text-base font-semibold"
-                                      onClick={() =>
-                                        handleAddButton("CallingButton")
-                                      }
-                                    >
-                                      Calling Button
-                                    </h1>
-                                    <p className="text-[0.75rem]">
-                                      Maximum 1 button
-                                    </p>
-                                  </li>
-                                  <li className="cursor-pointer px-2 py-1 hover:bg-gray-100 border-b border-gray-300">
-                                    <h1
-                                      className="text-base font-semibold"
-                                      onClick={() =>
-                                        handleAddButton("WebsiteButton")
-                                      }
-                                    >
-                                      Website Link
-                                    </h1>
-                                    <p className="text-[0.75rem]">
-                                      Maximum 2 button
-                                    </p>
-                                  </li>
-                                  <li className="cursor-pointer px-2 py-1 hover:bg-gray-100 ">
-                                    <h1
-                                      className="text-base font-semibold"
-                                      onClick={() =>
-                                        handleAddButton("FeedbackButton")
-                                      }
-                                    >
-                                      Feedback Link
-                                    </h1>
-                                    <p className="text-[0.75rem]">
-                                      Maximum 1 button
-                                    </p>
-                                  </li>
-                                </ul>
-                              )}
-                            </div>
-                          </div>
-                          {buttons.map((button) => (
-                            <div
-                              key={button.id}
-                              className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
-                            >
-                              <div className="text-base flex gap-4 items-center">
-                                {button.type === "CallingButton" && (
-                                  <CallingButton
-                                    onDelete={() =>
-                                      handleDeleteButton(button.id)
-                                    }
-                                  />
-                                )}
-                                {button.type === "WebsiteButton" && (
-                                  <WebsiteButton
-                                    onDelete={() =>
-                                      handleDeleteButton(button.id)
-                                    }
-                                  />
-                                )}
-                                {button.type === "FeedbackButton" && (
-                                  <FeedbackButton
-                                    onDelete={() =>
-                                      handleDeleteButton(button.id)
-                                    }
-                                  />
+                        {buttons?.length > 0 && (
+                          <div
+                            className={`${
+                              isOpenContent ? "block" : "hidden"
+                            } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
+                          >
+                            <div className="flex justify-between items-center">
+                              <h1 className="text-lg font-semibold ">
+                                Buttons <span>Optional</span>
+                              </h1>
+                              <div className="relative">
+                                <button
+                                  className="bg-white border rounded-lg px-4 py-2 mx-2 flex items-center text-sm font-Roboto text-[#004AAD] font-semibold"
+                                  onClick={() => setIsButton(!isButton)}
+                                >
+                                  Add Buttons
+                                </button>
+                                {isButton && (
+                                  <ul className="absolute left-0 mt-1 w-48 bg-white border rounded-lg shadow-lg py-1 z-10">
+                                    <li className="cursor-pointer px-2 py-1 hover:bg-gray-100 border-b border-gray-300 ">
+                                      <h1
+                                        className="text-base font-semibold"
+                                        onClick={() =>
+                                          handleAddButton("CallingButton")
+                                        }
+                                      >
+                                        Calling Button
+                                      </h1>
+                                      <p className="text-[0.75rem]">
+                                        Maximum 1 button
+                                      </p>
+                                    </li>
+                                    <li className="cursor-pointer px-2 py-1 hover:bg-gray-100 border-b border-gray-300">
+                                      <h1
+                                        className="text-base font-semibold"
+                                        onClick={() =>
+                                          handleAddButton("WebsiteButton")
+                                        }
+                                      >
+                                        Website Link
+                                      </h1>
+                                      <p className="text-[0.75rem]">
+                                        Maximum 2 button
+                                      </p>
+                                    </li>
+                                    <li className="cursor-pointer px-2 py-1 hover:bg-gray-100 ">
+                                      <h1
+                                        className="text-base font-semibold"
+                                        onClick={() =>
+                                          handleAddButton("FeedbackButton")
+                                        }
+                                      >
+                                        Feedback Link
+                                      </h1>
+                                      <p className="text-[0.75rem]">
+                                        Maximum 1 button
+                                      </p>
+                                    </li>
+                                  </ul>
                                 )}
                               </div>
                             </div>
-                          ))}
-                        </div>
+
+                            {buttons.map((button, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
+                              >
+                                <div className="text-base flex gap-4 items-center">
+                                  {/* You can customize how each button is displayed here */}
+                                  {/*based on sub type the buttons can be rendered */}
+                                  {button.sub_type === "quick_reply" && (
+                                    <CallingButton
+                                      onDelete={() => handleDeleteButton(index)}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
 
                       {/*target customer */}
@@ -1403,14 +1499,21 @@ const Campaigns: React.FC = () => {
                 />
                 <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit lg:top-[6rem] md:top-[5.5rem] lg:w-[13.7rem] md:w-[14.3rem] lg:left-[4rem] md:left-[3.1rem]">
                   <div className="bg-white  p-2 rounded-md  w-full h-fit">
-                    {selectedImage && type === "Marketing" && (
-                      <div className="w-full h-[6rem]">
-                        <img
-                          src={selectedImage}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      </div>
-                    )}
+                    {selectedImage &&
+                      mesData?.messageData.template.components.some(
+                        (component) =>
+                          component.type === "header" &&
+                          component.parameters.some(
+                            (param) => param.type === "image" && param.image
+                          )
+                      ) && (
+                        <div className="w-full h-[6rem]">
+                          <img
+                            src={selectedImage}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </div>
+                      )}
                     <p
                       className="text-sm text-black mt-1 break-words"
                       // style={{
@@ -1443,39 +1546,34 @@ const Campaigns: React.FC = () => {
                   {buttons.map((button, index) => {
                     return (
                       <div className="w-full" key={index}>
-                        {button.type === "CallingButton" && (
-                          <div
-                            key={index}
-                            className="flex items-center justify-center bg-white text-[#0096DE] py-1 px-3 rounded-md  w-full"
-                          >
-                            <IoMdCall />
-                            <button>
-                              {button.type === "CallingButton" && "Call"}
-                            </button>
-                          </div>
-                        )}
-                        {button.type === "WebsiteButton" && (
-                          <div
-                            key={index}
-                            className="flex items-center justify-center bg-white text-[#0096DE] py-1 px-3 rounded-md  w-full"
-                          >
-                            <BiLinkExternal />
-                            <button>
-                              {button.type === "WebsiteButton" && "Call"}
-                            </button>
-                          </div>
-                        )}
-                        {button.type === "FeedbackButton" && (
-                          <div
-                            key={index}
-                            className="flex items-center justify-center bg-white text-[#0096DE] py-1 px-3 rounded-md  w-full"
-                          >
-                            {/* <BiLinkExternal /> feedback logo */}
-                            <button>
-                              {button.type === "FeedbackButton" && "Call"}
-                            </button>
-                          </div>
-                        )}
+                        {button.sub_type === "quick_reply" &&
+                          button.parameters[0].type === "payload" && (
+                            <div className="flex items-center justify-center bg-white text-[#0096DE] py-1 px-3 rounded-md w-full">
+                              <IoMdCall />
+                              <button className="ml-2">Call</button>
+                            </div>
+                          )}
+                        {button.sub_type === "quick_reply" &&
+                          button.parameters[0].type === "Calling" && (
+                            <div className="flex items-center justify-center bg-white text-[#0096DE] py-1 px-3 rounded-md w-full">
+                              <IoMdCall />
+                              <button className="ml-2">Call</button>
+                            </div>
+                          )}
+                        {button.sub_type === "quick_reply" &&
+                          button.parameters[0].type === "WEBSITE" && (
+                            <div className="flex items-center justify-center bg-white text-[#0096DE] py-1 px-3 rounded-md w-full">
+                              <BiLinkExternal />
+                              <button className="ml-2">Website</button>
+                            </div>
+                          )}
+                        {button.sub_type === "quick_reply" &&
+                          button.parameters[0].type === "FEEDBACK" && (
+                            <div className="flex items-center justify-center bg-white text-[#0096DE] py-1 px-3 rounded-md w-full">
+                              {/* <BiLinkExternal /> feedback logo */}
+                              <button className="ml-2">Feedback</button>
+                            </div>
+                          )}
                       </div>
                     );
                   })}
