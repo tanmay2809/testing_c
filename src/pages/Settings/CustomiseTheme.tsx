@@ -248,7 +248,7 @@ const CustomiseTheme = () => {
                 <div>
                   <label
                     htmlFor="url"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block font-semibold text-gray-700 mb-2 text-[1.4rem] "
                   >
                     Link URL
                   </label>
@@ -295,10 +295,10 @@ const CustomiseTheme = () => {
                     </div>
                   ) : (
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                     <label className="block text-[1.15rem] font-semibold text-gray-700 mb-2">
                         Link URL icon <span className="text-red-500">*</span>
                       </label>
-                      <p className="text-xs text-gray-500 mt-2">
+                      <p className="text-[.9rem] text-gray-500 mt-2">
                         Image format .jpg, .jpeg, .png and minimum size 300 x
                         300px
                       </p>
@@ -309,13 +309,13 @@ const CustomiseTheme = () => {
 
               <div className="flex justify-between w-full gap-3">
                 <button
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg w-1/2"
+                  className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg w-1/2 font-semibold text-[1.2rem]"
                   onClick={() => setadddelivery(false)}
                 >
                   Cancel
                 </button>
                 <button
-                  className="px-4 py-2 bg-[#004AAD] text-white rounded-lg w-1/2"
+                  className="px-4 py-3 bg-[#004AAD] text-white rounded-lg w-1/2 font-semibold text-[1.2rem]"
                   onClick={deliveryApply}
                 >
                   Save
@@ -340,7 +340,7 @@ const CustomiseTheme = () => {
                 <div>
                   <label
                     htmlFor="url"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block font-semibold text-gray-700 mb-2 text-[1.4rem] "
                   >
                     Link URL
                   </label>
@@ -387,10 +387,10 @@ const CustomiseTheme = () => {
                     </div>
                   ) : (
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-[1.15rem] font-semibold text-gray-700 mb-2">
                         Link URL icon <span className="text-red-500">*</span>
                       </label>
-                      <p className="text-xs text-gray-500 mt-2">
+                      <p className="text-[.9rem] text-gray-500 mt-2">
                         Image format .jpg, .jpeg, .png and minimum size 300 x
                         300px
                       </p>
@@ -401,13 +401,13 @@ const CustomiseTheme = () => {
 
               <div className="flex justify-between w-full gap-3">
                 <button
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg w-1/2"
+                  className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg w-1/2 font-semibold text-[1.2rem]"
                   onClick={() => setaddBooking(false)}
                 >
                   Cancel
                 </button>
                 <button
-                  className="px-4 py-2 bg-[#004AAD] text-white rounded-lg w-1/2"
+                  className="px-4 py-3 bg-[#004AAD] text-white rounded-lg w-1/2 font-semibold text-[1.2rem]"
                   onClick={bookingApply}
                 >
                   Save
