@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Customer } from "../../constants/index";
@@ -17,8 +17,8 @@ import {
 } from "../../component/Marketing/SliderComponent";
 
 //images
-import screen from "../../assets/Group 1171278587.png";
-import egImage from "../../assets/Group 1171278505.png";
+import screen from "../../assets/Frame 1321318155.png";
+// import egImage from "../../assets/Group 1171278505.png";
 
 //icons
 import { BiLinkExternal } from "react-icons/bi";
@@ -75,8 +75,6 @@ interface Compon {
 
 const Campaigns: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
-  // const { type } = useParams();
-  const type = "Marketing";
   console.log("resData: ", data);
 
   const [customerData, setCustomerData] = useState<any>(data?.customerData);
@@ -1497,7 +1495,7 @@ const Campaigns: React.FC = () => {
                   alt="Phone Screen"
                   className="lg:w-[85%] md:w-[80%] h-auto mx-auto  sm:w-[88%] ml-10"
                 />
-                <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit lg:top-[6rem] md:top-[5.5rem] lg:w-[13.7rem] md:w-[14.3rem] lg:left-[4rem] md:left-[3.1rem]">
+                <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit lg:top-[6.3rem] md:top-[5.5rem] lg:w-[13.7rem] md:w-[14.3rem] lg:left-[4rem] md:left-[3.1rem]">
                   <div className="bg-white  p-2 rounded-md  w-full h-fit">
                     {selectedImage &&
                       mesData?.messageData.template.components.some(
