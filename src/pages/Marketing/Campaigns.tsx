@@ -60,18 +60,6 @@ interface Compon {
   parameters: any[]; // Define this type more specifically if you know the structure
 }
 
-// type SectionStyles = {
-//   color: string;
-//   bold: boolean;
-//   italic: boolean;
-//   emoji: string | null;
-// };
-
-// type StylesState = {
-//   header: SectionStyles;
-//   body: SectionStyles;
-//   footer: SectionStyles;
-// };
 
 const Campaigns: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
@@ -84,6 +72,7 @@ const Campaigns: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     undefined
   );
+
   const [isButton, setIsButton] = useState<boolean>(false);
   // const [buttons, setButtons] = useState<{ id: number; type: string }[]>([]);
   const [target, setTarget] = useState<string | null>(null);
@@ -112,6 +101,7 @@ const Campaigns: React.FC = () => {
   //     emoji: null,
   //   },
   // });
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [customDate, setCustomDate] = useState<Date | null>(null);
@@ -138,7 +128,7 @@ const Campaigns: React.FC = () => {
   const [originalBody, setOriginalBody] = useState("");
   const [originalFooter, setOriginalFooter] = useState("");
   const [buttons, setButtons] = useState<any[]>([]);
-  const [order, setOrder] = useState(order_action_required_2);
+  const [order, setOrder] = useState<MessageData>(order_action_required_1);
 
   useEffect(() => {
     getAllCustomersUserId();
@@ -160,6 +150,7 @@ const Campaigns: React.FC = () => {
     const headerComponent = updatedOrder.messageData.template.components.find(
       (component) => component.type === "header"
     );
+
     if (headerComponent) {
       headerComponent.parameters = Object.entries(campaignParams.header).map(
         ([type, text]) => {
@@ -167,7 +158,7 @@ const Campaigns: React.FC = () => {
           const paramType = ["button", "payload", "date_time", "currency", "image"].includes(type)
             ? type
             : "text";
-  
+
           if (paramType === "image") {
             return {
               type: paramType,
@@ -178,7 +169,7 @@ const Campaigns: React.FC = () => {
         }
       );
     }
-  
+
     // Update body parameters
     const bodyComponent = updatedOrder.messageData.template.components.find(
       (component) => component.type === "body"
@@ -190,12 +181,12 @@ const Campaigns: React.FC = () => {
           const paramType = ["button", "payload", "date_time", "currency", "image"].includes(type)
             ? type
             : "text";
-  
+
           return { type: paramType, text };
         }
       );
     }
-  
+
     // Update footer parameters
     const footerComponent = updatedOrder.messageData.template.components.find(
       (component) => component.type === "footer"
@@ -207,15 +198,16 @@ const Campaigns: React.FC = () => {
           const paramType = ["button", "payload", "date_time", "currency", "image"].includes(type)
             ? type
             : "text";
-  
+
           return { type: paramType, text };
         }
       );
     }
-  console.log(updatedOrder)
+    console.log(updatedOrder)
     // Update the state with the modified order
     setOrder(updatedOrder);
   };
+
   useEffect(() => {
     console.log(order);
   }, [order]);
@@ -311,25 +303,25 @@ const Campaigns: React.FC = () => {
               })) ||
             (visitFilter.includes("Not visited on:") && customDateNotVisitObj
               ? customer.visits.every((visit: string) => {
-                  const customDate = new Date(customDateNotVisitObj);
+                const customDate = new Date(customDateNotVisitObj);
 
-                  // Get the timezone offset in minutes and convert it to milliseconds
-                  const timezoneOffset = customDate.getTimezoneOffset() * 60000;
+                // Get the timezone offset in minutes and convert it to milliseconds
+                const timezoneOffset = customDate.getTimezoneOffset() * 60000;
 
-                  // Adjust the date by adding the offset to get the local date in ISO format
-                  const customDateString = new Date(
-                    customDate.getTime() - timezoneOffset
-                  )
-                    .toISOString()
-                    .split("T")[0];
+                // Adjust the date by adding the offset to get the local date in ISO format
+                const customDateString = new Date(
+                  customDate.getTime() - timezoneOffset
+                )
+                  .toISOString()
+                  .split("T")[0];
 
-                  console.log(customDateString); // This will show the correct date in your local timezone
-                  const visitDate = new Date(visit).toISOString().split("T")[0];
-                  console.log(
-                    `Checking visitDate for specific day: ${visitDate}`
-                  );
-                  return visitDate !== customDateString; // Ensure no visit on the specified day
-                })
+                console.log(customDateString); // This will show the correct date in your local timezone
+                const visitDate = new Date(visit).toISOString().split("T")[0];
+                console.log(
+                  `Checking visitDate for specific day: ${visitDate}`
+                );
+                return visitDate !== customDateString; // Ensure no visit on the specified day
+              })
               : "")
           );
         });
@@ -528,37 +520,186 @@ const Campaigns: React.FC = () => {
     updateContent(campaignParams);
   }, [campaignParams]);
 
-  const getTime = (selectedOption: any, customDate: any, customTime: any) => {
+  const scheduleAnniversaryCampaigns = async () => {
+    updateOrderWithParams();
+    customerData.forEach((customer: any) => {
+      const anniversary = new Date(customer?.anniversary);
+
+      if (anniversary) {
+        const now = new Date();
+        console.log(now);
+        const currentYear = new Date().getFullYear();
+        anniversary.setFullYear(currentYear);
+
+        // If the birthday has already passed this year, schedule it for next year
+        if (anniversary < new Date()) {
+          anniversary.setFullYear(currentYear + 1);
+        }
+      
+        anniversary.setHours(now.getHours());
+        anniversary.setMinutes(now.getMinutes() + 1);
+        const scheduledTime = `${anniversary.getMinutes()} ${anniversary.getHours()} ${anniversary.getDate()} ${anniversary.getMonth() + 1} *`;
+        
+        const userContacts = [{
+          contact: `+91${customer.phone}`
+        }];
+
+        order_action_required_1.users = userContacts as any;
+        order_action_required_1.time = scheduledTime;
+
+        console.log("data : ", order_action_required_1);
+        const d = JSON.stringify(order_action_required_1);
+        console.log(d);
+
+        let config = {
+          method: "post",
+          maxBodyLength: Infinity,
+          // url: `${baseUrl}/api/schedule`,
+          url: `${baseUrl}/api/schedule`,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: d,
+        };
+
+        axios
+          .request(config)
+          .then((response) => {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
+  };
+
+  const scheduleBirthdayCampaigns = async () => {
+    updateOrderWithParams();
+    customerData.forEach((customer: any) => {
+      const birthday = new Date(customer?.birthday);
+
+      if (birthday) {
+        const now = new Date();
+        console.log(now);
+        const currentYear = new Date().getFullYear();
+        birthday.setFullYear(currentYear);
+
+        if (birthday < new Date()) {
+          birthday.setFullYear(currentYear + 1);
+        }
+      
+        birthday.setHours(now.getHours());
+        birthday.setMinutes(now.getMinutes() + 1);
+        const scheduledTime = `${birthday.getMinutes()} ${birthday.getHours()} ${birthday.getDate()} ${birthday.getMonth() + 1} *`;
+        
+        const userContacts = [{
+          contact: `+91${customer.phone}`
+        }];
+
+        order_action_required_1.users = userContacts as any;
+        order_action_required_1.time = scheduledTime;
+
+        console.log("data : ", order_action_required_1);
+        const d = JSON.stringify(order_action_required_1);
+        console.log(d);
+
+        let config = {
+          method: "post",
+          maxBodyLength: Infinity,
+          // url: `${baseUrl}/api/schedule`,
+          url: `http://localhost:4000/api/schedule`,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: d,
+        };
+
+        axios
+          .request(config)
+          .then((response) => {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
+  };
+
+  const getTime = async (selectedOption: any, customDate: any, customTime: any) => {
     let scheduledTime = "";
     if (selectedOption == "sendNow") {
       const date = new Date();
       date.setMinutes(date.getMinutes() + 2);
       // scheduledTime = `${date.getMinutes()} ${date.getHours()} * * *`;
-      scheduledTime = `${date.getMinutes()} ${date.getHours()} ${date.getDate()} ${
-        date.getMonth() + 1
-      } *`;
+      scheduledTime = `${date.getMinutes()} ${date.getHours()} ${date.getDate()} ${date.getMonth() + 1} *`;
     } else if (selectedOption == "customDate") {
       const customDateTime = new Date(`${customDate}T${customTime}`);
-      scheduledTime = `${customDateTime.getMinutes()} ${customDateTime.getHours()} ${customDateTime.getDate()} ${
-        customDateTime.getMonth() + 1
-      } *`;
+      scheduledTime = `${customDateTime.getMinutes()} ${customDateTime.getHours()} ${customDateTime.getDate()} ${customDateTime.getMonth() + 1
+        } *`;
     } else if (selectedOption == "weekly") {
       scheduledTime = `0 0 * * 0`;
+    } else if (selectedOption == "onBirthdays") {
+      await scheduleBirthdayCampaigns();
+    }
+    else if(selectedOption == "anniversary"){
+      await scheduleAnniversaryCampaigns();
+    }
+    else if(selectedOption == "onVisit")
+    {
+      let config = {
+        method: "put",
+        maxBodyLength: Infinity,
+        // url: `${baseUrl}/api/schedule`,
+        url: `${baseUrl}/api/updateOnVisit/${data._id}`,
+        headers: {},
+      };
+  
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+  
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    } else if(selectedOption == "postVisit") {
+      let config = {
+        method: "put",
+        maxBodyLength: Infinity,
+        // url: `${baseUrl}/api/schedule`,
+        url: `${baseUrl}/api/updatePostVisit/${data._id}`,
+        headers: {},
+      };
+  
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+  
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
     }
     return scheduledTime;
   };
 
   //on activate click
   const activateCampaign = async () => {
-    // setLoading(true);
-    // simulate a network request
-
     console.log("customerData : ", customerData);
     console.log("selectedOption : ", selectedOption);
     console.log("customDate : ", customDate);
     console.log("customTime : ", customTime);
 
-    let scheduledTime: string = getTime(selectedOption, customDate, customTime);
+    let scheduledTime: string = await getTime(selectedOption, customDate, customTime);
+    if (selectedOption == "onBirthdays" || selectedOption == "anniversary" || selectedOption == "onVisit" || selectedOption == "postVisit") {
+      return;
+    }
 
     console.log("scheduledTime : ", scheduledTime);
 
@@ -569,15 +710,15 @@ const Campaigns: React.FC = () => {
     order_action_required_1.users = userContacts;
     order_action_required_1.time = scheduledTime;
 
+    updateOrderWithParams();
     console.log(order_action_required_1);
-
     const d = JSON.stringify(order_action_required_1);
 
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      // url: `${baseUrl}/api/schedule`,
-      url: `http://localhost:4000/api/schedule`,
+      url: `${baseUrl}/api/schedule`,
+      // url: `http://localhost:4000/api/schedule`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -588,18 +729,12 @@ const Campaigns: React.FC = () => {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        // setLoading(false);
-        // if (!Confirmation) toast.success("Campaign Scheduled");
-        // setConfirmation(!Confirmation);
+
       })
       .catch((error) => {
         console.log(error);
       });
 
-    // setTimeout(() => {
-    //   if (!Confirmation) toast.success("Campaign Scheduled");
-    //   setConfirmation(!Confirmation);
-    // }, 2000);
   };
 
   const options: RadioOption[] = [
@@ -805,9 +940,8 @@ const Campaigns: React.FC = () => {
 
             {/*main content div */}
             <div
-              className={`bg-[#F5F9FF] flex justify-between gap-10 lg:py-5 md:py-3 rounded-lg ${
-                !Confirmation ? "mt-24" : ""
-              }`}
+              className={`bg-[#F5F9FF] flex justify-between gap-10 lg:py-5 md:py-3 rounded-lg ${!Confirmation ? "mt-24" : ""
+                }`}
             >
               {/*text div */}
               <div className=" lg:w-[65%] md:w-[50%] sm:w-[48%]">
@@ -821,20 +955,20 @@ const Campaigns: React.FC = () => {
                           (param) => param.type === "image" && param.image
                         )
                     ) && (
-                      <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="bg-[#FFCF27] p-4 rounded-lg">
-                            <img src={booking} />
-                          </div>
-                          <div>
-                            <h3 className="text-xl font-semibold mb-2">
-                              Booking Campaign
-                            </h3>
-                            <p className="text-gray-600 mb-2">Marketing</p>
+                        <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="bg-[#FFCF27] p-4 rounded-lg">
+                              <img src={booking} />
+                            </div>
+                            <div>
+                              <h3 className="text-xl font-semibold mb-2">
+                                Booking Campaign
+                              </h3>
+                              <p className="text-gray-600 mb-2">Marketing</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
                     {!mesData?.messageData.template.components.some(
                       (component) =>
@@ -843,20 +977,20 @@ const Campaigns: React.FC = () => {
                           (param) => param.type === "image" && param.image
                         )
                     ) && (
-                      <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="bg-[#FFA858] p-4 rounded-lg">
-                            <img src={utility} />
-                          </div>
-                          <div>
-                            <h3 className="text-xl font-semibold mb-2">
-                              Welcome customers with greetings
-                            </h3>
-                            <p className="text-gray-600 mb-2">Utility</p>
+                        <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="bg-[#FFA858] p-4 rounded-lg">
+                              <img src={utility} />
+                            </div>
+                            <div>
+                              <h3 className="text-xl font-semibold mb-2">
+                                Welcome customers with greetings
+                              </h3>
+                              <p className="text-gray-600 mb-2">Utility</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      )}
                     <div className="mb-4">
                       {/*content */}
                       <div className=" mb-2 ">
@@ -870,9 +1004,8 @@ const Campaigns: React.FC = () => {
                           </div>
                           <div
                             onClick={toggleAccordionContent}
-                            className={`${
-                              isOpenContent && " text-[#004AAD] border-none"
-                            } w-7 h-7 lg:w-8 lg:h-8  rounded flex items-center justify-center cursor-pointer text-lg`}
+                            className={`${isOpenContent && " text-[#004AAD] border-none"
+                              } w-7 h-7 lg:w-8 lg:h-8  rounded flex items-center justify-center cursor-pointer text-lg`}
                           >
                             {isOpenContent ? (
                               <FaAngleUp />
@@ -888,82 +1021,80 @@ const Campaigns: React.FC = () => {
                               (param) => param.type === "image" && param.image
                             )
                         ) && (
-                          <div
-                            className={`${
-                              isOpenContent ? "block" : "hidden"
-                            } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
-                          >
-                            {/*media */}
-                            <h1 className="text-lg font-semibold">
-                              Media <span>Optional</span>
-                            </h1>
-                            <div className="mt-4 flex justify-start gap-10 items-center">
-                              <label
-                                htmlFor="imageInput"
-                                className="flex flex-col items-center justify-center w-[8rem] h-[6rem] border-2 border-dashed bg-[#F1F7FF] border-gray-300 rounded-lg cursor-pointer "
-                              >
-                                <IoMdImages
-                                  size={48}
-                                  className="text-[#004AAD]"
-                                />
-                                <input
-                                  type="file"
-                                  id="imageInput"
-                                  className="hidden"
-                                  onChange={handleImageChange}
-                                />
-                              </label>
-                              <div className="w-[7rem] h-[7rem] flex items-center justify-center  object-cover cursor-pointer  rounded-lg">
-                                <img
-                                  src={selectedImage}
-                                  alt="Selected"
-                                  className="w-[7rem] h-[6rem] object-cover rounded-md "
-                                  onClick={handleImageClick}
-                                />
-                                <button
-                                  type="button"
-                                  className="relative rounded-full -top-12 -left-4"
-                                  onClick={handleImageClick}
+                            <div
+                              className={`${isOpenContent ? "block" : "hidden"
+                                } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
+                            >
+                              {/*media */}
+                              <h1 className="text-lg font-semibold">
+                                Media <span>Optional</span>
+                              </h1>
+                              <div className="mt-4 flex justify-start gap-10 items-center">
+                                <label
+                                  htmlFor="imageInput"
+                                  className="flex flex-col items-center justify-center w-[8rem] h-[6rem] border-2 border-dashed bg-[#F1F7FF] border-gray-300 rounded-lg cursor-pointer "
                                 >
-                                  <IoIosCloseCircleOutline
-                                    size={30}
-                                    className="text-black bg-white rounded-full"
+                                  <IoMdImages
+                                    size={48}
+                                    className="text-[#004AAD]"
                                   />
-                                </button>
+                                  <input
+                                    type="file"
+                                    id="imageInput"
+                                    className="hidden"
+                                    onChange={handleImageChange}
+                                  />
+                                </label>
+                                <div className="w-[7rem] h-[7rem] flex items-center justify-center  object-cover cursor-pointer  rounded-lg">
+                                  <img
+                                    src={selectedImage}
+                                    alt="Selected"
+                                    className="w-[7rem] h-[6rem] object-cover rounded-md "
+                                    onClick={handleImageClick}
+                                  />
+                                  <button
+                                    type="button"
+                                    className="relative rounded-full -top-12 -left-4"
+                                    onClick={handleImageClick}
+                                  >
+                                    <IoIosCloseCircleOutline
+                                      size={30}
+                                      className="text-black bg-white rounded-full"
+                                    />
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        )}
+                          )}
                         {/*header*/}
                         {mesData?.messageData.template.components.some(
                           (component: Compon) => component.type === "header"
                         ) && (
-                          <div
-                            className={`${
-                              isOpenContent ? "block" : "hidden"
-                            } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
-                          >
-                            <h1 className="text-lg font-semibold">
-                              Header <span>Optional</span>
-                            </h1>
-                            <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
-                              <GiMeal className="text-gray-500" />
+                            <div
+                              className={`${isOpenContent ? "block" : "hidden"
+                                } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
+                            >
+                              <h1 className="text-lg font-semibold">
+                                Header <span>Optional</span>
+                              </h1>
+                              <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
+                                <GiMeal className="text-gray-500" />
 
-                              <h2 className="font-medium text-base w-full">
-                                <div
-                                  className="bg-[#F5F9FF] h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
-                                  // style={{
-                                  //   color: styles.header.color,
-                                  //   fontWeight: styles.header.bold
-                                  //     ? "bold"
-                                  //     : "normal",
-                                  //   fontStyle: styles.header.italic
-                                  //     ? "italic"
-                                  //     : "",
-                                  // }}
-                                  dangerouslySetInnerHTML={{ __html: header }}
-                                />
-                                {/* <textarea
+                                <h2 className="font-medium text-base w-full">
+                                  <div
+                                    className="bg-[#F5F9FF] h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                    // style={{
+                                    //   color: styles.header.color,
+                                    //   fontWeight: styles.header.bold
+                                    //     ? "bold"
+                                    //     : "normal",
+                                    //   fontStyle: styles.header.italic
+                                    //     ? "italic"
+                                    //     : "",
+                                    // }}
+                                    dangerouslySetInnerHTML={{ __html: header }}
+                                  />
+                                  {/* <textarea
                                   readOnly
                                   id="name"
                                   placeholder="Enter the header"
@@ -990,70 +1121,69 @@ const Campaigns: React.FC = () => {
                                       : "",
                                   }}
                                 /> */}
-                              </h2>
-                            </div>
-                            {/* <FormattingControls
+                                </h2>
+                              </div>
+                              {/* <FormattingControls
                               content={header}
                               section="header"
                               styles={styles}
                               setStyles={setStyles}
                               setContent={setHeader}
                             /> */}
-                            {Object.entries(campaignParams.header).map(
-                              ([key, value]) => (
-                                <div
-                                  className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
-                                  key={key}
-                                >
-                                  <h2 className="text-base w-full">
-                                    <input
-                                      type="text"
-                                      name={key}
-                                      placeholder={
-                                        key.charAt(0).toUpperCase() +
-                                        key.slice(1)
-                                      }
-                                      value={value}
-                                      onChange={(e) =>
-                                        handleParamsChange(e, "header")
-                                      }
-                                      className="bg-[#F5F9FF] p-3 rounded-lg border-0 outline-none"
-                                    />
-                                  </h2>
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )}
+                              {Object.entries(campaignParams.header).map(
+                                ([key, value]) => (
+                                  <div
+                                    className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
+                                    key={key}
+                                  >
+                                    <h2 className="text-base w-full">
+                                      <input
+                                        type="text"
+                                        name={key}
+                                        placeholder={
+                                          key.charAt(0).toUpperCase() +
+                                          key.slice(1)
+                                        }
+                                        value={value}
+                                        onChange={(e) =>
+                                          handleParamsChange(e, "header")
+                                        }
+                                        className="bg-[#F5F9FF] p-3 rounded-lg border-0 outline-none"
+                                      />
+                                    </h2>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          )}
 
                         {/*body*/}
                         {mesData?.messageData.template.components.some(
                           (component: Compon) => component.type === "body"
                         ) && (
-                          <div
-                            className={`${
-                              isOpenContent ? "block" : "hidden"
-                            } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
-                          >
-                            <h1 className="text-lg font-semibold">
-                              Body <span>Optional</span>
-                            </h1>
-                            <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
-                              <h2 className=" text-base w-full">
-                                <div
-                                  className="bg-[#F5F9FF]  h-fit w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
-                                  // style={{
-                                  //   color: styles.body.color,
-                                  //   fontWeight: styles.body.bold
-                                  //     ? "bold"
-                                  //     : "normal",
-                                  //   fontStyle: styles.body.italic
-                                  //     ? "italic"
-                                  //     : "",
-                                  // }}
-                                  dangerouslySetInnerHTML={{ __html: body }}
-                                />
-                                {/* <textarea
+                            <div
+                              className={`${isOpenContent ? "block" : "hidden"
+                                } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
+                            >
+                              <h1 className="text-lg font-semibold">
+                                Body <span>Optional</span>
+                              </h1>
+                              <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
+                                <h2 className=" text-base w-full">
+                                  <div
+                                    className="bg-[#F5F9FF]  h-fit w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                    // style={{
+                                    //   color: styles.body.color,
+                                    //   fontWeight: styles.body.bold
+                                    //     ? "bold"
+                                    //     : "normal",
+                                    //   fontStyle: styles.body.italic
+                                    //     ? "italic"
+                                    //     : "",
+                                    // }}
+                                    dangerouslySetInnerHTML={{ __html: body }}
+                                  />
+                                  {/* <textarea
                                   readOnly
                                   id="body"
                                   placeholder="Enter the body"
@@ -1080,70 +1210,69 @@ const Campaigns: React.FC = () => {
                                       : "",
                                   }}
                                 /> */}
-                              </h2>
-                            </div>
-                            {/* <FormattingControls
+                                </h2>
+                              </div>
+                              {/* <FormattingControls
                               content={body}
                               section="body"
                               styles={styles}
                               setStyles={setStyles}
                               setContent={setBody}
                             /> */}
-                            {Object.entries(campaignParams.body).map(
-                              ([key, value]) => (
-                                <div
-                                  className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
-                                  key={key}
-                                >
-                                  <h2 className="text-base w-full">
-                                    <input
-                                      type="text"
-                                      name={key}
-                                      placeholder={
-                                        key.charAt(0).toUpperCase() +
-                                        key.slice(1)
-                                      }
-                                      value={value}
-                                      onChange={(e) =>
-                                        handleParamsChange(e, "body")
-                                      }
-                                      className="bg-[#F5F9FF] p-3 rounded-lg border-0 outline-none"
-                                    />
-                                  </h2>
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )}
+                              {Object.entries(campaignParams.body).map(
+                                ([key, value]) => (
+                                  <div
+                                    className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
+                                    key={key}
+                                  >
+                                    <h2 className="text-base w-full">
+                                      <input
+                                        type="text"
+                                        name={key}
+                                        placeholder={
+                                          key.charAt(0).toUpperCase() +
+                                          key.slice(1)
+                                        }
+                                        value={value}
+                                        onChange={(e) =>
+                                          handleParamsChange(e, "body")
+                                        }
+                                        className="bg-[#F5F9FF] p-3 rounded-lg border-0 outline-none"
+                                      />
+                                    </h2>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          )}
 
                         {/*footer*/}
                         {mesData?.messageData.template.components.some(
                           (component: Compon) => component.type === "footer"
                         ) && (
-                          <div
-                            className={`${
-                              isOpenContent ? "block" : "hidden"
-                            } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
-                          >
-                            <h1 className="text-lg font-semibold">
-                              Footer <span>Optional</span>
-                            </h1>
-                            <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
-                              <h2 className=" text-base w-full">
-                                <div
-                                  className="bg-[#F5F9FF]  h-fit w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
-                                  // style={{
-                                  //   color: styles.footer.color,
-                                  //   fontWeight: styles.footer.bold
-                                  //     ? "bold"
-                                  //     : "normal",
-                                  //   fontStyle: styles.footer.italic
-                                  //     ? "italic"
-                                  //     : "",
-                                  // }}
-                                  dangerouslySetInnerHTML={{ __html: footer }}
-                                />
-                                {/* <textarea
+                            <div
+                              className={`${isOpenContent ? "block" : "hidden"
+                                } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
+                            >
+                              <h1 className="text-lg font-semibold">
+                                Footer <span>Optional</span>
+                              </h1>
+                              <div className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md">
+                                <h2 className=" text-base w-full">
+                                  <div
+                                    className="bg-[#F5F9FF]  h-fit w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                    // style={{
+                                    //   color: styles.footer.color,
+                                    //   fontWeight: styles.footer.bold
+                                    //     ? "bold"
+                                    //     : "normal",
+                                    //   fontStyle: styles.footer.italic
+                                    //     ? "italic"
+                                    //     : "",
+                                    // }}
+                                    dangerouslySetInnerHTML={{ __html: footer }}
+                                  />
+                                  {/* <textarea
                                   readOnly
                                   id="footer"
                                   placeholder="Enter the footer"
@@ -1171,48 +1300,47 @@ const Campaigns: React.FC = () => {
                                   }}
                                   dangerouslySetInnerHTML={{ __html: footer }}
                                 /> */}
-                              </h2>
-                            </div>
-                            {/* <FormattingControls
+                                </h2>
+                              </div>
+                              {/* <FormattingControls
                               content={footer}
                               section="footer"
                               styles={styles}
                               setStyles={setStyles}
                               setContent={setFooter}
                             /> */}
-                            {Object.entries(campaignParams.footer).map(
-                              ([key, value]) => (
-                                <div
-                                  className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
-                                  key={key}
-                                >
-                                  <h2 className="text-base w-full">
-                                    <input
-                                      type="text"
-                                      name={key}
-                                      placeholder={
-                                        key.charAt(0).toUpperCase() +
-                                        key.slice(1)
-                                      }
-                                      value={value}
-                                      onChange={(e) =>
-                                        handleParamsChange(e, "footer")
-                                      }
-                                      className="bg-[#F5F9FF] p-3 rounded-lg border-0 outline-none"
-                                    />
-                                  </h2>
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )}
+                              {Object.entries(campaignParams.footer).map(
+                                ([key, value]) => (
+                                  <div
+                                    className="flex items-center gap-1 bg-[#F5F9FF] py-2 px-3 rounded-md"
+                                    key={key}
+                                  >
+                                    <h2 className="text-base w-full">
+                                      <input
+                                        type="text"
+                                        name={key}
+                                        placeholder={
+                                          key.charAt(0).toUpperCase() +
+                                          key.slice(1)
+                                        }
+                                        value={value}
+                                        onChange={(e) =>
+                                          handleParamsChange(e, "footer")
+                                        }
+                                        className="bg-[#F5F9FF] p-3 rounded-lg border-0 outline-none"
+                                      />
+                                    </h2>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          )}
 
                         {/*buttons*/}
                         {buttons?.length > 0 && (
                           <div
-                            className={`${
-                              isOpenContent ? "block" : "hidden"
-                            } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
+                            className={`${isOpenContent ? "block" : "hidden"
+                              } mt-3 bg-white p-4 rounded-lg flex flex-col gap-2 w-full`}
                           >
                             <div className="flex justify-between items-center">
                               <h1 className="text-lg font-semibold ">
@@ -1303,9 +1431,8 @@ const Campaigns: React.FC = () => {
                           </div>
                           <div
                             onClick={toggleAccordiontarget}
-                            className={`${
-                              isOpenContent && " text-[#004AAD] border-none"
-                            } w-7 h-7 lg:w-8 lg:h-8  rounded flex items-center justify-center cursor-pointer text-lg`}
+                            className={`${isOpenContent && " text-[#004AAD] border-none"
+                              } w-7 h-7 lg:w-8 lg:h-8  rounded flex items-center justify-center cursor-pointer text-lg`}
                           >
                             {isOpentarget ? (
                               <FaAngleUp />
@@ -1315,9 +1442,8 @@ const Campaigns: React.FC = () => {
                           </div>
                         </div>
                         <div
-                          className={`${
-                            isOpentarget ? "block" : "hidden"
-                          } mt-3 bg-white  rounded-lg`}
+                          className={`${isOpentarget ? "block" : "hidden"
+                            } mt-3 bg-white  rounded-lg`}
                         >
                           <div className="  rounded-md w-full">
                             <div className=" p-4 flex items-center gap-6 border-b border-b-gray-400">
@@ -1410,9 +1536,8 @@ const Campaigns: React.FC = () => {
                           </div>
                           <div
                             onClick={toggleAccordionschedule}
-                            className={`${
-                              isOpenContent && " text-[#004AAD] border-none"
-                            } w-7 h-7 lg:w-8 lg:h-8  rounded flex items-center justify-center cursor-pointer text-lg`}
+                            className={`${isOpenContent && " text-[#004AAD] border-none"
+                              } w-7 h-7 lg:w-8 lg:h-8  rounded flex items-center justify-center cursor-pointer text-lg`}
                           >
                             {isOpenschedule ? (
                               <FaAngleUp />
@@ -1422,9 +1547,8 @@ const Campaigns: React.FC = () => {
                           </div>
                         </div>
                         <div
-                          className={`${
-                            isOpenschedule ? "block" : "hidden"
-                          } mt-3  rounded-lg`}
+                          className={`${isOpenschedule ? "block" : "hidden"
+                            } mt-3  rounded-lg`}
                         >
                           <div className=" rounded-md w-full flex flex-col gap-1">
                             {options.map((option) => (
@@ -1450,7 +1574,7 @@ const Campaigns: React.FC = () => {
                                   </div>
                                 </div>
                                 {selectedOption === option.value &&
-                                option.value === "customDate" ? (
+                                  option.value === "customDate" ? (
                                   <div className="flex juttify start items-start absolute mt-1">
                                     <DatePicker
                                       selected={customDate}
@@ -1483,11 +1607,10 @@ const Campaigns: React.FC = () => {
               </div>
 
               <div
-                className={`w-full max-w-xs mx-auto lg:p-3 ${
-                  !Confirmation
+                className={`w-full max-w-xs mx-auto lg:p-3 ${!Confirmation
                     ? "fixed  lg:right-[6rem] lg:top-[12rem] md:right-12 md:top-44 sm:right-12 sm:top-56 h-fit"
                     : "relative top-0"
-                }`}
+                  }`}
               >
                 {" "}
                 <img
@@ -1593,7 +1716,7 @@ const Campaigns: React.FC = () => {
       <CustomerPool
         isVisible={isPoolVisible}
         onClose={togglePool}
-        // setFilterData={filterElementsAdd}
+      // setFilterData={filterElementsAdd}
       />
     </div>
   );
