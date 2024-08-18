@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 
 //svg
 import announcement from "/announcement.svg";
@@ -6,7 +6,12 @@ import messages from "/messages.svg";
 import shop from "/shop.svg";
 import shield from "/shield.svg";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-
+declare global {
+  interface Window {
+    FB: any;
+    fbAsyncInit: () => void;
+  }
+}
 const ConnectNumber: React.FC = () => {
   const [ensureReqOpen, setEnsureReqOpen] = useState<boolean>(false);
   const [readCondMain, setReadCondMain] = useState<boolean>(false);
@@ -40,7 +45,47 @@ const ConnectNumber: React.FC = () => {
   ) => {
     setReadCondEnsureReq(event.target.checked);
   };
+  useEffect(() => {
+    // Load the Facebook SDK
+    (function loadFbSdk(d: Document, s: string, id: string) {
+      const element = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
 
+      const js: HTMLScriptElement = d.createElement(s) as HTMLScriptElement;
+      js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      js.async = true;
+      js.defer = true;
+      element.parentNode?.insertBefore(js, element);
+
+      js.onload = () => {
+        window.fbAsyncInit = function () {
+          window.FB.init({
+            appId: "1785097398668397",
+            autoLogAppEvents: true,
+            xfbml: true,
+            version: "v20.0",
+          });
+        };
+      };
+    })(document, "script", "facebook-jssdk");
+  }, []);
+
+  const handleFacebookLogin = () => {
+    window.FB.login(
+      function (response: any) {        if (response.authResponse) {
+          console.log("Welcome! Fetching your information...");
+          window.FB.api("/me", function (response: any) {            console.log("Good to see you, " + response.name + ".");
+            // Here you can handle the response, such as sending it to your backend or updating your UI
+          });
+        } else {
+          console.log("User cancelled login or did not fully authorize.");
+        }
+      },
+      { scope: "public_profile,email" }
+    );
+  };
+  
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="lg:w-[93%]  lg:px-[2rem] py-[1rem] gap-10 lg:ml-[7%] h-[100vh]">
@@ -108,7 +153,7 @@ const ConnectNumber: React.FC = () => {
                     </li>
                     <li className="-indent-5">
                       Due to WhatsApp’s rules, going back to WhatsApp apps from
-                      Snackbae is a time taking process & not guaranteed
+                      Snackbae is a time taking process & not guaranteed
                     </li>
                     <li className="-indent-5">
                       Old chats on your number’s WhatsApp account will get
@@ -328,9 +373,18 @@ const ConnectNumber: React.FC = () => {
                     onChange={handleInputChange}
                     className="w-full p-2 border rounded mb-6 bg-[#F6F6F6] text-sm"
                   />
-                  <button className="w-full py-2 bg-[#004AAD] text-white font-semibold rounded">
-                    Continue with Facebook
-                  </button>
+                   <button
+                  className="w-full bg-[#1877F2] text-white py-2 rounded-md mt-4"
+                  onClick={handleFacebookLogin}
+                >
+                  Continue with Facebook
+                </button>
+                <button
+                  className="w-full bg-transparent text-[#004AAD] py-2 rounded-md mt-4"
+                  onClick={() => setVerifyMeta(false)}
+                >
+                  Cancel
+                </button>
                 </div>
               </div>
             </div>
