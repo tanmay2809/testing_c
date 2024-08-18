@@ -17,12 +17,66 @@ import SwitchCustomTheme from "../../component/setting/SwitchCustomTheme";
 // import imageInput from "../../../public/imageInput.svg";
 import { IoIosCloseCircleOutline, IoMdImages } from "react-icons/io";
 
+interface FormData {
+  url: string | null;
+  image: string | null;
+}
 const CustomiseTheme = () => {
-  const [url, setUrl] = useState<string>("");
-  const [bookingurl, setBookingUrl] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<string | undefined>(
-    undefined
-  );
+  const [adddelivery, setadddelivery] = useState<boolean>(false);
+  const [addBooking, setaddBooking] = useState<boolean>(false);
+  const [deliveryFormData, setDeliveryFormData] = useState<FormData>({
+    url: null,
+    image: null,
+  });
+  const [bookingFormData, setBookingFormData] = useState<FormData>({
+    url: null,
+    image: null,
+  });
+
+  const handleUrlChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    formType: "delivery" | "booking"
+  ) => {
+    const url = e.target.value;
+    if (formType === "delivery") {
+      setDeliveryFormData((prevData) => ({ ...prevData, url }));
+    } else if (formType === "booking") {
+      setBookingFormData((prevData) => ({ ...prevData, url }));
+    }
+  };
+
+  const handleImageChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    formType: "delivery" | "booking"
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const image = URL.createObjectURL(file);
+      if (formType === "delivery") {
+        setDeliveryFormData((prevData) => ({ ...prevData, image }));
+      } else if (formType === "booking") {
+        setBookingFormData((prevData) => ({ ...prevData, image }));
+      }
+    }
+  };
+
+  const handleImageClick = (formType: "delivery" | "booking") => {
+    if (formType === "delivery") {
+      setDeliveryFormData((prevData) => ({ ...prevData, image: null }));
+    } else if (formType === "booking") {
+      setBookingFormData((prevData) => ({ ...prevData, image: null }));
+    }
+  };
+
+  const handleApply = (formType: "delivery" | "booking") => {
+    if (formType === "delivery") {
+      console.log("Delivery Form Data:", deliveryFormData);
+      setDeliveryFormData({ url: null, image: null });
+    } else if (formType === "booking") {
+      console.log("Booking Form Data:", bookingFormData);
+      setBookingFormData({ url: null, image: null });
+    }
+  };
 
   const delivery = [
     {
@@ -39,30 +93,9 @@ const CustomiseTheme = () => {
     },
   ];
 
-  const [adddelivery, setadddelivery] = useState<boolean>(false);
-  const [addBooking, setaddBooking] = useState<boolean>(false);
-
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedImage(URL.createObjectURL(file));
-    }
-  };
-
-  const handleImageClick = () => {
-    setSelectedImage(undefined);
-  };
   // navbar frame
   const handleFrame = () => {
     document.getElementById("frame")!.style.display = "none";
-  };
-  const bookingApply = () => {
-    console.log(bookingurl);
-    setaddBooking(false)
-  };
-  const deliveryApply = () => {
-    console.log(url);
-    setadddelivery(false)
   };
 
   const [switchTab, setSwitchTab] = useState<string>("Dine-in Preview");
@@ -235,185 +268,203 @@ const CustomiseTheme = () => {
 
       {adddelivery && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white w-[35%] h-[58%] rounded-lg py-6">
-            <div className="flex justify-between items-center text-[#0F172A] font-Roboto font-[500] text-[1.8rem] px-6 border-b border-b-[#0F172A] pb-3">
-              <p>Add Delivery Link</p>
-              <RxCrossCircled
-                onClick={() => setadddelivery(false)}
-                className="cursor-pointer"
-              />
-            </div>
-            <div className="mx-auto px-10 py-4 bg-white flex flex-col justify-between h-full rounded-lg">
-              <div className="flex flex-col justify-between">
-                <div>
-                  <label
-                    htmlFor="url"
-                    className="block font-semibold text-gray-700 mb-2 text-[1.4rem] "
-                  >
-                    Link URL
-                  </label>
-                  <input
-                    type="text"
-                    id="url"
-                    className="w-full border border-gray-300 rounded-lg p-2 mb-2"
-                    placeholder="EG: www.zomato.com/foodoos/Book Now"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                  />
-                </div>
-                <div className="mt-4 flex justify-start gap-10 items-center">
-                  <label
-                    htmlFor="imageInput"
-                    className="flex flex-col items-center justify-center w-[8rem] h-[6rem] border-2 border-dashed bg-[#F1F7FF] border-gray-300 rounded-lg cursor-pointer "
-                  >
-                    <IoMdImages size={48} className="text-[#004AAD]" />
-                    <input
-                      type="file"
-                      id="imageInput"
-                      className="hidden"
-                      onChange={handleImageChange}
-                    />
-                  </label>
-                  {selectedImage ? (
-                    <div className="w-[7rem] h-[7rem] flex items-center justify-center  object-cover cursor-pointer  rounded-lg">
-                      <img
-                        src={selectedImage}
-                        alt="Selected"
-                        className="w-[7rem] h-[6rem] object-cover rounded-md "
-                        onClick={handleImageClick}
-                      />
-                      <button
-                        type="button"
-                        className="relative rounded-full -top-12 -left-4"
-                        onClick={handleImageClick}
-                      >
-                        <IoIosCloseCircleOutline
-                          size={30}
-                          className="text-black bg-white rounded-full"
-                        />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="mb-4">
-                     <label className="block text-[1.15rem] font-semibold text-gray-700 mb-2">
-                        Link URL icon <span className="text-red-500">*</span>
-                      </label>
-                      <p className="text-[.9rem] text-gray-500 mt-2">
-                        Image format .jpg, .jpeg, .png and minimum size 300 x
-                        300px
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex justify-between w-full gap-3">
-                <button
-                  className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg w-1/2 font-semibold text-[1.2rem]"
+          <div className="bg-white w-[35%] h-[58%] rounded-lg pt-6">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleApply("delivery");
+              }}
+              className="h-full flex flex-col justify-between"
+            >
+              <div className="flex justify-between items-center text-[#0F172A] font-Roboto font-[500] text-[1.8rem] px-6 border-b border-b-[#0F172A] pb-3">
+                <p>Add Delivery Link</p>
+                <RxCrossCircled
                   onClick={() => setadddelivery(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="px-4 py-3 bg-[#004AAD] text-white rounded-lg w-1/2 font-semibold text-[1.2rem]"
-                  onClick={deliveryApply}
-                >
-                  Save
-                </button>
+                  className="cursor-pointer"
+                />
               </div>
-            </div>
+              <div className=" px-10 py-4 bg-white flex flex-col justify-between h-full rounded-lg">
+                <div className="flex flex-col justify-between">
+                  <div>
+                    <label
+                      htmlFor="url"
+                      className="block font-semibold text-gray-700 mb-2 text-[1.4rem]"
+                    >
+                      Link URL
+                    </label>
+                    <input
+                      type="text"
+                      id="url"
+                      className="w-full border border-gray-300 rounded-lg p-2"
+                      placeholder="EG: www.zomato.com/foodoos/Book Now"
+                      value={deliveryFormData.url || ""}
+                      onChange={(e) => handleUrlChange(e, "delivery")}
+                    />
+                  </div>
+                  <div className="mt-4 flex justify-start gap-10 items-center">
+                    <label
+                      htmlFor="imageInput"
+                      className="flex flex-col items-center justify-center w-[8rem] h-[6rem] border-2 border-dashed bg-[#F1F7FF] border-gray-300 rounded-lg cursor-pointer"
+                    >
+                      <IoMdImages size={48} className="text-[#004AAD]" />
+                      <input
+                        type="file"
+                        id="imageInput"
+                        className="hidden"
+                        onChange={(e) => handleImageChange(e, "delivery")}
+                      />
+                    </label>
+                    {deliveryFormData.image ? (
+                      <div className="mb-4 w-[7rem] h-[7rem] flex items-center justify-center object-cover cursor-pointer rounded-lg">
+                        <img
+                          src={deliveryFormData.image}
+                          alt="Selected"
+                          className="w-[7rem] h-[6rem] object-cover rounded-md"
+                          onClick={() => handleImageClick("delivery")}
+                        />
+                        <button
+                          type="button"
+                          className="relative rounded-full -top-12 -left-4"
+                          onClick={() => handleImageClick("delivery")}
+                        >
+                          <IoIosCloseCircleOutline
+                            size={30}
+                            className="text-black bg-white rounded-full"
+                          />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="mb-4">
+                        <label className="block text-[1.15rem] font-semibold text-gray-700 mb-2">
+                          Link URL icon <span className="text-red-500">*</span>
+                        </label>
+                        <p className="text-[.9rem] text-gray-500 mt-2">
+                          Image format .jpg, .jpeg, .png and minimum size 300 x
+                          300px
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex justify-between w-full gap-3">
+                  <button
+                    type="button"
+                    className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg w-1/2 font-semibold text-[1.2rem]"
+                    onClick={() => setadddelivery(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-3 bg-[#004AAD] text-white rounded-lg w-1/2 font-semibold text-[1.2rem]"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       )}
       {addBooking && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white w-[35%] h-[58%] rounded-lg py-6">
-            <div className="flex justify-between items-center text-[#0F172A] font-Roboto font-[500] text-[1.8rem] px-6 border-b border-b-[#0F172A] pb-3">
-              <p>Add Booking Link</p>
-              <RxCrossCircled
-                onClick={() => setaddBooking(false)}
-                className="cursor-pointer"
-              />
-            </div>
-            <div className="mx-auto px-10 py-4 bg-white flex flex-col justify-between h-full rounded-lg">
-              <div className="flex flex-col justify-between">
-                <div>
-                  <label
-                    htmlFor="url"
-                    className="block font-semibold text-gray-700 mb-2 text-[1.4rem] "
-                  >
-                    Link URL
-                  </label>
-                  <input
-                    type="text"
-                    id="url"
-                    className="w-full border border-gray-300 rounded-lg p-2 mb-2"
-                    placeholder="EG: www.zomato.com/foodoos/Book Now"
-                    value={bookingurl}
-                    onChange={(e) => setBookingUrl(e.target.value)}
-                  />
-                </div>
-                <div className="mt-4 flex justify-start gap-10 items-center">
-                  <label
-                    htmlFor="imageInput"
-                    className="flex flex-col items-center justify-center w-[8rem] h-[6rem] border-2 border-dashed bg-[#F1F7FF] border-gray-300 rounded-lg cursor-pointer "
-                  >
-                    <IoMdImages size={48} className="text-[#004AAD]" />
-                    <input
-                      type="file"
-                      id="imageInput"
-                      className="hidden"
-                      onChange={handleImageChange}
-                    />
-                  </label>
-                  {selectedImage ? (
-                    <div className="w-[7rem] h-[7rem] flex items-center justify-center  object-cover cursor-pointer  rounded-lg">
-                      <img
-                        src={selectedImage}
-                        alt="Selected"
-                        className="w-[7rem] h-[6rem] object-cover rounded-md "
-                        onClick={handleImageClick}
-                      />
-                      <button
-                        type="button"
-                        className="relative rounded-full -top-12 -left-4"
-                        onClick={handleImageClick}
-                      >
-                        <IoIosCloseCircleOutline
-                          size={30}
-                          className="text-black bg-white rounded-full"
-                        />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="mb-4">
-                      <label className="block text-[1.15rem] font-semibold text-gray-700 mb-2">
-                        Link URL icon <span className="text-red-500">*</span>
-                      </label>
-                      <p className="text-[.9rem] text-gray-500 mt-2">
-                        Image format .jpg, .jpeg, .png and minimum size 300 x
-                        300px
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="flex justify-between w-full gap-3">
-                <button
-                  className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg w-1/2 font-semibold text-[1.2rem]"
+          <div className="bg-white w-[35%] h-[58%] rounded-lg pt-6">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleApply("booking");
+              }}
+              className="h-full flex flex-col justify-between w-full"
+            >
+              <div className="flex justify-between items-center text-[#0F172A] font-Roboto font-[500] text-[1.8rem] px-6 border-b border-b-[#0F172A] pb-3">
+                <p>Add Booking Link</p>
+                <RxCrossCircled
                   onClick={() => setaddBooking(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="px-4 py-3 bg-[#004AAD] text-white rounded-lg w-1/2 font-semibold text-[1.2rem]"
-                  onClick={bookingApply}
-                >
-                  Save
-                </button>
+                  className="cursor-pointer"
+                />
               </div>
-            </div>
+              <div className=" px-10 py-4 bg-white flex flex-col justify-between h-full rounded-lg">
+                <div className="flex flex-col justify-between">
+                  <div>
+                    <label
+                      htmlFor="bookingurl"
+                      className="block font-semibold text-gray-700 mb-2 text-[1.4rem]"
+                    >
+                      Link URL
+                    </label>
+                    <input
+                      type="text"
+                      id="bookingurl"
+                      className="w-full border border-gray-300 rounded-lg p-2 mb-2"
+                      placeholder="EG: www.zomato.com/foodoos/Book Now"
+                      value={bookingFormData.url || ""}
+                      onChange={(e) => handleUrlChange(e, "booking")}
+                    />
+                  </div>
+                  <div className="mt-4 flex justify-start gap-10 items-center">
+                    <label
+                      htmlFor="imageInput"
+                      className="flex flex-col items-center justify-center w-[8rem] h-[6rem] border-2 border-dashed bg-[#F1F7FF] border-gray-300 rounded-lg cursor-pointer"
+                    >
+                      <IoMdImages size={48} className="text-[#004AAD]" />
+                      <input
+                        type="file"
+                        id="imageInput"
+                        className="hidden"
+                        onChange={(e) => handleImageChange(e, "booking")}
+                      />
+                    </label>
+                    {bookingFormData.image ? (
+                      <div className="mb-4 w-[7rem] h-[7rem] flex items-center justify-center object-cover cursor-pointer rounded-lg">
+                        <img
+                          src={bookingFormData.image}
+                          alt="Selected"
+                          className="w-[7rem] h-[6rem] object-cover rounded-md"
+                          onClick={() => handleImageClick("booking")}
+                        />
+                        <button
+                          type="button"
+                          className="relative rounded-full -top-12 -left-4"
+                          onClick={() => handleImageClick("booking")}
+                        >
+                          <IoIosCloseCircleOutline
+                            size={30}
+                            className="text-black bg-white rounded-full"
+                          />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="mb-4">
+                        <label className="block text-[1.15rem] font-semibold text-gray-700 mb-2">
+                          Link URL icon <span className="text-red-500">*</span>
+                        </label>
+                        <p className="text-[.9rem] text-gray-500 mt-2">
+                          Image format .jpg, .jpeg, .png and minimum size 300 x
+                          300px
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex justify-between w-full gap-3">
+                  <button
+                    type="button"
+                    className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg w-1/2 font-semibold text-[1.2rem]"
+                    onClick={() => setaddBooking(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-3 bg-[#004AAD] text-white rounded-lg w-1/2 font-semibold text-[1.2rem]"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       )}
