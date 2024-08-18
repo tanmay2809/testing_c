@@ -329,6 +329,28 @@ const LeftNavbar = () => {
                   </span>
                 </Link>
               </div>
+              <div>
+                <Link
+                  onClick={handleScrollToTop}
+                  className={`${
+                    location.pathname === "/feedback"
+                      ? "text-[#004AAD] bg-slate-100  "
+                      : "text-[#64748B]"
+                  } flex gap-2 text-nowrap items-center hover:text-[#004AAD] rounded-xl ${
+                    isOpen ? "px-5 mx-3 py-2.5  " : " p-4 "
+                  } `}
+                  to="/feedback"
+                >
+                  <HiOutlineSpeakerphone />
+                  <span
+                    onClick={handleToggle}
+                    className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}
+                  >
+                    Feedback{" "}
+                    <span className=" text-transparent ">_______</span>
+                  </span>
+                </Link>
+              </div>
             </div>
             <div
               className={` w-[90%] py-3 font-semibold Poppins px-1 text-[.9rem] flex  items-center justify-center  flex-col gap-1 rounded-md bg-gradient-to-tl from-[#004AAD] to-[#EAABF0] mx-2  ${

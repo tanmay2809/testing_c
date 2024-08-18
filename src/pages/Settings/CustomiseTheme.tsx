@@ -217,7 +217,7 @@ const CustomiseTheme = () => {
                   alt="swiggy"
                   className="w-[60px] aspect-auto object-cover"
                 />
-                <p className="w-[70%] px-4 rounded-lg py-2 border border-black font-[400] text-black text-[1rem]">
+                <p className="w-[70%] px-4 rounded-lg py-2 border border-black font-[400] text-black text-[1rem] text-nowrap overflow-hidden">
                   www.zomato.com/foodoos/Book Now
                 </p>
                 <div className="flex gap-4 items-center ">
@@ -250,7 +250,7 @@ const CustomiseTheme = () => {
                     alt="swiggy"
                     className="w-[60px] aspect-auto object-cover"
                   />
-                  <p className="w-[70%] h-[40px] px-4 rounded-lg py-2 border border-black font-[400] text-black text-[1rem]">
+                  <p className="w-[70%] h-[40px] px-4 rounded-lg py-2 border border-black font-[400] text-black text-[1rem] text-nowrap overflow-hidden">
                     {item.Link}
                   </p>
                   <div className="flex gap-4 items-center ">

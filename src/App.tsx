@@ -32,6 +32,7 @@ import Integrations from "./pages/Marketing/Integrations";
 import WhatsappBusinessProfile from "./pages/Marketing/WhatsappBusinessProfile";
 import WhatsAppManager from "./pages/Marketing/WhatsappManager";
 import CustomiseTheme from './pages/Settings/CustomiseTheme';
+import Feedbackpage from "./pages/feedback/Feedbackpage";
 
 const App: React.FC = () => {
   console.log("App Component Rendered");
@@ -88,6 +89,7 @@ const App: React.FC = () => {
             {/* <Route path="invoice" element={<Invoice />} /> */}
           </Route>
           <Route path="/CustomiseTheme" element={<CustomiseTheme />} />
+          <Route path="/feedback" element={<Feedbackpage />} />
         </Route>
       </Routes>
     </>
