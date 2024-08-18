@@ -16,6 +16,7 @@ import { CiSettings } from "react-icons/ci";
 import { IoLogOutOutline } from "react-icons/io5";
 import { HiChevronUpDown } from "react-icons/hi2";
 import { FiPlus } from "react-icons/fi";
+import feedback from "../../assets/Vector.png";
 
 // assets
 import right from "../../assets/right.png";
@@ -341,7 +342,8 @@ const LeftNavbar = () => {
                   } `}
                   to="/feedback"
                 >
-                  <HiOutlineSpeakerphone />
+                  
+                  <img src={feedback} className="size-5" alt="" />
                   <span
                     onClick={handleToggle}
                     className={` ${isOpen ? "block text-[.9rem]" : " hidden"}`}

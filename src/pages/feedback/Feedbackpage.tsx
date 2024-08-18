@@ -83,13 +83,13 @@ const Feedbackpage = () => {
                 </div>
 
               </div>
-              <div className="md:w-[31%] lg:w-[23%] bg-[#DFE7FF]  h-[260px] rounded-lg">
+              <div className="md:w-[31%] lg:w-[23%] bg-[#DFE7FF]  h-[200px] rounded-lg">
 
               </div>
 
 
 
-              <div className="md:w-[100%] lg:w-[73%] bg-[#D0FFF8]  h-[260px] rounded-lg">
+              <div className="md:w-[100%] lg:w-[73%] bg-[#D0FFF8]  h-[200px] rounded-lg">
 
               </div>
 
