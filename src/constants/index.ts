@@ -674,6 +674,42 @@ export const slidesData: Record<string, SlideCategory> = {
   // },
 };
 
+export interface ReviewCard {
+  name: string;
+  phone: string;
+  feedback: string;
+  date: string;
+}
+
+export const sampleReviews = [
+  {
+    name: "Sam Sundar",
+    phone: "+91 7000000070",
+    feedback:
+      "Very bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad",
+    date: "Today",
+  },
+  {
+    name: "Sam Sundar",
+    phone: "+91 7000000070",
+    feedback:
+      "Very bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad",
+    date: "Today",
+  },{
+    name: "Sam Sundar",
+    phone: "+91 7000000070",
+    feedback:
+      "Very bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad",
+    date: "Today",
+  },{
+    name: "Sam Sundar",
+    phone: "+91 7000000070",
+    feedback:
+      "Very bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad experienceVery bad",
+    date: "Today",
+  },
+];
+
 export const pricingData = {
   basic: [
     {
