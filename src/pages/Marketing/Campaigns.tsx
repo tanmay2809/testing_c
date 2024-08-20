@@ -35,8 +35,8 @@ import AdvanceFilter from "../../component/Marketing/AdvanceFilter";
 import CustomerPool from "../../component/Marketing/CustomerPool";
 
 //toastify
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 // import FormattingControls from "../../component/Marketing/FormattingControls";
 
 //svg
@@ -835,26 +835,27 @@ const Campaigns: React.FC = () => {
 
   //add buttons to content
   const handleAddButton = (type: string) => {
+    console.log(type);
     setIsButton(!isButton);
-    const typeCounts = buttons.reduce((acc, button) => {
-      acc[button.type] = (acc[button.type] || 0) + 1;
-      return acc;
-    }, {} as { [key: string]: number });
+    // const typeCounts = buttons.reduce((acc, button) => {
+    //   acc[button.type] = (acc[button.type] || 0) + 1;
+    //   return acc;
+    // }, {} as { [key: string]: number });
 
-    if (type === "CallingButton" && typeCounts.CallingButton >= 1) {
-      toast.error("Only 1 Calling Button can be added");
-      return;
-    }
-    if (type === "WebsiteButton" && typeCounts.WebsiteButton >= 2) {
-      toast.error("Only 2 Website Buttons can be added");
-      return;
-    }
-    if (type === "FeedbackButton" && typeCounts.FeedbackButton >= 1) {
-      toast.error("Only 1 Feedback Button can be added");
-      return;
-    }
+    // if (type === "CallingButton" && typeCounts.CallingButton >= 1) {
+    //   toast.error("Only 1 Calling Button can be added");
+    //   return;
+    // }
+    // if (type === "WebsiteButton" && typeCounts.WebsiteButton >= 2) {
+    //   toast.error("Only 2 Website Buttons can be added");
+    //   return;
+    // }
+    // if (type === "FeedbackButton" && typeCounts.FeedbackButton >= 1) {
+    //   toast.error("Only 1 Feedback Button can be added");
+    //   return;
+    // }
 
-    setButtons([...buttons, { id: Date.now(), type }]);
+    // setButtons([...buttons, { id: Date.now(), type }]);
   };
 
   //deleting buttons from content
@@ -947,7 +948,6 @@ const Campaigns: React.FC = () => {
               <div className="bg-white fixed lg:w-[85%] md:w-[91%] -mt-[0.26rem] z-10 p-4 rounded-xl ">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold ">Template Preview</h2>
-                  <button onClick={updateOrderWithParams}>test</button>
                   <div className="flex gap-6">
                     <Link to="/marketing">
                       <button className=" text-[#E61856] bg-[#FDF1F1] px-4 py-2 rounded-lg">
@@ -981,13 +981,7 @@ const Campaigns: React.FC = () => {
                 {/*booking */}
                 {!Confirmation && (
                   <>
-                    {mesData?.messageData.template.components.some(
-                      (component) =>
-                        component.type === "header" &&
-                        component.parameters.some(
-                          (param) => param.type === "image" && param.image
-                        )
-                    ) && (
+                    {conData?.type === "Marketing" && (
                       <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
                         <div className="flex items-center gap-3">
                           <div className="bg-[#FFCF27] p-4 rounded-lg">
@@ -1003,13 +997,7 @@ const Campaigns: React.FC = () => {
                       </div>
                     )}
 
-                    {!mesData?.messageData.template.components.some(
-                      (component) =>
-                        component.type === "header" &&
-                        component.parameters.some(
-                          (param) => param.type === "image" && param.image
-                        )
-                    ) && (
+                    {conData?.type === "Utility" && (
                       <div className=" p-4 rounded-lg mb-4 bg-white flex justify-between">
                         <div className="flex items-center gap-3">
                           <div className="bg-[#FFA858] p-4 rounded-lg">
@@ -1025,11 +1013,13 @@ const Campaigns: React.FC = () => {
                       </div>
                     )}
                     <div className=" p-4 rounded-lg mb-4 bg-white flex flex-col justify-between">
-                      <h2 className="font-semibold text-lg">Test Campaign</h2>
+                      <h2 className="font-semibold text-lg mb-1">
+                        Test Campaign
+                      </h2>
                       <p className="text-base">
                         Test campaign before you automate it
                       </p>
-                      <div className="flex items-center gap-3 w-full">
+                      <div className="flex items-center gap-3 w-full py-2">
                         <input
                           type="text"
                           placeholder="Add Test Mobile Number"
@@ -1672,13 +1662,18 @@ const Campaigns: React.FC = () => {
                     : "relative top-0"
                 }`}
               >
-                {" "}
                 <img
                   src={screen}
                   alt="Phone Screen"
                   className="lg:w-[85%] md:w-[80%] h-auto mx-auto  sm:w-[88%] ml-10"
                 />
-                <div className="absolute inset-0 flex flex-col  gap-1 items-center justify-center text-black h-fit lg:top-[6.3rem] md:top-[5.5rem] lg:w-[13.7rem] md:w-[14.3rem] lg:left-[4rem] md:left-[3.1rem]">
+                <div
+                  style={{
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
+                  }}
+                  className="absolute inset-0 flex flex-col  gap-1 items-center justify-start text-black h-[19.5rem] overflow-y-auto lg:top-[6.3rem] md:top-[5.5rem] lg:w-[13.7rem] md:w-[14.3rem] lg:left-[4rem] md:left-[3.1rem]"
+                >
                   <div className="bg-white  p-2 rounded-md  w-full h-fit">
                     {selectedImage &&
                       mesData?.messageData.template.components.some(

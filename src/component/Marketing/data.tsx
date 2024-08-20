@@ -197,10 +197,12 @@ export const order_action_required_2 = {
   },
 };
 export const content_1 = {
+  type:"Utility",
   header: "<p>Special offer from <strong>{name}</strong></p>",
   body: `<p>Enjoy a <strong>{offer}</strong> on a billing of <strong>{price}</strong> or above! 🎉</p><br /><p>📅 Valid until: <strong>{date}</strong></p><p>📍 Visit us at: <strong>{location}</strong></p><br /><p>T&C apply. Hurry, come savor the flavors at <strong>{name}</strong> 🍲</p><p>For more details, call us at <strong>{phone}</strong></p>`,
 };
 export const content_2 = {
+  type:"Marketing",
   header: "<p>Special offer from <strong>{name}</strong></p>",
   body: `<p>Enjoy a <strong>{offer}</strong> on a billing of <strong>{price}</strong> or above! 🎉</p><br /><p>📅 Valid until: <strong>{date}</strong></p><p>📍 Visit us at: <strong>{location}</strong></p><br /><p>T&C apply. Hurry, come savor the flavors at <strong>{name}</strong> 🍲</p>`,
   footer: "<p>Thanks from <strong>{name}</strong></p>",

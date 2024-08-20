@@ -33,6 +33,7 @@ export interface Parameter {
 }
 
 export interface ContentData {
+  type?:string;
   header?: string;
   body?: string;
   footer?: string;
