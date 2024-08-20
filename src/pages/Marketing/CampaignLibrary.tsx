@@ -5,7 +5,7 @@ import Feedback from "../../component/outlet/Feedback";
 import SliderComponent from "../../component/Marketing/SliderComponent";
 
 //swiperjs
-import { slidesData, AllData } from "../../constants/index";
+// import { slidesData, AllData } from "../../constants/index";
 import { FaSearch } from "react-icons/fa";
 import { marketing, utility } from "../../component/Marketing/data";
 

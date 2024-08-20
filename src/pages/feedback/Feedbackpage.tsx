@@ -12,7 +12,7 @@ import FeedbackSlider from "../../component/Feedback/FeedbackSlider";
 import { sampleReviews } from "../../constants";
 import BarChart from "../../component/Customer/BarChart";
 import { BarChartc } from "../../component/Customer/Barchartc";
-import { useState } from "react";
+// import { useState } from "react";
 
 const dataForBar = {
   labels: ["😐", "😍", "😊", "😍", "😍"],
@@ -50,7 +50,8 @@ const optionsForBar = {
 };
 
 const Feedbackpage = () => {
-  const [dailyVisits, setDailyVisits] = useState<{ [key: string]: number }>({});
+  // const [dailyVisits, setDailyVisits] = useState<{ [key: string]: number }>({});
+  let dailyVisits: { [key: string]: number } = {};
   // navbar fram
   const handlefram = () => {
     document.getElementById("frame")!.style.display = "none";

@@ -63,7 +63,7 @@ interface Compon {
 const Campaigns: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
   console.log("resData: ", data);
-
+  console.log(order_action_required_2);
   const [customerData, setCustomerData] = useState<any>(data?.customerData);
   const [isOpenContent, setIsOpenContent] = useState<boolean>(true);
   const [isOpentarget, setIsOpentarget] = useState<boolean>(false);
@@ -78,8 +78,10 @@ const Campaigns: React.FC = () => {
   const [header, setHeader] = useState<string>("");
   const [body, setBody] = useState<string>("");
   const [footer, setFooter] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [Confirmation, setConfirmation] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const [Confirmation, setConfirmation] = useState<boolean>(false);
+  let loading = false;
+  let Confirmation = false;
   // const [styles, setStyles] = useState<StylesState>({
   //   header: {
   //     color: "#000000",
