@@ -10,44 +10,12 @@ import smiley from "/smiley.svg";
 
 import FeedbackSlider from "../../component/Feedback/FeedbackSlider";
 import { sampleReviews } from "../../constants";
-import BarChart from "../../component/Customer/BarChart";
+
 import { BarChartc } from "../../component/Customer/Barchartc";
+import { Barchart1 } from "../../component/Feedback/Barchart1";
 // import { useState } from "react";
 
-const dataForBar = {
-  labels: ["😐", "😍", "😊", "😍", "😍"],
-  datasets: [
-    {
-      label: "Rating Breakdown",
-      data: [4, 6, 1, 5, 2],
-      backgroundColor: "#FFC700",
-      barThickness: 70,
-      borderRadius: {
-        topLeft: 10,
-        topRight: 10,
-      },
-    },
-  ],
-};
-const optionsForBar = {
-  scales: {
-    x: {
-      grid: {
-        display: false,
-      },
-    },
-    y: {
-      grid: {
-        display: false,
-      },
-    },
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-};
+
 
 const Feedbackpage = () => {
   // const [dailyVisits, setDailyVisits] = useState<{ [key: string]: number }>({});
@@ -203,13 +171,13 @@ const Feedbackpage = () => {
               </div>
               <div className="flex md:flex-col lg:flex-row items-center gap-3 w-full">
                 <div className="md:w-[100%] lg:w-1/2 bg-[#F5F2F2] h-[22rem] relative rounded-lg p-6 flex flex-col justify-evenly gap-4 overflow-hidden">
-                  <div className="w-full h-full flex justify-between">
-                    <div>
-                      <p className="text-lg font-semibold flex items-center mb-2">
+                  
+                   
+                      <p className="text-lg font-semibold flex items-center absolute z-[50] mb-2 top-0 ">
                         Rating Breakdown
                       </p>
-                    </div>
-                  </div>
+                    
+                  
                   {/* {pause ? (
                     <div className="w-full flex flex-col items-center justify-start">
                       <img src={noDataFound} className="w-60 h-auto" />
@@ -219,23 +187,12 @@ const Feedbackpage = () => {
                       </p>
                     </div>
                   ) : ( */}
-                  <div className=" w-full h-fit flex absolute left-4 lg:top-[3rem] md:top-[1rem]  ">
-                    <div className="w-full h-full lg:block hidden ">
-                      <BarChart
-                        data={dataForBar}
-                        options={optionsForBar}
-                        width={150}
-                        height={75}
-                      />
+                  <div className=" w-full h-fit flex absolute z-[20] left-0 py-2 bottom-0">
+                    <div className="w-[100%] h-full block  ">
+                      
+                      <Barchart1/>
                     </div>
-                    <div className="w-full h-full lg:hidden block ">
-                      <BarChart
-                        data={dataForBar}
-                        options={optionsForBar}
-                        width={160}
-                        height={60}
-                      />
-                    </div>
+                    
                   </div>
                   {/* )} */}
                 </div>
