@@ -1,14 +1,17 @@
+import image1 from "../../assets/image 168.png";
+import image2 from "../../assets/Group 1171278508.png";
+
 export const utility = [
   {
     title: "Welcome Greetings when they visit your business",
     type: "Utility",
-    image: "../../assets/image 168.png",
+    image: image1,
     start: false,
   },
   {
     title: "Welcome Greetings when they visit your business",
     type: "Utility",
-    image: "../../assets/image 168.png",
+    image: image2,
     start: false,
   },
 ];
@@ -16,7 +19,7 @@ export const marketing = [
   {
     title: "Happy birthday to you! FREE starter on us",
     type: "Marketing",
-    image: "image 168",
+    image: image1,
     start: false,
   },
   // {

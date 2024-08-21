@@ -60,7 +60,6 @@ import { Slide } from "../../constants/index";
 
 //images
 import whatsapp from "../../assets/whatsapp.png";
-import image1 from "../../assets/Group 1171278507.png";
 import announcement from "/announcement.svg";
 
 import {
@@ -145,8 +144,7 @@ const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
           >
             <div className="relative h-full">
               <img
-                src={image1}
-                // src={slide.image}
+                src={slide.image} 
                 alt={`Slide ${index + 1}`}
                 className="w-full h-full object-cover rounded-lg"
               />
@@ -157,7 +155,11 @@ const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
               </div>
               <div className="flex gap-2 absolute bottom-0 left-0 px-4 py-3">
                 <div className="bg-white rounded-full p-3">
-                  {slide.type === "Utility" ? <FaBell /> : <img src={announcement} className="w-5"/>}
+                  {slide.type === "Utility" ? (
+                    <FaBell />
+                  ) : (
+                    <img src={announcement} className="w-5" />
+                  )}
                 </div>
                 <button className="bg-[#F1F1F1] p-2 rounded-full">
                   <img src={whatsapp} className="w-6 h-auto" />
