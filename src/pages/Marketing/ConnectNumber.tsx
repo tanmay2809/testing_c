@@ -73,8 +73,7 @@ const ConnectNumber: React.FC = () => {
 
  const launchWhatsAppSignup = () => {
     window.FB.login(
-      (response: fb.StatusResponse) => {
-        if (response.authResponse) {
+      (response: any) => {        if (response.authResponse) {
           const accessToken = response.authResponse.accessToken;
           console.log('Access Token:', accessToken);
           // You can use this token to call the debug_token API and get the shared WABA's ID
