@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Customer } from "../../constants/index";
@@ -64,7 +64,7 @@ const Campaigns: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
   console.log("resData: ", data);
   // console.log(order_action_required_2);
-  const location = useLocation();
+  const navigate = useNavigate();
   const [customerData, setCustomerData] = useState<any>(data?.customerData);
   const [isOpenContent, setIsOpenContent] = useState<boolean>(true);
   const [isOpentarget, setIsOpentarget] = useState<boolean>(false);
@@ -464,9 +464,17 @@ const Campaigns: React.FC = () => {
   };
 
   useEffect(() => {
-    let campContent = JSON.parse(
-      sessionStorage.getItem("campaignContent") || "[]"
-    );
+    const storedCampaignContent = sessionStorage.getItem("campaignContent");
+    const campContent = storedCampaignContent
+      ? JSON.parse(storedCampaignContent)
+      : null;
+
+    // If campaignContent does not exist, navigate to the /manager route
+    if (!campContent) {
+      console.log("Campaign content not found, navigating to /manager");
+      navigate("/manager");
+      return;
+    }
     setMesData(campContent[0].msData);
     setConData(campContent[0].coData);
 
@@ -475,13 +483,12 @@ const Campaigns: React.FC = () => {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set the height based on the scroll height
     }
     return () => {
-      console.log(location.pathname);
       // Clear campaignContent when the component unmounts or when the route changes
       if (!location.pathname.startsWith("/campaign")) {
         sessionStorage.removeItem("campaignContent");
       }
     };
-  }, [location.pathname]);
+  }, []);
 
   useEffect(() => {
     if (conData?.header) {
