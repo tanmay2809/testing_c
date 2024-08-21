@@ -1,15 +1,15 @@
 import React, { useState, ChangeEvent, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Customer } from "../../constants/index";
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  order_action_required_1,
-  order_action_required_2,
-} from "../../component/Marketing/data";
+// import {
+//   order_action_required_1,
+//   // order_action_required_2,
+// } from "../../component/Marketing/data";
 import { baseUrl } from "../../main";
 import {
   MessageData,
@@ -63,7 +63,8 @@ interface Compon {
 const Campaigns: React.FC = () => {
   const { data } = useSelector((state: RootState) => state.resturantdata);
   console.log("resData: ", data);
-  console.log(order_action_required_2);
+  // console.log(order_action_required_2);
+  const location = useLocation();
   const [customerData, setCustomerData] = useState<any>(data?.customerData);
   const [isOpenContent, setIsOpenContent] = useState<boolean>(true);
   const [isOpentarget, setIsOpentarget] = useState<boolean>(false);
@@ -129,7 +130,7 @@ const Campaigns: React.FC = () => {
   const [originalBody, setOriginalBody] = useState("");
   const [originalFooter, setOriginalFooter] = useState("");
   const [buttons, setButtons] = useState<any[]>([]);
-  const [order, setOrder] = useState<MessageData>(order_action_required_1);
+  const [order, setOrder] = useState<MessageData | null>(null);
 
   useEffect(() => {
     getAllCustomersUserId();
@@ -145,7 +146,18 @@ const Campaigns: React.FC = () => {
   };
 
   const updateOrderWithParams = () => {
+    // Ensure order is not null before spreading it
+    if (!order) {
+      console.error("Order is null or undefined");
+      return;
+    }
+
     const updatedOrder = { ...order };
+    // Safely access messageData
+    if (!updatedOrder.messageData) {
+      console.error("messageData is undefined");
+      return;
+    }
 
     // Update header parameters
     const headerComponent = updatedOrder.messageData.template.components.find(
@@ -155,7 +167,6 @@ const Campaigns: React.FC = () => {
     if (headerComponent) {
       headerComponent.parameters = Object.entries(campaignParams.header).map(
         ([type, text]) => {
-          // Set type to "text" if not one of the specified types
           const paramType = [
             "button",
             "payload",
@@ -184,7 +195,6 @@ const Campaigns: React.FC = () => {
     if (bodyComponent) {
       bodyComponent.parameters = Object.entries(campaignParams.body).map(
         ([type, text]) => {
-          // Set type to "text" if not one of the specified types
           const paramType = [
             "button",
             "payload",
@@ -207,7 +217,6 @@ const Campaigns: React.FC = () => {
     if (footerComponent) {
       footerComponent.parameters = Object.entries(campaignParams.footer).map(
         ([type, text]) => {
-          // Set type to "text" if not one of the specified types
           const paramType = [
             "button",
             "payload",
@@ -222,6 +231,7 @@ const Campaigns: React.FC = () => {
         }
       );
     }
+
     console.log(updatedOrder);
     // Update the state with the modified order
     setOrder(updatedOrder);
@@ -464,7 +474,14 @@ const Campaigns: React.FC = () => {
       textareaRef.current.style.height = "auto"; // Reset the height
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set the height based on the scroll height
     }
-  }, []);
+    return () => {
+      console.log(location.pathname);
+      // Clear campaignContent when the component unmounts or when the route changes
+      if (!location.pathname.startsWith("/campaign")) {
+        sessionStorage.removeItem("campaignContent");
+      }
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
     if (conData?.header) {
@@ -492,47 +509,51 @@ const Campaigns: React.FC = () => {
   }, [originalBody, originalHeader, originalFooter]);
 
   useEffect(() => {
-    const headerParams: { [key: string]: string } = {};
-    const bodyParams: { [key: string]: string } = {};
-    const footerParams: { [key: string]: string } = {};
-    const buttonParams: any[] = []; // New array to hold buttons
-    let image: string | undefined = undefined; // Initialize image as undefined
+    if (mesData) {
+      setOrder(mesData);
 
-    mesData?.messageData.template.components.forEach((component) => {
-      component.parameters.forEach((param) => {
-        if (param.type && param.text) {
-          if (component.type === "header") {
-            headerParams[param.type] = param.text;
-          } else if (component.type === "body") {
-            bodyParams[param.type] = param.text;
-          } else if (component.type === "footer") {
-            footerParams[param.type] = param.text;
+      const headerParams: { [key: string]: string } = {};
+      const bodyParams: { [key: string]: string } = {};
+      const footerParams: { [key: string]: string } = {};
+      const buttonParams: any[] = []; // New array to hold buttons
+      let image: string | undefined = undefined; // Initialize image as undefined
+
+      mesData.messageData.template.components.forEach((component) => {
+        component.parameters.forEach((param) => {
+          if (param.type && param.text) {
+            if (component.type === "header") {
+              headerParams[param.type] = param.text;
+            } else if (component.type === "body") {
+              bodyParams[param.type] = param.text;
+            } else if (component.type === "footer") {
+              footerParams[param.type] = param.text;
+            }
           }
-        }
-        if (param.type && param.image) {
-          if (component.type === "header") {
-            image = param.image.link;
+          if (param.type && param.image) {
+            if (component.type === "header") {
+              image = param.image.link;
+            }
           }
+        });
+
+        // Handle buttons separately
+        if (component.type === "button") {
+          buttonParams.push(component); // Store the whole button component
         }
       });
 
-      // Handle buttons separately
-      if (component.type === "button") {
-        buttonParams.push(component); // Store the whole button component
-      }
-    });
+      setCampaignParams({
+        header: headerParams,
+        body: bodyParams,
+        footer: footerParams,
+      });
 
-    setCampaignParams({
-      header: headerParams,
-      body: bodyParams,
-      footer: footerParams,
-    });
-
-    // Set the buttons state
-    setButtons(buttonParams);
-    // Set the image
-    console.log(image);
-    setSelectedImage(image || ""); // Use an empty string if image is undefined
+      // Set the buttons state
+      setButtons(buttonParams);
+      // Set the image
+      console.log(image);
+      setSelectedImage(image || ""); // Use an empty string if image is undefined
+    }
   }, [mesData]);
 
   useEffect(() => {
@@ -567,11 +588,17 @@ const Campaigns: React.FC = () => {
           },
         ];
 
-        order_action_required_1.users = userContacts as any;
-        order_action_required_1.time = scheduledTime;
+        if (order) {
+          order.users = userContacts as any;
+          order.time = scheduledTime;
+        }
+        // order_action_required_1.users = userContacts as any;
+        // order_action_required_1.time = scheduledTime;
 
-        console.log("data : ", order_action_required_1);
-        const d = JSON.stringify(order_action_required_1);
+        console.log("data : ", order);
+        const d = JSON.stringify(order);
+        //console.log("data : ", order_action_required_1);
+        //const d = JSON.stringify(order_action_required_1);
         console.log(d);
 
         let config = {
@@ -624,11 +651,17 @@ const Campaigns: React.FC = () => {
           },
         ];
 
-        order_action_required_1.users = userContacts as any;
-        order_action_required_1.time = scheduledTime;
+        if (order) {
+          order.users = userContacts as any;
+          order.time = scheduledTime;
+        }
+        // order_action_required_1.users = userContacts as any;
+        // order_action_required_1.time = scheduledTime;
 
-        console.log("data : ", order_action_required_1);
-        const d = JSON.stringify(order_action_required_1);
+        console.log("data : ", order);
+        const d = JSON.stringify(order);
+        //console.log("data : ", order_action_required_1);
+        //const d = JSON.stringify(order_action_required_1);
         console.log(d);
 
         let config = {
@@ -743,12 +776,23 @@ const Campaigns: React.FC = () => {
       contact: `+91${user.phone}`,
     }));
 
-    order_action_required_1.users = userContacts;
-    order_action_required_1.time = scheduledTime;
+    if (order) {
+      order.users = userContacts as any;
+      order.time = scheduledTime;
+    }
+    // order_action_required_1.users = userContacts as any;
+    // order_action_required_1.time = scheduledTime;
 
     updateOrderWithParams();
-    console.log(order_action_required_1);
-    const d = JSON.stringify(order_action_required_1);
+    console.log("data : ", order);
+    const d = JSON.stringify(order);
+    //console.log("data : ", order_action_required_1);
+    //const d = JSON.stringify(order_action_required_1);
+    console.log(d);
+
+    // updateOrderWithParams();
+    // console.log(order_action_required_1);
+    // const d = JSON.stringify(order_action_required_1);
 
     let config = {
       method: "post",
@@ -950,6 +994,7 @@ const Campaigns: React.FC = () => {
               <div className="bg-white fixed lg:w-[85%] md:w-[91%] -mt-[0.26rem] z-10 p-4 rounded-xl ">
                 <div className="flex justify-between w-full">
                   <h2 className="text-xl font-semibold ">Template Preview</h2>
+                  {/* <button onClick={updateOrderWithParams}>test</button> */}
                   <div className="flex gap-6">
                     <Link to="/marketing">
                       <button className=" text-[#E61856] bg-[#FDF1F1] px-4 py-2 rounded-lg">
@@ -1126,7 +1171,7 @@ const Campaigns: React.FC = () => {
 
                               <h2 className="font-medium text-base w-full">
                                 <div
-                                  className="bg-[#F5F9FF] h-12 w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
+                                  className="bg-[#F5F9FF] h-fit w-full text-black p-3 rounded-lg border-0 outline-none focus:outline-none"
                                   // style={{
                                   //   color: styles.header.color,
                                   //   fontWeight: styles.header.bold

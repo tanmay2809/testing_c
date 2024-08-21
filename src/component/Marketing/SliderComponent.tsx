@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export interface MessageData {
   time: string;
@@ -6,6 +7,7 @@ export interface MessageData {
   messageData: {
     messaging_product: string;
     type: string;
+    recipient_type?: string;
     template: {
       name: string;
       language: {
@@ -26,21 +28,21 @@ export interface Component {
 export interface Parameter {
   type: string;
   text?: string;
-  image?:{
-    link:string;
-  }
+  image?: {
+    link: string;
+  };
   payload?: string; // Added 'payload' in case it's used in buttons
 }
 
 export interface ContentData {
-  type?:string;
+  type?: string;
   header?: string;
   body?: string;
   footer?: string;
 }
 interface CampaignContent {
-  msData: MessageData | null;
-  coData: ContentData | null;
+  msData: MessageData | undefined;
+  coData: ContentData | undefined;
 }
 
 //swiperjs
@@ -59,13 +61,13 @@ import { Slide } from "../../constants/index";
 //images
 import whatsapp from "../../assets/whatsapp.png";
 import image1 from "../../assets/Group 1171278507.png";
-import { useNavigate } from "react-router-dom";
+import announcement from "/announcement.svg";
 
 import {
-  order_action_required_1,
-  order_action_required_2,
-  content_2,
-  content_1,
+  utilityCampaigns,
+  marketingCampaigns,
+  utilityContent,
+  marketingContent,
 } from "./data";
 
 interface SliderComponentProps {
@@ -83,22 +85,41 @@ const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
   };
 
   const sendToCampaign = (type: string, index: number) => {
-    let campaignContent: CampaignContent[] = [{ msData: null, coData: null }];
-
-    switch (index + 1) {
-      case 1:
-        campaignContent[0].msData = order_action_required_1;
-        campaignContent[0].coData = content_1;
-        break;
-
-      // rest of the cases
-      case 2:
-        campaignContent[0].msData = order_action_required_2;
-        campaignContent[0].coData = content_2;
-        break;
-      // Add more cases if you have more content
-      default:
-        break;
+    let campaignContent: CampaignContent[] = [
+      { msData: undefined, coData: undefined },
+    ];
+    console.log(utilityCampaigns[index].order_action_required_1);
+    if (type === "Utility") {
+      switch (index + 1) {
+        case 1:
+          campaignContent[0].msData =
+            utilityCampaigns[0].order_action_required_1;
+          campaignContent[0].coData = utilityContent[0].content_1;
+          break;
+        case 2:
+          campaignContent[0].msData = utilityCampaigns[1].welcome_message;
+          campaignContent[0].coData = utilityContent[1].content_2;
+          break;
+        // Add more cases if you have more content
+        default:
+          break;
+      }
+    }
+    if (type === "Marketing") {
+      switch (index + 1) {
+        case 1:
+          campaignContent[0].msData =
+            marketingCampaigns[index].order_action_required_1;
+          campaignContent[0].coData = marketingContent[0].content_3;
+          break;
+        case 2:
+          // campaignContent[0].msData = order_action_required_2;
+          // campaignContent[0].coData = content_2;
+          break;
+        // Add more cases if you have more content
+        default:
+          break;
+      }
     }
 
     // Store the content in local storage
@@ -136,7 +157,7 @@ const SliderComponent: React.FC<SliderComponentProps> = ({ slides }) => {
               </div>
               <div className="flex gap-2 absolute bottom-0 left-0 px-4 py-3">
                 <div className="bg-white rounded-full p-3">
-                  <FaBell />
+                  {slide.type === "Utility" ? <FaBell /> : <img src={announcement} className="w-5"/>}
                 </div>
                 <button className="bg-[#F1F1F1] p-2 rounded-full">
                   <img src={whatsapp} className="w-6 h-auto" />
