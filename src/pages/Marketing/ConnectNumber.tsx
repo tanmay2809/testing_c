@@ -71,21 +71,34 @@ const ConnectNumber: React.FC = () => {
     })(document, "script", "facebook-jssdk");
   }, []);
 
-  const handleFacebookLogin = () => {
+ const launchWhatsAppSignup = () => {
     window.FB.login(
-      function (response: any) {        if (response.authResponse) {
-          console.log("Welcome! Fetching your information...");
-          window.FB.api("/me", function (response: any) {            console.log("Good to see you, " + response.name + ".");
-            // Here you can handle the response, such as sending it to your backend or updating your UI
-          });
+      (response: fb.StatusResponse) => {
+        if (response.authResponse) {
+          const accessToken = response.authResponse.accessToken;
+          console.log('Access Token:', accessToken);
+          // You can use this token to call the debug_token API and get the shared WABA's ID
         } else {
-          console.log("User cancelled login or did not fully authorize.");
+          console.log('User cancelled login or did not fully authorize.');
         }
       },
-      { scope: "public_profile,email" }
+      {
+        config_id: '1017249376716357', // Replace with your configuration ID
+        response_type: 'code',
+        override_default_response_type: true,
+        scope: 'public_profile,email', // Add required permissions
+        extras: {
+          setup: {
+            // Example prefilled data
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'johndoe@example.com',
+          },
+        },
+      }
     );
   };
-  
+
   return (
     <div className="w-full h-fit relative md:mb-[80px] lg:mb-0">
       <div className="lg:w-[93%]  lg:px-[2rem] py-[1rem] gap-10 lg:ml-[7%] h-[100vh]">
@@ -375,7 +388,7 @@ const ConnectNumber: React.FC = () => {
                   />
                    <button
                   className="w-full bg-[#1877F2] text-white py-2 rounded-md mt-4"
-                  onClick={handleFacebookLogin}
+                  onClick={launchWhatsAppSignup}
                 >
                   Continue with Facebook
                 </button>
