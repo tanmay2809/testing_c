@@ -86,10 +86,12 @@ const App: React.FC = () => {
             <Route path="myplans" element={<MyPlans />} />
             <Route path="store" element={<Stores />} />
             <Route path="billing" element={<Billing />} />
+            
             {/* <Route path="invoice" element={<Invoice />} /> */}
           </Route>
-          <Route path="/CustomiseTheme" element={<CustomiseTheme />} />
+          
           <Route path="/feedback" element={<Feedbackpage />} />
+          <Route path="/CustomiseTheme" element={<CustomiseTheme />} />
         </Route>
       </Routes>
     </>

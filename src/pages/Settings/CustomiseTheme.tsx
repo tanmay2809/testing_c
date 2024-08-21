@@ -1,6 +1,6 @@
 //icons
-import { FiPlus } from "react-icons/fi";
-import { MdDeleteForever } from "react-icons/md";
+// import { FiPlus } from "react-icons/fi";
+// import { MdDeleteForever } from "react-icons/md";
 import { RxCrossCircled } from "react-icons/rx";
 
 import { ChangeEvent, useState } from "react";
@@ -8,11 +8,11 @@ import { ChangeEvent, useState } from "react";
 import mobile from "../../assets/mobile.png";
 import mobile2 from "../../assets/Group 1171278587.png";
 
-import zomato from "../../assets/Rectangle 3463841.png";
-import swiggy1 from "../../assets/Rectangle 3463840 (1).png";
+// import zomato from "../../assets/Rectangle 3463841.png";
+// import swiggy1 from "../../assets/Rectangle 3463840 (1).png";
 
-import swiggy from "../../assets/Rectangle 3463840.png";
-import SwitchCustomTheme from "../../component/setting/SwitchCustomTheme";
+// import swiggy from "../../assets/Rectangle 3463840.png";
+// import SwitchCustomTheme from "../../component/setting/SwitchCustomTheme";
 
 // import imageInput from "../../../public/imageInput.svg";
 import { IoIosCloseCircleOutline, IoMdImages } from "react-icons/io";
@@ -78,20 +78,20 @@ const CustomiseTheme = () => {
     }
   };
 
-  const delivery = [
-    {
-      icon: zomato,
-      Link: "www.zomato.com/foodoos/Book Now..",
-    },
-    {
-      icon: swiggy1,
-      Link: "www.Swiggydineout.com/foodoos/Book...",
-    },
-    {
-      icon: swiggy1,
-      Link: "www.Swiggydineout.com/foodoos/Book...",
-    },
-  ];
+  // const delivery = [
+  //   {
+  //     icon: zomato,
+  //     Link: "www.zomato.com/foodoos/Book Now..",
+  //   },
+  //   {
+  //     icon: swiggy1,
+  //     Link: "www.Swiggydineout.com/foodoos/Book...",
+  //   },
+  //   {
+  //     icon: swiggy1,
+  //     Link: "www.Swiggydineout.com/foodoos/Book...",
+  //   },
+  // ];
 
   // navbar frame
   const handleFrame = () => {
@@ -106,7 +106,7 @@ const CustomiseTheme = () => {
     >
       {/* Main Content Area */}
       <div className="bg-[#F1F7FF] lg:w-[93%] h-fit px-[1rem] py-[1.5rem] flex flex-col items-center justify-center gap- lg:ml-[7%]">
-        <div className="w-full flex flex-row justify-between mt-[60px] bg-white px-[1rem] rounded-lg py-[.8rem]">
+        <div className="w-full flex flex-row justify-between mt-[50px] bg-white px-[1rem] rounded-lg py-[.8rem]">
           <div className="flex flex-col">
             <h1 className="text-[28px] font-semibold ">
               Customise your menu theme
@@ -200,7 +200,7 @@ const CustomiseTheme = () => {
 
             {/* booking links */}
 
-            <div className="flex flex-col gap-[.5rem] w-full h-fit">
+            {/* <div className="flex flex-col gap-[.5rem] w-full h-fit">
               <div className="w-full font-bold text-[1.3rem] text-black bg-white px-[2rem] py-3 rounded-t-lg items-center flex justify-between">
                 <p>Booking Links</p>
                 <button
@@ -225,11 +225,11 @@ const CustomiseTheme = () => {
                   <MdDeleteForever className="text-[#004AAD] size-8" />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Delivery Links */}
 
-            <div className="flex flex-col gap-[.5rem] w-full h-fit">
+            {/* <div className="flex flex-col gap-[.5rem] w-full h-fit">
               <div className="w-full font-bold text-[1.3rem] text-black bg-white px-[2rem] py-3 rounded-t-lg items-center flex justify-between">
                 <p>Delivery Links</p>
                 <button
@@ -259,7 +259,7 @@ const CustomiseTheme = () => {
                   </div>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
 
           <div></div>
